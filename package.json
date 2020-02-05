@@ -1,0 +1,23 @@
+{
+  "name": "webprog-coursework",
+  "version": "1.0.0",
+  "description": "2nd year Web Programming coursework",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joolsh625/webprog-coursework.git"
+  },
+  "author": "Jools Hattey",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/joolsh625/webprog-coursework/issues"
+  },
+  "homepage": "https://github.com/joolsh625/webprog-coursework#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
