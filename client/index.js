@@ -1,9 +1,7 @@
 async function test() {
-    const request = fetch("http://localhost:8080/yeet");
+    const response = await fetch("/getquestions");
 
-    const response = await request;
-
-    console.log(response.text())
+    console.log(await response.json())
 }
 
 test();
