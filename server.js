@@ -1,14 +1,12 @@
+//Express Server
+
 const express = require('express');
 const app = express();
-const port = 3000;
+const port = 8080;
+app.use('/', express.static('client'));
 
-const http = require('http-server');
-const server = http.createServer();
-const port2 = 8080;
-
-server.listen(port2, () => console.log(`Http server listening on port ${port2}`));
-
-app.get('/', (req, res) => {
+app.get('/yeet', (req, res) => {
+    console.log("whattt");
     res.send({"message":"yeetus"});
 });
 
