@@ -9,20 +9,36 @@ async function getQuestions() {
 function displayQuestions(questions) {
     const body = document.querySelector("main");
 
-    for(let q of questions.questions) {
-        const newQ = document.createElement("div");
+    createQuestion(questions.questions[currentQuestion], body);
 
-        const qTitle = document.createElement("h5");
-        const qTitleContent = document.createTextNode(q.text);
-        qTitle.appendChild(qTitleContent);
-
-        newQ.appendChild(qTitle);
-
-        
-
-        body.appendChild(newQ);
-    }
+    //questions.questions.forEach(element => createQuestion(element, body));
 }
 
+function createQuestion(question, bodyElement) {
+    const newQ = document.querySelector("#questionContainer")
 
-getQuestions();
+    const qTitle = document.createElement("h2");
+    const qTitleContent = document.createTextNode(question.text);
+    qTitle.appendChild(qTitleContent);
+
+    //const q
+
+    if(newQ.children[0]) {
+        newQ.children[0].remove();}
+
+    newQ.appendChild(qTitle);
+
+    bodyElement.appendChild(newQ);
+}
+let currentQuestion = -1;
+const nextButton = document.querySelector("#next");
+nextButton.addEventListener("click", event => {
+    currentQuestion++;
+    getQuestions();
+});
+const prevButton = document.querySelector("#prev");
+prevButton.addEventListener("click", event => {
+    currentQuestion++;
+    getQuestions();
+});
+//getQuestions();
