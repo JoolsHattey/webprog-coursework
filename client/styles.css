@@ -1,0 +1,13 @@
+div {
+    //padding: 20px;
+    border: solid;
+    width: 100%;
+}
+* {
+    font-family: 'Roboto', sans-serif;
+}
+
+html, body {
+    width: 100%
+    
+}

@@ -7,14 +7,18 @@ async function getQuestions() {
 }
 
 function displayQuestions(questions) {
-    const body = document.querySelector("body");
+    const body = document.querySelector("main");
 
     for(let q of questions.questions) {
         const newQ = document.createElement("div");
 
-        const qContent = document.createTextNode(q.text);
+        const qTitle = document.createElement("h5");
+        const qTitleContent = document.createTextNode(q.text);
+        qTitle.appendChild(qTitleContent);
 
-        newQ.appendChild(qContent);
+        newQ.appendChild(qTitle);
+
+        
 
         body.appendChild(newQ);
     }
