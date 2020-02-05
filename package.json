@@ -16,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/joolsh625/webprog-coursework/issues"
   },
-  "homepage": "https://github.com/joolsh625/webprog-coursework#readme"
+  "homepage": "https://github.com/joolsh625/webprog-coursework#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "http-server": "^0.12.1"
+  }
 }
