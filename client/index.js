@@ -1,11 +1,14 @@
+"use strict";
+
 let questions;
+let response = { "questions": [] };
 
 async function getQuestions() {
     const response = await fetch("/getquestions");
 
-    const yiss = await response.json();
+    const data = await response.json();
 
-    questions = yiss;
+    questions = data;
 
     const title = document.querySelector("#title");
     title.textContent=questions.name;
@@ -23,6 +26,7 @@ function createQuestion(question, bodyElement) {
     
     const q = document.querySelector("#questionContainer");
     const newQ = document.createElement("div");
+    newQ.id = question.id;
 
     const qTitle = document.createElement("h3");
     const qTitleContent = document.createTextNode(question.text);
@@ -37,6 +41,7 @@ function createQuestion(question, bodyElement) {
     switch(question.type) {
         case "text":
             input = createTextInput()
+            input.id = question.id;
             break;
         case "number":
             input = createNumberInput();
@@ -59,12 +64,21 @@ function createQuestion(question, bodyElement) {
 }
 
 function createTextInput() {
-    return document.createElement("input");
+    const form = document.createElement("form")
+    const input = document.createElement("input");
+    input.id = "response";
+    form.appendChild(input);
+    
+    return form;
 }
 function createNumberInput() {
+    const form = document.createElement("form")
     const inputElement = document.createElement("input");
+    inputElement.id="response";
     inputElement.setAttribute("type", "number");
-    return inputElement;
+
+    form.appendChild(inputElement);
+    return form;
 }
 function createMultiSelectInput(options) {
     const inputElement = document.createElement("div");
@@ -104,12 +118,38 @@ function createSingleSelectInput(options) {
     return inputElement;
 }
 
+function submitQuestion() {
+    const questionInput = document.querySelector("#questionContainer").children[0].children[1];
+
+    response.questions[currentQuestion] = {
+        "id": "",
+        "answer": questionInput.elements[0].value
+    }
+}
+
+function sendResponse() {
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "/submitresponse", true);
+
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    xhr.send(JSON.stringify(response));
+}
+
 getQuestions();
 let currentQuestion = -1;
 const nextButton = document.querySelector("#next");
 nextButton.addEventListener("click", event => {
-    currentQuestion++;
-    displayQuestions();
+    if(currentQuestion>=0) {
+        submitQuestion();
+    }
+    if(currentQuestion>=3) {
+        sendResponse();
+    } else {
+        currentQuestion++;
+        displayQuestions();
+    }
+    
 });
 const prevButton = document.querySelector("#prev");
 prevButton.addEventListener("click", event => {
