@@ -1,29 +1,33 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const app = express();
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
 const port = 8080;
 
-const firestore = require('./firestore')
+const firestore = require('./firestore');
 
 const data = require('./example-questionnaire.json');
 
 app.use('/', express.static('client'));
 
 
-app.get('/getquestions', (req, res) => {
+function getQuestions(req, res) {
     res.send(data);
-});
+}
 
-app.post('/submitresponse', (req, res) => {
-    console.log(req.body);
+function submitResponse(req, res) {
     firestore.addResponse(req.body);
-});
+}
 
-app.get('/getresponses', (req, res) => {
+function getResponses(req, res) {
     res.send(firestore.getResponses());
-})
+}
 
+function createQuestionnaire(req, res) {
+    firestore.createQuestionnaire(req.body).subscribe(data => res.send(data));
+}
+
+app.get('/getquestions', getQuestions);
+app.post('/submitresponse', express.json(), submitResponse);
+app.get('/getresponses', getResponses);
+app.post('/createquestionnaire', express.json(), createQuestionnaire);
 
 app.listen(port, () => console.log(`Questionnaire Engine listening on port ${port}`));
