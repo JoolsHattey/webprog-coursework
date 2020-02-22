@@ -3,109 +3,6 @@
 let questions;
 let response = { "questions": [] };
 
-class Question {
-
-    constructor(question) {
-        this._element = document.createElement("div");
-
-        if(question!==null) {
-            this._element.id = question.id;
-
-            const title = document.createElement("h3");
-            const titleContent = document.createTextNode(question.text);
-            title.appendChild(titleContent);
-            this._element.appendChild(title);
-
-            this.createInput(question);
-        }        
-    }
-
-    createInput(question) {
-        let input;
-
-        switch(question.type) {
-            case "text":
-                input = this.createTextInput()
-                input.id = question.id;
-                break;
-            case "number":
-                input = this.createNumberInput();
-                break;
-            case "single-select":
-                input = this.createSingleSelectInput(question.options);
-                break;
-            case "multi-select":
-                input = this.createMultiSelectInput(question.options);
-                break;
-        }
-        const q = document.querySelector("#questionContainer");
-        if(q.children[0]) {
-            q.children[0].remove();
-        }
-    
-        this._element.appendChild(input);
-    }
-
-    appendQuestion() {
-        console.log("yeet")
-        const q = document.querySelector("#questionContainer");
-        q.appendChild(this._element);
-    }
-    createTextInput() {
-        const form = document.createElement("form")
-        const input = document.createElement("input");
-        input.id = "response";
-        form.appendChild(input);
-        
-        return form;
-    }
-    createNumberInput() {
-        const form = document.createElement("form")
-        const inputElement = document.createElement("input");
-        inputElement.id="response";
-        inputElement.setAttribute("type", "number");
-    
-        form.appendChild(inputElement);
-        return form;
-    }
-    createMultiSelectInput(options) {
-        const inputElement = document.createElement("div");
-        options.forEach(opt => {
-            const optionContainer = document.createElement("div");
-            const option = document.createElement("input");
-            option.setAttribute("type", "checkbox");
-            option.setAttribute("name", "name");
-            option.setAttribute("id", opt);
-    
-            const label = document.createElement("label");
-            label.setAttribute("for", opt)
-            label.textContent = opt
-            optionContainer.appendChild(option);
-            optionContainer.appendChild(label);
-            inputElement.appendChild(optionContainer);
-        });
-        return inputElement;
-    }
-    createSingleSelectInput(options) {
-        const inputElement = document.createElement("div");
-        options.forEach(opt => {
-            const optionContainer = document.createElement("div");
-            const option = document.createElement("input");
-            option.setAttribute("type", "radio");
-            option.setAttribute("name", "name");
-            option.setAttribute("value", opt);
-            option.setAttribute("id", opt);
-    
-            const label = document.createElement("label");
-            label.setAttribute("for", opt);
-            label.textContent = opt;
-            optionContainer.appendChild(option);
-            optionContainer.appendChild(label);
-            inputElement.appendChild(optionContainer);
-        });
-        return inputElement;
-    }
-}
 
 async function getQuestions() {
     const response = await fetch("/getquestions");
@@ -118,18 +15,6 @@ async function getQuestions() {
     title.textContent=questions.name;
     body.appendChild(title);
 }
-
-function displayQuestions() {
-    //const body = document.querySelector("main");
-
-    const question = new Question(questions.questions[currentQuestion]);
-
-    question.appendQuestion();
-    
-
-    //createQuestion(questions.questions[currentQuestion], body);
-}
-
 
 
 function submitQuestion() {
@@ -156,186 +41,20 @@ function editQuestionPage() {
     }
 }
 
+async function getQuestionnaire(uid) {
+    const request = await fetch(`/questionnaire/${uid}`);
+
+    const quesitonnaire = await(request.json());
+
+    const q = new Questionnaire(quesitonnaire, uid);
+}
+
 
 
 /********************************************************************
  * ADMIN CONSOLE
  * **************************************************************** */
 
-
-
-class EditableQuestion {
-
-    constructor(questionData) {    
-        
-        if(questionData) {
-            this._question = questionData;
-        } else {
-            this._question = {
-                "id": "",
-                "text": "",
-                "type": "text"
-            };    
-        }
-
-        
-        this._element = document.createElement("div");
-
-        this._element.classList.add("question");
-
-        this.createTitle();
-
-        this.createInputSelector();
-
-        if(questionData) {
-            this.changeTitle(questionData.text);
-            this.changeSelectedInput(questionData.type);
-        }
-    }
-
-    createTitle() {
-        const titleContainer = document.createElement("div");
-
-        const title = document.createElement("input");
-        const saveButton = document.createElement("button");
-        saveButton.append("Save");
-        saveButton.onclick = (evt => {
-            this._question.text = saveButton.parentElement.children[0].value;
-
-            console.log(this._question)
-        
-        });
-
-        titleContainer.appendChild(title);
-        titleContainer.appendChild(saveButton);
-
-        this._element.appendChild(titleContainer);
-    }
-
-    createInputSelector() {
-        const inputSelector = document.createElement("select");
-
-        const option1 = document.createElement("option");
-        option1.value="text";
-        option1.append("Text Input");
-
-        const option2 = document.createElement("option");
-        option2.value="number";
-        option2.append("Number Input");
-
-        const option3 = document.createElement("option");
-        option3.value="single-select";
-        option3.append("Single-select Input");
-
-        const option4 = document.createElement("option");
-        option4.value="multi-select";
-        option4.append("Multi-select Input");
-
-        inputSelector.appendChild(option1);
-        inputSelector.appendChild(option2);
-        inputSelector.appendChild(option3);
-        inputSelector.appendChild(option4);
-
-        inputSelector.onchange = (evt => {
-            this._question.type = inputSelector.value;
-
-            console.log(this._question);
-        })
-
-        this._element.appendChild(inputSelector);
-    }
-
-    changeTitle(title) {
-        this._element.children[0].children[0].value = title;
-    }
-    changeSelectedInput(input) {
-        this._element.children[1].value = input;
-    }
-}
-
-class Questionnaire {
-
-    constructor(questionnaireData, uid) {
-
-        if(questionnaireData) {
-            this._uid = uid;
-        }
-
-        
-        
-        this.createTitle();
-        const newQButton = document.createElement("button");
-        newQButton.append("Add Question");
-        newQButton.id="newq";
-        document.querySelector("body").appendChild(newQButton);
-        document.querySelector("#newq").onclick = (evt => {
-            this.createNewQuestion();
-        });
-
-
-        this._questions = {
-            "name": "",
-            "questions": []
-        };
-
-        const saveButton = document.createElement("button");
-        saveButton.onclick = (evt => {
-
-            this._questions.questions = [];
-
-            this._elements.forEach(x => {
-                this._questions.questions.push(x._question);
-            });
-            console.log(this._questions);
-
-            if(questionnaireData) {
-                updateQuestionnaire(this._uid, this._questions);
-            } else {
-                sendQuestionnaire(this._questions).then(data => {
-                    this._uid = data.id;
-                    console.log(this._uid);
-                });    
-            } 
-        });
-
-        saveButton.append("Save");
-        document.querySelector("body").appendChild(saveButton);
-
-        this._elements = new Array;
-
-        if(questionnaireData) {
-            this.changeTitle(questionnaireData.name);
-            questionnaireData.questions.forEach(q => {
-                this.createNewQuestion(q);
-            });
-        }
-        
-    }
-
-    createTitle() {
-        const titleContainer = document.createElement("div");
-        const title = document.createElement("input");
-        const saveButton = document.createElement("button");
-        saveButton.append("Save");
-
-        saveButton.onclick = (evt => this._questions.name = title.value);
-
-        titleContainer.appendChild(title);
-        titleContainer.appendChild(saveButton);
-
-        document.querySelector("#questionContainer").appendChild(titleContainer);
-    }
-
-    createNewQuestion(questionData) {
-        const q = new EditableQuestion(questionData);
-        this._elements.push(q);
-        document.querySelector("#questionContainer").appendChild(q._element);
-    }
-    changeTitle(title) {
-        console.log(document.querySelector("#questionContainer"))
-        document.querySelector("#questionContainer").children[0].children[0].value = title;
-    }
-}
 
 async function sendQuestionnaire(questionnaire) {
     const response = await fetch("/createquestionnaire", {
@@ -356,7 +75,7 @@ async function updateQuestionnaire(uid, questionnaire) {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(questionnaire)
-    })
+    });
 }
 
 function createQuestionnnaire() {
@@ -366,7 +85,7 @@ function createQuestionnnaire() {
             q.children[0].remove();
         }
 
-    const quest = new Questionnaire();
+    const quest = new EditableQuestionnaire();
     quest.createNewQuestion();
 
     
@@ -380,7 +99,7 @@ async function editQuestionnaire(uid) {
 
     const quesitonnaire = await(request.json());
 
-    const q = new Questionnaire(quesitonnaire, uid);
+    const q = new EditableQuestionnaire(quesitonnaire, uid);
 }
 
 function createNewQuestion() {
@@ -399,36 +118,42 @@ async function upload(event) {
     sendQuestionnaire(questionnaire)
         .then(x => {
             editQuestionnaire(x.id);
-        })
+        });
 
     
 }
 
-getQuestions();
-let currentQuestion = -1;
-const nextButton = document.querySelector("#next");
-nextButton.addEventListener("click", event => {
-    if(currentQuestion>=0) {
-        submitQuestion();
-    }
-    if(currentQuestion>=3) {
-        sendResponse();
-    } else {
-        currentQuestion++;
-        displayQuestions();
-    }
-    
-});
-const prevButton = document.querySelector("#prev");
-prevButton.addEventListener("click", event => {
-    currentQuestion++;
-    displayQuestions();
-});
+async function getQuestionnaires() {
+    const response = await fetch("/questionnaires")
 
-let button = document.createElement("input");
-button.type = "file";
-button.append("upload");
+    response.json().then(item => {
+        const questionnairePreview = new QuestionnairePreview(item);
+    });
+}
 
-button.onchange = uploadJSONQuestionnaire;
+async function getEditableQuestionnaires() {
+    const response = await fetch("/questionnaires")
 
-document.querySelector("body").appendChild(button);
+    response.json().then(item => {
+        const questionnairePreview = new EditableQuestionnairePreview(item);
+    });
+}
+
+async function submitResponse(uid, response) {
+    const request = await fetch(`/submitresponse/${uid}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(response)
+    });
+}
+
+function homeScreen() {
+    const home = new HomeScreen();
+}
+
+function adminScreen() {
+    const admin = new AdminScreen();
+}
+

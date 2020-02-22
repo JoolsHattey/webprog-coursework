@@ -14,7 +14,7 @@ function getQuestions(req, res) {
 }
 
 function submitResponse(req, res) {
-    firestore.addResponse(req.body);
+    firestore.addResponse(req.params.uid, req.body);
 }
 
 function getResponses(req, res) {
@@ -35,12 +35,18 @@ function editQuestionnaire(req, res) {
     firestore.editQuestionnaire(req.params.uid, req.body);
 }
 
+function getQuestionnaires(req, res) {
+    firestore.getQuestionnaires()
+        .subscribe(data => res.send(data));
+}
+
 
 app.get('/getquestions', getQuestions);
-app.post('/submitresponse', express.json(), submitResponse);
+app.post('/submitresponse/:uid', express.json(), submitResponse);
 app.get('/getresponses', getResponses);
 app.post('/createquestionnaire', express.json(), createQuestionnaire);
 app.get('/questionnaire/:uid', getQuestionnaire);
+app.get('/questionnaires', getQuestionnaires);
 app.post('/editquestionnaire/:uid', express.json(), editQuestionnaire);
 
 app.listen(port, () => console.log(`Questionnaire Engine listening on port ${port}`));
