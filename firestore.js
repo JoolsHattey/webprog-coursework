@@ -9,7 +9,7 @@ function addResponse(response) {
 }
 
 async function getResponses() {
-    return await firebase.firestore().collection("responses").get();;
+    return await firebase.firestore().collection("responses").get();
 }
 
 function createQuestionnaire(questionnaire) {
@@ -21,8 +21,25 @@ function createQuestionnaire(questionnaire) {
     });
 }
 
+function getQuestionnaire(uid) {
+
+    
+    return Observable.create(observer => {
+
+        firebase.firestore().collection("questionnaires").doc(uid).get()
+            .then(docRef => observer.next(docRef.data()));
+    
+    });
+}
+
+function editQuestionnaire(uid, questionnaire) {
+    firebase.firestore().collection("questionnaires").doc(uid).update(questionnaire);
+}
+
 module.exports = {
     addResponse,
     getResponses,
-    createQuestionnaire
+    createQuestionnaire,
+    getQuestionnaire,
+    editQuestionnaire
 }

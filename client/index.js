@@ -166,13 +166,19 @@ function editQuestionPage() {
 
 class EditableQuestion {
 
-    constructor() {       
+    constructor(questionData) {    
+        
+        if(questionData) {
+            this._question = questionData;
+        } else {
+            this._question = {
+                "id": "",
+                "text": "",
+                "type": "text"
+            };    
+        }
 
-        this._question = {
-            "id": "",
-            "text": "",
-            "type": "text"
-        };
+        
         this._element = document.createElement("div");
 
         this._element.classList.add("question");
@@ -180,6 +186,10 @@ class EditableQuestion {
         this.createTitle();
 
         this.createInputSelector();
+
+        if(questionData) {
+            this.changeTitle(questionData.text);
+        }
     }
 
     createTitle() {
@@ -230,14 +240,24 @@ class EditableQuestion {
 
             console.log(this._question);
         })
-
-        this._element.appendChild(inputSelector);
     }
+
+    changeTitle(title) {
+        this._element.children[0].children[0].value = title;
+    }
+    changeSelectedInput(input) {}
 }
 
 class Questionnaire {
 
-    constructor() {
+    constructor(questionnaireData, uid) {
+
+        if(questionnaireData) {
+            this._uid = uid;
+        }
+
+        
+        
         this.createTitle();
         const newQButton = document.createElement("button");
         newQButton.append("Add Question");
@@ -247,6 +267,7 @@ class Questionnaire {
             this.createNewQuestion();
         });
 
+
         this._questions = {
             "name": "",
             "questions": []
@@ -255,22 +276,35 @@ class Questionnaire {
         const saveButton = document.createElement("button");
         saveButton.onclick = (evt => {
 
+            this._questions.questions = [];
+
             this._elements.forEach(x => {
                 this._questions.questions.push(x._question);
             });
             console.log(this._questions);
 
-            sendQuestionnaire(this._questions).then(data => {
-                this._uid = data.id;
-                console.log(this._uid);
-            });
-            
+            if(questionnaireData) {
+                updateQuestionnaire(this._uid, this._questions);
+            } else {
+                sendQuestionnaire(this._questions).then(data => {
+                    this._uid = data.id;
+                    console.log(this._uid);
+                });    
+            } 
         });
+
         saveButton.append("Save");
         document.querySelector("body").appendChild(saveButton);
 
-        
         this._elements = new Array;
+
+        if(questionnaireData) {
+
+            questionnaireData.questions.forEach(q => {
+                this.createNewQuestion(q);
+            });
+        }
+        
     }
 
     createTitle() {
@@ -287,10 +321,13 @@ class Questionnaire {
         document.querySelector("#questionContainer").appendChild(titleContainer);
     }
 
-    createNewQuestion() {
-        const q = new EditableQuestion();
+    createNewQuestion(questionData) {
+        const q = new EditableQuestion(questionData);
         this._elements.push(q);
         document.querySelector("#questionContainer").appendChild(q._element);
+    }
+    changeTitle(title) {
+        document.querySelector("#questionContainer").children[0].value = title;
     }
 }
 
@@ -305,6 +342,17 @@ async function sendQuestionnaire(questionnaire) {
     return await response.json();
 }
 
+async function updateQuestionnaire(uid, questionnaire) {
+    console.log(uid);
+    const response = await fetch(`/editquestionnaire/${uid}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(questionnaire)
+    })
+}
+
 function createQuestionnnaire() {
 
     const q = document.querySelector("#questionContainer");
@@ -316,6 +364,14 @@ function createQuestionnnaire() {
     quest.createNewQuestion();
 
     
+}
+
+async function editQuestionnaire(uid) {
+    const request = await fetch(`/questionnaire/${uid}`);
+
+    const quesitonnaire = await(request.json());
+
+    const q = new Questionnaire(quesitonnaire, uid);
 }
 
 function createNewQuestion() {
