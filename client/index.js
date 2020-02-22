@@ -189,6 +189,7 @@ class EditableQuestion {
 
         if(questionData) {
             this.changeTitle(questionData.text);
+            this.changeSelectedInput(questionData.type);
         }
     }
 
@@ -240,12 +241,16 @@ class EditableQuestion {
 
             console.log(this._question);
         })
+
+        this._element.appendChild(inputSelector);
     }
 
     changeTitle(title) {
         this._element.children[0].children[0].value = title;
     }
-    changeSelectedInput(input) {}
+    changeSelectedInput(input) {
+        this._element.children[1].value = input;
+    }
 }
 
 class Questionnaire {
@@ -299,7 +304,7 @@ class Questionnaire {
         this._elements = new Array;
 
         if(questionnaireData) {
-
+            this.changeTitle(questionnaireData.name);
             questionnaireData.questions.forEach(q => {
                 this.createNewQuestion(q);
             });
@@ -327,7 +332,8 @@ class Questionnaire {
         document.querySelector("#questionContainer").appendChild(q._element);
     }
     changeTitle(title) {
-        document.querySelector("#questionContainer").children[0].value = title;
+        console.log(document.querySelector("#questionContainer"))
+        document.querySelector("#questionContainer").children[0].children[0].value = title;
     }
 }
 
@@ -367,6 +373,9 @@ function createQuestionnnaire() {
 }
 
 async function editQuestionnaire(uid) {
+
+    console.log(uid);
+
     const request = await fetch(`/questionnaire/${uid}`);
 
     const quesitonnaire = await(request.json());
@@ -376,6 +385,23 @@ async function editQuestionnaire(uid) {
 
 function createNewQuestion() {
 
+}
+
+async function uploadJSONQuestionnaire(event) {
+    const reader = new FileReader();
+    reader.onload = upload;
+    reader.readAsText(event.target.files[0]);  
+}
+
+async function upload(event) {        
+    const questionnaire = JSON.parse(event.target.result);
+
+    sendQuestionnaire(questionnaire)
+        .then(x => {
+            editQuestionnaire(x.id);
+        })
+
+    
 }
 
 getQuestions();
@@ -398,3 +424,11 @@ prevButton.addEventListener("click", event => {
     currentQuestion++;
     displayQuestions();
 });
+
+let button = document.createElement("input");
+button.type = "file";
+button.append("upload");
+
+button.onchange = uploadJSONQuestionnaire;
+
+document.querySelector("body").appendChild(button);
