@@ -1,6 +1,31 @@
-class Question {
+"use strict";
+
+class Component {
+
+    constructor(styleClass) {
+        this._element = document.createElement("div");
+        this._element.classList.add(styleClass);
+    }
+
+    createTitle() {
+        const titleContainer = document.createElement("div");
+
+        const title = document.createElement("input");
+        const saveButton = document.createElement("button");
+        saveButton.append("Save");
+        saveButton.onclick = (evt => {
+            this._question.text = saveButton.parentElement.children[0].value;
+
+            console.log(this._question)
+        
+        });
+    }
+}
+
+class Question extends Component {
 
     constructor(question) {
+        super("question");
         this.initElement(question);
         this.createTitle(question.text);
         this.createInput(question);      
@@ -8,7 +33,6 @@ class Question {
 
     initElement(question) {
         this._element = document.createElement("div");
-        this._element.classList.add("question");
         this._element.id = question.id;
         this._id = question.id;
     }
@@ -97,55 +121,42 @@ class Question {
     }
 }
 
-class Questionnaire {
+class Questionnaire extends Component {
 
     constructor(questionnaireData, uid) {
+        super();
+        this.initElement(questionnaireData, uid);
+    }
 
+    initElement(questionnaireData, uid) {
         this._uid = uid;
-
         this._response = { "questions": [] };
-
         this._currentQ = 0;
-
-        this._element = document.createElement("div");
-
-        this._elements = new Array;
-
         this._questions = new Array;
-
         this.createTitle(questionnaireData.name);
-        
         if(questionnaireData) {
             questionnaireData.questions.forEach(item => {
                 const q = new Question(item);
-                this._elements.push(q._element);
                 this._questions.push(q);
             });
         }
         this._element.appendChild(this._questions[0]._element);
-
         const btn = document.createElement("button");
         btn.append("Next");
-
         this._element.appendChild(btn);
         btn.onclick = (evt => {
-
             this._response.questions[this._currentQ] = {
                 "id": this._questions[this._currentQ]._id,
-                "answer": this._elements[this._currentQ].children[1].children[0].value
+                "answer": this._questions[this._currentQ]._element.children[1].children[0].value
             }
-            console.log(this._response);
-
             this._currentQ++;
             this._element.children[1].remove();
-            this._element.insertBefore(this._elements[this._currentQ], btn);
-            if(this._currentQ === this._elements.length-1) {
+            this._element.insertBefore(this._questions[this._currentQ]._element, btn);
+            if(this._currentQ === this._questions.length-1) {
                 btn.disabled = true;
                 this.showSubmitButton();
             }
         });
-
-        //document.querySelector("#questionContainer").appendChild(this._element);
     }
 
     createTitle(name) {
@@ -162,31 +173,31 @@ class Questionnaire {
     }
 }
 
-class QuestionnairePreview {
+class QuestionnairePreview extends Component {
 
     constructor(questionnaires) {
-        this._element = document.createElement("div");
-        this._queationnaires = new Array;
+        super();
+        this.initElement(questionnaires);
+    }
+    initElement(questionnaires) {
+        this._questionnaires = new Array;
 
         questionnaires.forEach(item => {
             const q = new QuestionnairePreviewItem(item);
-            this._queationnaires.push(q);
-            //console.log(super());
-            //q._element.onclick = evt => super.getQuestionnaire(q._uid);
-
+            this._questionnaires.push(q);
             this._element.appendChild(q._element);
         });
-        //document.querySelector("#questionContainer").appendChild(this._element);
     }
 }
 
-class QuestionnairePreviewItem {
+class QuestionnairePreviewItem extends Component {
 
     constructor(item) {
 
+        super();
+
         this._uid = item.uid;
 
-        this._element = document.createElement("div");
         this.createTitle(item.name);
 
     }
@@ -199,10 +210,14 @@ class QuestionnairePreviewItem {
 }
 
 
-class EditableQuestion {
+class EditableQuestion extends Component {
 
-    constructor(questionData) {    
-        
+    constructor(questionData) { 
+        super("question");
+        this.initElement(questionData);
+    }
+
+    initElement(questionData) {
         if(questionData) {
             this._question = questionData;
         } else {
@@ -212,11 +227,6 @@ class EditableQuestion {
                 "type": "text"
             };    
         }
-
-        
-        this._element = document.createElement("div");
-
-        this._element.classList.add("question");
 
         this.createTitle();
 
@@ -288,15 +298,15 @@ class EditableQuestion {
     }
 }
 
-class EditableQuestionnairePreview {
+class EditableQuestionnairePreview extends Component {
     
     constructor(questionnaires) {
+        super();
         this.initElement(questionnaires);
     }
 
     initElement(questionnaires) {
         this._items = new Array;
-        this._element = document.createElement("div");
         questionnaires.forEach(item => {
             const qTtem = new EditableQuestionnairePreviewItem(item);
             this._items.push(qTtem);
@@ -305,10 +315,14 @@ class EditableQuestionnairePreview {
     }
 }
 
-class EditableQuestionnairePreviewItem {
+class EditableQuestionnairePreviewItem extends Component {
 
     constructor(item) {
-        this._element = document.createElement("div");
+        super();
+        this.initElement(item);
+    }
+
+    initElement(item) {
         this._uid = item.uid;
         console.log(this._uid);
         this._element.append(item.name);
@@ -316,33 +330,31 @@ class EditableQuestionnairePreviewItem {
     }
 }
 
-class EditableQuestionnaire {
+class EditableQuestionnaire extends Component {
 
     constructor(questionnaireData, uid) {
-
+        super();
         this.initElement(questionnaireData, uid);
+    }
+
+    initElement(questionnaireData, uid) {
+        if(questionnaireData) {
+            this._uid = uid;
+            this._questions = questionnaireData;
+        } else {
+            this._questions = {
+                "name": "",
+                "questions": []
+            };
+        }        
         this.createTitle();
         this.createButtons(questionnaireData);
-
-        
-
         this._elements = new Array;
-
         if(questionnaireData) {
             this.changeTitle(questionnaireData.name);
             questionnaireData.questions.forEach(q => {
                 this.createNewQuestion(q);
             });
-        }
-
-        
-        
-    }
-
-    initElement(questionnaireData, uid) {
-        this._element = document.createElement("div");
-        if(questionnaireData) {
-            this._uid = uid;
         }
     }
 
@@ -368,12 +380,6 @@ class EditableQuestionnaire {
         this._element.querySelector("#newq").onclick = (evt => {
             this.createNewQuestion();
         });
-
-
-        this._questions = {
-            "name": "",
-            "questions": []
-        };
 
         const saveButton = document.createElement("button");
         saveButton.onclick = (evt => {
@@ -409,22 +415,10 @@ class EditableQuestionnaire {
     }
 }
 
+class Screen extends Component {
 
-class HomeScreen {
-    
     constructor() {
-        this.initElement();
-    }
-
-    initElement() {
-        this._element = document.createElement("div");
-
-        const btn = document.createElement("button");
-        btn.append("See Questionnaires");
-        this._element.appendChild(btn);
-        btn.onclick = evt => this.getQuestionnaires();
-
-        this.clearScreen();
+        super();
         document.querySelector("main").appendChild(this._element);
     }
 
@@ -433,6 +427,26 @@ class HomeScreen {
             document.querySelector("main").children[0].remove();
         }
     }
+}
+
+
+class HomeScreen extends Screen {
+    
+    constructor() {
+        super();
+        this.initElement();
+    }
+
+    initElement() {
+        const btn = document.createElement("button");
+        btn.append("See Questionnaires");
+        this._element.appendChild(btn);
+        btn.onclick = evt => this.getQuestionnaires();
+
+        //this.clearScreen();
+    }
+
+    
 
     async getQuestionnaires() {
         const response = await fetch("/questionnaires")
@@ -440,7 +454,7 @@ class HomeScreen {
         response.json().then(item => {
             const questionnairePreview = new QuestionnairePreview(item);
             this._element.appendChild(questionnairePreview._element);
-            questionnairePreview._queationnaires.forEach(item => {
+            questionnairePreview._questionnaires.forEach(item => {
                 item._element.onclick = evt => this.getQuestionnaire(item._uid);
             })
         });
@@ -460,18 +474,17 @@ class HomeScreen {
     }
 }
 
-class AdminScreen {
+class AdminScreen extends Screen {
 
     constructor() {
-        this.initElement();
+        super();
+        //this.initElement();
         //this.createUploadButton();
         this.showQuestionnaires();
     }
 
     initElement() {
-        this._element = document.createElement("div");
         this.clearScreen();
-        document.querySelector("main").appendChild(this._element);
     }
 
     createUploadButton() {
@@ -514,14 +527,5 @@ class AdminScreen {
         this._element.children[0].remove();
 
         this._element.appendChild(q._element);
-    }
-    
-
-    
-
-    clearScreen() {
-        if(document.querySelector("main").children[0]) {
-            document.querySelector("main").children[0].remove();
-        }
     }
 }

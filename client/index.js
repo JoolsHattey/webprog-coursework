@@ -156,4 +156,3 @@ function homeScreen() {
 function adminScreen() {
     const admin = new AdminScreen();
 }
-
