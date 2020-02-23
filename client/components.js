@@ -1,29 +1,74 @@
 "use strict";
 
 class Component {
-
     constructor(styleClass) {
         this._element = document.createElement("div");
         this._element.classList.add(styleClass);
     }
+}
 
-    createTitle() {
-        const titleContainer = document.createElement("div");
+class Input extends Component {
+    constructor(type) {
+        super();
+        const input = document.createElement("input");
+        input.id = "response";
+        if(type==="number") {
+            input.setAttribute("type", "number");
+        }
 
-        const title = document.createElement("input");
-        const saveButton = document.createElement("button");
-        saveButton.append("Save");
-        saveButton.onclick = (evt => {
-            this._question.text = saveButton.parentElement.children[0].value;
+        this._element.appendChild(input);
+    }
+}
 
-            console.log(this._question)
-        
+
+class Selector extends Component {
+    constructor(opt, type) {
+        super();
+        const option = document.createElement("input");
+        option.setAttribute("type", type);
+        option.setAttribute("name", "name");
+        option.setAttribute("value", opt);
+        option.setAttribute("id", opt);
+
+        const label = document.createElement("label");
+        label.setAttribute("for", opt)
+        label.textContent = opt
+        this._element.appendChild(option);
+        this._element.appendChild(label);
+    }
+}
+
+class CheckBox extends Selector {
+    constructor(opt) {
+        super(opt, "checkbox");
+    }
+}
+class RadioButton extends Selector {
+    constructor(opt) {
+        super(opt, "radio");
+    }
+}
+
+class SingleSelectInput extends Component {
+    constructor(options) {
+        super();
+        options.forEach(opt => {
+            const elmnt = new RadioButton(opt);
+            this._element.appendChild(elmnt._element);
+        });
+    }
+}
+class MultiSelectInput extends Component {
+    constructor(options) {
+        super();
+        options.forEach(opt => {
+            const elmnt = new CheckBox(opt);
+            this._element.appendChild(elmnt._element);
         });
     }
 }
 
 class Question extends Component {
-
     constructor(question) {
         super("question");
         this.initElement(question);
@@ -66,63 +111,24 @@ class Question extends Component {
         this._element.appendChild(input);
     }
     createTextInput() {
-        const form = document.createElement("form")
-        const input = document.createElement("input");
-        input.id = "response";
-        form.appendChild(input);
-        
-        return form;
+        const form = new Input("text");
+        return form._element;
     }
     createNumberInput() {
-        const form = document.createElement("form")
-        const inputElement = document.createElement("input");
-        inputElement.id="response";
-        inputElement.setAttribute("type", "number");
-    
-        form.appendChild(inputElement);
-        return form;
+        const form = new Input("number");
+        return form._element;
     }
     createMultiSelectInput(options) {
-        const inputElement = document.createElement("div");
-        options.forEach(opt => {
-            const optionContainer = document.createElement("div");
-            const option = document.createElement("input");
-            option.setAttribute("type", "checkbox");
-            option.setAttribute("name", "name");
-            option.setAttribute("id", opt);
-    
-            const label = document.createElement("label");
-            label.setAttribute("for", opt)
-            label.textContent = opt
-            optionContainer.appendChild(option);
-            optionContainer.appendChild(label);
-            inputElement.appendChild(optionContainer);
-        });
-        return inputElement;
+        const inputElement = new MultiSelectInput(options);
+        return inputElement._element;
     }
     createSingleSelectInput(options) {
-        const inputElement = document.createElement("div");
-        options.forEach(opt => {
-            const optionContainer = document.createElement("div");
-            const option = document.createElement("input");
-            option.setAttribute("type", "radio");
-            option.setAttribute("name", "name");
-            option.setAttribute("value", opt);
-            option.setAttribute("id", opt);
-    
-            const label = document.createElement("label");
-            label.setAttribute("for", opt);
-            label.textContent = opt;
-            optionContainer.appendChild(option);
-            optionContainer.appendChild(label);
-            inputElement.appendChild(optionContainer);
-        });
-        return inputElement;
+        const inputElement = new SingleSelectInput(options);
+        return inputElement._element;
     }
 }
 
 class Questionnaire extends Component {
-
     constructor(questionnaireData, uid) {
         super();
         this.initElement(questionnaireData, uid);
@@ -174,7 +180,6 @@ class Questionnaire extends Component {
 }
 
 class QuestionnairePreview extends Component {
-
     constructor(questionnaires) {
         super();
         this.initElement(questionnaires);
@@ -191,7 +196,6 @@ class QuestionnairePreview extends Component {
 }
 
 class QuestionnairePreviewItem extends Component {
-
     constructor(item) {
 
         super();
@@ -211,7 +215,6 @@ class QuestionnairePreviewItem extends Component {
 
 
 class EditableQuestion extends Component {
-
     constructor(questionData) { 
         super("question");
         this.initElement(questionData);
@@ -299,7 +302,6 @@ class EditableQuestion extends Component {
 }
 
 class EditableQuestionnairePreview extends Component {
-    
     constructor(questionnaires) {
         super();
         this.initElement(questionnaires);
@@ -316,7 +318,6 @@ class EditableQuestionnairePreview extends Component {
 }
 
 class EditableQuestionnairePreviewItem extends Component {
-
     constructor(item) {
         super();
         this.initElement(item);
@@ -331,7 +332,6 @@ class EditableQuestionnairePreviewItem extends Component {
 }
 
 class EditableQuestionnaire extends Component {
-
     constructor(questionnaireData, uid) {
         super();
         this.initElement(questionnaireData, uid);
@@ -416,9 +416,9 @@ class EditableQuestionnaire extends Component {
 }
 
 class Screen extends Component {
-
     constructor() {
         super();
+        this.clearScreen();
         document.querySelector("main").appendChild(this._element);
     }
 
@@ -431,7 +431,6 @@ class Screen extends Component {
 
 
 class HomeScreen extends Screen {
-    
     constructor() {
         super();
         this.initElement();
@@ -475,12 +474,13 @@ class HomeScreen extends Screen {
 }
 
 class AdminScreen extends Screen {
-
     constructor() {
         super();
         //this.initElement();
         //this.createUploadButton();
+        this.createUploadButton();
         this.showQuestionnaires();
+        
     }
 
     initElement() {
@@ -499,7 +499,6 @@ class AdminScreen extends Screen {
 
     showQuestionnaires() {
         this.getEditableQuestionnaires();
-        //const q = new EditableQuestionnairePreview();
     }
 
     async getEditableQuestionnaires() {

@@ -1,5 +1,30 @@
 "use strict";
 
+const firebaseConfig = {
+    apiKey: "AIzaSyB0cnilljayJ3axmCdJyBvGV_nLdDQ9csI",
+    authDomain: "webprog-coursework-e4b42.firebaseapp.com",
+    databaseURL: "https://webprog-coursework-e4b42.firebaseio.com",
+    projectId: "webprog-coursework-e4b42",
+    storageBucket: "webprog-coursework-e4b42.appspot.com",
+    messagingSenderId: "669091989709",
+    appId: "1:669091989709:web:ecefeb8f3d8c5ad0ca8184"
+};
+firebase.initializeApp(firebaseConfig);
+
+function login() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    
+    firebase.auth().signInWithPopup(provider)
+        .then(result => {
+            const token = result.credential.accessToken;
+            const user = result.user;
+        }).catch(error => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            
+        })
+}
+
 let questions;
 let response = { "questions": [] };
 
@@ -119,8 +144,6 @@ async function upload(event) {
         .then(x => {
             editQuestionnaire(x.id);
         });
-
-    
 }
 
 async function getQuestionnaires() {
