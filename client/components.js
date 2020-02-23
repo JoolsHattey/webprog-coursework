@@ -3,7 +3,9 @@
 class Component {
     constructor(styleClass) {
         this._element = document.createElement("div");
-        this._element.classList.add(styleClass);
+        if(styleClass) {
+            this._element.classList.add(styleClass);
+        }
     }
 }
 
@@ -15,7 +17,6 @@ class Input extends Component {
         if(type==="number") {
             input.setAttribute("type", "number");
         }
-
         this._element.appendChild(input);
     }
 }
@@ -77,7 +78,6 @@ class Question extends Component {
     }
 
     initElement(question) {
-        this._element = document.createElement("div");
         this._element.id = question.id;
         this._id = question.id;
     }
@@ -239,6 +239,8 @@ class EditableQuestion extends Component {
             this.changeTitle(questionData.text);
             this.changeSelectedInput(questionData.type);
         }
+
+        this.createDeleteButton();
     }
 
     createTitle() {
@@ -299,6 +301,12 @@ class EditableQuestion extends Component {
     changeSelectedInput(input) {
         this._element.children[1].value = input;
     }
+    createDeleteButton() {
+        const btn = document.createElement("button");
+        btn.classList.add("deletebtn");
+        btn.append("Delete")
+        this._element.appendChild(btn);
+    }
 }
 
 class EditableQuestionnairePreview extends Component {
@@ -355,6 +363,7 @@ class EditableQuestionnaire extends Component {
             questionnaireData.questions.forEach(q => {
                 this.createNewQuestion(q);
             });
+            
         }
     }
 
@@ -409,11 +418,28 @@ class EditableQuestionnaire extends Component {
         const q = new EditableQuestion(questionData);
         this._elements.push(q);
         this._element.appendChild(q._element);
+        q._element.querySelector(".deletebtn").addEventListener("click", evt => {
+            console.log("yeetus meatus")
+            const result = this._elements.filter(word => word.length > 6);
+            this._elements = this._elements.filter(item => {
+                return item !== q
+              })
+              console.log(q._element);
+              console.log(this._elements);
+            //this._elements.remove(q);
+            //this._elements.
+            this._element.removeChild(q._element);
+
+        });
     }
     changeTitle(title) {
         this._element.children[0].children[0].value = title;
     }
 }
+
+/************************************************************
+ * Screen Components
+ * ******************************************************** */
 
 class Screen extends Component {
     constructor() {
