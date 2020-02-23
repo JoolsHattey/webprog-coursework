@@ -345,7 +345,6 @@ class EditableQuestionnairePreviewItem extends Component {
 class EditableQuestionnaire extends Component {
     constructor(questionnaireData, uid) {
         super();
-        this._container.classList.add("card");
         this.initElement(questionnaireData, uid);
     }
 
@@ -422,7 +421,7 @@ class EditableQuestionnaire extends Component {
         const q = new EditableQuestion(questionData);
         this._elements.push(q);
         this._container.appendChild(q);
-        q.querySelector(".deletebtn").addEventListener("click", evt => {
+        q._shadowRoot.querySelector(".deletebtn").addEventListener("click", evt => {
             const result = this._elements.filter(word => word.length > 6);
             this._elements = this._elements.filter(item => {
                 return item !== q
@@ -450,9 +449,8 @@ class Screen extends Component {
         }
     }
     clearScreen() {
-        if(document.querySelector("main").children[0]) {
-            this.shadowRoot.children[1].remove();
-        }
+        this._container.innerHTML=""
+        console.log(this._container.children[1])
     }
 }
 
@@ -460,7 +458,7 @@ class Screen extends Component {
 class HomeScreen extends Screen {
     constructor() {
         super();
-        this.clearScreen();
+        //this.clearScreen();
         this.initElement();
     }
 
@@ -502,7 +500,7 @@ class HomeScreen extends Screen {
 class AdminScreen extends Screen {
     constructor() {
         super();
-        this.clearScreen();
+        //this.clearScreen();
         //this.initElement();
         //this.createUploadButton();
         this.createUploadButton();
@@ -549,9 +547,11 @@ class AdminScreen extends Screen {
     
         const q = new EditableQuestionnaire(quesitonnaire, uid);
 
+        this.clearScreen();
+
         this._shadowRoot.children[0].remove();
 
-        this._shadowRoot.appendChild(q._element);
+        this._container.appendChild(q);
     }
 }
 customElements.define('quiz-preview', QuestionnairePreview);
