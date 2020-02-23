@@ -1,13 +1,16 @@
 "use strict";
 
-class Component {
-    constructor(styleClass) {
-        this._element = document.createElement("div");
-        if(styleClass) {
-            this._element.classList.add(styleClass);
-        }
+
+class Component extends HTMLElement {
+    constructor() {
+        super();
+        this._shadowRoot = this.attachShadow({mode: 'open'});
+        this._shadowRoot.innerHTML = `<link rel="stylesheet" href="styles.css">`;
+        this._container = document.createElement("div");
+        this._shadowRoot.appendChild(this._container);
     }
 }
+
 
 class Input extends Component {
     constructor(type) {
@@ -17,68 +20,44 @@ class Input extends Component {
         if(type==="number") {
             input.setAttribute("type", "number");
         }
-        this._element.appendChild(input);
+        this._container.appendChild(input);
     }
 }
 
 
 class Selector extends Component {
-    constructor(opt, type) {
-        super();
-        const option = document.createElement("input");
-        option.setAttribute("type", type);
-        option.setAttribute("name", "name");
-        option.setAttribute("value", opt);
-        option.setAttribute("id", opt);
-
-        const label = document.createElement("label");
-        label.setAttribute("for", opt)
-        label.textContent = opt
-        this._element.appendChild(option);
-        this._element.appendChild(label);
-    }
-}
-
-class CheckBox extends Selector {
-    constructor(opt) {
-        super(opt, "checkbox");
-    }
-}
-class RadioButton extends Selector {
-    constructor(opt) {
-        super(opt, "radio");
-    }
-}
-
-class SingleSelectInput extends Component {
-    constructor(options) {
+    constructor(options, type) {
         super();
         options.forEach(opt => {
-            const elmnt = new RadioButton(opt);
-            this._element.appendChild(elmnt._element);
+            const container = document.createElement("div");
+            const option = document.createElement("input");
+            option.setAttribute("type", type);
+            option.setAttribute("name", "name");
+            option.setAttribute("value", opt);
+            option.setAttribute("id", opt);
+            const label = document.createElement("label");
+            label.setAttribute("for", opt)
+            label.textContent = opt
+            container.appendChild(option);
+            container.appendChild(label);
+            
+            this._container.appendChild(container);
         });
     }
 }
-class MultiSelectInput extends Component {
-    constructor(options) {
-        super();
-        options.forEach(opt => {
-            const elmnt = new CheckBox(opt);
-            this._element.appendChild(elmnt._element);
-        });
-    }
-}
+
 
 class Question extends Component {
     constructor(question) {
-        super("question");
+        super();
+        this._container.classList.add("card");
         this.initElement(question);
         this.createTitle(question.text);
-        this.createInput(question);      
+        this.createInput(question);     
     }
 
     initElement(question) {
-        this._element.id = question.id;
+        this._container.id = question.id;
         this._id = question.id;
     }
 
@@ -86,7 +65,7 @@ class Question extends Component {
         const title = document.createElement("h3");
         const titleContent = document.createTextNode(name);
         title.appendChild(titleContent);
-        this._element.appendChild(title);
+        this._container.appendChild(title);
     }
 
     createInput(question) {
@@ -108,23 +87,23 @@ class Question extends Component {
                 break;
         }
     
-        this._element.appendChild(input);
+        this._container.appendChild(input);
     }
     createTextInput() {
         const form = new Input("text");
-        return form._element;
+        return form;
     }
     createNumberInput() {
         const form = new Input("number");
-        return form._element;
+        return form;
     }
     createMultiSelectInput(options) {
-        const inputElement = new MultiSelectInput(options);
-        return inputElement._element;
+        const inputElement = new Selector(options, "checkbox");
+        return inputElement;
     }
     createSingleSelectInput(options) {
-        const inputElement = new SingleSelectInput(options);
-        return inputElement._element;
+        const inputElement = new Selector(options, "radio");
+        return inputElement;
     }
 }
 
@@ -146,18 +125,19 @@ class Questionnaire extends Component {
                 this._questions.push(q);
             });
         }
-        this._element.appendChild(this._questions[0]._element);
+        this._container.appendChild(this._questions[0]);
         const btn = document.createElement("button");
         btn.append("Next");
-        this._element.appendChild(btn);
+        this._container.appendChild(btn);
         btn.onclick = (evt => {
+            console.log(this._questions[this._currentQ])
             this._response.questions[this._currentQ] = {
                 "id": this._questions[this._currentQ]._id,
-                "answer": this._questions[this._currentQ]._element.children[1].children[0].value
+                "answer": this._questions[this._currentQ]._shadowRoot.children[1]._shadowRoot.children[0].value
             }
             this._currentQ++;
-            this._element.children[1].remove();
-            this._element.insertBefore(this._questions[this._currentQ]._element, btn);
+            this._container.children[1].remove();
+            this._container.insertBefore(this._questions[this._currentQ], btn);
             if(this._currentQ === this._questions.length-1) {
                 btn.disabled = true;
                 this.showSubmitButton();
@@ -168,14 +148,14 @@ class Questionnaire extends Component {
     createTitle(name) {
         const title = document.createElement("h4");
         title.append(name);
-        this._element.appendChild(title);
+        this._container.appendChild(title);
     }
 
     showSubmitButton() {
         const submit = document.createElement("button");
         submit.append("Submit");
         submit.onclick = (evt => submitResponse(this._uid, this._response));
-        this._element.appendChild(submit);
+        this._container.appendChild(submit);
     }
 }
 
@@ -190,15 +170,18 @@ class QuestionnairePreview extends Component {
         questionnaires.forEach(item => {
             const q = new QuestionnairePreviewItem(item);
             this._questionnaires.push(q);
-            this._element.appendChild(q._element);
+            this._container.appendChild(q);
         });
     }
 }
+
 
 class QuestionnairePreviewItem extends Component {
     constructor(item) {
 
         super();
+
+        this._container.classList.add("card");
 
         this._uid = item.uid;
 
@@ -209,14 +192,15 @@ class QuestionnairePreviewItem extends Component {
     createTitle(title) {
         const titleElmnt = document.createElement("h4");
         titleElmnt.append(title);
-        this._element.appendChild(titleElmnt);
+        this._container.appendChild(titleElmnt);
     }
 }
 
 
 class EditableQuestion extends Component {
     constructor(questionData) { 
-        super("question");
+        super();
+        this._container.classList.add("card");
         this.initElement(questionData);
     }
 
@@ -259,7 +243,7 @@ class EditableQuestion extends Component {
         titleContainer.appendChild(title);
         titleContainer.appendChild(saveButton);
 
-        this._element.appendChild(titleContainer);
+        this._container.appendChild(titleContainer);
     }
 
     createInputSelector() {
@@ -292,20 +276,20 @@ class EditableQuestion extends Component {
             console.log(this._question);
         })
 
-        this._element.appendChild(inputSelector);
+        this._container.appendChild(inputSelector);
     }
 
     changeTitle(title) {
-        this._element.children[0].children[0].value = title;
+        this._container.children[0].children[0].value = title;
     }
     changeSelectedInput(input) {
-        this._element.children[1].value = input;
+        this._container.children[1].value = input;
     }
     createDeleteButton() {
         const btn = document.createElement("button");
         btn.classList.add("deletebtn");
         btn.append("Delete")
-        this._element.appendChild(btn);
+        this._container.appendChild(btn);
     }
 }
 
@@ -320,7 +304,7 @@ class EditableQuestionnairePreview extends Component {
         questionnaires.forEach(item => {
             const qTtem = new EditableQuestionnairePreviewItem(item);
             this._items.push(qTtem);
-            this._element.appendChild(qTtem._element);
+            this._container.appendChild(qTtem);
         });
     }
 }
@@ -328,20 +312,40 @@ class EditableQuestionnairePreview extends Component {
 class EditableQuestionnairePreviewItem extends Component {
     constructor(item) {
         super();
+        this._container.classList.add("card");
         this.initElement(item);
     }
 
     initElement(item) {
         this._uid = item.uid;
         console.log(this._uid);
-        this._element.append(item.name);
-        this._element.onclick = (evt => editQuestionnaire(this._uid));
+        this.createUID(item.uid);
+        this.createTitle(item.name);
+        this.createDeleteButton();
+        this._container.onclick = (evt => editQuestionnaire(this._uid));
+    }
+
+    createTitle(title) {
+        const titleElement = document.createElement("h4");
+        titleElement.append(title);
+        this._container.appendChild(titleElement);
+    }
+    createUID(uid) {
+        const uidElement = document.createElement("h5");
+        uidElement.append(uid);
+        this._container.appendChild(uidElement);
+    }
+    createDeleteButton() {
+        const deleteButton = document.createElement("button");
+        deleteButton.append("delete");
+        this._container.appendChild(deleteButton);
     }
 }
 
 class EditableQuestionnaire extends Component {
     constructor(questionnaireData, uid) {
         super();
+        this._container.classList.add("card");
         this.initElement(questionnaireData, uid);
     }
 
@@ -378,15 +382,15 @@ class EditableQuestionnaire extends Component {
         titleContainer.appendChild(title);
         titleContainer.appendChild(saveButton);
 
-        this._element.appendChild(titleContainer);
+        this._container.appendChild(titleContainer);
     }
 
     createButtons(questionnaireData) {
         const newQButton = document.createElement("button");
         newQButton.append("Add Question");
         newQButton.id="newq";
-        this._element.appendChild(newQButton);
-        this._element.querySelector("#newq").onclick = (evt => {
+        this._container.appendChild(newQButton);
+        this._container.querySelector("#newq").onclick = (evt => {
             this.createNewQuestion();
         });
 
@@ -411,29 +415,26 @@ class EditableQuestionnaire extends Component {
         });
 
         saveButton.append("Save");
-        this._element.appendChild(saveButton);
+        this._container.appendChild(saveButton);
     }
 
     createNewQuestion(questionData) {
         const q = new EditableQuestion(questionData);
         this._elements.push(q);
-        this._element.appendChild(q._element);
-        q._element.querySelector(".deletebtn").addEventListener("click", evt => {
-            console.log("yeetus meatus")
+        this._container.appendChild(q);
+        q.querySelector(".deletebtn").addEventListener("click", evt => {
             const result = this._elements.filter(word => word.length > 6);
             this._elements = this._elements.filter(item => {
                 return item !== q
-              })
-              console.log(q._element);
-              console.log(this._elements);
-            //this._elements.remove(q);
-            //this._elements.
-            this._element.removeChild(q._element);
+            });
+            console.log(q);
+            console.log(this._elements);
+            this._container.removeChild(q);
 
         });
     }
     changeTitle(title) {
-        this._element.children[0].children[0].value = title;
+        this._container.children[0].children[0].value = title;
     }
 }
 
@@ -444,13 +445,13 @@ class EditableQuestionnaire extends Component {
 class Screen extends Component {
     constructor() {
         super();
-        this.clearScreen();
-        document.querySelector("main").appendChild(this._element);
+        if(document.querySelector("main").children[0]) {
+            document.querySelector("main").children[0].remove()
+        }
     }
-
     clearScreen() {
         if(document.querySelector("main").children[0]) {
-            document.querySelector("main").children[0].remove();
+            this.shadowRoot.children[1].remove();
         }
     }
 }
@@ -459,16 +460,15 @@ class Screen extends Component {
 class HomeScreen extends Screen {
     constructor() {
         super();
+        this.clearScreen();
         this.initElement();
     }
 
     initElement() {
         const btn = document.createElement("button");
         btn.append("See Questionnaires");
-        this._element.appendChild(btn);
+        this._container.appendChild(btn);
         btn.onclick = evt => this.getQuestionnaires();
-
-        //this.clearScreen();
     }
 
     
@@ -478,9 +478,9 @@ class HomeScreen extends Screen {
     
         response.json().then(item => {
             const questionnairePreview = new QuestionnairePreview(item);
-            this._element.appendChild(questionnairePreview._element);
+            this._container.appendChild(questionnairePreview);
             questionnairePreview._questionnaires.forEach(item => {
-                item._element.onclick = evt => this.getQuestionnaire(item._uid);
+                item.onclick = evt => this.getQuestionnaire(item._uid);
             })
         });
     }
@@ -495,18 +495,18 @@ class HomeScreen extends Screen {
 
         this.clearScreen();
 
-        document.querySelector("main").appendChild(q._element);
+        this._container.appendChild(q);
     }
 }
 
 class AdminScreen extends Screen {
     constructor() {
         super();
+        this.clearScreen();
         //this.initElement();
         //this.createUploadButton();
         this.createUploadButton();
         this.showQuestionnaires();
-        
     }
 
     initElement() {
@@ -520,7 +520,7 @@ class AdminScreen extends Screen {
 
         button.onchange = uploadJSONQuestionnaire;
 
-        this._element.appendChild(button);
+        this._container.appendChild(button);
     }
 
     showQuestionnaires() {
@@ -532,9 +532,9 @@ class AdminScreen extends Screen {
     
         response.json().then(item => {
             const questionnairePreview = new EditableQuestionnairePreview(item);
-            this._element.appendChild(questionnairePreview._element);
+            this._container.appendChild(questionnairePreview);
             questionnairePreview._items.forEach(item => {
-                item._element.onclick = evt => this.editQuestionnaire(item._uid);
+                item.onclick = evt => this.editQuestionnaire(item._uid);
             });
         });
     }
@@ -549,8 +549,20 @@ class AdminScreen extends Screen {
     
         const q = new EditableQuestionnaire(quesitonnaire, uid);
 
-        this._element.children[0].remove();
+        this._shadowRoot.children[0].remove();
 
-        this._element.appendChild(q._element);
+        this._shadowRoot.appendChild(q._element);
     }
 }
+customElements.define('quiz-preview', QuestionnairePreview);
+customElements.define('quiz-question', Question);
+customElements.define('quiz-item', Questionnaire);
+customElements.define('quiz-preview-item', QuestionnairePreviewItem);
+customElements.define('editable-question', EditableQuestion);
+customElements.define('editable-quiz-preview', EditableQuestionnairePreview);
+customElements.define('editable-quiz', EditableQuestionnaire);
+customElements.define('editable-quiz-preview-item', EditableQuestionnairePreviewItem);
+customElements.define('home-screen', HomeScreen);
+customElements.define('admin-screen', AdminScreen);
+customElements.define('selector-elmnt', Selector);
+customElements.define('input-elmnt', Input);

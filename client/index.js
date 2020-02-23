@@ -174,8 +174,10 @@ async function submitResponse(uid, response) {
 
 function homeScreen() {
     const home = new HomeScreen();
+    document.querySelector("main").appendChild(home);
 }
 
 function adminScreen() {
     const admin = new AdminScreen();
+    document.querySelector("main").appendChild(admin);
 }
