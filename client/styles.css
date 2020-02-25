@@ -8,9 +8,17 @@
 
 .appBar {
     width: 100%;
-    background-color: blue;
-    text-align: center;
+    background-color: #00695c;
+    color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     padding: 10px;
+    box-shadow: -10px 3px 8px 1px black;
+}
+
+.page {
+    margin: 10px;
 }
 
 * {
@@ -21,10 +29,17 @@ html, body {
     margin: 0;
     padding: 0;
     width: 100%;
-    
 }
 main {
     display: flex;
     flex-direction: column;
+}
+
+.homeBtn {
+    background: url("assets/home-24px.svg");
+    width: 20px;
+    height: 20px;
+    outline: none;
+    border: none;
 }
 

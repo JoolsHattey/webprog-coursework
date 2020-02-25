@@ -36,6 +36,10 @@ function getQuestionnaires(req, res) {
         .subscribe(data => res.send(data));
 }
 
+function authenticateUser(req, res) {
+    firestore.verifyAuth(req.body.token);
+}
+
 
 app.post('/submitresponse/:uid', express.json(), submitResponse);
 app.get('/getresponses', getResponses);
@@ -43,5 +47,7 @@ app.post('/createquestionnaire', express.json(), createQuestionnaire);
 app.get('/questionnaire/:uid', getQuestionnaire);
 app.get('/questionnaires', getQuestionnaires);
 app.post('/editquestionnaire/:uid', express.json(), editQuestionnaire);
+
+app.post('/authenticate', express.json(), authenticateUser);
 
 app.listen(port, () => console.log(`Questionnaire Engine listening on port ${port}`));
