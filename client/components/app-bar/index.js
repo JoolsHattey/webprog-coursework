@@ -4,7 +4,7 @@ class AppBar extends HTMLElement {
         this.attachShadow({mode: 'open'});
         const linkElem = document.createElement("link");
         linkElem.setAttribute("rel", "stylesheet");
-        linkElem.setAttribute("href", "styles.css")
+        linkElem.setAttribute("href", "/components/app-bar/styles.css")
         this.shadowRoot.appendChild(linkElem);
         this._container = document.createElement("div");
         this.shadowRoot.appendChild(this._container);
@@ -17,7 +17,7 @@ class AppBar extends HTMLElement {
         this._container.classList.add("appBar");
 
         this._adminbtn = document.createElement("button");
-        this._adminbtn.append("Admin");
+        this._adminbtn.classList.add("adminBtn");
         this._container.appendChild(this._adminbtn);
     }
 }
