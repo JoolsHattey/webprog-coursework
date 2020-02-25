@@ -441,12 +441,12 @@ class EditableQuestionnaire extends Component {
  * Screen Components
  * ******************************************************** */
 
-class Screen extends Component {
+class Page extends Component {
     constructor() {
         super();
-        if(document.querySelector("main").children[0]) {
+        /*if(document.querySelector("main").children[0]) {
             document.querySelector("main").children[0].remove()
-        }
+        }*/
     }
     clearScreen() {
         this._container.innerHTML=""
@@ -455,7 +455,7 @@ class Screen extends Component {
 }
 
 
-class HomeScreen extends Screen {
+class HomePage extends Page {
     constructor() {
         super();
         //this.clearScreen();
@@ -497,7 +497,7 @@ class HomeScreen extends Screen {
     }
 }
 
-class AdminScreen extends Screen {
+class AdminPage extends Page {
     constructor() {
         super();
         //this.clearScreen();
@@ -554,6 +554,33 @@ class AdminScreen extends Screen {
         this._container.appendChild(q);
     }
 }
+
+class AppBar extends Component {
+    constructor() {
+        super();
+        this._container.append("Questionnaire App")
+        this._container.classList.add("appBar")
+    }
+}
+
+class ScreenComponent extends Component {
+    constructor() {
+        super();
+        const appBar = new AppBar();
+        this._container.appendChild(appBar);
+    }
+    adminPage() {
+        const home = new HomePage();
+        home.initElement();
+        this._container.appendChild(home);
+    }
+    homePage() {
+        const admin = new AdminPage();
+        admin.initElement();
+        this._container.appendChild(admin);
+    }
+}
+
 customElements.define('quiz-preview', QuestionnairePreview);
 customElements.define('quiz-question', Question);
 customElements.define('quiz-item', Questionnaire);
@@ -562,7 +589,9 @@ customElements.define('editable-question', EditableQuestion);
 customElements.define('editable-quiz-preview', EditableQuestionnairePreview);
 customElements.define('editable-quiz', EditableQuestionnaire);
 customElements.define('editable-quiz-preview-item', EditableQuestionnairePreviewItem);
-customElements.define('home-screen', HomeScreen);
-customElements.define('admin-screen', AdminScreen);
+customElements.define('home-screen', HomePage);
+customElements.define('admin-screen', AdminPage);
+customElements.define('app-bar', AppBar);
 customElements.define('selector-elmnt', Selector);
 customElements.define('input-elmnt', Input);
+customElements.define('screen-elmnt', ScreenComponent);

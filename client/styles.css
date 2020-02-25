@@ -5,6 +5,14 @@
     border-radius: 10px;
     box-shadow: 0 0 5px black;
 }
+
+.appBar {
+    width: 100%;
+    background-color: blue;
+    text-align: center;
+    padding: 10px;
+}
+
 * {
     font-family: 'Roboto', sans-serif;
 }
@@ -19,3 +27,4 @@ main {
     display: flex;
     flex-direction: column;
 }
+

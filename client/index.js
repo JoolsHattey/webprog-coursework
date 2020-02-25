@@ -172,12 +172,23 @@ async function submitResponse(uid, response) {
     });
 }
 
+let screen1
+
+function startup() {
+    screen1 = new ScreenComponent();
+    document.querySelector("main").appendChild(screen1);
+}
+
+window.onload = evt => startup();
+
+
+
+
+
 function homeScreen() {
-    const home = new HomeScreen();
-    document.querySelector("main").appendChild(home);
+    screen1.homePage();
 }
 
 function adminScreen() {
-    const admin = new AdminScreen();
-    document.querySelector("main").appendChild(admin);
+    screen1.adminPage();
 }
