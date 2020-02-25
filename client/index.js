@@ -172,7 +172,7 @@ async function submitResponse(uid, response) {
     });
 }
 
-let screen1
+let screen1;
 
 function startup() {
     screen1 = new ScreenComponent();

@@ -5,7 +5,10 @@ class Component extends HTMLElement {
     constructor() {
         super();
         this._shadowRoot = this.attachShadow({mode: 'open'});
-        this._shadowRoot.innerHTML = `<link rel="stylesheet" href="styles.css">`;
+        const linkElem = document.createElement("link");
+        linkElem.setAttribute("rel", "stylesheet");
+        linkElem.setAttribute("href", "styles.css")
+        this._shadowRoot.appendChild(linkElem);
         this._container = document.createElement("div");
         this._shadowRoot.appendChild(this._container);
     }
@@ -107,6 +110,21 @@ class Question extends Component {
     }
 }
 
+class ProgressIndicator extends Component {
+    constructor(numQuestions) {
+        super();
+        
+        this._container.style="width: 300px; height: 20px; background-color: red";
+        this._progress = document.createElement("div");
+        this._progress.style="height: 20px; background-color: green"
+        this._container.appendChild(this._progress);
+        this._incrementor = 300/numQuestions;
+    }
+    setProgress(num) {
+        this._progress.style=`height: 20px; width:${this._incrementor*num}px; background-color: green`;
+    }
+}
+
 class Questionnaire extends Component {
     constructor(questionnaireData, uid) {
         super();
@@ -129,13 +147,15 @@ class Questionnaire extends Component {
         const btn = document.createElement("button");
         btn.append("Next");
         this._container.appendChild(btn);
+        this._ProgIndic = new ProgressIndicator(this._questions.length);
         btn.onclick = (evt => {
             console.log(this._questions[this._currentQ])
             this._response.questions[this._currentQ] = {
                 "id": this._questions[this._currentQ]._id,
-                "answer": this._questions[this._currentQ]._shadowRoot.children[1]._shadowRoot.children[0].value
+                "answer": this._questions[this._currentQ]._shadowRoot.children[1].children[1]._shadowRoot.children[0].value
             }
             this._currentQ++;
+            this._ProgIndic.setProgress(this._currentQ);
             this._container.children[1].remove();
             this._container.insertBefore(this._questions[this._currentQ], btn);
             if(this._currentQ === this._questions.length-1) {
@@ -143,6 +163,8 @@ class Questionnaire extends Component {
                 this.showSubmitButton();
             }
         });
+        
+        this._container.appendChild(this._ProgIndic);
     }
 
     createTitle(name) {
@@ -558,26 +580,33 @@ class AdminPage extends Page {
 class AppBar extends Component {
     constructor() {
         super();
-        this._container.append("Questionnaire App")
-        this._container.classList.add("appBar")
+        this._container.append("Questionnaire App");
+        this._container.classList.add("appBar");
     }
 }
 
 class ScreenComponent extends Component {
     constructor() {
         super();
+        this._home = new HomePage();
         const appBar = new AppBar();
         this._container.appendChild(appBar);
-    }
-    adminPage() {
-        const home = new HomePage();
-        home.initElement();
-        this._container.appendChild(home);
+        this.homePage();
     }
     homePage() {
-        const admin = new AdminPage();
-        admin.initElement();
-        this._container.appendChild(admin);
+        if(this._admin) {
+            this._container.removeChild(this._admin);
+        }
+        this._home.initElement();
+        this._container.appendChild(this._home);
+    }
+    adminPage() {
+        if(this._home) {
+            this._container.removeChild(this._home);
+        }
+        this._admin = new AdminPage();
+        this._admin.initElement();
+        this._container.appendChild(this._admin);
     }
 }
 
@@ -595,3 +624,4 @@ customElements.define('app-bar', AppBar);
 customElements.define('selector-elmnt', Selector);
 customElements.define('input-elmnt', Input);
 customElements.define('screen-elmnt', ScreenComponent);
+customElements.define('progress-indicator', ProgressIndicator);
