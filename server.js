@@ -4,9 +4,15 @@ const express = require('express');
 const app = express();
 const port = 8080;
 
+const path = require('path');
+
 const firestore = require('./firestore');
 
-app.use('/', express.static('client'));
+//app.use('/', express.static('client'));
+
+app.use(express.static(path.join(__dirname, 'client')));
+
+
 
 
 function submitResponse(req, res) {
@@ -49,5 +55,9 @@ app.get('/questionnaires', getQuestionnaires);
 app.post('/editquestionnaire/:uid', express.json(), editQuestionnaire);
 
 app.post('/authenticate', express.json(), authenticateUser);
+
+app.get('*', function (request, response) {
+    response.sendFile(path.resolve(__dirname, 'client/index.html'));
+});
 
 app.listen(port, () => console.log(`Questionnaire Engine listening on port ${port}`));

@@ -1,5 +1,43 @@
 "use strict";
 
+let screen1;
+
+function startup() {
+    screen1 = new ScreenComponent();
+    document.querySelector("main").appendChild(screen1);
+}
+
+//window.onload = evt => startup();
+
+
+
+
+
+function homeScreen() {
+    if(!screen1) {
+        startup();
+    }
+    screen1.homePage();
+}
+
+function adminScreen() {
+    if(!screen1) {
+        startup();
+    }
+    screen1.adminPage();
+}
+
+
+
+const router = new Router();
+router.get('/home', req => {
+    homeScreen();
+});
+router.get('/admin', req => {
+    adminScreen();
+});
+router.init();
+
 const firebaseConfig = {
     apiKey: "AIzaSyB0cnilljayJ3axmCdJyBvGV_nLdDQ9csI",
     authDomain: "webprog-coursework-e4b42.firebaseapp.com",
@@ -192,23 +230,3 @@ async function submitResponse(uid, response) {
     });
 }
 
-let screen1;
-
-function startup() {
-    screen1 = new ScreenComponent();
-    document.querySelector("main").appendChild(screen1);
-}
-
-window.onload = evt => startup();
-
-
-
-
-
-function homeScreen() {
-    screen1.homePage();
-}
-
-function adminScreen() {
-    screen1.adminPage();
-}

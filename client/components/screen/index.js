@@ -4,8 +4,8 @@ class ScreenComponent extends HTMLElement {
         this.initElement();
         this._home = new HomePage();
         const appBar = new AppBar();
-        appBar._btn.onclick = evt => this.homePage();
-        appBar._adminbtn.onclick = evt => this.adminPage();
+        appBar._btn.onclick = evt => window.location.replace('/home');
+        appBar._adminbtn.onclick = evt => window.location.replace('/admin');
         this._container.appendChild(appBar);
         this.homePage();
     }
@@ -24,6 +24,7 @@ class ScreenComponent extends HTMLElement {
         }
         this._home.initElement();
         this._container.appendChild(this._home);
+        //window.location.replace('/home');
     }
     adminPage() {
         if(this._container.contains(this._home)) {
@@ -32,6 +33,7 @@ class ScreenComponent extends HTMLElement {
         this._admin = new AdminPage();
         this._admin.initElement();
         this._container.appendChild(this._admin);
+        //window.location.replace('/admin');
     }
 }
 
