@@ -26,17 +26,47 @@ class Router {
 
             //let regEx = new RegExp(`^${route.uri}$`);
 
-            let regEx = new RegExp(route.uri.replace(/:[^\s/]+/g, '([\\w-]+)'));
+            //let regEx = new RegExp(route.uri.replace(/:[^\s/]+/g, '([\\w-]+)'));
+
+            let regEx = new RegExp("^" + route.uri.replace(/:[^\s/]+/g, '([\\w-]+)') + "$")
+
+            console.log(regEx);
 
             let path = window.location.pathname;
 
-            if(path.match(regEx)){
+            if(path.match(regEx)) {
 
-                const id = path.substring(path.lastIndexOf("/") + 1, path.length);
+                //(path.split("/").length - 1);
 
-                let req = { path, id }
+                const params = this.getParams(path);
+
+                const param1 = params[0];
+                const param2 = params[1];
+
+                console.log(param1);
+
+                let req = { path, param1, param2 }
                 return route.callback.call(this, req);
             }
         });
+    }
+
+    getParams(path) {
+
+        const numParams = path.split("/").length - 1
+
+        var url = path.split( '/' );
+
+        if(numParams === 2) {
+            console.log([( url[ url.length - 2 ] ), ( url[ url.length - 1 ] )])
+            return [( url[ url.length - 1 ] )];
+        } else if(numParams === 3) {
+            return [( url[ url.length - 2 ] ), ( url[ url.length - 1 ] )];
+        }
+
+        
+        //console.log( url[ url.length - 1 ] ); // 2
+        //console.log( url[ url.length - 2 ] ); // projects
+        
     }
 }

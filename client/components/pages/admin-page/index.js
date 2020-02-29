@@ -15,7 +15,7 @@ class AdminPage extends HTMLElement {
         
         const linkElem = document.createElement("link");
         linkElem.setAttribute("rel", "stylesheet");
-        linkElem.setAttribute("href", "styles.css")
+        linkElem.setAttribute("href", "/styles.css")
         this.shadowRoot.appendChild(linkElem);
         this._container = document.createElement("div");
         this.shadowRoot.appendChild(this._container);

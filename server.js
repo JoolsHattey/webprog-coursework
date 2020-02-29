@@ -26,6 +26,11 @@ app.get('/:pageCalled/:subPageCalled', function(req, res) {
     res.sendFile(path.resolve(__dirname, 'client/index.html'));
 });
 
+app.get('/:pageCalled/:subPageCalled/:params', function(req, res) {
+    console.log('retrieving page: ' + req.params.pageCalled + req.params.subPageCalled);
+    res.sendFile(path.resolve(__dirname, 'client/index.html'));
+});
+
 
 function submitResponse(req, res) {
     firestore.addResponse(req.params.uid, req.body);

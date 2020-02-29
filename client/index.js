@@ -27,11 +27,11 @@ function adminScreen() {
     screen1.adminPage();
 }
 
-function quizScreen(uid) {
+function quizScreen(uid, editMode) {
     if(!screen1) {
         startup();
     }
-    screen1.quizPage(uid)
+    screen1.quizPage(uid, editMode)
 }
 
 
@@ -43,9 +43,18 @@ router.get('/home', req => {
 router.get('/admin', req => {
     adminScreen();
 });
+
+
 router.get(`/quiz/:pageCalled`, req => {
-    console.log(req.id);
-    quizScreen(req.id)
+    console.log("view")
+    //console.log(req.id);
+    quizScreen(req.param1);
+});
+router.get(`/quiz/:pageCalled/edit`, req => {
+    //console.log(req.id);
+    console.log("edit")
+    console.log(req.param2)
+    quizScreen(req.param1, req.param2);
 });
 router.init();
 

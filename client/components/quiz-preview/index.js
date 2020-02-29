@@ -4,7 +4,7 @@ class QuestionnairePreview extends HTMLElement {
         this._shadowRoot = this.attachShadow({mode: 'open'});
         const linkElem = document.createElement("link");
         linkElem.setAttribute("rel", "stylesheet");
-        linkElem.setAttribute("href", "styles.css")
+        linkElem.setAttribute("href", "/styles.css")
         this._shadowRoot.appendChild(linkElem);
         this._container = document.createElement("div");
         this._shadowRoot.appendChild(this._container);

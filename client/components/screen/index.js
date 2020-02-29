@@ -13,7 +13,7 @@ class ScreenComponent extends HTMLElement {
         this._shadowRoot = this.attachShadow({mode: 'open'});
         const linkElem = document.createElement("link");
         linkElem.setAttribute("rel", "stylesheet");
-        linkElem.setAttribute("href", "styles.css")
+        linkElem.setAttribute("href", "/styles.css")
         this._shadowRoot.appendChild(linkElem);
         this._container = document.createElement("div");
         this._shadowRoot.appendChild(this._container);
@@ -35,7 +35,7 @@ class ScreenComponent extends HTMLElement {
         this._container.appendChild(this._admin);
         //window.location.replace('/admin');
     }
-    quizPage(quizid) {
+    quizPage(quizid, editMode) {
         if(this._container.contains(this._home)) {
             this._container.removeChild(this._home);
         }
@@ -43,7 +43,7 @@ class ScreenComponent extends HTMLElement {
             this._container.removeChild(this._admin);
         }
         this._quiz = new QuizPage();
-        this._quiz.initElement(quizid);
+        this._quiz.initElement(quizid, editMode);
         this._container.appendChild(this._quiz);
         //window.location.replace('/admin');
     }
