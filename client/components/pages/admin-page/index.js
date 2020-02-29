@@ -48,7 +48,8 @@ class AdminPage extends HTMLElement {
             const questionnairePreview = new EditableQuestionnairePreview(item);
             this._container.appendChild(questionnairePreview);
             questionnairePreview._items.forEach(item => {
-                item.onclick = evt => this.editQuestionnaire(item._uid);
+                //item.onclick = evt => window.location.replace(`/quiz/${item._uid}/edit`);
+                item.onclick = evt => router.navigate(`/quiz/${item._uid}/edit`);
             });
         });
     }

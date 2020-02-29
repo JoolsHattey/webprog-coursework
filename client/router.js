@@ -21,31 +21,53 @@ class Router {
         this.routes.push(route);
     }
 
-    init(){
-        this.routes.some(route=>{
+    goToPage(route) {      
 
-            let regEx2 = new RegExp(route.uri.replace(/:[^\s/]+/g, '([\\w-]+)'));
+        const regEx2 = new RegExp(route.uri.replace(/:[^\s/]+/g, '([\\w-]+)'));
 
-            let regEx1 = new RegExp("^" + route.uri.replace(/:[^\s/]+/g, '([\\w-]+)') + "$")
+        const regEx1 = new RegExp("^" + route.uri.replace(/:[^\s/]+/g, '([\\w-]+)') + "$")
 
-            let path = window.location.pathname;
+        const path = window.location.pathname;
 
-            if(path.match(regEx1)) {
+        if(path.match(regEx1)) {
 
-                const params = this.getParams(path);
+            const params = this.getParams(path);
 
+            let req;
+
+            if(params) {
                 const param1 = params[0];
                 const param2 = params[1];
-
-                let req = { path, param1, param2 }
-            
-                return route.callback.call(this, req);
-
-            } else if(path.match(regEx2)) {
-
-                let req = { path }
-                return route.callback.call(this, req);
+                req = { path, param1, param2 }
+            } else {
+                req = { path }
             }
+
+            
+
+            
+        
+            return route.callback.call(this, req);
+
+        } else if(path.match(regEx2)) {
+
+            let req = { path }
+            return route.callback.call(this, req);
+        }
+    }
+
+    init(){
+        this.routes.some(route=>{
+            this.goToPage(route);
+        });
+    }
+
+    navigate(path) {
+        this.routes.some(route=>{
+
+            history.pushState({}, "", path)
+
+            this.goToPage(route);
         });
     }
 
@@ -53,7 +75,7 @@ class Router {
 
         const numParams = path.split("/").length - 1
 
-        var url = path.split( '/' );
+        const url = path.split( '/' );
 
         if(numParams === 2) {
             console.log([( url[ url.length - 2 ] ), ( url[ url.length - 1 ] )])

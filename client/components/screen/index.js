@@ -4,8 +4,8 @@ class ScreenComponent extends HTMLElement {
         this.initElement();
         this._home = new HomePage();
         const appBar = new AppBar();
-        appBar._btn.onclick = evt => window.location.replace('/home');
-        appBar._adminbtn.onclick = evt => window.location.replace('/admin');
+        appBar._btn.onclick = evt => router.navigate('/home');
+        appBar._adminbtn.onclick = evt => router.navigate('/admin');
         this._container.appendChild(appBar);
         this.homePage();
     }
@@ -42,7 +42,7 @@ class ScreenComponent extends HTMLElement {
         if(this._container.contains(this._admin)) {
             this._container.removeChild(this._admin);
         }
-        this._quiz = new QuizPage();
+        this._quiz = new QuizPage(quizid, editMode);
         this._quiz.initElement(quizid, editMode);
         this._container.appendChild(this._quiz);
         //window.location.replace('/admin');

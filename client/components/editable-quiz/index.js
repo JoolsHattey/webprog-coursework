@@ -20,7 +20,7 @@ class EditableQuestionnaire extends HTMLElement {
                 "name": "",
                 "questions": []
             };
-        }        
+        }
         this.createTitle();
         this.createButtons(questionnaireData);
         this._elements = new Array;

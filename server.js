@@ -16,20 +16,22 @@ app.use(express.static('client'));
 app.use('/api', router);
 
 
-app.get('/:pageCalled', function(req, res) {
-    console.log('retrieving page: ' + req.params.pageCalled);    
-    res.sendFile(path.resolve(__dirname, 'client/index.html'));
-});
+// app.get('/:pageCalled', function(req, res) {
+//     console.log('retrieving page: ' + req.params.pageCalled);    
+//     res.sendFile(path.resolve(__dirname, 'client/index.html'));
+// });
 
-app.get('/:pageCalled/:subPageCalled', function(req, res) {
-    console.log('retrieving page: ' + req.params.pageCalled + req.params.subPageCalled);
-    res.sendFile(path.resolve(__dirname, 'client/index.html'));
-});
+// app.get('/:pageCalled/:subPageCalled', function(req, res) {
+//     console.log('retrieving page: ' + req.params.pageCalled + req.params.subPageCalled);
+//     res.sendFile(path.resolve(__dirname, 'client/index.html'));
+// });
 
-app.get('/:pageCalled/:subPageCalled/:params', function(req, res) {
-    console.log('retrieving page: ' + req.params.pageCalled + req.params.subPageCalled);
-    res.sendFile(path.resolve(__dirname, 'client/index.html'));
-});
+// app.get('/:pageCalled/:subPageCalled/:params', function(req, res) {
+//     console.log('retrieving page: ' + req.params.pageCalled + req.params.subPageCalled);
+//     res.sendFile(path.resolve(__dirname, 'client/index.html'));
+// });
+
+app.use('*', express.static("client"));
 
 
 function submitResponse(req, res) {

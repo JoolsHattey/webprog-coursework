@@ -10,10 +10,23 @@ function startup() {
 //window.onload = evt => startup();
 
 
-
+function clearScreen() {
+    if(document.querySelector("screen-elmnt")) {
+        if(document.querySelector("screen-elmnt").shadowRoot.querySelector("quiz-screen")) {
+            document.querySelector("screen-elmnt").shadowRoot.querySelector("quiz-screen").remove()
+        }
+        if(document.querySelector("screen-elmnt").shadowRoot.querySelector("home-screen")) {
+            document.querySelector("screen-elmnt").shadowRoot.querySelector("home-screen").remove()
+        }
+        if(document.querySelector("screen-elmnt").shadowRoot.querySelector("admin-screen")) {
+            document.querySelector("screen-elmnt").shadowRoot.querySelector("admin-screen").remove()
+        }
+    }
+}
 
 
 function homeScreen() {
+    clearScreen();
     if(!screen1) {
         startup();
     }
@@ -21,6 +34,7 @@ function homeScreen() {
 }
 
 function adminScreen() {
+    clearScreen();
     if(!screen1) {
         startup();
     }
@@ -28,6 +42,7 @@ function adminScreen() {
 }
 
 function quizScreen(uid, editMode) {
+    clearScreen();
     if(!screen1) {
         startup();
     }
@@ -43,8 +58,6 @@ router.get('/home', req => {
 router.get('/admin', req => {
     adminScreen();
 });
-
-
 router.get(`/quiz/:pageCalled`, req => {
     console.log("view")
     //console.log(req.id);
@@ -56,6 +69,7 @@ router.get(`/quiz/:pageCalled/edit`, req => {
     console.log(req.param2)
     quizScreen(req.param1, req.param2);
 });
+
 router.init();
 
 const firebaseConfig = {

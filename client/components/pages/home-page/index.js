@@ -34,7 +34,7 @@ class HomePage extends HTMLElement {
             const questionnairePreview = new QuestionnairePreview(item);
             this._container.appendChild(questionnairePreview);
             questionnairePreview._questionnaires.forEach(item => {
-                item.onclick = evt => window.location.replace(`/quiz/${item._uid}`);
+                item.onclick = evt => router.navigate(`/quiz/${item._uid}`);
             });
         });
     }

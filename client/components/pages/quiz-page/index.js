@@ -1,5 +1,5 @@
 class QuizPage extends HTMLElement {
-    constructor() {
+    constructor(quizID, editMode) {
         super();
         //this.clearScreen();
         
