@@ -2,13 +2,18 @@
 
 const express = require('express');
 const app = express();
+
+const router = express.Router();
+
 const port = 8080;
 
 const path = require('path');
 
 const firestore = require('./firestore');
 
-//app.use('/', express.static('client'));
+app.get('/api', router);
+
+app.use('/', express.static('client'));
 
 app.use(express.static(path.join(__dirname, 'client')));
 
@@ -47,14 +52,14 @@ function authenticateUser(req, res) {
 }
 
 
-app.post('/submitresponse/:uid', express.json(), submitResponse);
-app.get('/getresponses', getResponses);
-app.post('/createquestionnaire', express.json(), createQuestionnaire);
-app.get('/questionnaire/:uid', getQuestionnaire);
-app.get('/questionnaires', getQuestionnaires);
-app.post('/editquestionnaire/:uid', express.json(), editQuestionnaire);
+router.post('/submitresponse/:uid', express.json(), submitResponse);
+router.get('/getresponses', getResponses);
+router.post('/createquestionnaire', express.json(), createQuestionnaire);
+router.get('/questionnaire/:uid', getQuestionnaire);
+router.get('/questionnaires', getQuestionnaires);
+router.post('/editquestionnaire/:uid', express.json(), editQuestionnaire);
 
-app.post('/authenticate', express.json(), authenticateUser);
+router.post('/authenticate', express.json(), authenticateUser);
 
 app.get('*', function (request, response) {
     response.sendFile(path.resolve(__dirname, 'client/index.html'));
