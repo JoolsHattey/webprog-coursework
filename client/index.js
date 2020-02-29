@@ -27,6 +27,13 @@ function adminScreen() {
     screen1.adminPage();
 }
 
+function quizScreen(uid) {
+    if(!screen1) {
+        startup();
+    }
+    screen1.quizPage(uid)
+}
+
 
 
 const router = new Router();
@@ -35,6 +42,10 @@ router.get('/home', req => {
 });
 router.get('/admin', req => {
     adminScreen();
+});
+router.get(`/quiz/:pageCalled`, req => {
+    console.log(req.id);
+    quizScreen(req.id)
 });
 router.init();
 
