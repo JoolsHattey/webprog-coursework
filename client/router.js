@@ -24,12 +24,17 @@ class Router {
     init(){
         this.routes.some(route=>{
 
-            let regEx = new RegExp(`^${route.uri}$`);
+            //let regEx = new RegExp(`^${route.uri}$`);
+
+            let regEx = new RegExp(route.uri.replace(/:[^\s/]+/g, '([\\w-]+)'));
+
             let path = window.location.pathname;
 
             if(path.match(regEx)){
 
-                let req = { path }
+                const id = path.substring(path.lastIndexOf("/") + 1, path.length);
+
+                let req = { path, id }
                 return route.callback.call(this, req);
             }
         });

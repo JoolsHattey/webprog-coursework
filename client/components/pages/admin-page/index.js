@@ -42,7 +42,7 @@ class AdminPage extends HTMLElement {
     }
 
     async getEditableQuestionnaires() {
-        const response = await fetch("/questionnaires")
+        const response = await fetch("/api/questionnaires")
     
         response.json().then(item => {
             const questionnairePreview = new EditableQuestionnairePreview(item);
@@ -57,7 +57,7 @@ class AdminPage extends HTMLElement {
 
         console.log(uid);
     
-        const request = await fetch(`/questionnaire/${uid}`);
+        const request = await fetch(`/api/questionnaire/${uid}`);
     
         const quesitonnaire = await(request.json());
     

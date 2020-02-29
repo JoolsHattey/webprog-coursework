@@ -11,13 +11,20 @@ const path = require('path');
 
 const firestore = require('./firestore');
 
-app.get('/api', router);
+app.use(express.static('client'));
 
-app.use('/', express.static('client'));
-
-app.use(express.static(path.join(__dirname, 'client')));
+app.use('/api', router);
 
 
+app.get('/:pageCalled', function(req, res) {
+    console.log('retrieving page: ' + req.params.pageCalled);    
+    res.sendFile(path.resolve(__dirname, 'client/index.html'));
+});
+
+app.get('/:pageCalled/:subPageCalled', function(req, res) {
+    console.log('retrieving page: ' + req.params.pageCalled + req.params.subPageCalled);
+    res.sendFile(path.resolve(__dirname, 'client/index.html'));
+});
 
 
 function submitResponse(req, res) {
@@ -61,8 +68,8 @@ router.post('/editquestionnaire/:uid', express.json(), editQuestionnaire);
 
 router.post('/authenticate', express.json(), authenticateUser);
 
-app.get('*', function (request, response) {
-    response.sendFile(path.resolve(__dirname, 'client/index.html'));
-});
+
+
+
 
 app.listen(port, () => console.log(`Questionnaire Engine listening on port ${port}`));

@@ -35,6 +35,18 @@ class ScreenComponent extends HTMLElement {
         this._container.appendChild(this._admin);
         //window.location.replace('/admin');
     }
+    quizPage(quizid) {
+        if(this._container.contains(this._home)) {
+            this._container.removeChild(this._home);
+        }
+        if(this._container.contains(this._admin)) {
+            this._container.removeChild(this._admin);
+        }
+        this._quiz = new QuizPage();
+        this._quiz.initElement(quizid);
+        this._container.appendChild(this._quiz);
+        //window.location.replace('/admin');
+    }
 }
 
 customElements.define('screen-elmnt', ScreenComponent);

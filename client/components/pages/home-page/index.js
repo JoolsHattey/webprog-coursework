@@ -28,28 +28,15 @@ class HomePage extends HTMLElement {
     
 
     async getQuestionnaires() {
-        const response = await fetch("/questionnaires")
+        const response = await fetch("/api/questionnaires")
     
         response.json().then(item => {
             const questionnairePreview = new QuestionnairePreview(item);
             this._container.appendChild(questionnairePreview);
             questionnairePreview._questionnaires.forEach(item => {
-                item.onclick = evt => this.getQuestionnaire(item._uid);
-            })
+                item.onclick = evt => window.location.replace(`/quiz/${item._uid}`);
+            });
         });
-    }
-
-    async getQuestionnaire(uid) {
-        console.log(uid)
-        const request = await fetch(`/questionnaire/${uid}`);
-    
-        const quesitonnaire = await(request.json());
-    
-        const q = new Questionnaire(quesitonnaire, uid);
-
-        this.clearScreen();
-
-        this._container.appendChild(q);
     }
 }
 
