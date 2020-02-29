@@ -32,7 +32,8 @@ class Questionnaire extends HTMLElement {
             console.log(this._questions[this._currentQ])
             this._response.questions[this._currentQ] = {
                 "id": this._questions[this._currentQ]._id,
-                "answer": this._questions[this._currentQ]._shadowRoot.children[1].children[1]._shadowRoot.children[0].value
+                "answer": this._questions[this._currentQ].getAnswer()
+
             }
             this._currentQ++;
             this._ProgIndic.setProgress(this._currentQ);

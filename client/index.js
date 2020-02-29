@@ -46,6 +46,7 @@ function quizScreen(uid, editMode) {
     if(!screen1) {
         startup();
     }
+    console.log(uid)
     screen1.quizPage(uid, editMode)
 }
 
@@ -67,6 +68,7 @@ router.get(`/quiz/:pageCalled/edit`, req => {
     //console.log(req.id);
     console.log("edit")
     console.log(req.param2)
+    console.log(req)
     quizScreen(req.param1, req.param2);
 });
 

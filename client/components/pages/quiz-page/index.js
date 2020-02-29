@@ -26,6 +26,7 @@ class QuizPage extends HTMLElement {
 
     async getQuestionnaire(uid, editMode) {
         console.log(uid)
+        console.log(editMode);
         const request = await fetch(`/api/questionnaire/${uid}`);
     
         const quesitonnaire = await(request.json());

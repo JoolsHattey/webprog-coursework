@@ -7,45 +7,50 @@ class Question extends HTMLElement {
     }
 
     initElement(question) {
-        this._shadowRoot = this.attachShadow({mode: 'open'});
+        this.attachShadow({mode: 'open'});
         const linkElem = document.createElement("link");
         linkElem.setAttribute("rel", "stylesheet");
         linkElem.setAttribute("href", "/styles.css")
-        this._shadowRoot.appendChild(linkElem);
-        this._container = document.createElement("div");
-        this._shadowRoot.appendChild(this._container);
-        this._container.classList.add("card");
-        this._container.id = question.id;
-        this._id = question.id;
+        this.shadowRoot.appendChild(linkElem);
+        this.container = document.createElement("div");
+        this.shadowRoot.appendChild(this.container);
+        this.container.classList.add("card");
+        this.container.id = question.id;
+        this.id = question.id;
     }
 
     createTitle(name) {
         const title = document.createElement("h3");
         const titleContent = document.createTextNode(name);
         title.appendChild(titleContent);
-        this._container.appendChild(title);
+        this.container.appendChild(title);
     }
 
     createInput(question) {
-        let input;
-
         switch(question.type) {
             case "text":
-                input = new Input("text");
-                input.id = question.id;
+                this.input = new Input("text");
+                this.input.id = question.id;
                 break;
             case "number":
-                input = new Input("number");
+                this.input = new Input("number");
                 break;
             case "single-select":
-                input = new Selector(question.options, "radio");
+                this.input = new Selector(question.options, "radio");
                 break;
             case "multi-select":
-                input = new Selector(question.options, "checkbox");
+                this.input = new Selector(question.options, "checkbox");
                 break;
         }
     
-        this._container.appendChild(input);
+        this.container.appendChild(this.input);
+    }
+
+    getAnswer() {
+        if(this.input === Input) {
+            return this.input.getInput();
+        }
+        
     }
 }
 
