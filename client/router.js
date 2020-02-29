@@ -24,28 +24,26 @@ class Router {
     init(){
         this.routes.some(route=>{
 
-            //let regEx = new RegExp(`^${route.uri}$`);
+            let regEx2 = new RegExp(route.uri.replace(/:[^\s/]+/g, '([\\w-]+)'));
 
-            //let regEx = new RegExp(route.uri.replace(/:[^\s/]+/g, '([\\w-]+)'));
-
-            let regEx = new RegExp("^" + route.uri.replace(/:[^\s/]+/g, '([\\w-]+)') + "$")
-
-            console.log(regEx);
+            let regEx1 = new RegExp("^" + route.uri.replace(/:[^\s/]+/g, '([\\w-]+)') + "$")
 
             let path = window.location.pathname;
 
-            if(path.match(regEx)) {
-
-                //(path.split("/").length - 1);
+            if(path.match(regEx1)) {
 
                 const params = this.getParams(path);
 
                 const param1 = params[0];
                 const param2 = params[1];
 
-                console.log(param1);
-
                 let req = { path, param1, param2 }
+            
+                return route.callback.call(this, req);
+
+            } else if(path.match(regEx2)) {
+
+                let req = { path }
                 return route.callback.call(this, req);
             }
         });
@@ -62,11 +60,6 @@ class Router {
             return [( url[ url.length - 1 ] )];
         } else if(numParams === 3) {
             return [( url[ url.length - 2 ] ), ( url[ url.length - 1 ] )];
-        }
-
-        
-        //console.log( url[ url.length - 1 ] ); // 2
-        //console.log( url[ url.length - 2 ] ); // projects
-        
+        }       
     }
 }
