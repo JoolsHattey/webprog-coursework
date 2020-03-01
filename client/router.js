@@ -4,7 +4,7 @@ class Router {
        this.routes = [];
     }
 
-    get(uri, callback){
+    get(uri, callback, authGuard){
         if(!uri || !callback) throw new Error('uri or callback must be given');
 
         if(typeof uri !== "string") throw new TypeError('typeof uri must be a string');
@@ -16,90 +16,69 @@ class Router {
 
         const route = {
             uri,
-            callback
+            callback,
+            authGuard
         }
         this.routes.push(route);
     }
 
-    goToPage(route) {      
-
+    matchRoute(route, path) {
         const regEx2 = new RegExp(route.uri.replace(/:[^\s/]+/g, '([\\w-]+)'));
 
         const regEx1 = new RegExp("^" + route.uri.replace(/:[^\s/]+/g, '([\\w-]+)') + "$")
 
-        const path = window.location.pathname;
-
         if(path.match(regEx1)) {
-
-            console.log("hmmm")
-
             const params = this.getParams(path);
-
-            console.log(params)
-
-            let req;
-
-            if(params) {
-                const param1 = params[0];
-                const param2 = params[1];
-                req = { path, param1, param2 }
-                console.log(req)
-            } else {
-                req = { path }
-            }
-
-            
-
-            
-        
-            return route.callback.call(this, req);
-
+            this.goToPage(route, path, params);
         } else if(path.match(regEx2)) {
-
             const params = this.getParams(path);
+            this.goToPage(route, path, params);
+        }
+    }
 
-            console.log(params)
+    goToPage(route, path, params) {
+        let req;
+        if(params) {
+            const param1 = params[0];
+            const param2 = params[1];
+            req = { path, param1, param2 };
+        } else {
+            req = { path };
+        }
 
-            let req;
-
-            if(params) {
-                const param1 = params[0];
-                const param2 = params[1];
-                req = { path, param1, param2 }
-                console.log(req)
+        if(route.authGuard) {
+            if(route.authGuard.call()) {
+                history.pushState({}, "", path)
+                return route.callback.call(this, req);
             } else {
-                req = { path }
+                console.log("Auth error");
             }
-
-            //let req = { path }
+        } else {
+            history.pushState({}, "", path)
             return route.callback.call(this, req);
         }
     }
 
     init(){
         this.routes.some(route=>{
-            this.goToPage(route);
+            const path = window.location.pathname;
+            this.matchRoute(route, path);
         });
     }
 
     navigate(path) {
         this.routes.some(route=>{
-
-            history.pushState({}, "", path)
-
-            this.goToPage(route);
+            this.matchRoute(route, path);
         });
     }
 
     getParams(path) {
 
-        console.log("hello??")
+        console.log(path)
 
         const numParams = path.split("/").length - 1
 
         const url = path.split( '/' );
-
-        console.log(numParams)
 
         if(numParams === 2) {
             return [( url[ url.length - 1 ] )];

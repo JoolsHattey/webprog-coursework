@@ -1,13 +1,6 @@
-class Selector extends HTMLElement {
+class Selector extends Component {
     constructor(options, type) {
         super();
-        this.attachShadow({mode: 'open'});
-        const linkElem = document.createElement("link");
-        linkElem.setAttribute("rel", "stylesheet");
-        linkElem.setAttribute("href", "/components/selector/styles.css")
-        this.shadowRoot.appendChild(linkElem);
-        this.container = document.createElement("div");
-        this.shadowRoot.appendChild(this.container);
         options.forEach(opt => {
             const container = document.createElement("div");
             const option = document.createElement("input");

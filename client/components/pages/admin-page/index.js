@@ -1,9 +1,8 @@
-class AdminPage extends HTMLElement {
+class AdminPage extends Component {
     constructor() {
         super();
-        this.attachShadow({mode: 'open'});
         this.initElement();
-        this._container.classList.add("page");
+        this.container.classList.add("page");
         //this.clearScreen();
         //this.initElement();
         //this.createUploadButton();
@@ -12,19 +11,12 @@ class AdminPage extends HTMLElement {
     }
 
     initElement() {
-        
-        const linkElem = document.createElement("link");
-        linkElem.setAttribute("rel", "stylesheet");
-        linkElem.setAttribute("href", "/styles.css")
-        this.shadowRoot.appendChild(linkElem);
-        this._container = document.createElement("div");
-        this.shadowRoot.appendChild(this._container);
         //this.clearScreen();
     }
 
     clearScreen() {
-        this._container.innerHTML=""
-        console.log(this._container.children[1])
+        this.container.innerHTML=""
+        console.log(this.container.children[1])
     }
 
     createUploadButton() {
@@ -34,7 +26,7 @@ class AdminPage extends HTMLElement {
 
         button.onchange = uploadJSONQuestionnaire;
 
-        this._container.appendChild(button);
+        this.container.appendChild(button);
     }
 
     showQuestionnaires() {
@@ -46,10 +38,10 @@ class AdminPage extends HTMLElement {
     
         response.json().then(item => {
             const questionnairePreview = new EditableQuestionnairePreview(item);
-            this._container.appendChild(questionnairePreview);
-            questionnairePreview._items.forEach(item => {
+            this.container.appendChild(questionnairePreview);
+            questionnairePreview.items.forEach(item => {
                 //item.onclick = evt => window.location.replace(`/quiz/${item._uid}/edit`);
-                item.onclick = evt => router.navigate(`/quiz/${item._uid}/edit`);
+                item.onclick = evt => router.navigate(`/quiz/${item.uid}/edit`);
             });
         });
     }
@@ -68,7 +60,7 @@ class AdminPage extends HTMLElement {
 
         this.shadowRoot.children[0].remove();
 
-        this._container.appendChild(q);
+        this.container.appendChild(q);
     }
 }
 

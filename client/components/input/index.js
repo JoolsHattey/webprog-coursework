@@ -1,12 +1,9 @@
-class Input extends HTMLElement {
+class Input extends Component {
     constructor(type) {
         super();
-        this.attachShadow({mode: 'open'});
-        const linkElem = document.createElement("link");
-        linkElem.setAttribute("rel", "stylesheet");
-        linkElem.setAttribute("href", "/components/input/styles.css")
-        this.shadowRoot.appendChild(linkElem);
-        this.container = document.createElement("div");
+
+        this.addStyleSheet("/components/input/styles.css");
+
         this.container.classList.add("textinput");
         this.shadowRoot.appendChild(this.container);
 
@@ -33,6 +30,9 @@ class Input extends HTMLElement {
 
     getInput() {
         return this.container.querySelector("input").value;
+    }
+    setInput(newValue) {
+        this.container.querySelector("input").value = newValue;
     }
 }
 

@@ -4,7 +4,7 @@ let screen1;
 
 function startup() {
     screen1 = new ScreenComponent();
-    document.querySelector("main").appendChild(screen1);
+    document.querySelector("body").appendChild(screen1);
 }
 
 //window.onload = evt => startup();
@@ -25,7 +25,7 @@ function clearScreen() {
 }
 
 
-function homeScreen() {
+function homeScreen(req) {
     clearScreen();
     if(!screen1) {
         startup();
@@ -33,7 +33,7 @@ function homeScreen() {
     screen1.homePage();
 }
 
-function adminScreen() {
+function adminScreen(req) {
     clearScreen();
     if(!screen1) {
         startup();
@@ -41,83 +41,31 @@ function adminScreen() {
     screen1.adminPage();
 }
 
-function quizScreen(uid, editMode) {
+function quizScreen(req) {
     clearScreen();
     if(!screen1) {
         startup();
     }
-    console.log(uid)
-    screen1.quizPage(uid, editMode)
+    console.log(req)
+    screen1.quizPage(req.param1, req.param2)
 }
+
+// function defaultRoute(req) {
+//     router.navigate('/home');
+// }
 
 
 
 const router = new Router();
-router.get('/home', req => {
-    homeScreen();
-});
-router.get('/admin', req => {
-    adminScreen();
-});
-router.get(`/quiz/:pageCalled`, req => {
-    console.log("view")
-    //console.log(req.id);
-    quizScreen(req.param1);
-});
-router.get(`/quiz/:pageCalled/edit`, req => {
-    //console.log(req.id);
-    console.log("edit")
-    console.log(req.param2)
-    console.log(req)
-    quizScreen(req.param1, req.param2);
-});
+router.get('/home', homeScreen);
+router.get('/admin', adminScreen, getAuthStatus);
+router.get(`/quiz/:pageCalled`, quizScreen);
+router.get(`/quiz/:pageCalled/edit`, quizScreen, getAuthStatus);
+// router.get('/', defaultRoute);
 
 router.init();
 
-const firebaseConfig = {
-    apiKey: "AIzaSyB0cnilljayJ3axmCdJyBvGV_nLdDQ9csI",
-    authDomain: "webprog-coursework-e4b42.firebaseapp.com",
-    databaseURL: "https://webprog-coursework-e4b42.firebaseio.com",
-    projectId: "webprog-coursework-3f2d9",
-    storageBucket: "webprog-coursework-e4b42.appspot.com",
-    messagingSenderId: "669091989709",
-    appId: "1:669091989709:web:ecefeb8f3d8c5ad0ca8184"
-};
-firebase.initializeApp(firebaseConfig);
 
-function login() {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    
-    firebase.auth().signInWithPopup(provider)
-        .then(result => {
-            const token = result.credential.accessToken;
-            const user = result.user;
-            sendToken();
-        }).catch(error => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-        });
-}
-
-function sendToken() {
-    firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function(idToken) {
-        const authToken = { "token": idToken }
-        sendAuthToken(authToken);
-    }).catch(function(error) {
-        // Handle error
-    });
-    
-}
-
-async function sendAuthToken(authToken) {
-    const response = await fetch("/authenticate", {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(authToken)
-    });
-}
 
 let questions;
 let response = { "questions": [] };
@@ -217,6 +165,8 @@ async function editQuestionnaire(uid) {
     const request = await fetch(`/questionnaire/${uid}`);
 
     const quesitonnaire = await(request.json());
+
+    console.log(quesitonnaire)
 
     const q = new EditableQuestionnaire(quesitonnaire, uid);
 }

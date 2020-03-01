@@ -1,29 +1,22 @@
-class EditableQuestionnaire extends HTMLElement {
+class EditableQuestionnaire extends Component {
     constructor(questionnaireData, uid) {
         super();
-        this._shadowRoot = this.attachShadow({mode: 'open'});
-        const linkElem = document.createElement("link");
-        linkElem.setAttribute("rel", "stylesheet");
-        linkElem.setAttribute("href", "/styles.css")
-        this._shadowRoot.appendChild(linkElem);
-        this._container = document.createElement("div");
-        this._shadowRoot.appendChild(this._container);
         this.initElement(questionnaireData, uid);
     }
 
     initElement(questionnaireData, uid) {
         if(questionnaireData) {
-            this._uid = uid;
-            this._questions = questionnaireData;
+            this.uid = uid;
+            this.questions = questionnaireData;
         } else {
-            this._questions = {
+            this.questions = {
                 "name": "",
                 "questions": []
             };
         }
         this.createTitle();
         this.createButtons(questionnaireData);
-        this._elements = new Array;
+        this.elements = new Array;
         if(questionnaireData) {
             this.changeTitle(questionnaireData.name);
             questionnaireData.questions.forEach(q => {
@@ -39,64 +32,64 @@ class EditableQuestionnaire extends HTMLElement {
         const saveButton = document.createElement("button");
         saveButton.append("Save");
 
-        saveButton.onclick = (evt => this._questions.name = title.value);
+        saveButton.onclick = (evt => this.questions.name = title.value);
 
         titleContainer.appendChild(title);
         titleContainer.appendChild(saveButton);
 
-        this._container.appendChild(titleContainer);
+        this.container.appendChild(titleContainer);
     }
 
     createButtons(questionnaireData) {
         const newQButton = document.createElement("button");
         newQButton.append("Add Question");
         newQButton.id="newq";
-        this._container.appendChild(newQButton);
-        this._container.querySelector("#newq").onclick = (evt => {
+        this.container.appendChild(newQButton);
+        this.container.querySelector("#newq").onclick = (evt => {
             this.createNewQuestion();
         });
 
         const saveButton = document.createElement("button");
         saveButton.onclick = (evt => {
 
-            this._questions.questions = [];
+            this.questions.questions = [];
 
-            this._elements.forEach(x => {
-                this._questions.questions.push(x._question);
+            this.elements.forEach(x => {
+                this.questions.questions.push(x.question);
             });
-            console.log(this._questions);
+            console.log(this.questions);
 
             if(questionnaireData) {
-                updateQuestionnaire(this._uid, this._questions);
+                updateQuestionnaire(this.uid, this.questions);
             } else {
-                sendQuestionnaire(this._questions).then(data => {
-                    this._uid = data.id;
-                    console.log(this._uid);
+                sendQuestionnaire(this.questions).then(data => {
+                    this.uid = data.id;
+                    console.log(this.uid);
                 });    
             } 
         });
 
         saveButton.append("Save");
-        this._container.appendChild(saveButton);
+        this.container.appendChild(saveButton);
     }
 
     createNewQuestion(questionData) {
         const q = new EditableQuestion(questionData);
-        this._elements.push(q);
-        this._container.appendChild(q);
-        q._shadowRoot.querySelector(".deletebtn").addEventListener("click", evt => {
-            const result = this._elements.filter(word => word.length > 6);
-            this._elements = this._elements.filter(item => {
+        this.elements.push(q);
+        this.container.appendChild(q);
+        q.shadowRoot.querySelector(".deletebtn").addEventListener("click", evt => {
+            const result = this.elements.filter(word => word.length > 6);
+            this.elements = this.elements.filter(item => {
                 return item !== q
             });
             console.log(q);
-            console.log(this._elements);
-            this._container.removeChild(q);
+            console.log(this.elements);
+            this.container.removeChild(q);
 
         });
     }
     changeTitle(title) {
-        this._container.children[0].children[0].value = title;
+        this.container.children[0].children[0].value = title;
     }
 }
 

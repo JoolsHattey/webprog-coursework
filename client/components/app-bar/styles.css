@@ -1,26 +1,60 @@
 .appBar {
-    width: 100%;
+    width: auto;
+    height: 56px;
     background-color: #00695c;
     color: white;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding: 10px 0 10px 0;
+    align-items: center;
     box-shadow: 0 3px 8px 1px black;
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+.btn {
+    width: 24px;
+    height: 24px;
+    outline: none;
+    border: none;
 }
 
 .homeBtn {
     background: url("../../assets/home-24px.svg");
-    width: 20px;
-    height: 20px;
-    outline: none;
-    border: none;
 }
 
 .adminBtn {
     background: url("../../assets/settings-24px.svg");
-    width: 20px;
-    height: 20px;
-    outline: none;
-    border: none;
+}
+
+img {
+    border-radius: 50%;
+    height: 30px;
+}
+
+.profile {
+    position: absolute;
+    right: 0;
+    top: 20px;
+    width: 100px;
+    height: 300px;
+}
+
+.card {
+    margin: 20px;
+    padding: 20px;
+    border: solid;
+    border-width: thin;
+    border-radius: 3px;
+    border-color: rgba(0,0,0,0.22);
+    box-shadow: 0 0 0 rgba(0,0,0,0.01), 0 2px 5px rgba(0,0,0,0.22);
+    background-color: white;
+    color: black;
+}
+
+.showProfileCard {
+}
+
+.hideProfileCard {
+    display: none;
 }

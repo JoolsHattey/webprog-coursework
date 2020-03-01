@@ -1,22 +1,15 @@
-class EditableQuestion extends HTMLElement {
+class EditableQuestion extends Component {
     constructor(questionData) { 
         super();
-        this._shadowRoot = this.attachShadow({mode: 'open'});
-        const linkElem = document.createElement("link");
-        linkElem.setAttribute("rel", "stylesheet");
-        linkElem.setAttribute("href", "/styles.css")
-        this._shadowRoot.appendChild(linkElem);
-        this._container = document.createElement("div");
-        this._shadowRoot.appendChild(this._container);
-        this._container.classList.add("card");
+        this.container.classList.add("card");
         this.initElement(questionData);
     }
 
     initElement(questionData) {
         if(questionData) {
-            this._question = questionData;
+            this.question = questionData;
         } else {
-            this._question = {
+            this.question = {
                 "id": "",
                 "text": "",
                 "type": "text"
@@ -36,22 +29,24 @@ class EditableQuestion extends HTMLElement {
     }
 
     createTitle() {
-        const titleContainer = document.createElement("div");
+        // const titleContainer = document.createElement("div");
 
-        const title = document.createElement("input");
-        const saveButton = document.createElement("button");
-        saveButton.append("Save");
-        saveButton.onclick = (evt => {
-            this._question.text = saveButton.parentElement.children[0].value;
+        // const title = document.createElement("input");
+        // const saveButton = document.createElement("button");
+        // saveButton.append("Save");
+        // saveButton.onclick = (evt => {
+        //     this.question.text = saveButton.parentElement.children[0].value;
 
-            console.log(this._question)
+        //     console.log(this.question)
         
-        });
+        // });
 
-        titleContainer.appendChild(title);
-        titleContainer.appendChild(saveButton);
+        // titleContainer.appendChild(title);
+        // titleContainer.appendChild(saveButton);
 
-        this._container.appendChild(titleContainer);
+        this.titleContainer = new Input("text");
+
+        this.container.appendChild(this.titleContainer);
     }
 
     createInputSelector() {
@@ -79,25 +74,25 @@ class EditableQuestion extends HTMLElement {
         inputSelector.appendChild(option4);
 
         inputSelector.onchange = (evt => {
-            this._question.type = inputSelector.value;
+            this.question.type = inputSelector.value;
 
-            console.log(this._question);
+            console.log(this.question);
         })
 
-        this._container.appendChild(inputSelector);
+        this.container.appendChild(inputSelector);
     }
 
     changeTitle(title) {
-        this._container.children[0].children[0].value = title;
+        this.titleContainer.setInput(title);
     }
     changeSelectedInput(input) {
-        this._container.children[1].value = input;
+        this.container.children[1].value = input;
     }
     createDeleteButton() {
         const btn = document.createElement("button");
         btn.classList.add("deletebtn");
         btn.append("Delete")
-        this._container.appendChild(btn);
+        this.container.appendChild(btn);
     }
 }
 

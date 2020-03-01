@@ -1,4 +1,4 @@
-class Question extends HTMLElement {
+class Question extends Component {
     constructor(question) {
         super();
         this.initElement(question);
@@ -7,13 +7,6 @@ class Question extends HTMLElement {
     }
 
     initElement(question) {
-        this.attachShadow({mode: 'open'});
-        const linkElem = document.createElement("link");
-        linkElem.setAttribute("rel", "stylesheet");
-        linkElem.setAttribute("href", "/styles.css")
-        this.shadowRoot.appendChild(linkElem);
-        this.container = document.createElement("div");
-        this.shadowRoot.appendChild(this.container);
         this.container.classList.add("card");
         this.container.id = question.id;
         this.id = question.id;
