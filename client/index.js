@@ -1,13 +1,16 @@
 "use strict";
 
+let x = 0;
 let screen1;
+screen1 = new ScreenComponent();
+x++;
+console.log(x);
 
 function startup() {
-    screen1 = new ScreenComponent();
     document.querySelector("body").appendChild(screen1);
 }
 
-//window.onload = evt => startup();
+window.onload = evt => startup();
 
 
 function clearScreen() {
@@ -27,25 +30,25 @@ function clearScreen() {
 
 function homeScreen(req) {
     clearScreen();
-    if(!screen1) {
-        startup();
-    }
+    // if(!screen1) {
+    //     startup();
+    // }
     screen1.homePage();
 }
 
 function adminScreen(req) {
     clearScreen();
-    if(!screen1) {
-        startup();
-    }
+    // if(!screen1) {
+    //     startup();
+    // }
     screen1.adminPage();
 }
 
 function quizScreen(req) {
     clearScreen();
-    if(!screen1) {
-        startup();
-    }
+    // if(!screen1) {
+    //     startup();
+    // }
     console.log(req)
     screen1.quizPage(req.param1, req.param2)
 }

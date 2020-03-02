@@ -23,14 +23,15 @@ class Router {
     }
 
     matchRoute(route, path) {
-        const regEx2 = new RegExp(route.uri.replace(/:[^\s/]+/g, '([\\w-]+)'));
+        const regEx = new RegExp(route.uri.replace(/:[^\s/]+/g, '([\\w-]+)'));
 
         const regEx1 = new RegExp("^" + route.uri.replace(/:[^\s/]+/g, '([\\w-]+)') + "$")
 
-        if(path.match(regEx1)) {
-            const params = this.getParams(path);
-            this.goToPage(route, path, params);
-        } else if(path.match(regEx2)) {
+        // if(path.match(regEx1)) {
+        //     const params = this.getParams(path);
+        //     this.goToPage(route, path, params);
+        // } else 
+        if(path.match(regEx)) {
             const params = this.getParams(path);
             this.goToPage(route, path, params);
         }

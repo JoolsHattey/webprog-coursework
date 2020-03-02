@@ -7,7 +7,7 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 3px 8px 1px black;
+    box-shadow: 0 4px 8px 1px black;
     padding-left: 16px;
     padding-right: 16px;
 }
@@ -38,6 +38,7 @@ img {
     top: 20px;
     width: 100px;
     height: 300px;
+    z-index: 1;
 }
 
 .card {
