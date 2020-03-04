@@ -16,21 +16,6 @@ app.use(express.static('client'));
 app.use('/api', router);
 
 
-// app.get('/:pageCalled', function(req, res) {
-//     console.log('retrieving page: ' + req.params.pageCalled);    
-//     res.sendFile(path.resolve(__dirname, 'client/index.html'));
-// });
-
-// app.get('/:pageCalled/:subPageCalled', function(req, res) {
-//     console.log('retrieving page: ' + req.params.pageCalled + req.params.subPageCalled);
-//     res.sendFile(path.resolve(__dirname, 'client/index.html'));
-// });
-
-// app.get('/:pageCalled/:subPageCalled/:params', function(req, res) {
-//     console.log('retrieving page: ' + req.params.pageCalled + req.params.subPageCalled);
-//     res.sendFile(path.resolve(__dirname, 'client/index.html'));
-// });
-
 app.use('*', express.static("client"));
 
 
@@ -39,7 +24,11 @@ function submitResponse(req, res) {
 }
 
 function getResponses(req, res) {
-    res.send(firestore.getResponses());
+    firestore.getResponses(req.params.uid)
+        .subscribe(data => {
+            res.send(data);
+    });
+    //res.send(firestore.getResponses());
 }
 
 function createQuestionnaire(req, res) {
@@ -67,7 +56,7 @@ function authenticateUser(req, res) {
 
 
 router.post('/submitresponse/:uid', express.json(), submitResponse);
-router.get('/getresponses', getResponses);
+router.get('/responses/:uid', getResponses);
 router.post('/createquestionnaire', express.json(), createQuestionnaire);
 router.get('/questionnaire/:uid', getQuestionnaire);
 router.get('/questionnaires', getQuestionnaires);

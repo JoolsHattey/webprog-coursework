@@ -9,6 +9,7 @@ firebase.initializeApp({
 });
 
 const Observable = require('rxjs/Observable').Observable;
+const from = require('rxjs/Observable/fromPromise').fromPromise;
 
 
 /**********************
@@ -21,6 +22,7 @@ function addResponse(uid, response, authToken) {
 }
 
 function getQuestionnaire(uid, authToken) {
+    //from(firebase.firestore().collection("questionnaires").doc(uid).get())
     return Observable.create(observer => {
         firebase.firestore().collection("questionnaires").doc(uid).get()
             .then(docRef => observer.next(docRef.data()));
@@ -44,8 +46,22 @@ function verifyAuth(idToken) {
     
 }
 
-async function getResponses(authToken) {
-    return await firebase.firestore().collection("responses").get();
+function getResponses(uid) {
+    return Observable.create(observer => {
+        let result = new Array;
+        firebase.firestore().collection("questionnaires").doc(uid).collection("responses").get()
+            .then(snapshot => {
+                snapshot.forEach(doc => {
+                    // const item = {
+                    //     "uid": doc.id,
+                    //     "name": doc.data().name
+                    // }
+                    //console.log(doc.data());
+                    result.push(doc.data());
+                });
+                observer.next(result);
+            });
+    });
 }
 
 function createQuestionnaire(questionnaire, authToken) {
