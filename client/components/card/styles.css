@@ -1,0 +1,13 @@
+.card {
+    margin: 20px;
+    padding: 20px;
+    border: solid;
+    border-width: thin;
+    border-radius: 3px;
+    border-color: rgba(0,0,0,0.22);
+    box-shadow: 0 0 0 rgba(0,0,0,0.01), 0 2px 5px rgba(0,0,0,0.22);
+    background-color: white;
+}
+.hide {
+    display: none;
+}

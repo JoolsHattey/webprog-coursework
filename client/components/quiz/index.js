@@ -12,7 +12,7 @@ class Questionnaire extends Component {
         this.createTitle(questionnaireData.name);
         if(questionnaireData) {
             questionnaireData.questions.forEach(item => {
-                const q = new Question(item);
+                const q = this.createQuestion(item);
                 this.questions.push(q);
             });
         }
@@ -52,6 +52,44 @@ class Questionnaire extends Component {
         submit.append("Submit");
         submit.onclick = (evt => submitResponse(this.uid, this.response));
         this.container.appendChild(submit);
+    }
+
+    createQuestion(questionData) {
+        this.question = new Card();
+        this.question.createTitle(questionData.text);
+        this.question.id = questionData.id;
+        //this.container.classList.add("card");
+        this.createInput(questionData);
+        return this.question;
+    }
+    
+
+    createInput(questionData) {
+        let input;
+        switch(questionData.type) {
+            case "text":
+                input = new Input("text");
+                input.id = questionData.id;
+                break;
+            case "number":
+                input = new Input("number");
+                break;
+            case "single-select":
+                input = new Selector(questionData.options, "radio");
+                break;
+            case "multi-select":
+                input = new Selector(questionData.options, "checkbox");
+                break;
+        }
+    
+        this.question.container.appendChild(input);
+    }
+
+    getAnswer() {
+        if(this.input === Input) {
+            return this.input.getInput();
+        }
+        
     }
 }
 

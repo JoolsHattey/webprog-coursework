@@ -22,7 +22,6 @@ class EditableQuestionnaire extends Component {
             questionnaireData.questions.forEach(q => {
                 this.createNewQuestion(q);
             });
-            
         }
     }
 
@@ -74,19 +73,25 @@ class EditableQuestionnaire extends Component {
     }
 
     createNewQuestion(questionData) {
-        const q = new EditableQuestion(questionData);
-        this.elements.push(q);
-        this.container.appendChild(q);
-        q.shadowRoot.querySelector(".deletebtn").addEventListener("click", evt => {
-            const result = this.elements.filter(word => word.length > 6);
-            this.elements = this.elements.filter(item => {
-                return item !== q
-            });
-            console.log(q);
-            console.log(this.elements);
-            this.container.removeChild(q);
 
-        });
+        const q = new Card();
+        const i = new Input();
+        i.setInput(questionData.text)
+        q.insertElement(i);
+        const options = [
+            {"value": "text",
+            "text": "Text Input"},
+            {"value": "number",
+            "text": "Number Input"},
+            {"value": "single-select",
+            "text": "Single-select Input"},
+            {"value": "multi-select",
+            "text": "Multi-select Input"}
+        ]
+        const drop = new Dropdown(options);
+        q.insertElement(drop);
+
+        this.container.appendChild(q);
     }
     changeTitle(title) {
         this.container.children[0].children[0].value = title;

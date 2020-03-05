@@ -18,23 +18,31 @@ class AppBar extends Component {
         this.userProfile.appendChild(this.profileImage);
         this.container.appendChild(this.userProfile);
 
-        this.profileCard = document.createElement("div");
-        this.profileCard.classList.add("profile", "card", "hideProfileCard");
+        this.profileCard = new Card();
+        this.profileCard.setVisible(false);
+
+        this.profileCard.container.classList.add("profileCard")
+
+        console.log(this.profileCard)
+        
+        //this.profileCard.shadowRoot.classList.add("profile", "hideProfileCard");
         this.container.appendChild(this.profileCard);
         this.profileCardVisible = false;
         this.userProfile.onclick = evt => {
             if(this.profileCardVisible) {
-                this.profileCard.classList.add("hideProfileCard");
+                //this.profileCard.shadowRoot.classList.add("hideProfileCard");
+                this.profileCard.setVisible(false);
                 this.profileCardVisible = false;
             } else {
-                this.profileCard.classList.remove("hideProfileCard");
+                //this.profileCard.shadowRoot.classList.remove("hideProfileCard");
+                this.profileCard.setVisible(true);
                 this.profileCardVisible = true;
             }
         }
         this.displayName = document.createElement("h4");
         this.email = document.createElement("h5");
-        this.profileCard.appendChild(this.displayName);
-        this.profileCard.appendChild(this.email);
+        this.profileCard.createTitle(this.displayName);
+        this.profileCard.createContent(this.email);
         this.logOutButton = document.createElement("button");
         this.logOutButton.append("Sign Out");
         this.logOutButton.onclick = evt => logout();

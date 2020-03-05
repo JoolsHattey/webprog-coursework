@@ -3,9 +3,6 @@ class AdminPage extends Component {
         super();
         this.initElement();
         this.container.classList.add("page");
-        //this.clearScreen();
-        //this.initElement();
-        //this.createUploadButton();
         this.createUploadButton();
         this.showQuestionnaires();
     }
@@ -35,15 +32,18 @@ class AdminPage extends Component {
 
     async getEditableQuestionnaires() {
         const response = await fetch("/api/questionnaires")
-    
-        response.json().then(item => {
-            const questionnairePreview = new EditableQuestionnairePreview(item);
-            this.container.appendChild(questionnairePreview);
-            questionnairePreview.items.forEach(item => {
-                //item.onclick = evt => window.location.replace(`/quiz/${item._uid}/edit`);
-                item.onclick = evt => router.navigate(`/quiz/${item.uid}/edit`);
+
+        const quizes = document.createElement("div");
+
+        response.json().then(data => {
+            data.forEach(item => {
+                const q = new Card();
+                q.createTitle(item.name);
+                q.setOnClick(evt => router.navigate(`/quiz/${item.uid}/edit`));
+                quizes.appendChild(q);
             });
         });
+        this.container.appendChild(quizes);
     }
 
     async editQuestionnaire(uid) {

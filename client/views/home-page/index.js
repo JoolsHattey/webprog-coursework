@@ -22,11 +22,19 @@ class HomePage extends Component {
     async getQuestionnaires() {
         const response = await fetch("/api/questionnaires")
     
-        response.json().then(item => {
-            const questionnairePreview = new QuestionnairePreview(item);
-            this.container.appendChild(questionnairePreview);
-            questionnairePreview.questionnaires.forEach(item => {
-                item.onclick = evt => router.navigate(`/quiz/${item.uid}`);
+        response.json().then(data => {
+
+            console.log(data);
+            
+            const quuizes = document.createElement("div");
+
+            data.forEach(item => {
+                const q = new Card();
+                q.createTitle(item.name);
+                q.setClicker(evt => router.navigate(`/quiz/${item.uid}`));
+
+                quuizes.appendChild(q);
+                this.container.appendChild(quuizes);
             });
         });
     }
