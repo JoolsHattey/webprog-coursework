@@ -5,6 +5,13 @@ class EditableQuestionnaire extends Component {
     }
 
     initElement(questionnaireData, uid) {
+
+        
+
+        
+
+        this.getResponses(uid);
+
         if(questionnaireData) {
             this.uid = uid;
             this.questions = questionnaireData;
@@ -14,8 +21,25 @@ class EditableQuestionnaire extends Component {
                 "questions": []
             };
         }
+        this.questionsContainer = document.createElement("div");
+        this.responsesContainer = document.createElement("div");
+
+        
+
         this.createTitle();
         this.createButtons(questionnaireData);
+        
+        this.questionsBtn = document.createElement("button");
+        this.questionsBtn.append("Questions");
+        this.responsesBtn = document.createElement("button");
+        this.responsesBtn.append("Responses");
+
+        this.container.appendChild(this.questionsBtn);
+        this.container.appendChild(this.responsesBtn);
+
+        this.container.appendChild(this.questionsContainer);
+        this.container.appendChild(this.responsesContainer);
+
         this.elements = new Array;
         if(questionnaireData) {
             this.changeTitle(questionnaireData.name);
@@ -23,6 +47,67 @@ class EditableQuestionnaire extends Component {
                 this.createNewQuestion(q);
             });
         }
+        
+
+        
+
+        this.questionsBtn.onclick = evt => {
+            this.container.removeChild(this.responsesContainer)
+            this.container.appendChild(this.questionsContainer);
+        }
+        this.responsesBtn.onclick = evt => {
+
+            this.container.removeChild(this.questionsContainer);
+            this.container.appendChild(this.responsesContainer);
+        }
+
+        
+
+
+    }
+
+    async getResponses(uid) {
+        const response = await fetch(`/api/responses/${uid}`);
+
+        // (await response.json()).forEach(item => {
+        //     const q = new Card();
+        //     this.responsesContainer.appendChild(q);
+        // });
+
+        this.questions.questions.forEach(item => {
+            console.log(item)
+            const q = new Card();
+            this.responsesContainer.appendChild(q);
+
+            const chartContainer = document.createElement("div");
+            q.insertElement(chartContainer);
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Question');
+            data.addColumn('string', 'ResponseNum');
+            // data.addRows([
+            //   ['Mushrooms', 3],
+            //   ['Onions', 1],
+            //   ['Olives', 1],
+            //   ['Zucchini', 1],
+            //   ['Pepperoni', 2]
+            // ]);
+            console.log(item)
+    
+            // Set chart options
+            var options = {'title':'How Much Pizza I Ate Last Night',
+                           'width':400,
+                           'height':300};
+    
+
+            let chart = new google.visualization.PieChart(chartContainer);
+            chart.draw(data, options);
+            console.log(chart);
+        })
+
+        
+
+        
     }
 
     createTitle() {
@@ -69,8 +154,10 @@ class EditableQuestionnaire extends Component {
         });
 
         saveButton.append("Save");
-        this.container.appendChild(saveButton);
+        this.questionsContainer.appendChild(saveButton);
     }
+
+    // createResponses
 
     createNewQuestion(questionData) {
 
@@ -91,9 +178,10 @@ class EditableQuestionnaire extends Component {
         const drop = new Dropdown(options);
         q.insertElement(drop);
 
-        this.container.appendChild(q);
+        this.questionsContainer.appendChild(q);
     }
     changeTitle(title) {
+        // console.log(this.container.children);
         this.container.children[0].children[0].value = title;
     }
 }

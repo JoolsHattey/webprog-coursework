@@ -30,6 +30,7 @@ class AdminPage extends Component {
         this.getEditableQuestionnaires();
     }
 
+
     async getEditableQuestionnaires() {
         const response = await fetch("/api/questionnaires")
 

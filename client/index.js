@@ -6,6 +6,8 @@ screen1 = new ScreenComponent();
 x++;
 console.log(x);
 
+google.charts.load('current', {'packages':['corechart']});
+
 function startup() {
     document.querySelector("body").appendChild(screen1);
 }

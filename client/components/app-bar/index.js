@@ -26,15 +26,13 @@ class AppBar extends Component {
         console.log(this.profileCard)
         
         //this.profileCard.shadowRoot.classList.add("profile", "hideProfileCard");
-        this.container.appendChild(this.profileCard);
+        this.shadowRoot.appendChild(this.profileCard);
         this.profileCardVisible = false;
         this.userProfile.onclick = evt => {
             if(this.profileCardVisible) {
-                //this.profileCard.shadowRoot.classList.add("hideProfileCard");
                 this.profileCard.setVisible(false);
                 this.profileCardVisible = false;
             } else {
-                //this.profileCard.shadowRoot.classList.remove("hideProfileCard");
                 this.profileCard.setVisible(true);
                 this.profileCardVisible = true;
             }
