@@ -28,10 +28,12 @@ export class Router {
     matchRoute(route, path) {
         const regEx = new RegExp(route.uri.replace(/:[^\s/]+/g, '([\\w-]+)'));
 
-        console.log(this.routes);
-
-        console.log(path);
         console.log(route);
+        console.log(path)
+        console.log(route.uri)
+
+        var out = path.replace(/{[^}]*}/,route.uri)
+        console.log(out)
 
         if(path.match(regEx)) {
             const params = this.getParams(path);

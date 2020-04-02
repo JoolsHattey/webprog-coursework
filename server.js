@@ -2,26 +2,11 @@
 
 const express = require('express');
 const app = express();
-
-const router = express.Router();
-
 const port = 8080;
-
 const path = require('path');
-
 const firestore = require('./firestore');
 
-app.get('*', express.static(__dirname + '/client'));
 
-app.use('/api', router);
-
-
-// app.use('*', express.static(__dirname + '/client'));
-
-// app.get('*', (req, res) => {
-//     res.sendFile(path.join(__dirname, '/client/index.html'));
-//     // res.writeHead(200, {'Content-Type': 'text/html'});
-// })
 
 
 function submitResponse(req, res) {
@@ -59,6 +44,15 @@ function authenticateUser(req, res) {
     firestore.verifyAuth(req.body.token);
 }
 
+
+const router = express.Router();
+
+app.use('/api', router);
+
+app.use(express.static(__dirname + '/client'))
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '/client/index.html'));
+});
 
 router.post('/submitresponse/:uid', express.json(), submitResponse);
 router.get('/responses/:uid', getResponses);

@@ -11,10 +11,6 @@ export class EditableQuestionnaire extends Component {
 
     initElement(questionnaireData, uid) {
 
-        
-
-        
-
         this.getResponses(uid);
 
         if(questionnaireData) {

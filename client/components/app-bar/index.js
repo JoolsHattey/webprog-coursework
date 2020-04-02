@@ -1,5 +1,6 @@
 import { Component } from '../component.js';
 import { Card } from '../card/index.js';
+import { routerInstance } from '../../index.js';
 
 export class AppBar extends Component {
     constructor() {
@@ -13,6 +14,8 @@ export class AppBar extends Component {
         this.createTitle();
         this.createProfileCard();
         this.createAdminButton();
+        this.homeBtn.onclick = () => routerInstance.navigate('/home');
+        this.adminBtn.onclick = () => routerInstance.navigate('/admin');
     }
 
     createProfileCard() {
@@ -51,16 +54,16 @@ export class AppBar extends Component {
     }
 
     createHomeButton() {
-        this.btn = document.createElement("button");
-        this.btn.classList.add("homeBtn");
-        this.btn.classList.add("btn");
-        this.container.appendChild(this.btn);
+        this.homeBtn = document.createElement("button");
+        this.homeBtn.classList.add("homeBtn");
+        this.homeBtn.classList.add("btn");
+        this.container.appendChild(this.homeBtn);
     }
     createAdminButton() {
-        this.adminbtn = document.createElement("button");
-        this.adminbtn.classList.add("adminBtn");
-        this.adminbtn.classList.add("btn");
-        this.container.appendChild(this.adminbtn);
+        this.adminBtn = document.createElement("button");
+        this.adminBtn.classList.add("adminBtn");
+        this.adminBtn.classList.add("btn");
+        this.container.appendChild(this.adminBtn);
     }
 
     setUser(newValue) {
