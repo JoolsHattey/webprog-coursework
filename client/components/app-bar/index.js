@@ -1,4 +1,7 @@
-class AppBar extends Component {
+import { Component } from '../component.js';
+import { Card } from '../card/index.js';
+
+export class AppBar extends Component {
     constructor() {
         super();
         this.initElement();
@@ -20,12 +23,8 @@ class AppBar extends Component {
 
         this.profileCard = new Card();
         this.profileCard.setVisible(false);
-
         this.profileCard.container.classList.add("profileCard")
 
-        console.log(this.profileCard)
-        
-        //this.profileCard.shadowRoot.classList.add("profile", "hideProfileCard");
         this.shadowRoot.appendChild(this.profileCard);
         this.profileCardVisible = false;
         this.userProfile.onclick = evt => {
@@ -65,7 +64,6 @@ class AppBar extends Component {
     }
 
     setUser(newValue) {
-        console.log(newValue)
         this.displayName.append(newValue.displayName);
         this.email.append(newValue.email);
     }
@@ -73,7 +71,6 @@ class AppBar extends Component {
         this.displayName.innerHTML="";
         this.email.innerHTML="";
         this.logOutButton.innerHTML="Sign In";
-        //this.logOutButton.removeEventListener()
     }
 }
 

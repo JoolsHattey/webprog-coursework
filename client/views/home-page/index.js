@@ -1,4 +1,8 @@
-class HomePage extends Component {
+import { Component } from '../../components/component.js';
+import { Card } from '../../components/card/index.js';
+import { routerInstance } from '../../index.js';
+
+export class HomePage extends Component {
     constructor() {
         super();
         this.initElement();
@@ -7,6 +11,7 @@ class HomePage extends Component {
     initElement() {
         this.container.classList.add("page");
         const btn = document.createElement("button");
+        btn.classList.add("md-button");
         btn.append("See Questionnaires");
         this.container.appendChild(btn);
         btn.onclick = evt => this.getQuestionnaires();
@@ -31,7 +36,10 @@ class HomePage extends Component {
             data.forEach(item => {
                 const q = new Card();
                 q.createTitle(item.name);
-                q.setClicker(evt => router.navigate(`/quiz/${item.uid}`));
+                q.setOnClick(evt => {
+                    console.log(item.uid)
+                    routerInstance.navigate(`/quiz/${item.uid}`)
+                });
 
                 quuizes.appendChild(q);
                 this.container.appendChild(quuizes);

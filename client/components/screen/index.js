@@ -1,12 +1,19 @@
-class ScreenComponent extends Component {
+import { Component } from '/components/component.js';
+import { AppBar } from '../app-bar/index.js';
+import { HomePage } from '../../views/home-page/index.js';
+import { AdminPage } from '../../views/admin-page/index.js';
+import { QuizPage } from '../../views/quiz-page/index.js';
+import { routerInstance } from '../../index.js';
+
+export class RouterOutlet extends Component {
     constructor() {
         super();
         this.appBar = new AppBar();
         this.home = new HomePage();
         this.home.initElement();
         this.admin = new AdminPage();
-        this.appBar.btn.onclick = evt => router.navigate('/home');
-        this.appBar.adminbtn.onclick = evt => router.navigate('/admin');
+        this.appBar.btn.onclick = evt => routerInstance.navigate('/home');
+        this.appBar.adminbtn.onclick = evt => routerInstance.navigate('/admin');
         this.container.appendChild(this.appBar);
         this.homePage();
     }
@@ -41,4 +48,4 @@ class ScreenComponent extends Component {
     }
 }
 
-customElements.define('screen-elmnt', ScreenComponent);
+customElements.define('router-outlet', RouterOutlet);

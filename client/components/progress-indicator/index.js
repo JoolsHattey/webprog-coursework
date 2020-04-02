@@ -1,4 +1,6 @@
-class ProgressIndicator extends Component {
+import { Component } from '../component.js';
+
+export class ProgressIndicator extends Component {
     constructor(numQuestions) {
         super();
         this.container.style="width: 300px; height: 20px; background-color: red";

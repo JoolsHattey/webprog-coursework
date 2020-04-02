@@ -1,4 +1,7 @@
-class AdminPage extends Component {
+import { Component } from '../../components/component.js';
+import { Card } from '../../components/card/index.js';
+
+export class AdminPage extends Component {
     constructor() {
         super();
         this.initElement();
@@ -21,7 +24,7 @@ class AdminPage extends Component {
         button.type = "file";
         button.append("upload");
 
-        button.onchange = uploadJSONQuestionnaire;
+        // button.onchange = uploadJSONQuestionnaire;
 
         this.container.appendChild(button);
     }

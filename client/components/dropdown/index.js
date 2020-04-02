@@ -1,4 +1,6 @@
-class Dropdown extends Component {
+import { Component } from '../component.js';
+
+export class Dropdown extends Component {
     constructor(options) {
         super();
         this.initElement(options)

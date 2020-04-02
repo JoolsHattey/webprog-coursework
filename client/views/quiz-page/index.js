@@ -1,4 +1,8 @@
-class QuizPage extends Component {
+import { Component } from '../../components/component.js';
+import { Questionnaire } from '../../components/quiz/index.js';
+import { EditableQuestionnaire } from '../../components/editable-quiz/index.js';
+
+export class QuizPage extends Component {
     constructor(quizID, editMode) {
         super();
         //this.clearScreen();

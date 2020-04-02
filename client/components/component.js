@@ -1,4 +1,4 @@
-class Component extends HTMLElement {
+export class Component extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({mode: 'open'});

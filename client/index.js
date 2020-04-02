@@ -1,74 +1,48 @@
 "use strict";
 
-let x = 0;
-let screen1;
-screen1 = new ScreenComponent();
-x++;
-console.log(x);
+import { Router } from './router.js';
+import { RouterOutlet } from './components/screen/index.js';
+import { getAuthStatus } from './auth.js';
 
-google.charts.load('current', {'packages':['corechart']});
+// let screen1;
+// screen1 = new ScreenComponent();
+// console.log(screen1)
 
-function startup() {
-    document.querySelector("body").appendChild(screen1);
-}
+// function startup() {
+//     document.querySelector("body").appendChild(screen1);
+// }
 
-window.onload = evt => startup();
+// window.onload = evt => startup();
+
+const screen1 = document.querySelector('screen-elmnt');
 
 
-function clearScreen() {
-    if(document.querySelector("screen-elmnt")) {
-        if(document.querySelector("screen-elmnt").shadowRoot.querySelector("quiz-screen")) {
-            document.querySelector("screen-elmnt").shadowRoot.querySelector("quiz-screen").remove()
-        }
-        if(document.querySelector("screen-elmnt").shadowRoot.querySelector("home-screen")) {
-            document.querySelector("screen-elmnt").shadowRoot.querySelector("home-screen").remove()
-        }
-        if(document.querySelector("screen-elmnt").shadowRoot.querySelector("admin-screen")) {
-            document.querySelector("screen-elmnt").shadowRoot.querySelector("admin-screen").remove()
-        }
-    }
-}
 
+
+/********************************************
+ * Client Routes
+ * **************************************** */
+
+export const routerInstance = new Router();
 
 function homeScreen(req) {
-    clearScreen();
-    // if(!screen1) {
-    //     startup();
-    // }
     screen1.homePage();
 }
 
 function adminScreen(req) {
-    clearScreen();
-    // if(!screen1) {
-    //     startup();
-    // }
     screen1.adminPage();
 }
 
 function quizScreen(req) {
-    clearScreen();
-    // if(!screen1) {
-    //     startup();
-    // }
-    console.log(req)
-    screen1.quizPage(req.param1, req.param2)
+    screen1.quizPage(req.param1, req.param2);
 }
 
-// function defaultRoute(req) {
-//     router.navigate('/home');
-// }
+routerInstance.get('/home', homeScreen);
+routerInstance.get('/admin', adminScreen, getAuthStatus);
+routerInstance.get(`/quiz/:pageCalled`, quizScreen);
+routerInstance.get(`/quiz/:pageCalled/edit`, quizScreen, getAuthStatus);
 
-
-
-const router = new Router();
-router.get('/home', homeScreen);
-router.get('/admin', adminScreen, getAuthStatus);
-router.get(`/quiz/:pageCalled`, quizScreen);
-router.get(`/quiz/:pageCalled/edit`, quizScreen, getAuthStatus);
-// router.get('/', defaultRoute);
-
-router.init();
+routerInstance.init();
 
 
 
@@ -98,14 +72,6 @@ function submitQuestion() {
     }
 }
 
-function sendResponse() {
-    const xhr = new XMLHttpRequest();
-    xhr.open("POST", "/submitresponse", true);
-
-    xhr.setRequestHeader("Content-Type", "application/json");
-
-    xhr.send(JSON.stringify(response));
-}
 
 function editQuestionPage() {
     if(document.querySelector("#questionContainer").children[0]) {
@@ -150,19 +116,6 @@ async function updateQuestionnaire(uid, questionnaire) {
     });
 }
 
-function createQuestionnnaire() {
-
-    const q = document.querySelector("#questionContainer");
-        if(q.children[0]) {
-            q.children[0].remove();
-        }
-
-    const quest = new EditableQuestionnaire();
-    quest.createNewQuestion();
-
-    
-}
-
 async function editQuestionnaire(uid) {
 
     console.log(uid);
@@ -193,22 +146,6 @@ async function upload(event) {
         .then(x => {
             editQuestionnaire(x.id);
         });
-}
-
-async function getQuestionnaires() {
-    const response = await fetch("/questionnaires")
-
-    response.json().then(item => {
-        const questionnairePreview = new QuestionnairePreview(item);
-    });
-}
-
-async function getEditableQuestionnaires() {
-    const response = await fetch("/questionnaires")
-
-    response.json().then(item => {
-        const questionnairePreview = new EditableQuestionnairePreview(item);
-    });
 }
 
 async function submitResponse(uid, response) {

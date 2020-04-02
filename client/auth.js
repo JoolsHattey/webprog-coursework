@@ -42,7 +42,7 @@ function logout() {
     firebase.auth().signOut();
 }
 
-function getAuthStatus() {
+export function getAuthStatus() {
     if(firebase.auth().currentUser) {
         return true;
     }

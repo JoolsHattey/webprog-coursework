@@ -24,3 +24,10 @@ main {
     height: 300px;
     z-index: 10;
 }
+
+.md-button {
+    border: none;
+    background-color: green;
+    margin: 1px;
+    border-radius: 5px;
+}

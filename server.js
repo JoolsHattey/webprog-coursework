@@ -11,12 +11,17 @@ const path = require('path');
 
 const firestore = require('./firestore');
 
-app.use(express.static('client'));
+app.get('*', express.static(__dirname + '/client'));
 
 app.use('/api', router);
 
 
-app.use('*', express.static("client"));
+// app.use('*', express.static(__dirname + '/client'));
+
+// app.get('*', (req, res) => {
+//     res.sendFile(path.join(__dirname, '/client/index.html'));
+//     // res.writeHead(200, {'Content-Type': 'text/html'});
+// })
 
 
 function submitResponse(req, res) {

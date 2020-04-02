@@ -1,4 +1,6 @@
-class Card extends Component {
+import { Component } from '../component.js';
+
+export class Card extends Component {
     constructor() {
         super();
         this.container.classList.add("card");

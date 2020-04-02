@@ -1,4 +1,4 @@
-class Router {
+export class Router {
 
     constructor(){
        this.routes = [];
@@ -25,19 +25,22 @@ class Router {
     matchRoute(route, path) {
         const regEx = new RegExp(route.uri.replace(/:[^\s/]+/g, '([\\w-]+)'));
 
-        const regEx1 = new RegExp("^" + route.uri.replace(/:[^\s/]+/g, '([\\w-]+)') + "$")
+        console.log(this.routes);
 
-        // if(path.match(regEx1)) {
-        //     const params = this.getParams(path);
-        //     this.goToPage(route, path, params);
-        // } else 
+        console.log(path);
+        console.log(route);
+
         if(path.match(regEx)) {
             const params = this.getParams(path);
             this.goToPage(route, path, params);
+            return true;
+        } else {
+            return false;
         }
     }
 
     goToPage(route, path, params) {
+        this.clearScreen();
         let req;
         if(params) {
             const param1 = params[0];
@@ -68,6 +71,7 @@ class Router {
     }
 
     navigate(path) {
+        console.log(path)
         this.routes.some(route=>{
             this.matchRoute(route, path);
         });
@@ -87,6 +91,20 @@ class Router {
             return [( url[ url.length - 2 ] ), ( url[ url.length - 1 ] )];
         } else if(numParams === 4) {
             return [( url[ url.length - 3 ] ), ( url[ url.length - 2 ] ), ( url[ url.length - 1 ] )];
+        }
+    }
+
+    clearScreen() {
+        if(document.querySelector("screen-elmnt")) {
+            if(document.querySelector("screen-elmnt").shadowRoot.querySelector("quiz-screen")) {
+                document.querySelector("screen-elmnt").shadowRoot.querySelector("quiz-screen").remove()
+            }
+            if(document.querySelector("screen-elmnt").shadowRoot.querySelector("home-screen")) {
+                document.querySelector("screen-elmnt").shadowRoot.querySelector("home-screen").remove()
+            }
+            if(document.querySelector("screen-elmnt").shadowRoot.querySelector("admin-screen")) {
+                document.querySelector("screen-elmnt").shadowRoot.querySelector("admin-screen").remove()
+            }
         }
     }
 }

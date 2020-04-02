@@ -1,4 +1,6 @@
-class EditableQuestionnaire extends Component {
+import { Component } from '../component.js';
+
+export class EditableQuestionnaire extends Component {
     constructor(questionnaireData, uid) {
         super();
         this.initElement(questionnaireData, uid);
@@ -77,6 +79,7 @@ class EditableQuestionnaire extends Component {
         this.questions.questions.forEach(item => {
             console.log(item)
             const q = new Card();
+
             this.responsesContainer.appendChild(q);
 
             const chartContainer = document.createElement("div");
@@ -157,11 +160,19 @@ class EditableQuestionnaire extends Component {
         this.questionsContainer.appendChild(saveButton);
     }
 
+    dragstart_handler(ev) {
+        // Add the target element's id to the data transfer object
+        ev.dataTransfer.setData("text/plain", ev.target.id);
+      }
+
     // createResponses
 
     createNewQuestion(questionData) {
 
         const q = new Card();
+        q.id = questionData.id;
+        q.addEventListener("dragstart", evt => this.dragstart_handler(evt));
+        q.setAttribute("draggable", "true");
         const i = new Input();
         i.setInput(questionData.text)
         q.insertElement(i);

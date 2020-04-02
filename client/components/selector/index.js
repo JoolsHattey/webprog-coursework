@@ -1,4 +1,6 @@
-class Selector extends Component {
+import { Component } from '../component.js';
+
+export class Selector extends Component {
     constructor(options, type) {
         super();
         options.forEach(opt => {

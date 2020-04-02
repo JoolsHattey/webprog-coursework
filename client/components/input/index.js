@@ -1,4 +1,6 @@
-class Input extends Component {
+import { Component } from '../component.js';
+
+export class Input extends Component {
     constructor(type) {
         super();
 

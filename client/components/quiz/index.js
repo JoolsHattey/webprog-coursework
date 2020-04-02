@@ -1,4 +1,10 @@
-class Questionnaire extends Component {
+import { Component } from '../component.js';
+import { Card } from '../card/index.js';
+import { Input } from '../input/index.js';
+import { Selector } from '../selector/index.js';
+import { ProgressIndicator } from '../progress-indicator/index.js';
+
+export class Questionnaire extends Component {
     constructor(questionnaireData, uid) {
         super();
         this.initElement(questionnaireData, uid);
