@@ -24,7 +24,7 @@ firebase.auth().onAuthStateChanged(function(user) {
   });
 let authStatus;
 
-function login() {
+export function login() {
     const provider = new firebase.auth.GoogleAuthProvider();
     
     firebase.auth().signInWithPopup(provider)

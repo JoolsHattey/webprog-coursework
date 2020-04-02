@@ -1,5 +1,6 @@
 import { Component } from '../../components/component.js';
 import { Card } from '../../components/card/index.js';
+import { routerInstance } from '../../index.js';
 
 export class AdminPage extends Component {
     constructor() {
@@ -43,7 +44,7 @@ export class AdminPage extends Component {
             data.forEach(item => {
                 const q = new Card();
                 q.createTitle(item.name);
-                q.setOnClick(evt => router.navigate(`/quiz/${item.uid}/edit`));
+                q.setOnClick(evt => routerInstance.navigate(`/quiz/${item.uid}/edit`));
                 quizes.appendChild(q);
             });
         });

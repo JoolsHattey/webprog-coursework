@@ -1,14 +1,17 @@
+import { Component } from "./components/component.js";
+
 export class Router {
 
     constructor(){
        this.routes = [];
+       this.routerOutlet = null;
     }
 
-    get(uri, callback, authGuard){
-        if(!uri || !callback) throw new Error('uri or callback must be given');
+    get(uri, component, authGuard){
+        if(!uri || !component) throw new Error('uri or callback must be given');
 
         if(typeof uri !== "string") throw new TypeError('typeof uri must be a string');
-        if(typeof callback !== "function") throw new TypeError('typeof callback must be a function');
+        if(!component instanceof Component) throw new TypeError('typeof callback must be a function');
 
         this.routes.forEach(route=>{
             if(route.uri === uri) throw new Error(`the uri ${route.uri} already exists`);
@@ -16,7 +19,7 @@ export class Router {
 
         const route = {
             uri,
-            callback,
+            component,
             authGuard
         }
         this.routes.push(route);
@@ -53,17 +56,19 @@ export class Router {
         if(route.authGuard) {
             if(route.authGuard.call()) {
                 history.pushState({}, "", path)
-                return route.callback.call(this, req);
+                // return route.callback.call(this, req);
             } else {
                 console.log("Auth error");
             }
         } else {
             history.pushState({}, "", path)
-            return route.callback.call(this, req);
+            console.log(req)
+            this.routerOutlet.routeComponent(route.component, req);
         }
     }
 
-    init(){
+    init(routerOutlet){
+        this.routerOutlet = routerOutlet;
         this.routes.some(route=>{
             const path = window.location.pathname;
             this.matchRoute(route, path);

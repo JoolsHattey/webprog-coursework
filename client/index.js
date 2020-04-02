@@ -2,7 +2,10 @@
 
 import { Router } from './router.js';
 import { RouterOutlet } from './components/screen/index.js';
-import { getAuthStatus } from './auth.js';
+import { getAuthStatus, login } from './auth.js';
+import { HomePage } from './views/home-page/index.js';
+import { AdminPage } from './views/admin-page/index.js';
+import { QuizPage } from './views/quiz-page/index.js';
 
 // let screen1;
 // screen1 = new ScreenComponent();
@@ -15,6 +18,8 @@ import { getAuthStatus } from './auth.js';
 // window.onload = evt => startup();
 
 const screen1 = document.querySelector('screen-elmnt');
+
+const routerOutlet = document.querySelector('router-outlet');
 
 
 
@@ -37,12 +42,12 @@ function quizScreen(req) {
     screen1.quizPage(req.param1, req.param2);
 }
 
-routerInstance.get('/home', homeScreen);
-routerInstance.get('/admin', adminScreen, getAuthStatus);
-routerInstance.get(`/quiz/:pageCalled`, quizScreen);
-routerInstance.get(`/quiz/:pageCalled/edit`, quizScreen, getAuthStatus);
+routerInstance.get('/home', HomePage);
+routerInstance.get('/admin', AdminPage);
+routerInstance.get(`/quiz/:pageCalled`, QuizPage);
+routerInstance.get(`/quiz/:pageCalled/edit`, QuizPage);
 
-routerInstance.init();
+routerInstance.init(routerOutlet);
 
 
 

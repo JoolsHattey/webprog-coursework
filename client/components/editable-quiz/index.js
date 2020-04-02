@@ -1,4 +1,7 @@
 import { Component } from '../component.js';
+import { Card } from '../card/index.js';
+import { Input } from '../input/index.js';
+import { Dropdown } from '../dropdown/index.js';
 
 export class EditableQuestionnaire extends Component {
     constructor(questionnaireData, uid) {
@@ -82,30 +85,6 @@ export class EditableQuestionnaire extends Component {
 
             this.responsesContainer.appendChild(q);
 
-            const chartContainer = document.createElement("div");
-            q.insertElement(chartContainer);
-
-            var data = new google.visualization.DataTable();
-            data.addColumn('string', 'Question');
-            data.addColumn('string', 'ResponseNum');
-            // data.addRows([
-            //   ['Mushrooms', 3],
-            //   ['Onions', 1],
-            //   ['Olives', 1],
-            //   ['Zucchini', 1],
-            //   ['Pepperoni', 2]
-            // ]);
-            console.log(item)
-    
-            // Set chart options
-            var options = {'title':'How Much Pizza I Ate Last Night',
-                           'width':400,
-                           'height':300};
-    
-
-            let chart = new google.visualization.PieChart(chartContainer);
-            chart.draw(data, options);
-            console.log(chart);
         })
 
         

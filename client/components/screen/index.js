@@ -8,43 +8,18 @@ import { routerInstance } from '../../index.js';
 export class RouterOutlet extends Component {
     constructor() {
         super();
-        this.appBar = new AppBar();
+        this.appBar = document.querySelector('app-bar');
         this.home = new HomePage();
-        this.home.initElement();
         this.admin = new AdminPage();
         this.appBar.btn.onclick = evt => routerInstance.navigate('/home');
         this.appBar.adminbtn.onclick = evt => routerInstance.navigate('/admin');
-        this.container.appendChild(this.appBar);
+        // this.container.appendChild(this.appBar);
         this.homePage();
     }
-    homePage() {
-        if(this.container.contains(this.admin)) {
-            this.container.removeChild(this.admin);
-        }
-        //
-        this.container.appendChild(this.home);
-        //window.location.replace('/home');
-    }
-    adminPage() {
-        if(this.container.contains(this.home)) {
-            this.container.removeChild(this.home);
-        }
-        
-        //this.admin.initElement();
-        this.container.appendChild(this.admin);
-        //window.location.replace('/admin');
-    }
-    quizPage(quizid, editMode) {
-        if(this.container.contains(this.home)) {
-            this.container.removeChild(this.home);
-        }
-        if(this.container.contains(this.admin)) {
-            this.container.removeChild(this.admin);
-        }
-        this.quiz = new QuizPage(quizid, editMode);
-        this.quiz.initElement(quizid, editMode);
-        this.container.appendChild(this.quiz);
-        //window.location.replace('/admin');
+    routeComponent(component, req) {
+        console.log(component)
+        this.container.innerHTML = '';
+        this.container.appendChild(new component(req));
     }
 }
 

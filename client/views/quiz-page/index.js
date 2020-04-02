@@ -3,11 +3,11 @@ import { Questionnaire } from '../../components/quiz/index.js';
 import { EditableQuestionnaire } from '../../components/editable-quiz/index.js';
 
 export class QuizPage extends Component {
-    constructor(quizID, editMode) {
+    constructor(req) {
         super();
         //this.clearScreen();
         
-        //this.initElement(quizID, editMode);
+        this.initElement(req.param1, req.param2);
     }
 
     initElement(quizID, editMode) {
