@@ -1,5 +1,8 @@
 .appBar {
-    width: auto;
+    position: sticky;
+    width: 100%;
+    top: 0;
+    z-index: 1;
     height: 56px;
     background-color: #00695c;
     color: white;
@@ -8,19 +11,21 @@
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 4px 8px 1px black;
-    padding-left: 16px;
-    padding-right: 16px;
 }
 
 .btn {
     width: 24px;
     height: 24px;
+    margin-left: 16px;
+    margin-right: 16px;
     outline: none;
     border: none;
+    /* fill: white; */
 }
 
 .homeBtn {
     background: url("../../assets/home-24px.svg");
+    /* fill: white; */
 }
 
 .adminBtn {

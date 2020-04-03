@@ -6,9 +6,11 @@ import { routerInstance } from '../../app.js';
 
 export class HomePage extends Component {
     constructor() {
-        super();
+        super({
+            template: '/views/home-page/index.html'
+        });
         this.container.classList.add("page");
-        this.addTemplate('/views/home-page/index.html').then(() => {
+        this.templatePromise.then(() => {
             const btn = this.shadowRoot.querySelector('#showQuizBtn');
             btn.onclick = () => this.getQuestionnaires();
         });

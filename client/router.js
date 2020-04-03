@@ -3,12 +3,12 @@ import { Component } from "./components/component.js";
 
 export class Router {
 
-    constructor(){
+    constructor() {
        this.routes = [];
        this.routerOutlet = null;
     }
 
-    get(uri, component, authGuard){
+    get(uri, component, authGuard) {
         if(!uri || !component) throw new Error('uri or component must be given');
 
         if(typeof uri !== "string") throw new TypeError('typeof uri must be a string');
@@ -26,14 +26,13 @@ export class Router {
         this.routes.push(route);
     }
 
-    init(routerOutlet){
+    init(routerOutlet) {
         this.routerOutlet = routerOutlet;
-        const path = window.location.pathname;
-        this.navigate(path);
+        this.navigate(window.location.pathname);
     }
 
     navigate(path) {
-        this.routes.some(route=>{
+        this.routes.some(route => {
             this.matchRoute(route, path);
         });
     }

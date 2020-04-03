@@ -1,3 +1,9 @@
+:root {
+    --primary-theme-color: #00695c;
+    --light-theme-color: #439889;
+    --dark-theme-color: #003d33;
+}
+
 .page {
     margin: 10px;
 }
@@ -9,7 +15,6 @@
 html, body, main {
     margin: 0;
     padding: 0;
-    /* width: 100%; */
 }
 main {
     display: flex;
@@ -27,7 +32,20 @@ main {
 
 .md-button {
     border: none;
-    background-color: green;
-    margin: 1px;
-    border-radius: 5px;
+    background-color: var(--primary-theme-color);
+    color: white;
+    padding: 12px 16px;
+    border-radius: 2px;
+    box-shadow: 0 0 4px #999;
+    outline: none;
+    background-position: center;
+    transition: background 0.7s;
+}
+.md-button:hover {
+    background: var(--primary-theme-color) radial-gradient(circle, transparent 1%, var(--primary-theme-color) 1%) center/15000%;
+}
+.md-button:active {
+    background-color: #48a999;
+    background-size: 100%;
+    transition: background 0s;
 }

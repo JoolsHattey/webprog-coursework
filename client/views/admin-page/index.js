@@ -6,11 +6,15 @@ import { routerInstance } from '../../app.js';
 
 export class AdminPage extends Component {
     constructor() {
-        super();
+        super({
+            template: '/views/admin-page/index.html'
+        });
         this.container.classList.add("page");
-        this.addTemplate("/views/admin-page/index.html").then(() => {
+        this.templatePromise.then(() => {
             this.qContainer = this.shadowRoot.querySelector('#quizsContainer');
             this.getEditableQuestionnaires();
+            const newQuizBtn = this.shadowRoot.querySelector('#newQuizBtn');
+            newQuizBtn.onclick = () => routerInstance.navigate('/quiz');
         })
         // this.createUploadButton();
     }

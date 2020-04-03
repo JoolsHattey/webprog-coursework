@@ -1,5 +1,5 @@
 export class Component extends HTMLElement {
-    constructor() {
+    constructor(options) {
         super();
         this.attachShadow({mode: 'open'});
         this.head = document.createElement("head");
@@ -7,6 +7,14 @@ export class Component extends HTMLElement {
         this.shadowRoot.appendChild(this.head);
         this.container = document.createElement("body");
         this.shadowRoot.appendChild(this.container);
+        if(options) {
+            if(options.styles) {
+                this.addStyleSheet(options.styles);
+            }
+            if(options.template) {
+                this.templatePromise = this.addTemplate(options.template);
+            }
+        }
     }
     addStyleSheet(path) {
         const linkElem = document.createElement("link");

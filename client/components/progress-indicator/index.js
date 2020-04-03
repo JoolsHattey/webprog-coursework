@@ -41,6 +41,12 @@ export class ProgressIndicator extends Component {
         this.setAttribute('progress', newValue);
         this.setProgress(newValue);
     }
+    get incrementor() {
+        return this.getAnimations('incrementor');
+    }
+    set incrementor(newValue) {
+        this.setAttribute('incrementor', newValue);
+    }
 }
 
 customElements.define('progress-indicator', ProgressIndicator);

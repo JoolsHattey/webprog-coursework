@@ -10,6 +10,7 @@ const firestore = require('./firestore');
 
 
 function submitResponse(req, res) {
+    console.log(req.body)
     firestore.addResponse(req.params.uid, req.body);
 }
 

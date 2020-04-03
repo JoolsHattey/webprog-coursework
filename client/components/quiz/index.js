@@ -8,57 +8,89 @@ import { ProgressIndicator } from '../progress-indicator/index.js';
 
 export class Questionnaire extends Component {
     constructor(questionnaireData, uid) {
-        super();
-        this.initElement(questionnaireData, uid);
+        super({
+            template: '/components/quiz/index.html'
+        });
+        this.templatePromise.then(() => {
+            this.initElement(questionnaireData, uid);
+        });
     }
 
     initElement(questionnaireData, uid) {
+        this.questionContainer = this.shadowRoot.querySelector('#question');
         this.uid = uid;
         this.response = { "questions": [] };
         this.currentQ = 0;
         this.questions = new Array;
-        this.createTitle(questionnaireData.name);
+        this.changeTitle(questionnaireData.name);
         if(questionnaireData) {
             questionnaireData.questions.forEach(item => {
                 const q = this.createQuestion(item);
                 this.questions.push(q);
             });
         }
-        this.container.appendChild(this.questions[0]);
-        const btn = document.createElement("button");
-        btn.append("Next");
-        this.container.appendChild(btn);
-        this.ProgIndic = new ProgressIndicator(this.questions.length);
-        btn.onclick = (evt => {
-            console.log(this.questions[this.currentQ])
+
+        this.questionContainer.appendChild(this.questions[0]);
+        const btn = this.shadowRoot.querySelector('#nextBtn');
+        btn.onclick = () => {
+            const qType = questionnaireData.questions[this.currentQ].type;
             this.response.questions[this.currentQ] = {
                 "id": this.questions[this.currentQ].id,
-                "answer": this.questions[this.currentQ].getAnswer()
-
+                "answer": this.questions[this.currentQ].shadowRoot.querySelector(qType === 'text' || qType === 'number' ? 'input-elmnt' : 'selector-elmnt').getInput()
             }
             this.currentQ++;
-            this.ProgIndic.increment();
-            this.container.children[1].remove();
-            this.container.insertBefore(this.questions[this.currentQ], btn);
-            if(this.currentQ === this.questions.length-1) {
-                btn.disabled = true;
+            this.questionContainer.removeChild(this.questions[this.currentQ-1]);
+            if(this.currentQ < this.questions.length) {
+                this.questionContainer.appendChild(this.questions[this.currentQ]);
+            } else {
                 this.showSubmitButton();
             }
-        });
-        
-        this.container.appendChild(this.ProgIndic);
+        }
+
+
+
+
+
+
+
+
+
+
+
+        // this.questionContainer.appendChild(this.questions[0]);
+        // const btn = this.shadowRoot.querySelector('#nextBtn');
+        // this.ProgIndic = this.shadowRoot.querySelector('progress-indicator');
+        // this.ProgIndic.incrementor = this.questions.length;
+        // btn.onclick = () => {
+
+        //     console.log(this.questions[this.currentQ])
+        //     console.log(questionnaireData.questions[this.currentQ].type)
+        //     const qType = questionnaireData.questions[this.currentQ].type;
+        //     this.response.questions[this.currentQ] = {
+        //         "id": this.questions[this.currentQ].id,
+        //         "answer": this.questions[this.currentQ].shadowRoot.querySelector(qType === 'text' || qType === 'number' ? 'input-elmnt' : 'selector-elmnt').getInput()
+        //     }
+        //     this.currentQ++;
+        //     this.ProgIndic.increment();
+        //     this.container.children[1].remove();
+        //     this.container.insertBefore(this.questions[this.currentQ], btn);
+        //     if(this.currentQ === this.questions.length-1) {
+        //         btn.disabled = true;
+        //         this.showSubmitButton();
+        //     }
+        // };
+        // this.container.appendChild(this.ProgIndic);
     }
 
-    createTitle(name) {
-        const title = document.createElement("h4");
+    changeTitle(name) {
+        const title = this.shadowRoot.querySelector('#title')
         title.append(name);
-        this.container.appendChild(title);
     }
 
     showSubmitButton() {
         const submit = document.createElement("button");
         submit.append("Submit");
-        submit.onclick = (evt => submitResponse(this.uid, this.response));
+        submit.onclick = () => this.submitResponse(this.uid, this.response);
         this.container.appendChild(submit);
     }
 
@@ -66,7 +98,6 @@ export class Questionnaire extends Component {
         this.question = new Card();
         this.question.createTitle(questionData.text);
         this.question.id = questionData.id;
-        //this.container.classList.add("card");
         this.createInput(questionData);
         return this.question;
     }
@@ -89,8 +120,19 @@ export class Questionnaire extends Component {
                 input = new Selector(questionData.options, "checkbox");
                 break;
         }
-    
         this.question.container.appendChild(input);
+    }
+
+    async submitResponse(uid, response) {
+        console.log(uid, response)
+
+        await fetch(`/api/submitresponse/${uid}`, {
+            method: 'POST',
+            body: JSON.stringify(response),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
     }
 
     getAnswer() {

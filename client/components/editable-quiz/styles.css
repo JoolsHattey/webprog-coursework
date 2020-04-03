@@ -1,0 +1,15 @@
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+#newQ {
+    align-self: center;
+}
+
+.titleContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-content: space-between;
+}

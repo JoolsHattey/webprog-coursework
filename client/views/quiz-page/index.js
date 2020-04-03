@@ -8,11 +8,15 @@ export class QuizPage extends Component {
     constructor(req) {
         super();
         this.container.classList.add("page");
-        this.addTemplate('/views/home-page/index.html').then(() => {
-            const btn = this.shadowRoot.querySelector('#showQuizBtn');
-            btn.onclick = () => this.getQuestionnaires();
-        });
-        this.getQuestionnaire(req.params[0], req.params[1]);
+        // this.addTemplate('/views/quiz-page/index.html').then(() => {
+            
+        // });
+        if(!req.params[0]) {
+            this.createQuestionnaire();
+        } else {
+            this.getQuestionnaire(req.params[0], req.params[1]);
+        }
+        
     }
 
     async getQuestionnaire(uid, editMode) {
@@ -22,12 +26,24 @@ export class QuizPage extends Component {
 
         let q;
         if(editMode === "edit") {
-            console.log("edit")
             q = new EditableQuestionnaire(quesitonnaire, uid);
         } else {
-            console.log("view")
             q = new Questionnaire(quesitonnaire, uid);
         }
+        this.container.appendChild(q);
+    }
+
+    async createQuestionnaire() {
+
+        const request = await fetch('/api/createquestionnaire', {
+            method: 'POST'
+        });
+        const questionnaire = await(request.json());
+
+        console.log(questionnaire)
+
+        const q = new EditableQuestionnaire({ name: "", questions: [] }, questionnaire.id);
+
         this.container.appendChild(q);
     }
 }

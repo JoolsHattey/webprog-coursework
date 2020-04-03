@@ -66,6 +66,7 @@ function getResponses(uid) {
 
 function createQuestionnaire(questionnaire, authToken) {
     return Observable.create(observer => {
+        if(!questionnaire) questionnaire = {};
         firebase.firestore().collection("questionnaires").add(questionnaire)
             .then(docRef => {
                 observer.next({id: docRef.id});
