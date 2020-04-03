@@ -13,7 +13,7 @@ export class AppBar extends Component {
     initElement() {
         this.addStyleSheet("/components/app-bar/styles.css");
         this.container.classList.add("appBar");
-        this.addHTMLFile("/components/app-bar/index.html").then(() => {
+        this.addTemplate("/components/app-bar/index.html").then(() => {
             this.homeBtn = this.shadowRoot.querySelector('#home');
             this.adminBtn = this.shadowRoot.querySelector('#admin');
             this.homeBtn.onclick = () => routerInstance.navigate('/home');

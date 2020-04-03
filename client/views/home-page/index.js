@@ -7,24 +7,12 @@ import { routerInstance } from '../../app.js';
 export class HomePage extends Component {
     constructor() {
         super();
-        this.initElement();
-    }
-
-    initElement() {
         this.container.classList.add("page");
-        const btn = document.createElement("button");
-        btn.classList.add("md-button");
-        btn.append("See Questionnaires");
-        this.container.appendChild(btn);
-        btn.onclick = evt => this.getQuestionnaires();
+        this.addTemplate('/views/home-page/index.html').then(() => {
+            const btn = this.shadowRoot.querySelector('#showQuizBtn');
+            btn.onclick = () => this.getQuestionnaires();
+        });
     }
-
-    clearScreen() {
-        this.container.innerHTML=""
-        console.log(this.container.children[1])
-    }
-
-    
 
     async getQuestionnaires() {
         const response = await fetch("/api/questionnaires")

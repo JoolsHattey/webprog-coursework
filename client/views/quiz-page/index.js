@@ -7,36 +7,20 @@ import { EditableQuestionnaire } from '../../components/editable-quiz/index.js';
 export class QuizPage extends Component {
     constructor(req) {
         super();
-        //this.clearScreen();
-        
-        this.initElement(req.params[0], req.params[1]);
-    }
-
-    initElement(quizID, editMode) {
         this.container.classList.add("page");
-        this.getQuestionnaire(quizID, editMode);
+        this.addTemplate('/views/home-page/index.html').then(() => {
+            const btn = this.shadowRoot.querySelector('#showQuizBtn');
+            btn.onclick = () => this.getQuestionnaires();
+        });
+        this.getQuestionnaire(req.params[0], req.params[1]);
     }
-
-    clearScreen() {
-        this.container.innerHTML=""
-        console.log(this.container.children[1])
-    }
-
 
     async getQuestionnaire(uid, editMode) {
-        console.log(uid)
-        console.log(editMode);
+
         const request = await fetch(`/api/questionnaire/${uid}`);
-    
         const quesitonnaire = await(request.json());
 
-        console.log(quesitonnaire)
-
         let q;
-
-        console.log(editMode);
-
-
         if(editMode === "edit") {
             console.log("edit")
             q = new EditableQuestionnaire(quesitonnaire, uid);
@@ -44,11 +28,6 @@ export class QuizPage extends Component {
             console.log("view")
             q = new Questionnaire(quesitonnaire, uid);
         }
-    
-        
-
-        this.clearScreen();
-
         this.container.appendChild(q);
     }
 }
