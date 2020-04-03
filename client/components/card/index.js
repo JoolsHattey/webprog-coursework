@@ -1,3 +1,5 @@
+"use strict";
+
 import { Component } from '../component.js';
 
 export class Card extends Component {

@@ -14,4 +14,8 @@ export class Component extends HTMLElement {
         linkElem.setAttribute("href", path);
         this.head.appendChild(linkElem);
     }
+    async addHTMLFile(path) {
+        let res = await fetch(path);
+        this.container.innerHTML = await res.text();
+    }
 }

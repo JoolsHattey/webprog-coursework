@@ -1,3 +1,5 @@
+"use strict";
+
 import { Component } from '../../components/component.js';
 import { Questionnaire } from '../../components/quiz/index.js';
 import { EditableQuestionnaire } from '../../components/editable-quiz/index.js';
@@ -7,7 +9,7 @@ export class QuizPage extends Component {
         super();
         //this.clearScreen();
         
-        this.initElement(req.param1, req.param2);
+        this.initElement(req.params[0], req.params[1]);
     }
 
     initElement(quizID, editMode) {

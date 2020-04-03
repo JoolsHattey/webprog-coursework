@@ -1,3 +1,4 @@
+"use strict";
 const firebaseConfig = {
     apiKey: "AIzaSyB0cnilljayJ3axmCdJyBvGV_nLdDQ9csI",
     authDomain: "webprog-coursework-e4b42.firebaseapp.com",

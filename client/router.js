@@ -1,3 +1,4 @@
+"use strict";
 import { Component } from "./components/component.js";
 
 export class Router {
@@ -8,10 +9,10 @@ export class Router {
     }
 
     get(uri, component, authGuard){
-        if(!uri || !component) throw new Error('uri or callback must be given');
+        if(!uri || !component) throw new Error('uri or component must be given');
 
         if(typeof uri !== "string") throw new TypeError('typeof uri must be a string');
-        if(!component instanceof Component) throw new TypeError('typeof callback must be a function');
+        if(!component instanceof Component) throw new TypeError('typeof component must be a Component');
 
         this.routes.forEach(route=>{
             if(route.uri === uri) throw new Error(`the uri ${route.uri} already exists`);
@@ -25,18 +26,23 @@ export class Router {
         this.routes.push(route);
     }
 
+    init(routerOutlet){
+        this.routerOutlet = routerOutlet;
+        const path = window.location.pathname;
+        this.navigate(path);
+    }
+
+    navigate(path) {
+        this.routes.some(route=>{
+            this.matchRoute(route, path);
+        });
+    }
+
     matchRoute(route, path) {
         const regEx = new RegExp(route.uri.replace(/:[^\s/]+/g, '([\\w-]+)'));
 
-        console.log(route);
-        console.log(path)
-        console.log(route.uri)
-
-        var out = path.replace(/{[^}]*}/,route.uri)
-        console.log(out)
-
         if(path.match(regEx)) {
-            const params = this.getParams(path);
+            const params = this.getParams(route, path);
             this.goToPage(route, path, params);
             return true;
         } else {
@@ -45,73 +51,34 @@ export class Router {
     }
 
     goToPage(route, path, params) {
-        this.clearScreen();
-        let req;
-        if(params) {
-            const param1 = params[0];
-            const param2 = params[1];
-            req = { path, param1, param2 };
-        } else {
-            req = { path };
-        }
+        const req = { path, params };
 
-        if(route.authGuard) {
-            if(route.authGuard.call()) {
-                history.pushState({}, "", path)
-                // return route.callback.call(this, req);
-            } else {
-                console.log("Auth error");
-            }
-        } else {
-            history.pushState({}, "", path)
-            console.log(req)
-            this.routerOutlet.routeComponent(route.component, req);
-        }
+        // TODO
+        // if(route.authGuard) {
+        //     if(route.authGuard.call()) {
+        //         history.pushState({}, "", path)
+        //         // return route.callback.call(this, req);
+        //     } else {
+        //         console.log("Auth error");
+        //     }
+        // } else {
+
+        // Set address bar to router path
+        history.pushState({}, "", path)
+        console.log(req)
+        this.routerOutlet.routeComponent(route.component, req);
+        // }
     }
 
-    init(routerOutlet){
-        this.routerOutlet = routerOutlet;
-        this.routes.some(route=>{
-            const path = window.location.pathname;
-            this.matchRoute(route, path);
-        });
-    }
+    getParams(route, path) {
+        // Remove route name to get paramater string
+        const paramString = path.replace(route.uri, '');
 
-    navigate(path) {
-        console.log(path)
-        this.routes.some(route=>{
-            this.matchRoute(route, path);
-        });
-    }
+        // Split params using / and output into array
+        const params = paramString.split('/')
+            // Remove empty params
+            .filter(el => {return el.length != 0});
 
-    getParams(path) {
-
-        console.log(path)
-
-        const numParams = path.split("/").length - 1
-
-        const url = path.split( '/' );
-
-        if(numParams === 2) {
-            return [( url[ url.length - 1 ] )];
-        } else if(numParams === 3) {
-            return [( url[ url.length - 2 ] ), ( url[ url.length - 1 ] )];
-        } else if(numParams === 4) {
-            return [( url[ url.length - 3 ] ), ( url[ url.length - 2 ] ), ( url[ url.length - 1 ] )];
-        }
-    }
-
-    clearScreen() {
-        if(document.querySelector("screen-elmnt")) {
-            if(document.querySelector("screen-elmnt").shadowRoot.querySelector("quiz-screen")) {
-                document.querySelector("screen-elmnt").shadowRoot.querySelector("quiz-screen").remove()
-            }
-            if(document.querySelector("screen-elmnt").shadowRoot.querySelector("home-screen")) {
-                document.querySelector("screen-elmnt").shadowRoot.querySelector("home-screen").remove()
-            }
-            if(document.querySelector("screen-elmnt").shadowRoot.querySelector("admin-screen")) {
-                document.querySelector("screen-elmnt").shadowRoot.querySelector("admin-screen").remove()
-            }
-        }
+        return params
     }
 }

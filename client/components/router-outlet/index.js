@@ -1,3 +1,5 @@
+"use strict";
+
 import { Component } from '/components/component.js';
 
 export class RouterOutlet extends Component {

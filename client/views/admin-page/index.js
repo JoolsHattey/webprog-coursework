@@ -1,6 +1,8 @@
+"use strict";
+
 import { Component } from '../../components/component.js';
 import { Card } from '../../components/card/index.js';
-import { routerInstance } from '../../index.js';
+import { routerInstance } from '../../app.js';
 
 export class AdminPage extends Component {
     constructor() {

@@ -1,6 +1,8 @@
+"use strict";
+
 import { Component } from '../component.js';
 import { Card } from '../card/index.js';
-import { routerInstance } from '../../index.js';
+import { routerInstance } from '../../app.js';
 
 export class AppBar extends Component {
     constructor() {
@@ -10,12 +12,13 @@ export class AppBar extends Component {
 
     initElement() {
         this.addStyleSheet("/components/app-bar/styles.css");
-        this.createHomeButton();
-        this.createTitle();
-        this.createProfileCard();
-        this.createAdminButton();
-        this.homeBtn.onclick = () => routerInstance.navigate('/home');
-        this.adminBtn.onclick = () => routerInstance.navigate('/admin');
+        this.container.classList.add("appBar");
+        this.addHTMLFile("/components/app-bar/index.html").then(() => {
+            this.homeBtn = this.shadowRoot.querySelector('#home');
+            this.adminBtn = this.shadowRoot.querySelector('#admin');
+            this.homeBtn.onclick = () => routerInstance.navigate('/home');
+            this.adminBtn.onclick = () => routerInstance.navigate('/admin');
+        });
     }
 
     createProfileCard() {
@@ -48,24 +51,6 @@ export class AppBar extends Component {
         this.logOutButton.onclick = evt => logout();
         this.profileCard.appendChild(this.logOutButton);
     }
-    createTitle() {
-        this.container.append("Questionnaire App");
-        this.container.classList.add("appBar");
-    }
-
-    createHomeButton() {
-        this.homeBtn = document.createElement("button");
-        this.homeBtn.classList.add("homeBtn");
-        this.homeBtn.classList.add("btn");
-        this.container.appendChild(this.homeBtn);
-    }
-    createAdminButton() {
-        this.adminBtn = document.createElement("button");
-        this.adminBtn.classList.add("adminBtn");
-        this.adminBtn.classList.add("btn");
-        this.container.appendChild(this.adminBtn);
-    }
-
     setUser(newValue) {
         this.displayName.append(newValue.displayName);
         this.email.append(newValue.email);

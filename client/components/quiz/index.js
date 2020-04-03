@@ -1,3 +1,5 @@
+"use strict";
+
 import { Component } from '../component.js';
 import { Card } from '../card/index.js';
 import { Input } from '../input/index.js';
