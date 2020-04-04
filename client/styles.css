@@ -4,6 +4,10 @@
     --dark-theme-color: #003d33;
 }
 
+progress-indicator {
+    --prog-width: 0;
+}
+
 .page {
     margin: 10px;
 }

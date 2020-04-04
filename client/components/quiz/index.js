@@ -29,9 +29,10 @@ export class Questionnaire extends Component {
                 this.questions.push(q);
             });
         }
-
         this.questionContainer.appendChild(this.questions[0]);
         const btn = this.shadowRoot.querySelector('#nextBtn');
+        const progressIndicator = this.shadowRoot.querySelector('progress-indicator');
+        progressIndicator.steps = this.questions.length;
         btn.onclick = () => {
             const qType = questionnaireData.questions[this.currentQ].type;
             this.response.questions[this.currentQ] = {
@@ -45,7 +46,10 @@ export class Questionnaire extends Component {
             } else {
                 this.showSubmitButton();
             }
+            progressIndicator.increment();
         }
+
+        
 
 
 
