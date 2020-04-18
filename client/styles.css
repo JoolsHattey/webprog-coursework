@@ -1,3 +1,5 @@
+/* Global Styles */
+
 :root {
     --primary-theme-color: #00695c;
     --light-theme-color: #439889;
@@ -32,6 +34,22 @@ main {
     width: 100px;
     height: 300px;
     z-index: 10;
+}
+
+.md-icon-btn {
+    width: 24px;
+    height: 24px;
+    margin-left: 16px;
+    margin-right: 16px;
+    padding: 0;
+    outline: none;
+    border: none;
+    background-color: transparent;
+}
+
+.md-icon-btn img {
+    width: 24px;
+    height: 24px;
 }
 
 .md-button {

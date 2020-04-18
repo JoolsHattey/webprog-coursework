@@ -80,28 +80,34 @@ export class EditableQuestionnaire extends Component {
     createNewQuestion(questionData) {
 
         const q = new Card();
-        const i = new Input();
-        if(questionData) {
-            q.id = questionData.id;
-            i.setInput(questionData.text);
-        }
 
-        q.insertElement(i);
-        const options = [
-            {"value": "text",
-            "text": "Text Input"},
-            {"value": "number",
-            "text": "Number Input"},
-            {"value": "single-select",
-            "text": "Single-select Input"},
-            {"value": "multi-select",
-            "text": "Multi-select Input"}
-        ]
-        const drop = new Dropdown(options);
-        q.insertElement(drop);
+        q.addTemplate('/components/editable-quiz/quiz-item.html').then(() => {
+            const i = q.shadowRoot.querySelector('input-elmnt')
+            
+            if(questionData) {
+                q.id = questionData.id;
+                i.setInput(questionData.text);
+            }
 
-        this.questionsContainer.appendChild(q);
+            const options = [
+                {"value": "text",
+                "text": "Text Input"},
+                {"value": "number",
+                "text": "Number Input"},
+                {"value": "single-select",
+                "text": "Single-select Input"},
+                {"value": "multi-select",
+                "text": "Multi-select Input"}
+            ]
+            const drop = q.shadowRoot.querySelector('dropdown-el');
+            drop.setOptions(options);
+
+            const deleteBtn = this.shadowRoot.querySelector('#deleteBtn');
+
+            this.questionsContainer.appendChild(q);
+        });
     }
+
     changeTitle(title) {
         this.shadowRoot.querySelector('input-elmnt').setInput(title);
     }

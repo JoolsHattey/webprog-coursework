@@ -13,29 +13,10 @@
     box-shadow: 0 4px 8px 1px black;
 }
 
-.btn {
-    width: 24px;
-    height: 24px;
-    margin-left: 16px;
-    margin-right: 16px;
-    outline: none;
-    border: none;
-    /* fill: white; */
-}
-
-.homeBtn {
-    background: url("../../assets/home-24px.svg");
-    /* fill: white; */
-}
-
-.adminBtn {
-    background: url("../../assets/settings-24px.svg");
-}
-
-img {
+/* img {
     border-radius: 50%;
     height: 30px;
-}
+} */
 
 .profile {
     position: absolute;
