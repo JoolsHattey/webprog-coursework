@@ -8,10 +8,6 @@ firebase.initializeApp({
     databaseURL: "https://webprog-coursework-e4b42.firebaseio.com"
 });
 
-const Observable = require('rxjs/Observable').Observable;
-const from = require('rxjs/Observable/fromPromise').fromPromise;
-
-
 /**********************
  * User
  * ****************** */
@@ -21,79 +17,55 @@ function addResponse(uid, response, authToken) {
         .collection("responses").add(response);
 }
 
-function getQuestionnaire(uid, authToken) {
-    //from(firebase.firestore().collection("questionnaires").doc(uid).get())
-    return Observable.create(observer => {
-        firebase.firestore().collection("questionnaires").doc(uid).get()
-            .then(docRef => observer.next(docRef.data()));
-    });
+async function getQuestionnaire(uid, authToken) {
+    const docRef = await firebase.firestore().collection("questionnaires").doc(uid).get();
+    return docRef.data();
 }
 
 /**********************
  * Admin
  * ****************** */
 
-function verifyAuth(idToken) {
-    return Observable.create(observer => {
-        firebase.auth().verifyIdToken(idToken)
-            .then(function(decodedToken) {
-                let uid = decodedToken.uid;
-                observer.next({"result": uid, "auth": true});
-            }).catch(function(error) {
-                observer.next({"result": error, "auth": false});
-            });
-    })
-    
+async function verifyAuth(idToken) {
+    try {
+        const decodedToken = await firebase.auth().verifyIdToken(idToken);
+        let uid = decodedToken.uid;
+        return ({"result": uid, "auth": true});
+    } catch (error) {
+        return ({"result": error, "auth": false});
+    }
 }
 
-function getResponses(uid) {
-    return Observable.create(observer => {
-        let result = new Array;
-        firebase.firestore().collection("questionnaires").doc(uid).collection("responses").get()
-            .then(snapshot => {
-                snapshot.forEach(doc => {
-                    // const item = {
-                    //     "uid": doc.id,
-                    //     "name": doc.data().name
-                    // }
-                    //console.log(doc.data());
-                    result.push(doc.data());
-                });
-                observer.next(result);
-            });
+async function getResponses(uid) {
+    let result = new Array;
+    const snapshot = await firebase.firestore().collection("questionnaires").doc(uid).collection("responses").get();
+    snapshot.forEach(doc => {
+        result.push(doc.data());
     });
+    return result;
 }
 
-function createQuestionnaire(questionnaire, authToken) {
-    return Observable.create(observer => {
-        if(!questionnaire) questionnaire = {};
-        firebase.firestore().collection("questionnaires").add(questionnaire)
-            .then(docRef => {
-                observer.next({id: docRef.id});
-            });
-    });
+async function createQuestionnaire(questionnaire, authToken) {
+    if(!questionnaire) questionnaire = {};
+    const docRef = await firebase.firestore().collection("questionnaires").add(questionnaire);
+    return ({id: docRef.id});
 }
 
 function editQuestionnaire(uid, questionnaire, authToken) {
     firebase.firestore().collection("questionnaires").doc(uid).update(questionnaire);
 }
 
-function getQuestionnaires(authToken) {
-    return Observable.create(observer => {
-        let result = new Array;
-        firebase.firestore().collection("questionnaires").get()
-            .then(snapshot => {
-                snapshot.forEach(doc => {
-                    const item = {
-                        "uid": doc.id,
-                        "name": doc.data().name
-                    }
-                    result.push(item);
-                });
-                observer.next(result);
-            });
+async function getQuestionnaires(authToken) {
+    let result = new Array;
+    const snapshot = await firebase.firestore().collection("questionnaires").get();
+    snapshot.forEach(doc => {
+        const item = {
+            "uid": doc.id,
+            "name": doc.data().name
+        }
+        result.push(item);
     });
-    
+    return result;
 }
 
 module.exports = {

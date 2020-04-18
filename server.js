@@ -9,36 +9,29 @@ const firestore = require('./firestore');
 
 
 
-function submitResponse(req, res) {
+async function submitResponse(req, res) {
     console.log(req.body)
     firestore.addResponse(req.params.uid, req.body);
 }
 
-function getResponses(req, res) {
-    firestore.getResponses(req.params.uid)
-        .subscribe(data => {
-            res.send(data);
-    });
-    //res.send(firestore.getResponses());
+async function getResponses(req, res) {
+    res.send(await firestore.getResponses(req.params.uid));
 }
 
-function createQuestionnaire(req, res) {
-    firestore.createQuestionnaire(req.body)
-        .subscribe(data => res.send(data));
+async function createQuestionnaire(req, res) {
+    res.send(await firestore.createQuestionnaire(req.body));
 }
 
-function getQuestionnaire(req, res) {
-    firestore.getQuestionnaire(req.params.uid)
-        .subscribe(data => res.send(data));
+async function getQuestionnaire(req, res) {
+    res.send(await firestore.getQuestionnaire(req.params.uid));
 }
 
-function editQuestionnaire(req, res) {
+async function editQuestionnaire(req, res) {
     firestore.editQuestionnaire(req.params.uid, req.body);
 }
 
-function getQuestionnaires(req, res) {
-    firestore.getQuestionnaires()
-        .subscribe(data => res.send(data));
+async function getQuestionnaires(req, res) {
+    res.send(await firestore.getQuestionnaires())
 }
 
 function authenticateUser(req, res) {
