@@ -38,8 +38,7 @@ export class Router {
     }
 
     matchRoute(route, path) {
-        const regEx = new RegExp(route.uri.replace(/:[^\s/]+/g, '([\\w-]+)'));
-
+        const regEx = new RegExp("^" + route.uri.replace(/:[^\s/]+/g, '([\\w-]+)') + "$");
         if(path.match(regEx)) {
             const params = this.getParams(route, path);
             this.goToPage(route, path, params);
@@ -70,14 +69,22 @@ export class Router {
     }
 
     getParams(route, path) {
-        // Remove route name to get paramater string
-        const paramString = path.replace(route.uri, '');
+        // Get list of parameter names
+        const paramNames = route.uri.split('/:')
+        const routeName = paramNames.shift();
 
+        // Remove route name to get paramater string
+        const paramString = path.replace(routeName, '');
         // Split params using / and output into array
-        const params = paramString.split('/')
+        const paramValues = paramString.split('/')
             // Remove empty params
             .filter(el => {return el.length != 0});
-
-        return params
+        
+        // Create return object of params values with names
+        let params = {};
+        for(let i=0; i<paramValues.length; i++) {
+            params[paramNames[i]] = paramValues[i];
+        }
+        return params;
     }
 }

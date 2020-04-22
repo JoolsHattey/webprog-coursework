@@ -11,10 +11,10 @@ export class QuizPage extends Component {
         // this.addTemplate('/views/quiz-page/index.html').then(() => {
             
         // });
-        if(!req.params[0]) {
+        if(!req.params.quizID) {
             this.createQuestionnaire();
         } else {
-            this.getQuestionnaire(req.params[0], req.params[1]);
+            this.getQuestionnaire(req.params.quizID, req.params.mode);
         }
         
     }

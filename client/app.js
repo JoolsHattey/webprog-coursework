@@ -19,6 +19,6 @@ export const routerInstance = new Router();
 
 routerInstance.get('/home', HomePage);
 routerInstance.get('/admin', AdminPage);
-routerInstance.get(`/quiz`, QuizPage);
+routerInstance.get(`/quiz/:quizID/:mode`, QuizPage);
 
 routerInstance.init(routerOutlet);
