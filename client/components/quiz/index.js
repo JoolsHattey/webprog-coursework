@@ -5,6 +5,7 @@ import { Card } from '../card/index.js';
 import { Input } from '../input/index.js';
 import { Selector } from '../selector/index.js';
 import { ProgressIndicator } from '../progress-indicator/index.js';
+import { $ } from '../../app.js';
 
 export class Questionnaire extends Component {
     constructor(questionnaireData, uid) {
@@ -17,18 +18,41 @@ export class Questionnaire extends Component {
     }
 
     initElement(questionnaireData, uid) {
+        $(this, '#quizContent').style.display = 'none';
+
+        this.titleContainer = new Card();
+        $(this, '#titleCard').appendChild(this.titleContainer);
+        this.titleContainer.addTemplate('/components/quiz/quiz-title.html')
+            .then(() => {
+                $(this.titleContainer, '#title').append(questionnaireData.name);
+                $(this.titleContainer, '#numQ').append(`${questionnaireData.questions.length} Questions`);
+                $(this.titleContainer, '#startBtn').onclick = () => {
+                    $(this, '#quizContent').style.display = 'block';
+                    this.titleContainer.style.display = 'none';
+                }
+            });
+        
+        const finishCard = new Card();
+        finishCard.addTemplate('/components/quiz/quiz-finish.html')
+            .then(() => {
+                $(finishCard, '#submitBtn').onclick = () => {
+                    this.submitResponse(this.uid, this.response);
+                }
+            });
+
         this.questionContainer = this.shadowRoot.querySelector('#question');
         this.uid = uid;
         this.response = { "questions": [] };
         this.currentQ = 0;
+        
         this.questions = new Array;
-        this.changeTitle(questionnaireData.name);
         if(questionnaireData) {
             questionnaireData.questions.forEach(item => {
                 const q = this.createQuestion(item);
                 this.questions.push(q);
             });
         }
+
         this.questionContainer.appendChild(this.questions[0]);
         const btn = this.shadowRoot.querySelector('#nextBtn');
         const progressIndicator = this.shadowRoot.querySelector('progress-indicator');
@@ -44,7 +68,9 @@ export class Questionnaire extends Component {
             if(this.currentQ < this.questions.length) {
                 this.questionContainer.appendChild(this.questions[this.currentQ]);
             } else {
-                this.showSubmitButton();
+                $(this, '#quizContent').style.display = 'none';
+                // this.showSubmitButton();
+                this.container.appendChild(finishCard);
             }
             progressIndicator.increment();
         }
