@@ -51,21 +51,19 @@ export class Router {
     goToPage(route, path, params) {
         const req = { path, params };
 
-        // TODO
-        // if(route.authGuard) {
-        //     if(route.authGuard.call()) {
-        //         history.pushState({}, "", path)
-        //         // return route.callback.call(this, req);
-        //     } else {
-        //         console.log("Auth error");
-        //     }
-        // } else {
-
-        // Set address bar to router path
-        history.pushState({}, "", path)
-        console.log(req)
-        this.routerOutlet.routeComponent(route.component, req);
-        // }
+        if(route.authGuard && params.mode === 'edit') {
+            if(route.authGuard()) {
+                // Set address bar to router path
+                history.pushState({}, "", path)
+                this.routerOutlet.routeComponent(route.component, req);                
+            } else {
+                console.log("Not Authenticated")
+            }
+        } else {
+            // Set address bar to router path
+            history.pushState({}, "", path)
+            this.routerOutlet.routeComponent(route.component, req);            
+        }
     }
 
     getParams(route, path) {

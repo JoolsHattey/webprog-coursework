@@ -10,7 +10,7 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 
-firebase.auth().onAuthStateChanged(function(user) {
+firebase.auth().onAuthStateChanged(user => {
     if (user) {
         //const image = document.createElement("img");
         screen1.appBar.profileImage.src = user.photoURL
@@ -22,7 +22,8 @@ firebase.auth().onAuthStateChanged(function(user) {
         //screen1.appBar.userProfile.appendChild(image)
         screen1.appBar.clearUser();
     }
-  });
+});
+
 let authStatus;
 
 export function login() {
@@ -48,6 +49,15 @@ export function getAuthStatus() {
         return true;
     }
     return false;
+}
+
+export function getAuthStatusAsync() {
+    return new Promise(resolve => {
+        firebase.auth().onAuthStateChanged(user => {
+            if(user) resolve(true);
+            else resolve(false);
+        });
+    });
 }
 
 function sendToken() {

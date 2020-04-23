@@ -19,6 +19,11 @@ export const routerInstance = new Router();
 
 routerInstance.get('/home', HomePage);
 routerInstance.get('/admin', AdminPage);
-routerInstance.get(`/quiz/:quizID/:mode`, QuizPage);
+routerInstance.get(`/quiz/:quizID/:mode`, QuizPage, getAuthStatus);
 
 routerInstance.init(routerOutlet);
+
+
+export function $(ctx, queryName) {
+    return ctx.shadowRoot.querySelector(queryName);
+}

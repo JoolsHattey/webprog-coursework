@@ -30,7 +30,7 @@ export class HomePage extends Component {
                 q.createTitle(item.name);
                 q.setOnClick(evt => {
                     console.log(item.uid)
-                    routerInstance.navigate(`/quiz/${item.uid}`)
+                    routerInstance.navigate(`/quiz/${item.uid}/view`)
                 });
 
                 quuizes.appendChild(q);
