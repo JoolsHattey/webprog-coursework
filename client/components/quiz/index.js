@@ -6,6 +6,7 @@ import { Input } from '../input/index.js';
 import { Selector } from '../selector/index.js';
 import { ProgressIndicator } from '../progress-indicator/index.js';
 import { $ } from '../../app.js';
+import { SnackBar } from "../snack-bar/index.js";
 
 export class Questionnaire extends Component {
     constructor(questionnaireData, uid) {
@@ -18,8 +19,17 @@ export class Questionnaire extends Component {
     }
 
     initElement(questionnaireData, uid) {
+        this.uid = uid;
         $(this, '#quizContent').style.display = 'none';
+        this.initTitleCard(questionnaireData);
+        this.initQuestionCards(questionnaireData);
+        this.initFinishCard();
+        this.completeSnack = new SnackBar();
+        this.completeSnack.addTitle('Quiz submitted');
+        this.container.appendChild(this.completeSnack);
+    }
 
+    initTitleCard(questionnaireData) {
         this.titleContainer = new Card();
         $(this, '#titleCard').appendChild(this.titleContainer);
         this.titleContainer.addTemplate('/components/quiz/quiz-title.html')
@@ -31,30 +41,22 @@ export class Questionnaire extends Component {
                     this.titleContainer.style.display = 'none';
                 }
             });
-        
-        const finishCard = new Card();
-        finishCard.addTemplate('/components/quiz/quiz-finish.html')
-            .then(() => {
-                $(finishCard, '#submitBtn').onclick = () => {
-                    this.submitResponse(this.uid, this.response);
-                }
-            });
+    }
 
+    initQuestionCards(questionnaireData) {
         this.questionContainer = this.shadowRoot.querySelector('#question');
-        this.uid = uid;
+        
         this.response = { "questions": [] };
         this.currentQ = 0;
         
         this.questions = new Array;
-        if(questionnaireData) {
-            questionnaireData.questions.forEach(item => {
-                const q = this.createQuestion(item);
-                this.questions.push(q);
-            });
-        }
+        questionnaireData.questions.forEach(item => {
+            const q = this.createQuestion(item);
+            this.questions.push(q);
+        });
 
         this.questionContainer.appendChild(this.questions[0]);
-        const btn = this.shadowRoot.querySelector('#nextBtn');
+        const btn = $(this, '#nextBtn');
         const progressIndicator = this.shadowRoot.querySelector('progress-indicator');
         progressIndicator.steps = this.questions.length;
         btn.onclick = () => {
@@ -69,47 +71,20 @@ export class Questionnaire extends Component {
                 this.questionContainer.appendChild(this.questions[this.currentQ]);
             } else {
                 $(this, '#quizContent').style.display = 'none';
-                // this.showSubmitButton();
-                this.container.appendChild(finishCard);
+                this.container.appendChild(this.finishCard);
             }
             progressIndicator.increment();
         }
+    }
 
-        
-
-
-
-
-
-
-
-
-
-
-
-        // this.questionContainer.appendChild(this.questions[0]);
-        // const btn = this.shadowRoot.querySelector('#nextBtn');
-        // this.ProgIndic = this.shadowRoot.querySelector('progress-indicator');
-        // this.ProgIndic.incrementor = this.questions.length;
-        // btn.onclick = () => {
-
-        //     console.log(this.questions[this.currentQ])
-        //     console.log(questionnaireData.questions[this.currentQ].type)
-        //     const qType = questionnaireData.questions[this.currentQ].type;
-        //     this.response.questions[this.currentQ] = {
-        //         "id": this.questions[this.currentQ].id,
-        //         "answer": this.questions[this.currentQ].shadowRoot.querySelector(qType === 'text' || qType === 'number' ? 'input-elmnt' : 'selector-elmnt').getInput()
-        //     }
-        //     this.currentQ++;
-        //     this.ProgIndic.increment();
-        //     this.container.children[1].remove();
-        //     this.container.insertBefore(this.questions[this.currentQ], btn);
-        //     if(this.currentQ === this.questions.length-1) {
-        //         btn.disabled = true;
-        //         this.showSubmitButton();
-        //     }
-        // };
-        // this.container.appendChild(this.ProgIndic);
+    initFinishCard() {
+        this.finishCard = new Card();
+        this.finishCard.addTemplate('/components/quiz/quiz-finish.html')
+            .then(() => {
+                $(this.finishCard, '#submitBtn').onclick = () => {
+                    this.submitResponse(this.uid, this.response);
+                }
+            });
     }
 
     changeTitle(name) {
@@ -155,6 +130,8 @@ export class Questionnaire extends Component {
 
     async submitResponse(uid, response) {
         console.log(uid, response)
+
+        this.completeSnack.show();
 
         await fetch(`/api/submitresponse/${uid}`, {
             method: 'POST',

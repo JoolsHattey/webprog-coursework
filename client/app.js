@@ -23,7 +23,11 @@ routerInstance.get(`/quiz/:quizID/:mode`, QuizPage, getAuthStatus);
 
 routerInstance.init(routerOutlet);
 
-
+/**
+ * @param {Element} ctx 
+ * @param {string} queryName 
+ * @return {Element}
+ */
 export function $(ctx, queryName) {
     return ctx.shadowRoot.querySelector(queryName);
 }
