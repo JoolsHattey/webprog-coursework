@@ -4,6 +4,8 @@ import { Component } from '../component.js';
 import { Card } from '../card/index.js';
 import { Input } from '../input/index.js';
 import { Dropdown } from '../dropdown/index.js';
+import { $ } from '../../app.js';
+import { ModalCard } from '../modal-card/index.js';
 
 export class EditableQuestionnaire extends Component {
     constructor(questionnaireData, uid) {
@@ -73,6 +75,20 @@ export class EditableQuestionnaire extends Component {
 
         saveButton.append("Save");
         this.questionsContainer.appendChild(saveButton);
+
+        $(this, '#settingsBtn').onclick = () => {
+            const modal = new ModalCard({
+                template: '/components/editable-quiz/quiz-config-dialog.html'
+            });
+            this.container.appendChild(modal);
+            modal.open();
+            modal.templatePromise.then(() => {
+                modal.resultsObservable.subscribe({next: x => {
+                    console.log(x);
+                }})
+            });
+            
+        }
     }
 
     // createResponses
