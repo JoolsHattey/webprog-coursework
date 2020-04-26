@@ -3,6 +3,7 @@
 import { Component } from '../../components/component.js';
 import { Card } from '../../components/card/index.js';
 import { routerInstance } from '../../app.js';
+import { ModalCard } from '../../components/modal-card/index.js';
 
 export class AdminPage extends Component {
     constructor() {
@@ -14,7 +15,14 @@ export class AdminPage extends Component {
             this.qContainer = this.shadowRoot.querySelector('#quizsContainer');
             this.getEditableQuestionnaires();
             const newQuizBtn = this.shadowRoot.querySelector('#newQuizBtn');
-            newQuizBtn.onclick = () => routerInstance.navigate('/quiz');
+            newQuizBtn.onclick = () => {
+                const newQuizModal = new ModalCard();
+                newQuizModal.addTemplate('/views/admin-page/new-quiz-dialog.html');
+                newQuizModal.open();
+                newQuizModal.resultsObservable.subscribe({next: x => {
+                    routerInstance.navigate('/quiz');
+                }})
+            }
         })
         // this.createUploadButton();
     }

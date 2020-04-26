@@ -1,4 +1,10 @@
 export class Component extends HTMLElement {
+    /**
+     * 
+     * @param {Object} options 
+     * @param {string} options.template HTML template to define component structure
+     * @param {string} options.styles CSS stylesheet for component styling
+     */
     constructor(options) {
         super();
         this.attachShadow({mode: 'open'});
