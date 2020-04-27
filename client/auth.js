@@ -1,4 +1,6 @@
 "use strict";
+
+
 const firebaseConfig = {
     apiKey: "AIzaSyB0cnilljayJ3axmCdJyBvGV_nLdDQ9csI",
     authDomain: "webprog-coursework-e4b42.firebaseapp.com",
@@ -10,19 +12,17 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 
-firebase.auth().onAuthStateChanged(user => {
-    if (user) {
-        //const image = document.createElement("img");
-        screen1.appBar.profileImage.src = user.photoURL
-        //screen1.appBar.userProfile.appendChild(image)
-        screen1.appBar.setUser(user);
-    } else {
-        //const image = document.createElement("img");
-        screen1.appBar.profileImage.src = "/assets/account_18dp.png"
-        //screen1.appBar.userProfile.appendChild(image)
-        screen1.appBar.clearUser();
-    }
-});
+
+
+export function initAuth(appBar) {
+    firebase.auth().onAuthStateChanged(user => {
+        if (user) {
+            appBar.setUser(user);
+        } else {
+            appBar.clearUser();
+        }
+    });
+}
 
 let authStatus;
 

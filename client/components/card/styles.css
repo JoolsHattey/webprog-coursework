@@ -8,6 +8,9 @@
     box-shadow: 0 0 0 rgba(0,0,0,0.01), 0 2px 5px rgba(0,0,0,0.22);
     background-color: white;
 }
+body {
+    height: 100%;
+}
 .hide {
     display: none;
 }

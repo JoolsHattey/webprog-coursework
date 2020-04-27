@@ -3,8 +3,14 @@
 import { Component } from '../component.js';
 
 export class Card extends Component {
-    constructor() {
-        super();
+    /**
+     * 
+     * @param {Object} options 
+     * @param {string} options.template HTML template to define component structure
+     * @param {string} options.styles CSS stylesheet for component styling
+     */
+    constructor(options) {
+        super(options);
         this.container.classList.add("card");
         this.addStyleSheet("/components/card/styles.css");
     }
@@ -23,13 +29,22 @@ export class Card extends Component {
     setOnClick(callbackFn) {
         this.container.onclick = callbackFn;
     }
+    /**
+     * @param {boolean} newValue
+     */
+    set visible(newValue) {
+        this.setAttribute('visible', newValue ? 'true' : 'false');
+        this.style = newValue ? '' : 'display: none;';
+    }
     setVisible(value) {
         if(value) {
             this.style = "";
         } else {
             this.style = "display: none;";
         }
-        
+    }
+    triggerVisible() {
+        this.visible = !(this.getAttribute('visible') === 'true')
     }
 }
 

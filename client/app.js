@@ -2,7 +2,7 @@
 
 import { Router } from './router.js';
 import { RouterOutlet } from './components/router-outlet/index.js';
-import { getAuthStatus, login } from './auth.js';
+import { getAuthStatus, login, initAuth } from './auth.js';
 import { HomePage } from './views/home-page/index.js';
 import { AdminPage } from './views/admin-page/index.js';
 import { QuizPage } from './views/quiz-page/index.js';
@@ -22,6 +22,9 @@ routerInstance.get('/admin', AdminPage);
 routerInstance.get(`/quiz/:quizID/:mode`, QuizPage, getAuthStatus);
 
 routerInstance.init(routerOutlet);
+
+const appBar = document.querySelector('app-bar');
+initAuth(appBar);
 
 /**
  * @param {Element} ctx 
