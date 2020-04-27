@@ -58,8 +58,14 @@ export class Questionnaire extends Component {
 
         this.questionContainer.appendChild(this.questions[0]);
         const btn = $(this, '#nextBtn');
-        const progressIndicator = this.shadowRoot.querySelector('progress-indicator');
-        progressIndicator.steps = this.questions.length;
+
+        const progress = $(this, 'progress');
+        progress.setAttribute('value', (1 / this.questions.length)*100);
+        
+
+
+        // const progressIndicator = this.shadowRoot.querySelector('progress-indicator');
+        // progressIndicator.steps = this.questions.length;
         btn.onclick = () => {
             const qType = questionnaireData.questions[this.currentQ].type;
             this.response.questions[this.currentQ] = {
@@ -74,7 +80,10 @@ export class Questionnaire extends Component {
                 $(this, '#quizContent').style.display = 'none';
                 this.container.appendChild(this.finishCard);
             }
-            progressIndicator.increment();
+            console.log((this.currentQ / this.questions.length) * 100)
+            console.log(this.currentQ, this.questions.length);
+            progress.setAttribute('value', (((this.currentQ+1) / this.questions.length) * 100));
+            // progressIndicator.increment();
         }
     }
 

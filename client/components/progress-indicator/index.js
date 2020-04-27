@@ -13,7 +13,7 @@ export class ProgressIndicator extends Component {
         console.log(getComputedStyle(this).getPropertyValue('--prog-width'))
     }
     setProgress(num) {
-        this.style.setProperty('--prog-width', `${num}%`)
+        // this.style.setProperty('--prog-width', `${num}%`)
     }
     increment() {
         this.step++;
