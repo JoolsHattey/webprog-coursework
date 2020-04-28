@@ -6,10 +6,6 @@
     --dark-theme-color: #003d33;
 }
 
-progress-indicator {
-    --prog-width: 0;
-}
-
 .page {
     margin: 10px;
 }
@@ -70,4 +66,9 @@ main {
     background-color: #48a999;
     background-size: 100%;
     transition: background 0s;
+}
+
+.md-button:disabled {
+    background-color: grey;
+    box-shadow: none!important;
 }

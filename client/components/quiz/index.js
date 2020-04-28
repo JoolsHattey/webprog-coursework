@@ -37,10 +37,22 @@ export class Questionnaire extends Component {
             .then(() => {
                 $(this.titleContainer, '#title').append(questionnaireData.name);
                 $(this.titleContainer, '#numQ').append(`${questionnaireData.questions.length} Questions`);
+                console.log("yiss")
                 $(this.titleContainer, '#startBtn').onclick = () => {
                     $(this, '#quizContent').style.display = 'block';
                     this.titleContainer.style.display = 'none';
                 }
+                firebase.auth().onAuthStateChanged(user => {
+                    if(user) {
+
+                    } else {
+                        if(questionnaireData.options.requireLogin) {
+                            $(this.titleContainer, '#startBtn').disabled = true;
+                            $(this.titleContainer, '#requireLoginLabel').classList.remove("hide");
+                        }
+                    }
+                })
+                
             });
     }
 
