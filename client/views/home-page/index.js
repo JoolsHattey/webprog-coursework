@@ -2,7 +2,8 @@
 
 import { Component } from '../../components/component.js';
 import { Card } from '../../components/card/index.js';
-import { routerInstance } from '../../app.js';
+import { routerInstance, $ } from '../../app.js';
+import { Checkbox } from '../../components/checkbox/checkbox.component.js';
 
 export class HomePage extends Component {
     constructor() {
@@ -12,7 +13,10 @@ export class HomePage extends Component {
         this.container.classList.add("page");
         this.templatePromise.then(() => {
             const btn = this.shadowRoot.querySelector('#showQuizBtn');
-            btn.onclick = () => this.getQuestionnaires();
+            btn.onclick = () => {
+                $(this, 'checkbox-el').getSelected();
+                this.getQuestionnaires()
+            };
         });
     }
 

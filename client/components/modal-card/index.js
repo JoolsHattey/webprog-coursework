@@ -22,7 +22,7 @@ export class ModalCard extends Component {
                 subscribe: observer => {
                     $(this, '#saveBtn').onclick = () => {
                         for(const option in this.dialogData) {
-                            this.dialogData[option] = $(this, `#${option}`).checked;
+                            this.dialogData[option] = $(this, `#${option}`).getValue();
                         }
                         observer.next(this.dialogData);
                         this.close();
@@ -37,7 +37,7 @@ export class ModalCard extends Component {
     }
     open() {
         for(const option in this.dialogData) {
-            $(this, `#${option}`).checked = this.dialogData[option];
+            $(this, `#${option}`).setValue(this.dialogData[option]);
         }
         this.container.classList.add('opened');
         this.overlay.classList.add('show');
