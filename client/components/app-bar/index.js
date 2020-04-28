@@ -3,6 +3,7 @@
 import { Component } from '../component.js';
 import { Card } from '../card/index.js';
 import { routerInstance, $ } from '../../app.js';
+import { login, logout } from '../../auth.js';
 
 export class AppBar extends Component {
     constructor() {
@@ -15,17 +16,13 @@ export class AppBar extends Component {
         this.container.classList.add("appBar");
         this.addTemplate("/components/app-bar/index.html").then(() => {
             this.homeBtn = $(this, '#home');
-            this.adminBtn = $(this, '#admin');
             this.profileBtn = $(this, '#profile');
-
             this.homeBtn.onclick = () => routerInstance.navigate('/home');
-            this.adminBtn.onclick = () => routerInstance.navigate('/admin');
             this.createProfileCard();
         });
     }
 
     createProfileCard() {
-
         this.profileCard = new Card({
             template: '/components/app-bar/profile-card.html',
             styles: '/components/app-bar/styles.css'
@@ -36,11 +33,18 @@ export class AppBar extends Component {
             this.profileName = $(this.profileCard, '#profileName');
             this.profileEmail = $(this.profileCard, '#profileEmail');
             this.profileType = $(this.profileCard, '#profileType');
-        })
+            this.loggedInContent = $(this.profileCard, '#loggedIn');
+            this.loggedOutContent = $(this.profileCard, '#loggedOut');
+            $(this.profileCard, '#loginBtn').onclick = () => login();
+            $(this.profileCard, '#logoutBtn').onclick = () => logout();
+            $(this.profileCard, '#quizEditorBtn').onclick = () => routerInstance.navigate('/admin');
+        });
+
+
+
         this.profileCard.visible = false;
         this.profileBtn.onclick = () => this.profileCard.triggerVisible()
         
-
         this.container.appendChild(this.profileCard);
 
         // this.userProfile = document.createElement("div");
@@ -77,13 +81,17 @@ export class AppBar extends Component {
      * @param {firebase.User} newValue 
      */
     setUser(newValue) {
+        this.loggedInContent.classList.remove('hide');
+        this.loggedOutContent.classList.add('hide');
         this.profileName.append(newValue.displayName);
         this.profileEmail.append(newValue.email);
+        this.profileImg.src = newValue.photoURL;
     }
     clearUser() {
-        this.displayName.innerHTML="";
-        this.email.innerHTML="";
-        this.logOutButton.innerHTML="Sign In";
+        this.loggedInContent.classList.add('hide');
+        this.loggedOutContent.classList.remove('hide');
+        this.profileName.innerHTML="";
+        this.profileEmail.innerHTML="";
     }
 }
 

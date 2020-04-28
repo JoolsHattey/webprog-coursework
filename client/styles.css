@@ -72,3 +72,7 @@ main {
     background-color: grey;
     box-shadow: none!important;
 }
+
+.hide {
+    display: none!important;
+}

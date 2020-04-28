@@ -1,6 +1,5 @@
 "use strict";
 
-
 const firebaseConfig = {
     apiKey: "AIzaSyB0cnilljayJ3axmCdJyBvGV_nLdDQ9csI",
     authDomain: "webprog-coursework-e4b42.firebaseapp.com",
@@ -12,7 +11,13 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 
-
+export const authObservable = {
+    subscribe: observer => {
+        firebase.auth().onAuthStateChanged(user => {
+            observer.next(user);
+        });
+    }
+}
 
 export function initAuth(appBar) {
     firebase.auth().onAuthStateChanged(user => {
@@ -40,7 +45,7 @@ export function login() {
         });
 }
 
-function logout() {
+export function logout() {
     firebase.auth().signOut();
 }
 

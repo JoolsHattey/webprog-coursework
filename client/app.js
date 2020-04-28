@@ -2,7 +2,7 @@
 
 import { Router } from './router.js';
 import { RouterOutlet } from './components/router-outlet/index.js';
-import { getAuthStatus, login, initAuth } from './auth.js';
+import { getAuthStatus, login, initAuth, authObservable } from './auth.js';
 import { HomePage } from './views/home-page/index.js';
 import { AdminPage } from './views/admin-page/index.js';
 import { QuizPage } from './views/quiz-page/index.js';
@@ -25,6 +25,10 @@ routerInstance.init(routerOutlet);
 
 const appBar = document.querySelector('app-bar');
 initAuth(appBar);
+
+authObservable.subscribe({next: x => {
+    console.log(x)
+}})
 
 /**
  * @param {Element} ctx 

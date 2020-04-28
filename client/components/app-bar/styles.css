@@ -29,9 +29,21 @@
 #profileCardContent {
     height: 100%;
     width: 100%;
+}
+#loggedIn {
+    height: 100%;
+    width: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    align-items: center;
+}
+#loggedIn * {
+    margin: 10px;
+}
+#loggedOut {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 #profileImg {
     height: 50px;
