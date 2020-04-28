@@ -17,3 +17,15 @@ body {
 #deleteBtn {
     
 }
+#dialogContent {
+    display: flex;
+    flex-direction: column;
+}
+.dialogOptionGroup {
+    display: flex;
+    flex-direction: row;
+    margin: 10px;
+}
+.dialogButtonGroup {
+
+}

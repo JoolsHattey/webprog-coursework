@@ -4,12 +4,13 @@ import { Component } from "../component.js";
 import { $ } from "../../app.js";
 
 export class ModalCard extends Component {
-    constructor(options) {
-        super(options);
+    constructor(componentStructure, options) {
+        super(componentStructure);
         this.addStyleSheet("/components/card/styles.css");
         this.addStyleSheet("/components/modal-card/styles.css");
         this.container.classList.add("card");
         this.container.classList.add("modal");
+        this.dialogData = options;
         this.initElement();
     }
     initElement() {
@@ -20,7 +21,10 @@ export class ModalCard extends Component {
             this.resultsObservable = {
                 subscribe: observer => {
                     $(this, '#saveBtn').onclick = () => {
-                        observer.next("yiss");
+                        for(const option in this.dialogData) {
+                            this.dialogData[option] = $(this, `#${option}`).checked;
+                        }
+                        observer.next(this.dialogData);
                         this.close();
                     }
                     $(this, '#cancelBtn').onclick = () => {
@@ -32,6 +36,9 @@ export class ModalCard extends Component {
         })
     }
     open() {
+        for(const option in this.dialogData) {
+            $(this, `#${option}`).checked = this.dialogData[option];
+        }
         this.container.classList.add('opened');
         this.overlay.classList.add('show');
     }

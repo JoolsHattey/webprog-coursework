@@ -22,9 +22,9 @@ export class EditableQuestionnaire extends Component {
 
         if(questionnaireData) {
             this.uid = uid;
-            this.questions = questionnaireData;
+            this.quiz = questionnaireData;
         } else {
-            this.questions = {
+            this.quiz = {
                 "name": "",
                 "questions": []
             };
@@ -46,7 +46,7 @@ export class EditableQuestionnaire extends Component {
 
     createTitle() {
         this.shadowRoot.querySelector("#saveBtn")
-            .onclick = () => this.questions.name = title.value;
+            .onclick = () => this.quiz.name = title.value;
     }
 
     createButtons(questionnaireData) {
@@ -56,17 +56,17 @@ export class EditableQuestionnaire extends Component {
         const saveButton = document.createElement("button");
         saveButton.onclick = (evt => {
 
-            this.questions.questions = [];
+            this.quiz.questions = [];
 
             this.elements.forEach(x => {
-                this.questions.questions.push(x.question);
+                this.quiz.questions.push(x.question);
             });
-            console.log(this.questions);
+            console.log(this.quiz);
 
             if(questionnaireData) {
-                updateQuestionnaire(this.uid, this.questions);
+                updateQuestionnaire(this.uid, this.quiz);
             } else {
-                sendQuestionnaire(this.questions).then(data => {
+                sendQuestionnaire(this.quiz).then(data => {
                     this.uid = data.id;
                     console.log(this.uid);
                 });    
@@ -75,21 +75,31 @@ export class EditableQuestionnaire extends Component {
 
         saveButton.append("Save");
         this.questionsContainer.appendChild(saveButton);
-
+        const modalOptions = this.quiz.options;
+        const modal = new ModalCard({
+            template: '/components/editable-quiz/quiz-config-dialog.html',
+            styles: '/components/editable-quiz/styles.css'
+        }, modalOptions);
+        this.container.appendChild(modal);
         $(this, '#settingsBtn').onclick = () => {
-            const modal = new ModalCard({
-                template: '/components/editable-quiz/quiz-config-dialog.html'
-            });
-            this.container.appendChild(modal);
+
             modal.open();
             modal.templatePromise.then(() => {
-                modal.resultsObservable.subscribe({next: x => {
-                    console.log(x);
-                }})
+
+                modal.resultsObservable.subscribe({next: data => {
+                    console.log(data);
+                    if(data !== undefined) {
+                        console.log("set data")
+                        this.quiz.options = data
+                    }
+                    console.log(this.quiz);
+                }});
             });
             
         }
     }
+
+    testFunction() {console.log("test")}
 
     // createResponses
 
