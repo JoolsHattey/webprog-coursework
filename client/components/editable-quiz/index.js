@@ -3,7 +3,7 @@
 import { Component } from '../component.js';
 import { Card } from '../card/index.js';
 import { Input } from '../input/index.js';
-import { Dropdown } from '../dropdown/index.js';
+import { Dropdown } from '../dropdown/dropdown.component.js';
 import { $ } from '../../app.js';
 import { ModalCard } from '../modal-card/index.js';
 
@@ -105,7 +105,9 @@ export class EditableQuestionnaire extends Component {
 
     createNewQuestion(questionData) {
 
-        const q = new Card();
+        const q = new Card({
+            styles: '/components/editable-quiz/styles.css'
+        });
 
         q.addTemplate('/components/editable-quiz/quiz-item.html').then(() => {
             const i = q.shadowRoot.querySelector('input-elmnt')
@@ -128,9 +130,34 @@ export class EditableQuestionnaire extends Component {
             const drop = q.shadowRoot.querySelector('dropdown-el');
             drop.setOptions(options);
 
+            drop.setOption(questionData.type)
+
             const deleteBtn = this.shadowRoot.querySelector('#deleteBtn');
 
             this.questionsContainer.appendChild(q);
+
+            drop.setOnChange(event => {
+                console.log(event.target.value)
+                if(event.target.value === 'single-select' || event.target.value === 'multi-select') {
+                    qAnswersContainer.classList.remove('hide');
+                } else {
+                    qAnswersContainer.classList.add('hide');
+                }
+            })
+
+            const qAnswersContainer = $(q, '#questionAnswers');
+            if(questionData.type === 'single-select' || questionData.type === 'multi-select') {
+                questionData.options.forEach(item => {
+                    const qAnswer = document.createElement('div');
+
+                    qAnswer.classList.add('qAnswerItem');
+
+                    qAnswer.append(item);
+
+                    qAnswersContainer.children[0].appendChild(qAnswer);
+                });
+                qAnswersContainer.classList.remove('hide');
+            }
         });
     }
 
