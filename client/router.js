@@ -51,13 +51,25 @@ export class Router {
     goToPage(route, path, params) {
         const req = { path, params };
 
-        if(route.authGuard && params.mode === 'edit') {
-            if(route.authGuard()) {
+        if(route.authGuard) {
+            if(route.authGuard.requireIf) {
+                if(params[route.authGuard.requireIf.param] === route.authGuard.requireIf.value) {
+                    if(route.authGuard.getAuthStatus()) {
+                        // Set address bar to router path
+                        history.pushState({}, "", path)
+                        this.routerOutlet.routeComponent(route.component, req);
+                    } else {
+                        console.log("Not Authenticated")
+                    }
+                } else {
+                    // Set address bar to router path
+                    history.pushState({}, "", path)
+                    this.routerOutlet.routeComponent(route.component, req);    
+                }
+            } else {
                 // Set address bar to router path
                 history.pushState({}, "", path)
-                this.routerOutlet.routeComponent(route.component, req);                
-            } else {
-                console.log("Not Authenticated")
+                this.routerOutlet.routeComponent(route.component, req);
             }
         } else {
             // Set address bar to router path
@@ -74,6 +86,7 @@ export class Router {
         // Remove route name to get paramater string
         const paramString = path.replace(routeName, '');
         // Split params using / and output into array
+
         const paramValues = paramString.split('/')
             // Remove empty params
             .filter(el => {return el.length != 0});

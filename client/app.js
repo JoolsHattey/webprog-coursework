@@ -19,8 +19,8 @@ const routerOutlet = document.querySelector('router-outlet');
 export const routerInstance = new Router();
 
 routerInstance.get('/home', HomePage);
-routerInstance.get('/admin', AdminPage);
-routerInstance.get(`/quiz/:quizID/:mode`, QuizPage, getAuthStatus);
+routerInstance.get('/admin', AdminPage, {getAuthStatus, requireIf: null});
+routerInstance.get(`/quiz/:quizID/:mode`, QuizPage, {getAuthStatus, requireIf: {param: 'mode', value: 'edit'}});
 
 routerInstance.init(routerOutlet);
 
