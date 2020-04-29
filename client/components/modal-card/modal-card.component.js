@@ -1,7 +1,7 @@
 'use strict';
 
 import { Component } from "../component.js";
-import { $ } from "../../app.js";
+import { $, Observable } from "../../app.js";
 import { Card } from "../card/card.component.js";
 
 export class ModalCard extends Card {
@@ -20,25 +20,23 @@ export class ModalCard extends Card {
         const saveBtn = $(this, '#saveBtn');
         const cancelBtn = $(this, '#cancelBtn');
         console.log(cancelBtn)
-        this.resultsObservable = {
-            subscribe: observer => {
-                if(saveBtn) {
-                    saveBtn.onclick = () => {
-                        for(const option in this.dialogData) {
-                            this.dialogData[option] = $(this, `#${option}`).getValue();
-                        }
-                        observer.next(this.dialogData);
-                        this.close();
-                    }    
-                }
-                if(cancelBtn) {
-                    cancelBtn.onclick = () => {
-                        observer.next();
-                        this.close();
-                    }    
-                }
+        this.resultsObservable = new Observable(observer => {
+            if(saveBtn) {
+                saveBtn.onclick = () => {
+                    for(const option in this.dialogData) {
+                        this.dialogData[option] = $(this, `#${option}`).getValue();
+                    }
+                    observer.next(this.dialogData);
+                    this.close();
+                }    
             }
-        }
+            if(cancelBtn) {
+                cancelBtn.onclick = () => {
+                    observer.next();
+                    this.close();
+                }    
+            }
+        });
     }
     open() {
         for(const option in this.dialogData) {
