@@ -10,6 +10,7 @@ export class Icon extends Component {
             styles: '/components/icon/icon.component.css'
         });
         this.initElement();
+        if(!this.hasAttribute('colour')) this.setAttribute('colour', 'light');
     }
 
     async initElement() {
@@ -17,22 +18,7 @@ export class Icon extends Component {
         this.iconImg = $(this, 'img');
 
         console.log(this.innerHTML);
-        switch (this.innerHTML) {
-            case 'home':
-                this.iconImg.src = '/assets/home_icon.png'
-                break;
-            case 'account':
-                this.iconImg.src = '/assets/account_icon_light.png'
-                break;
-            case 'settings':
-                this.iconImg.src = '/assets/settings-icon-dark.png'
-                break;
-            case 'delete':
-                this.iconImg.src = '/assets/delete_icon_dark.png'
-                break;
-            default:
-                break;
-        }
+        this.iconImg.src = `/assets/${this.innerHTML}_icon_${this.getAttribute('colour')}.png`;
     }
 }
 

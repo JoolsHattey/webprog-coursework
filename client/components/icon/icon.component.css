@@ -1,3 +1,4 @@
-img {
+img, body {
     width: 24px;
+    height: 24px;
 }

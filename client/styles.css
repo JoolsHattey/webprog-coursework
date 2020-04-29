@@ -58,6 +58,15 @@ main {
     outline: none;
     background-position: center;
     transition: background 0.7s;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.md-icon-text-btn {
+    padding: 8px 10px!important;
+}
+.md-icon-text-btn icon-el {
+    padding-right: 6px;
 }
 .md-button:hover {
     background: var(--primary-theme-color) radial-gradient(circle, transparent 1%, var(--primary-theme-color) 1%) center/15000%;
