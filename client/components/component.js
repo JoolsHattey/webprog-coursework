@@ -22,6 +22,12 @@ export class Component extends HTMLElement {
             }
         }
     }
+    connectedCallback() {
+        if(this.hasAttribute('draggable')) {
+            this.addEventListener('touchstart', this.touchStart);
+            this.addEventListener('touchmove', this.touchMove);
+        }
+    }
     addStyleSheet(path) {
         const linkElem = document.createElement("link");
         linkElem.setAttribute("rel", "stylesheet");
@@ -31,5 +37,12 @@ export class Component extends HTMLElement {
     async addTemplate(path) {
         let res = await fetch(path);
         this.container.innerHTML = await res.text();
+    }
+    touchStart(e) {
+        this.touchStartPos = e.changedTouches[0].clientY;
+    }
+    touchMove(e) {
+        this.container.style.transform = `translateY(${e.changedTouches[0].clientY-this.touchStartPos}px)`
+        e.preventDefault();
     }
 }
