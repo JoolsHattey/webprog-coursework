@@ -10,8 +10,15 @@ body {
 .titleContainer {
     width: 100%;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-content: space-between;
+}
+.titleBtnContainer {
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
 }
 
 #deleteBtn {
@@ -30,7 +37,10 @@ body {
 
 }
 .qAnswerItem {
-    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    margin: 5px;
+    align-items: center;
 }
 progress-spinner {
     margin: auto;

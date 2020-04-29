@@ -55,28 +55,6 @@ export class EditableQuestionnaire extends Component {
         this.container.querySelector("#newQ")
             .onclick = () => this.createNewQuestion();
 
-        const saveButton = document.createElement("button");
-        saveButton.onclick = (evt => {
-
-            this.quiz.questions = [];
-
-            this.elements.forEach(x => {
-                this.quiz.questions.push(x.question);
-            });
-            console.log(this.quiz);
-
-            if(questionnaireData) {
-                updateQuestionnaire(this.uid, this.quiz);
-            } else {
-                sendQuestionnaire(this.quiz).then(data => {
-                    this.uid = data.id;
-                    console.log(this.uid);
-                });    
-            } 
-        });
-
-        saveButton.append("Save");
-        this.questionsContainer.appendChild(saveButton);
         const modalOptions = this.quiz.options;
         const modal = new ModalCard({
             template: '/components/editable-quiz/quiz-config-dialog.html',
@@ -84,10 +62,8 @@ export class EditableQuestionnaire extends Component {
         }, modalOptions);
         this.container.appendChild(modal);
         $(this, '#settingsBtn').onclick = () => {
-
             modal.open();
             modal.templatePromise.then(() => {
-
                 modal.resultsObservable.subscribe({next: data => {
                     console.log(data);
                     if(data !== undefined) {
@@ -97,7 +73,6 @@ export class EditableQuestionnaire extends Component {
                     console.log(this.quiz);
                 }});
             });
-            
         }
     }
 
