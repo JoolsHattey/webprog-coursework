@@ -4,7 +4,7 @@ import { Component } from '../component.js';
 import { Card } from '../card/index.js';
 import { Input } from '../input/index.js';
 import { Dropdown } from '../dropdown/dropdown.component.js';
-import { $ } from '../../app.js';
+import { $, $r } from '../../app.js';
 import { ModalCard } from '../modal-card/index.js';
 
 export class EditableQuestionnaire extends Component {
@@ -13,12 +13,12 @@ export class EditableQuestionnaire extends Component {
             template: '/components/editable-quiz/index.html',
             styles: '/components/editable-quiz/styles.css'
         });
-        this.templatePromise.then(() => {
-            this.initElement(questionnaireData, uid);
-        });
+        this.initElement(questionnaireData, uid);
     }
 
-    initElement(questionnaireData, uid) {
+    async initElement(questionnaireData, uid) {
+
+        await this.templatePromise;
 
         if(questionnaireData) {
             this.uid = uid;
@@ -38,9 +38,11 @@ export class EditableQuestionnaire extends Component {
         this.elements = new Array;
         if(questionnaireData) {
             this.changeTitle(questionnaireData.name);
-            questionnaireData.questions.forEach(q => {
-                this.createNewQuestion(q);
-            });
+            for(const q of questionnaireData.questions) {
+                await this.createNewQuestion(q);
+            };
+            this.questionsContainer.classList.remove('hide')
+            $(this, 'progress-spinner').classList.add('hide');
         }
     }
 
@@ -103,62 +105,67 @@ export class EditableQuestionnaire extends Component {
 
     // createResponses
 
-    createNewQuestion(questionData) {
+    async createNewQuestion(questionData) {
 
         const q = new Card({
             styles: '/components/editable-quiz/styles.css'
         });
 
-        q.addTemplate('/components/editable-quiz/quiz-item.html').then(() => {
-            const i = q.shadowRoot.querySelector('input-elmnt')
-            
-            if(questionData) {
-                q.id = questionData.id;
-                i.setInput(questionData.text);
-            }
+        await q.addTemplate('/components/editable-quiz/quiz-item.html');
+        const i = q.shadowRoot.querySelector('input-elmnt')
+        
+        if(questionData) {
+            q.id = questionData.id;
+            i.setInput(questionData.text);
+        }
 
-            const options = [
-                {"value": "text",
-                "text": "Text Input"},
-                {"value": "number",
-                "text": "Number Input"},
-                {"value": "single-select",
-                "text": "Single-select Input"},
-                {"value": "multi-select",
-                "text": "Multi-select Input"}
-            ]
-            const drop = q.shadowRoot.querySelector('dropdown-el');
-            drop.setOptions(options);
+        const options = [
+            {"value": "text",
+            "text": "Text Input"},
+            {"value": "number",
+            "text": "Number Input"},
+            {"value": "single-select",
+            "text": "Single-select Input"},
+            {"value": "multi-select",
+            "text": "Multi-select Input"}
+        ]
+        const drop = q.shadowRoot.querySelector('dropdown-el');
+        drop.setOptions(options);
 
-            drop.setOption(questionData.type)
+        drop.setOption(questionData.type)
 
-            const deleteBtn = this.shadowRoot.querySelector('#deleteBtn');
+        const deleteBtn = this.shadowRoot.querySelector('#deleteBtn');
 
-            this.questionsContainer.appendChild(q);
+        this.questionsContainer.appendChild(q);
 
-            drop.setOnChange(event => {
-                console.log(event.target.value)
-                if(event.target.value === 'single-select' || event.target.value === 'multi-select') {
-                    qAnswersContainer.classList.remove('hide');
-                } else {
-                    qAnswersContainer.classList.add('hide');
-                }
-            })
-
-            const qAnswersContainer = $(q, '#questionAnswers');
-            if(questionData.type === 'single-select' || questionData.type === 'multi-select') {
-                questionData.options.forEach(item => {
-                    const qAnswer = document.createElement('div');
-
-                    qAnswer.classList.add('qAnswerItem');
-
-                    qAnswer.append(item);
-
-                    qAnswersContainer.children[0].appendChild(qAnswer);
-                });
+        drop.setOnChange(event => {
+            console.log(event.target.value)
+            if(event.target.value === 'single-select' || event.target.value === 'multi-select') {
                 qAnswersContainer.classList.remove('hide');
+            } else {
+                qAnswersContainer.classList.add('hide');
             }
-        });
+        })
+
+        const qAnswersContainer = $(q, '#questionAnswers');
+        if(questionData.type === 'single-select' || questionData.type === 'multi-select') {
+            for(const item of questionData.options) {
+
+                const el = await $r('div', '/components/editable-quiz/quiz-answer-option.html');
+                qAnswersContainer.children[0].appendChild(el);
+                $(el, 'input-elmnt').setInput(item)
+
+                // const qAnswer = document.createElement('div');
+                // qAnswer.classList.add('qAnswerItem');
+
+                // const input = new Input('text');
+                // input.setInput(item);
+                // qAnswer.appendChild(input);
+
+                // qAnswersContainer.children[0].appendChild(qAnswer);
+            }
+            qAnswersContainer.classList.remove('hide');
+        }
     }
 
     changeTitle(title) {

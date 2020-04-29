@@ -10,36 +10,35 @@ export class HomePage extends Component {
         super({
             template: '/views/home-page/index.html'
         });
+        this.initElement();
+    }
+
+    async initElement() {
         this.container.classList.add("page");
-        this.templatePromise.then(() => {
-            const btn = this.shadowRoot.querySelector('#showQuizBtn');
-            btn.onclick = () => {
-                $(this, 'checkbox-el').getSelected();
-                this.getQuestionnaires()
-            };
-        });
+        await this.templatePromise;
+        const btn = this.shadowRoot.querySelector('#showQuizBtn');
+        btn.onclick = () => this.getQuestionnaires();
     }
 
     async getQuestionnaires() {
         const response = await fetch("/api/questionnaires")
-    
-        response.json().then(data => {
 
-            console.log(data);
-            
-            const quuizes = document.createElement("div");
+        const data = await response.json();
 
-            data.forEach(item => {
-                const q = new Card();
-                q.createTitle(item.name);
-                q.setOnClick(evt => {
-                    console.log(item.uid)
-                    routerInstance.navigate(`/quiz/${item.uid}/view`)
-                });
+        console.log(data);
+        
+        const quuizes = document.createElement("div");
 
-                quuizes.appendChild(q);
-                this.container.appendChild(quuizes);
+        data.forEach(item => {
+            const q = new Card();
+            q.createTitle(item.name);
+            q.setOnClick(evt => {
+                console.log(item.uid)
+                routerInstance.navigate(`/quiz/${item.uid}/view`)
             });
+
+            quuizes.appendChild(q);
+            this.container.appendChild(quuizes);
         });
     }
 }
