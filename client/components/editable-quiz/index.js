@@ -1,11 +1,11 @@
 "use strict";
 
 import { Component } from '../component.js';
-import { Card } from '../card/index.js';
+import { Card } from '../card/card.component.js';
 import { Input } from '../input/index.js';
 import { Dropdown } from '../dropdown/dropdown.component.js';
 import { $, $r } from '../../app.js';
-import { ModalCard } from '../modal-card/index.js';
+import { ModalCard } from '../modal-card/modal-card.component.js';
 
 export class EditableQuestionnaire extends Component {
     constructor(questionnaireData, uid) {

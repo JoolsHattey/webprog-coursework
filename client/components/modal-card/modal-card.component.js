@@ -2,38 +2,36 @@
 
 import { Component } from "../component.js";
 import { $ } from "../../app.js";
+import { Card } from "../card/card.component.js";
 
-export class ModalCard extends Component {
+export class ModalCard extends Card {
     constructor(componentStructure, options) {
         super(componentStructure);
-        this.addStyleSheet("/components/card/styles.css");
-        this.addStyleSheet("/components/modal-card/styles.css");
-        this.container.classList.add("card");
+        this.addStyleSheet("/components/modal-card/modal-card.component.css");
         this.container.classList.add("modal");
         this.dialogData = options;
         this.initElement();
     }
-    initElement() {
+    async initElement() {
         this.overlay = document.createElement('div');
         this.overlay.classList.add('overlay');
         this.shadowRoot.appendChild(this.overlay);
-        this.templatePromise.then(() => {
-            this.resultsObservable = {
-                subscribe: observer => {
-                    $(this, '#saveBtn').onclick = () => {
-                        for(const option in this.dialogData) {
-                            this.dialogData[option] = $(this, `#${option}`).getValue();
-                        }
-                        observer.next(this.dialogData);
-                        this.close();
+        await this.templatePromise;
+        this.resultsObservable = {
+            subscribe: observer => {
+                $(this, '#saveBtn').onclick = () => {
+                    for(const option in this.dialogData) {
+                        this.dialogData[option] = $(this, `#${option}`).getValue();
                     }
-                    $(this, '#cancelBtn').onclick = () => {
-                        observer.next();
-                        this.close();
-                    }
+                    observer.next(this.dialogData);
+                    this.close();
+                }
+                $(this, '#cancelBtn').onclick = () => {
+                    observer.next();
+                    this.close();
                 }
             }
-        })
+        }
     }
     open() {
         for(const option in this.dialogData) {

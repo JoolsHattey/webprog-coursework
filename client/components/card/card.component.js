@@ -12,7 +12,7 @@ export class Card extends Component {
     constructor(options) {
         super(options);
         this.container.classList.add("card");
-        this.addStyleSheet("/components/card/styles.css");
+        this.addStyleSheet("/components/card/card.component.css");
     }
     createTitle(name) {
         const title = document.createElement("div");

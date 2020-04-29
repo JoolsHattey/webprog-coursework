@@ -1,12 +1,11 @@
 "use strict";
 
 import { Component } from '../component.js';
-import { Card } from '../card/index.js';
+import { Card } from '../card/card.component.js';
 import { Input } from '../input/index.js';
-import { Selector } from '../selector/index.js';
-import { ProgressIndicator } from '../progress-indicator/index.js';
+import { Selector } from '../selector/selector.component.js';
 import { $ } from '../../app.js';
-import { SnackBar } from "../snack-bar/index.js";
+import { SnackBar } from "../snack-bar/snack-bar.component.js";
 
 export class Questionnaire extends Component {
     constructor(questionnaireData, uid) {

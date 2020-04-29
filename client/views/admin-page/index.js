@@ -1,9 +1,9 @@
 "use strict";
 
 import { Component } from '../../components/component.js';
-import { Card } from '../../components/card/index.js';
+import { Card } from '../../components/card/card.component.js';
 import { routerInstance } from '../../app.js';
-import { ModalCard } from '../../components/modal-card/index.js';
+import { ModalCard } from '../../components/modal-card/modal-card.component.js';
 
 export class AdminPage extends Component {
     constructor() {

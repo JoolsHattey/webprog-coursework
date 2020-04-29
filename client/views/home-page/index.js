@@ -1,7 +1,7 @@
 "use strict";
 
 import { Component } from '../../components/component.js';
-import { Card } from '../../components/card/index.js';
+import { Card } from '../../components/card/card.component.js';
 import { routerInstance, $ } from '../../app.js';
 import { Checkbox } from '../../components/checkbox/checkbox.component.js';
 

@@ -1,12 +1,12 @@
 "use strict";
 
 import { Router } from './router.js';
-import { RouterOutlet } from './components/router-outlet/index.js';
+import { RouterOutlet } from './components/router-outlet/router-outlet.component.js';
 import { getAuthStatus, login, initAuth, authObservable } from './auth.js';
 import { HomePage } from './views/home-page/index.js';
 import { AdminPage } from './views/admin-page/index.js';
 import { QuizPage } from './views/quiz-page/index.js';
-import { AppBar } from './components/app-bar/index.js';
+import { AppBar } from './components/app-bar/app-bar.component.js';
 import { ProgressSpinner } from './components/progress-spinner/progress-spinner.component.js';
 import { Icon } from './components/icon/icon.component.js';
 

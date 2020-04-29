@@ -6,8 +6,8 @@ import { $ } from "../../app.js";
 export class SnackBar extends Component {
     constructor() {
         super({
-            template: '/components/snack-bar/index.html',
-            styles: '/components/snack-bar/styles.css'
+            template: '/components/snack-bar/snack-bar.component.html',
+            styles: '/components/snack-bar/snack-bar.component.css'
         });
         this.container.classList.add('hide');
     }
