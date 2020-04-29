@@ -51,7 +51,7 @@ export class EditableQuestionnaire extends Component {
             .onclick = () => this.quiz.name = title.value;
     }
 
-    createButtons(questionnaireData) {
+    async createButtons(questionnaireData) {
         this.container.querySelector("#newQ")
             .onclick = () => this.createNewQuestion();
 
@@ -61,18 +61,33 @@ export class EditableQuestionnaire extends Component {
             styles: '/components/editable-quiz/styles.css'
         }, modalOptions);
         this.container.appendChild(modal);
+        await modal.templatePromise;
         $(this, '#settingsBtn').onclick = () => {
             modal.open();
-            modal.templatePromise.then(() => {
-                modal.resultsObservable.subscribe({next: data => {
-                    console.log(data);
-                    if(data !== undefined) {
-                        console.log("set data")
-                        this.quiz.options = data
-                    }
-                    console.log(this.quiz);
-                }});
-            });
+            modal.resultsObservable.subscribe({next: data => {
+                console.log(data);
+                if(data !== undefined) {
+                    console.log("set data")
+                    this.quiz.options = data
+                }
+                console.log(this.quiz);
+            }});
+        }
+
+        const shareModal = new ModalCard({
+            template: '/components/editable-quiz/quiz-share-dialog.html',
+            styles: '/components/editable-quiz/styles.css'
+        });
+        this.container.appendChild(shareModal);
+        await shareModal.templatePromise;
+        $(shareModal, '#closeBtn').onclick = () => shareModal.close();
+        $(this, '#shareBtn').onclick = () => {
+            shareModal.open();
+        }
+        const quizURL = `${window.location.host}/quiz/${this.uid}/view`;
+        $(shareModal, 'input-elmnt').setInput(quizURL);
+        $(shareModal, '#clipboardBtn').onclick = () => {
+            navigator.clipboard.writeText(quizURL);
         }
     }
 

@@ -17,18 +17,25 @@ export class ModalCard extends Card {
         this.overlay.classList.add('overlay');
         this.shadowRoot.appendChild(this.overlay);
         await this.templatePromise;
+        const saveBtn = $(this, '#saveBtn');
+        const cancelBtn = $(this, '#cancelBtn');
+        console.log(cancelBtn)
         this.resultsObservable = {
             subscribe: observer => {
-                $(this, '#saveBtn').onclick = () => {
-                    for(const option in this.dialogData) {
-                        this.dialogData[option] = $(this, `#${option}`).getValue();
-                    }
-                    observer.next(this.dialogData);
-                    this.close();
+                if(saveBtn) {
+                    saveBtn.onclick = () => {
+                        for(const option in this.dialogData) {
+                            this.dialogData[option] = $(this, `#${option}`).getValue();
+                        }
+                        observer.next(this.dialogData);
+                        this.close();
+                    }    
                 }
-                $(this, '#cancelBtn').onclick = () => {
-                    observer.next();
-                    this.close();
+                if(cancelBtn) {
+                    cancelBtn.onclick = () => {
+                        observer.next();
+                        this.close();
+                    }    
                 }
             }
         }
