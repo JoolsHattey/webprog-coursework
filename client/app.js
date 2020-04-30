@@ -9,6 +9,7 @@ import { QuizPage } from './views/quiz-page/index.js';
 import { AppBar } from './components/app-bar/app-bar.component.js';
 import { ProgressSpinner } from './components/progress-spinner/progress-spinner.component.js';
 import { Icon } from './components/icon/icon.component.js';
+import { Toggle } from './components/toggle/toggle.component.js';
 
 
 /********************************************

@@ -6,7 +6,7 @@ export class Input extends Component {
     constructor(type) {
         super({
             template: '/components/input/index.html',
-            styles: '/components/input/styles.css'
+            stylesheet: '/components/input/styles.css'
         });
         this.container.classList.add("textinput");
         this.templatePromise.then(() => {

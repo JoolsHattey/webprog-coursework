@@ -11,7 +11,7 @@ export class EditableQuestionnaire extends Component {
     constructor(questionnaireData, uid) {
         super({
             template: '/components/editable-quiz/index.html',
-            styles: '/components/editable-quiz/styles.css'
+            stylesheet: '/components/editable-quiz/styles.css'
         });
         this.initElement(questionnaireData, uid);
     }
@@ -47,8 +47,8 @@ export class EditableQuestionnaire extends Component {
     }
 
     createTitle() {
-        this.shadowRoot.querySelector("#saveBtn")
-            .onclick = () => this.quiz.name = title.value;
+        // this.shadowRoot.querySelector("#saveBtn")
+        //     .onclick = () => this.quiz.name = title.value;
     }
 
     async createButtons(questionnaireData) {
@@ -73,6 +73,23 @@ export class EditableQuestionnaire extends Component {
                 console.log(this.quiz);
             }});
         }
+
+        const saveBtn = $(this, '#saveBtn');
+        saveBtn.onclick = () => this.save();
+
+        const lastSavedTime = $(this, '#lastSavedTime');
+        const lastSaved = new Date(this.quiz.saveTime);
+        const currentTime = Date.now();
+        const time = currentTime - this.quiz.saveTime;
+        if(time < 60000) {
+            lastSavedTime.append('less than a minute ago');
+        } else if(time < 3600000) {
+            lastSavedTime.append(`${Math.ceil(time/60000)} minutes ago`);
+        } else {
+            lastSavedTime.append(`${lastSaved.getDay()}/${lastSaved.getMonth()}/${lastSaved.getFullYear()}\n${lastSaved.getHours()}:${lastSaved.getMinutes()}`);
+        }
+
+
 
         const shareModal = new ModalCard({
             template: '/components/editable-quiz/quiz-share-dialog.html',
@@ -156,6 +173,19 @@ export class EditableQuestionnaire extends Component {
             }
             qAnswersContainer.classList.remove('hide');
         }
+    }
+
+    async save() {
+        console.log(this.quiz);
+        this.quiz.saveTime = Date.now();
+        const res = await fetch(`/api/editquestionnaire/${this.uid}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(this.quiz)
+        });
+        console.log(await res.json());
     }
 
     changeTitle(title) {

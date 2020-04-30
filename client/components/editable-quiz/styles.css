@@ -20,7 +20,11 @@ body {
     align-items: center;
     justify-content: space-between;
 }
-
+#saveBtnContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
 #deleteBtn {
     
 }
@@ -45,4 +49,15 @@ body {
 progress-spinner {
     margin: auto;
     padding: 50px
+}
+#lastSaved {
+    display: flex;
+    flex-direction: column;
+}
+#lastSaved p {
+    font-size: 0.8em;
+    margin: 2px;
+}
+.divider {
+    width: 200px;
 }

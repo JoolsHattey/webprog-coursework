@@ -7,7 +7,7 @@ export class Checkbox extends Component {
     constructor() {
         super({
             template: '/components/checkbox/checkbox.component.html',
-            styles: '/components/checkbox/checkbox.component.css'
+            stylesheet: '/components/checkbox/checkbox.component.css'
         });
         this.templatePromise.then(() => {
             this.inputEl = $(this, 'input');

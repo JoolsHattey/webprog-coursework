@@ -9,7 +9,7 @@ export class AppBar extends Component {
     constructor() {
         super({
             template: '/components/app-bar/app-bar.component.html',
-            styles: '/components/app-bar/app-bar.component.css'
+            stylesheet: '/components/app-bar/app-bar.component.css'
         });
         this.initElement();
     }

@@ -11,7 +11,7 @@ export class Questionnaire extends Component {
     constructor(questionnaireData, uid) {
         super({
             template: '/components/quiz/index.html',
-            styles: '/components/quiz/styles.css'
+            stylesheet: '/components/quiz/styles.css'
         });
         this.templatePromise.then(() => {
             this.initElement(questionnaireData, uid);

@@ -2,10 +2,18 @@
     <div class="titleContainer">
         <input-elmnt></input-elmnt>
         <div class="titleBtnContainer">
-        <button id="saveBtn" class="md-button md-icon-text-btn">
-            <icon-el>save</icon-el>
-            Save
-        </button>
+        <div id="saveBtnContainer">
+            <button id="saveBtn" class="md-button md-icon-text-btn">
+                <icon-el>save</icon-el>
+                Save
+            </button>
+            <div id="lastSaved">
+                <p>Last Saved</p>
+                <p id="lastSavedTime"></p>
+            </div>
+        </div>
+        
+        
         <button id="settingsBtn" class="md-button md-icon-text-btn">
             <icon-el>settings</icon-el>
             Settings

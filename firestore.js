@@ -52,6 +52,7 @@ async function createQuestionnaire(questionnaire, authToken) {
 }
 
 function editQuestionnaire(uid, questionnaire, authToken) {
+    console.log(uid, questionnaire);
     firebase.firestore().collection("questionnaires").doc(uid).update(questionnaire);
 }
 

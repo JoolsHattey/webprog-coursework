@@ -7,7 +7,7 @@ export class Dropdown extends Component {
     constructor(options) {
         super({
             template: '/components/dropdown/dropdown.component.html',
-            styles: '/components/dropdown/dropdown.component.css'
+            stylesheet: '/components/dropdown/dropdown.component.css'
         });
         this.initElement(options);
     }

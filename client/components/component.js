@@ -3,7 +3,7 @@ export class Component extends HTMLElement {
      * 
      * @param {Object} options 
      * @param {string} options.template HTML template to define component structure
-     * @param {string} options.styles CSS stylesheet for component styling
+     * @param {string} options.stylesheet CSS stylesheet for component styling
      */
     constructor(options) {
         super();
@@ -14,8 +14,8 @@ export class Component extends HTMLElement {
         this.container = document.createElement("body");
         this.shadowRoot.appendChild(this.container);
         if(options) {
-            if(options.styles) {
-                this.addStyleSheet(options.styles);
+            if(options.stylesheet) {
+                this.addStyleSheet(options.stylesheet);
             }
             if(options.template) {
                 this.templatePromise = this.addTemplate(options.template);

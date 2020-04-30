@@ -7,8 +7,6 @@ const path = require('path');
 const firestore = require('./firestore');
 
 
-
-
 async function submitResponse(req, res) {
     firestore.addResponse(req.params.uid, req.body);
 }
@@ -26,6 +24,7 @@ async function getQuestionnaire(req, res) {
 }
 
 async function editQuestionnaire(req, res) {
+    console.log(req.body)
     firestore.editQuestionnaire(req.params.uid, req.body);
 }
 
