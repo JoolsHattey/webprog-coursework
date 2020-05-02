@@ -102,7 +102,7 @@ export class EditableQuestionnaire extends Component {
             shareModal.open();
         }
         const quizURL = `${window.location.host}/quiz/${this.uid}/view`;
-        $(shareModal, 'input-elmnt').setInput(quizURL);
+        $(shareModal, 'input-elmnt').setValue(quizURL);
         $(shareModal, '#clipboardBtn').onclick = () => {
             navigator.clipboard.writeText(quizURL);
         }
@@ -123,7 +123,7 @@ export class EditableQuestionnaire extends Component {
         
         if(questionData) {
             q.id = questionData.id;
-            i.setInput(questionData.text);
+            i.setValue(questionData.text);
         }
 
         const options = [
@@ -166,7 +166,7 @@ export class EditableQuestionnaire extends Component {
 
                 const el = await $r('div', '/components/editable-quiz/quiz-answer-option.html');
                 qAnswersContainer.children[0].appendChild(el);
-                $(el, 'input-elmnt').setInput(item)
+                $(el, 'input-elmnt').setValue(item)
 
                 // const qAnswer = document.createElement('div');
                 // qAnswer.classList.add('qAnswerItem');
@@ -195,7 +195,7 @@ export class EditableQuestionnaire extends Component {
     }
 
     changeTitle(title) {
-        this.shadowRoot.querySelector('input-elmnt').setInput(title);
+        this.shadowRoot.querySelector('input-elmnt').setValue(title);
     }
 }
 
