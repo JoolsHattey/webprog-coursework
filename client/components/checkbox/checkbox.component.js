@@ -12,23 +12,33 @@ export class Checkbox extends Component {
         this.templatePromise.then(() => {
             this.inputEl = $(this, 'input');
         })
-        if(this.hasAttribute('textLabel')) {
-            this.setAttribute('textLabel', this.getAttribute('textLabel'));
-        }
     }
     get textLabel() {
-        this.getAttribute('textLabel');
+        this.getAttribute('textlabel');
     }
     set textLabel(newValue) {
-        this.setAttribute('textLabel', newValue);
-        $(this, 'label').append(newValue);
-        console.log("yiss")
+        this.setAttribute('textlabel', newValue);
     }
+    static get observedAttributes() { return ['textlabel'] }
+
+    async attributeChangedCallback(name, oldValue, newValue) {
+        await this.templatePromise;
+        console.log(newValue)
+        this.setTextLabel(newValue);
+    }
+    setTextLabel(newValue) {
+        $(this, 'span').append(newValue);
+        this.inputEl.value = newValue;
+    }
+
     /**
      * @returns {boolean}
      */
     getValue() {
-        return this.inputEl.checked;
+        if(this.inputEl.checked) {
+            return this.inputEl.value;
+        }
+        return;
     }
     setValue(newValue) {
         this.inputEl.checked = newValue;
