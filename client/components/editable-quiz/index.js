@@ -38,8 +38,8 @@ export class EditableQuestionnaire extends Component {
         this.elements = new Array;
         if(questionnaireData) {
             this.changeTitle(questionnaireData.name);
-            for(const q of questionnaireData.questions) {
-                await this.createNewQuestion(q);
+            for(const [i, q] of questionnaireData.questions.entries()) {
+                await this.createNewQuestion(i, q);
             };
             this.questionsContainer.classList.remove('hide')
             $(this, 'progress-spinner').classList.add('hide');
@@ -58,7 +58,7 @@ export class EditableQuestionnaire extends Component {
         const modalOptions = this.quiz.options;
         const modal = new ModalCard({
             template: '/components/editable-quiz/quiz-config-dialog.html',
-            styles: '/components/editable-quiz/styles.css'
+            stylesheet: '/components/editable-quiz/styles.css'
         }, modalOptions);
         this.container.appendChild(modal);
         await modal.templatePromise;
@@ -93,7 +93,7 @@ export class EditableQuestionnaire extends Component {
 
         const shareModal = new ModalCard({
             template: '/components/editable-quiz/quiz-share-dialog.html',
-            styles: '/components/editable-quiz/styles.css'
+            stylesheet: '/components/editable-quiz/styles.css'
         });
         this.container.appendChild(shareModal);
         await shareModal.templatePromise;
@@ -112,10 +112,10 @@ export class EditableQuestionnaire extends Component {
 
     // createResponses
 
-    async createNewQuestion(questionData) {
+    async createNewQuestion(index, questionData) {
 
         const q = new Card({
-            styles: '/components/editable-quiz/styles.css'
+            stylesheet: '/components/editable-quiz/styles.css'
         });
 
         await q.addTemplate('/components/editable-quiz/quiz-item.html');
@@ -142,6 +142,12 @@ export class EditableQuestionnaire extends Component {
         drop.setOption(questionData.type)
 
         const deleteBtn = this.shadowRoot.querySelector('#deleteBtn');
+
+        const toggle = $(q, 'toggle-el')
+        toggle.checked = questionData.required;
+        toggle.setOnChange(e => {
+            this.quiz.questions[index].required = e.target.checked;
+        });
 
         this.questionsContainer.appendChild(q);
 
