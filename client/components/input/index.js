@@ -18,10 +18,10 @@ export class Input extends Component {
         });
     }
 
-    getInput() {
+    getValue() {
         return this.container.querySelector("input").value;
     }
-    setInput(newValue) {
+    setValue(newValue) {
         if(this.templatePromise) {
             this.templatePromise.then(() => {
                 this.container.querySelector("input").value = newValue;

@@ -26,7 +26,7 @@ export class AppBar extends Component {
     async createProfileCard() {
         const profileCard = new Card({
             template: '/components/app-bar/profile-card.html',
-            styles: '/components/app-bar/app-bar.component.css'
+            stylesheet: '/components/app-bar/app-bar.component.css'
         });
         profileCard.classList.add('profileCard')
         await profileCard.templatePromise;

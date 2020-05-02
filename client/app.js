@@ -11,13 +11,12 @@ import { ProgressSpinner } from './components/progress-spinner/progress-spinner.
 import { Icon } from './components/icon/icon.component.js';
 import { Toggle } from './components/toggle/toggle.component.js';
 
-
 /********************************************
  * Client Routes
  * **************************************** */
 
 const routerOutlet = document.querySelector('router-outlet');
-export const routerInstance = new Router();
+export const routerInstance = new Router(); 
 
 routerInstance.get('/home', HomePage);
 routerInstance.get('/admin', AdminPage, {getAuthStatus, requireIf: null});

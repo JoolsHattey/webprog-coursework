@@ -59,5 +59,19 @@ progress-spinner {
     margin: 2px;
 }
 .divider {
-    width: 200px;
+    margin: 8px 0 20px 0;
+    width: 270px;
+}
+#questionActions {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+#questionActions div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+#questionActions div div {
+    margin-right: 8px;
 }

@@ -4,8 +4,11 @@ import { Component } from '../component.js';
 import { Card } from '../card/card.component.js';
 import { Input } from '../input/index.js';
 import { Selector } from '../selector/selector.component.js';
-import { $ } from '../../app.js';
+import { $, $r } from '../../app.js';
 import { SnackBar } from "../snack-bar/snack-bar.component.js";
+import { Checkbox } from '../checkbox/checkbox.component.js';
+import { RadioGroup } from '../radio-selector/radio-selector.component.js';
+import { CheckboxGroup } from '../checkbox/checkbox-group.component.js';
 
 export class Questionnaire extends Component {
     constructor(questionnaireData, uid) {
@@ -58,6 +61,7 @@ export class Questionnaire extends Component {
     initQuestionCards(questionnaireData) {
         this.questionContainer = this.shadowRoot.querySelector('#question');
         
+        this.answerarray = new Array;
         this.response = { "questions": [] };
         this.currentQ = 0;
         
@@ -81,8 +85,9 @@ export class Questionnaire extends Component {
             const qType = questionnaireData.questions[this.currentQ].type;
             this.response.questions[this.currentQ] = {
                 "id": this.questions[this.currentQ].id,
-                "answer": this.questions[this.currentQ].shadowRoot.querySelector(qType === 'text' || qType === 'number' ? 'input-elmnt' : 'selector-elmnt').getInput()
+                "answer": this.answerarray[this.currentQ].getValue()
             }
+            console.log(this.response.questions[this.currentQ])
             this.currentQ++;
             this.questionContainer.removeChild(this.questions[this.currentQ-1]);
             if(this.currentQ < this.questions.length) {
@@ -140,12 +145,16 @@ export class Questionnaire extends Component {
                 input = new Input("number");
                 break;
             case "single-select":
-                input = new Selector(questionData.options, "radio");
+                // input = new Selector(questionData.options, "radio");
+                input = new RadioGroup(questionData.options)
                 break;
             case "multi-select":
-                input = new Selector(questionData.options, "checkbox");
+                // input = new Selector(questionData.options, "checkbox");
+                input = new CheckboxGroup(questionData.options);
                 break;
         }
+        this.answerarray.push(input);
+        console.log(this.answerarray)
         this.question.container.appendChild(input);
     }
 
