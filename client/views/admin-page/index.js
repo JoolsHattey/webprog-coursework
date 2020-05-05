@@ -2,13 +2,14 @@
 
 import { Component } from '../../components/component.js';
 import { Card } from '../../components/card/card.component.js';
-import { routerInstance } from '../../app.js';
+import { routerInstance, $ } from '../../app.js';
 import { ModalCard } from '../../components/modal-card/modal-card.component.js';
 
 export class AdminPage extends Component {
     constructor() {
         super({
-            template: '/views/admin-page/index.html'
+            template: '/views/admin-page/index.html',
+            stylesheet: '/views/admin-page/styles.css'
         });
         this.initElement();
     }
@@ -38,6 +39,8 @@ export class AdminPage extends Component {
             q.setOnClick(() => routerInstance.navigate(`/quiz/${item.uid}/edit`));
             this.qContainer.appendChild(q);
         });
+        this.qContainer.classList.remove('hide');
+        $(this, 'progress-spinner').classList.add('hide');
     }
 }
 

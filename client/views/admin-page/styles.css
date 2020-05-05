@@ -1,0 +1,9 @@
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+progress-spinner {
+    margin: auto;
+    padding-top: 100px;
+}
