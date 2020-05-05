@@ -32,7 +32,7 @@ export class EditableQuestionnaire extends Component {
         this.questionsContainer = this.shadowRoot.querySelector("#questionsContainer");
 
     
-        this.createTitle();
+        // this.createTitle();
         this.createButtons(questionnaireData);
 
         this.elements = new Array;
@@ -44,11 +44,6 @@ export class EditableQuestionnaire extends Component {
             this.questionsContainer.classList.remove('hide')
             $(this, 'progress-spinner').classList.add('hide');
         }
-    }
-
-    createTitle() {
-        // this.shadowRoot.querySelector("#saveBtn")
-        //     .onclick = () => this.quiz.name = title.value;
     }
 
     async createButtons(questionnaireData) {
@@ -89,8 +84,6 @@ export class EditableQuestionnaire extends Component {
             lastSavedTime.append(`${lastSaved.getDay()}/${lastSaved.getMonth()}/${lastSaved.getFullYear()}\n${lastSaved.getHours()}:${lastSaved.getMinutes()}`);
         }
 
-
-
         const shareModal = new ModalCard({
             template: '/components/editable-quiz/quiz-share-dialog.html',
             stylesheet: '/components/editable-quiz/styles.css'
@@ -107,10 +100,6 @@ export class EditableQuestionnaire extends Component {
             navigator.clipboard.writeText(quizURL);
         }
     }
-
-    testFunction() {console.log("test")}
-
-    // createResponses
 
     async createNewQuestion(index, questionData) {
 
@@ -150,7 +139,29 @@ export class EditableQuestionnaire extends Component {
         });
 
         this.questionsContainer.appendChild(q);
+
+        const qAnswersContainer = $(q, '#questionAnswers');
+        const newOptionBtn = $(q, '#newOptionBtn');
+
+        if(questionData.type === 'single-select' || questionData.type === 'multi-select') {
+            for(const [i, v] of questionData.options.entries()) {
+                this.createAnswerOption(qAnswersContainer, v, questionData.type, false, i, index);
+            }
+            qAnswersContainer.classList.remove('hide');
+            if(questionData.type === 'single-select') {
+                newOptionBtn.children[0].append('radio');
+            } else {
+                newOptionBtn.children[0].append('check_box');
+            }
+            newOptionBtn.children[0].initElement();
+        }
+
+        newOptionBtn.onclick = () => {
+            console.log(this.quiz.questions[index])
+            this.createAnswerOption(qAnswersContainer, '', questionData.type, true, this.quiz.questions[index].options.length, index);
+        }
         
+
         drop.setOnChange(event => {
             if(event.target.value === 'single-select' || event.target.value === 'multi-select') {
                 if(event.target.value === 'single-select') {
@@ -163,30 +174,31 @@ export class EditableQuestionnaire extends Component {
                 qAnswersContainer.classList.add('hide');
             }
         })
+    }
 
-        const qAnswersContainer = $(q, '#questionAnswers');
-        if(questionData.type === 'single-select' || questionData.type === 'multi-select') {
-            for(const item of questionData.options) {
-
-                const el = await $r('div', '/components/editable-quiz/quiz-answer-option.html');
-                qAnswersContainer.children[0].appendChild(el);
-                $(el, 'text-input').setValue(item)
-                const answerTypeIcon = $(el, '.answerTypeIcon');
-                if(questionData.type === 'single-select') {
-                    answerTypeIcon.append('radio');
-                } else {
-                    answerTypeIcon.append('check_box');
-                }
-                // const qAnswer = document.createElement('div');
-                // qAnswer.classList.add('qAnswerItem');
-
-                // const input = new Input('text');
-                // input.setInput(item);
-                // qAnswer.appendChild(input);
-
-                // qAnswersContainer.children[0].appendChild(qAnswer);
-            }
-            qAnswersContainer.classList.remove('hide');
+    async createAnswerOption(answerContainer, name, type, newItem, index, qIndex) {
+        console.log(index)
+        const el = await $r('div', '/components/editable-quiz/quiz-answer-option.html');
+        answerContainer.children[0].appendChild(el);
+        if(name === "") {
+            name = `Option ${index+1}`
+        }
+        $(el, 'text-input').setValue(name);
+        const answerTypeIcon = $(el, '.answerTypeIcon');
+        if(type === 'single-select') {
+            answerTypeIcon.append('radio');
+        } else {
+            answerTypeIcon.append('check_box');
+        }
+        if(newItem) {
+            await $(el, 'text-input').sizeNotInit;
+            $(el, 'text-input').inputEl.focus();
+            console.log(qIndex)
+            this.quiz.questions[qIndex].options[index] = name
+        }
+        $(el, 'button').onclick = () => {
+            answerContainer.children[0].removeChild(el);
+            this.quiz.questions[qIndex].options.splice(index, 1);
         }
     }
 
