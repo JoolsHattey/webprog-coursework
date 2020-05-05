@@ -36,9 +36,18 @@ export class AppBar extends Component {
         this.profileType = $(profileCard, '#profileType');
         this.loggedInContent = $(profileCard, '#loggedIn');
         this.loggedOutContent = $(profileCard, '#loggedOut');
-        $(profileCard, '#loginBtn').onclick = () => login();
-        $(profileCard, '#logoutBtn').onclick = () => logout();
-        $(profileCard, '#quizEditorBtn').onclick = () => routerInstance.navigate('/admin');
+        $(profileCard, '#loginBtn').onclick = () => {
+            profileCard.triggerVisible();
+            login();
+        }
+        $(profileCard, '#logoutBtn').onclick = () => {
+            profileCard.triggerVisible();
+            logout();
+        }
+        $(profileCard, '#quizEditorBtn').onclick = () => {
+            profileCard.triggerVisible();
+            routerInstance.navigate('/admin')
+        };
         profileCard.visible = false;
         this.profileBtn.onclick = () => profileCard.triggerVisible()
         this.container.appendChild(profileCard);
