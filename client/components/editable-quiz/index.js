@@ -107,6 +107,8 @@ export class EditableQuestionnaire extends Component {
             stylesheet: '/components/editable-quiz/styles.css'
         });
 
+        q.index = index;
+
         await q.addTemplate('/components/editable-quiz/quiz-item.html');
         const i = q.shadowRoot.querySelector('text-input')
         
@@ -130,7 +132,19 @@ export class EditableQuestionnaire extends Component {
 
         drop.setOption(questionData.type)
 
-        const deleteBtn = this.shadowRoot.querySelector('#deleteBtn');
+        const deleteBtn = $(q, '#deleteBtn');
+
+        const duplicateBtn = $(q, '#duplicateBtn');
+        duplicateBtn.onclick = () => {
+            this.createNewQuestion(q.index + 1, this.quiz.questions[q.index]);
+            this.quiz.questions.splice(q.index + 1, 0, this.quiz.questions[q.index])
+            Array.from(this.questionsContainer.children).forEach(element => {
+                if(element.index > q.index) {
+                    element.index++;
+                }
+            });
+            console.log(this.quiz.questions)
+        }
 
         const toggle = $(q, 'toggle-el')
         toggle.checked = questionData.required;
@@ -138,7 +152,12 @@ export class EditableQuestionnaire extends Component {
             this.quiz.questions[index].required = e.target.checked;
         });
 
-        this.questionsContainer.appendChild(q);
+        if(index < this.questionsContainer.children.length) {
+            this.questionsContainer.insertBefore(q, this.questionsContainer.children[index-1].nextSibling)
+        } else {
+            this.questionsContainer.appendChild(q);
+        }
+        
 
         const qAnswersContainer = $(q, '#questionAnswers');
         const newOptionBtn = $(q, '#newOptionBtn');
@@ -175,6 +194,7 @@ export class EditableQuestionnaire extends Component {
             }
         })
     }
+
 
     async createAnswerOption(answerContainer, name, type, newItem, index, qIndex) {
         console.log(index)
