@@ -19,12 +19,16 @@ export class ModalCard extends Card {
         await this.templatePromise;
         const saveBtn = $(this, '#saveBtn');
         const cancelBtn = $(this, '#cancelBtn');
-        console.log(cancelBtn)
+        console.log(cancelBtn);
         this.resultsObservable = new Observable(observer => {
             if(saveBtn) {
                 saveBtn.onclick = () => {
+                    console.log(this.dialogData)
                     for(const option in this.dialogData) {
-                        this.dialogData[option] = $(this, `#${option}`).getValue();
+                        if(option !== 'file') {
+                            this.dialogData[option] = $(this, `#${option}`).getValue();
+                        }
+                        
                     }
                     observer.next(this.dialogData);
                     this.close();

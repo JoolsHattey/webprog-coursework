@@ -11,6 +11,7 @@ import { ProgressSpinner } from './components/progress-spinner/progress-spinner.
 import { Icon } from './components/icon/icon.component.js';
 import { Toggle } from './components/toggle/toggle.component.js';
 import { TextInput } from './components/text-input/text-input.component.js';
+import { JsonFileUpload } from './components/file-upload/json-file-upload.component.js';
 
 /********************************************
  * Client Routes
@@ -31,6 +32,8 @@ initAuth(appBar);
 authObservable.subscribe({next: x => {
     console.log(x)
 }})
+
+
 
 /**
  * @param {Element} ctx 

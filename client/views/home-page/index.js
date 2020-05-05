@@ -18,7 +18,7 @@ export class HomePage extends Component {
         await this.templatePromise;
         const btn = this.shadowRoot.querySelector('#showQuizBtn');
         btn.onclick = () => this.getQuestionnaires();
-        $(this, 'text-input').setValue("yeet")
+        $(this, 'json-file-upload').addEventListener('upload', (e) => console.log(e.detail))
     }
 
     async getQuestionnaires() {
