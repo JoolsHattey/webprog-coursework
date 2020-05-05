@@ -133,6 +133,15 @@ export class EditableQuestionnaire extends Component {
         drop.setOption(questionData.type)
 
         const deleteBtn = $(q, '#deleteBtn');
+        deleteBtn.onclick = () => {
+            this.quiz.questions.splice(q.index, 1);
+            this.questionsContainer.removeChild(q);
+            Array.from(this.questionsContainer.children).forEach(element => {
+                if(element.index > q.index) {
+                    element.index--;
+                }
+            });
+        }
 
         const duplicateBtn = $(q, '#duplicateBtn');
         duplicateBtn.onclick = () => {
