@@ -119,7 +119,7 @@ export class EditableQuestionnaire extends Component {
         });
 
         await q.addTemplate('/components/editable-quiz/quiz-item.html');
-        const i = q.shadowRoot.querySelector('input-elmnt')
+        const i = q.shadowRoot.querySelector('text-input')
         
         if(questionData) {
             q.id = questionData.id;
@@ -128,13 +128,13 @@ export class EditableQuestionnaire extends Component {
 
         const options = [
             {"value": "text",
-            "text": "Text Input"},
+            "text": "Text input"},
             {"value": "number",
-            "text": "Number Input"},
+            "text": "Number input"},
             {"value": "single-select",
-            "text": "Single-select Input"},
+            "text": "Multiple choice"},
             {"value": "multi-select",
-            "text": "Multi-select Input"}
+            "text": "Checkboxes"}
         ]
         const drop = q.shadowRoot.querySelector('dropdown-el');
         drop.setOptions(options);
@@ -150,10 +150,14 @@ export class EditableQuestionnaire extends Component {
         });
 
         this.questionsContainer.appendChild(q);
-
+        
         drop.setOnChange(event => {
-            console.log(event.target.value)
             if(event.target.value === 'single-select' || event.target.value === 'multi-select') {
+                if(event.target.value === 'single-select') {
+                    answerTypeIcon.append('radio');
+                } else {
+                    answerTypeIcon.append('check_box');
+                }
                 qAnswersContainer.classList.remove('hide');
             } else {
                 qAnswersContainer.classList.add('hide');
@@ -166,8 +170,13 @@ export class EditableQuestionnaire extends Component {
 
                 const el = await $r('div', '/components/editable-quiz/quiz-answer-option.html');
                 qAnswersContainer.children[0].appendChild(el);
-                $(el, 'input-elmnt').setValue(item)
-
+                $(el, 'text-input').setValue(item)
+                const answerTypeIcon = $(el, '.answerTypeIcon');
+                if(questionData.type === 'single-select') {
+                    answerTypeIcon.append('radio');
+                } else {
+                    answerTypeIcon.append('check_box');
+                }
                 // const qAnswer = document.createElement('div');
                 // qAnswer.classList.add('qAnswerItem');
 

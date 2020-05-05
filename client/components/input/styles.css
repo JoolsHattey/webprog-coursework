@@ -1,7 +1,7 @@
 .textinput {
     position: relative;
 }
-.text {
+.singleLine {
     font-size: 18px;
     padding: 10px 10px 10px 5px;
     display: block;
@@ -9,11 +9,25 @@
     border: none;
     border-bottom: 1px solid #757575;
 }
-.text:focus {
+.multiLine {
+    font-size: 18px;
+    padding: 10px 10px 0 5px;
+    display: block;
+    width: 94%;
+    border: none;
+    border-bottom: 1px solid #757575;
+}
+.noUnderline {
+    border-bottom: none;
+}
+.noUnderline:hover {
+    border-bottom: 1px solid #757575;
+}
+.singleLine:focus {
     outline: none;
 }
 
-input:focus ~ label, input:valid ~ label {
+#response:focus ~ label, #response:valid ~ label {
     top:-20px;
     font-size:14px;
     color:#5264AE;
@@ -43,7 +57,7 @@ input:focus ~ label, input:valid ~ label {
     right:50%;
 }
 
-input:focus ~ .bar:before, input:focus ~ .bar:after {
+#response:focus ~ .bar:before, #response:focus ~ .bar:after {
     width:50%;
 }
 
@@ -57,7 +71,7 @@ input:focus ~ .bar:before, input:focus ~ .bar:after {
     opacity:0.5;
 }
 
-input:focus ~ .highlight {
+#response:focus ~ .highlight {
     -webkit-animation:inputHighlighter 0.3s ease;
     -moz-animation:inputHighlighter 0.3s ease;
     animation:inputHighlighter 0.3s ease;

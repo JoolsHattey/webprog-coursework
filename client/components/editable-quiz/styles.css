@@ -43,8 +43,9 @@ body {
 .qAnswerItem {
     display: flex;
     flex-direction: row;
-    margin: 5px;
+    margin: 5px 0 5px 0;
     align-items: center;
+    justify-content: space-between;
 }
 progress-spinner {
     margin: auto;
@@ -74,4 +75,7 @@ progress-spinner {
 }
 #questionActions div div {
     margin-right: 8px;
+}
+dropdown-el {
+    margin: 8px 0 4px 0;
 }

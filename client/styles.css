@@ -32,6 +32,26 @@ main {
     z-index: 10;
 }
 
+.md-button {
+    border: none;
+    background-color: var(--primary-theme-color);
+    color: white;
+    /* padding: 0 16px; */
+    min-width: 64px;
+    height: 36px;
+    border-radius: 4px;
+    box-shadow: 0 0 4px #999;
+    outline: none;
+    background-position: center;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.md-button:hover {
+    cursor: pointer;
+}
+
 .md-icon-btn {
     width: 24px;
     height: 24px;
@@ -43,30 +63,26 @@ main {
     background-color: transparent;
 }
 
-.md-icon-btn img {
-    width: 24px;
-    height: 24px;
+.md-button {
+    background-position: center;
+    transition: background 0.8s;
+}
+.md-button:hover {
+    background: #47a7f5 radial-gradient(circle, transparent 1%, #47a7f5 1%) center/15000%;
+}
+.md-button:active {
+    background-color: var(--light-theme-color);
+    background-size: 100%;
+    transition: background 0s;
 }
 
-.md-button {
-    border: none;
-    background-color: var(--primary-theme-color);
-    color: white;
-    padding: 12px 16px;
-    border-radius: 2px;
-    box-shadow: 0 0 4px #999;
-    outline: none;
-    background-position: center;
-    transition: background 0.7s;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
 .md-icon-text-btn {
     padding: 8px 10px!important;
 }
 .md-icon-text-btn icon-el {
     padding-right: 6px;
+    width: 18px!important;
+    height: 18px!important;
 }
 .md-button:hover {
     background: var(--primary-theme-color) radial-gradient(circle, transparent 1%, var(--primary-theme-color) 1%) center/15000%;

@@ -9,6 +9,7 @@ import { SnackBar } from "../snack-bar/snack-bar.component.js";
 import { Checkbox } from '../checkbox/checkbox.component.js';
 import { RadioGroup } from '../radio-selector/radio-selector.component.js';
 import { CheckboxGroup } from '../checkbox/checkbox-group.component.js';
+import { TextInput } from '../text-input/text-input.component.js';
 
 export class Questionnaire extends Component {
     constructor(questionnaireData, uid) {
@@ -138,11 +139,13 @@ export class Questionnaire extends Component {
         let input;
         switch(questionData.type) {
             case "text":
-                input = new Input("text");
+                input = new TextInput();
+                input.size = 'singleline'
                 input.id = questionData.id;
                 break;
             case "number":
-                input = new Input("number");
+                input = new TextInput();
+                input.size = 'singleline'
                 break;
             case "single-select":
                 // input = new Selector(questionData.options, "radio");
@@ -170,13 +173,6 @@ export class Questionnaire extends Component {
                 'Content-Type': 'application/json'
             }
         });
-    }
-
-    getAnswer() {
-        if(this.input === Input) {
-            return this.input.getInput();
-        }
-        
     }
 }
 

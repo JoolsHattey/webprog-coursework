@@ -18,7 +18,7 @@ export class HomePage extends Component {
         await this.templatePromise;
         const btn = this.shadowRoot.querySelector('#showQuizBtn');
         btn.onclick = () => this.getQuestionnaires();
-        $(this, 'toggle-el').setOnChange((e) => console.log(e.target.checked))
+        $(this, 'text-input').setValue("yeet")
     }
 
     async getQuestionnaires() {

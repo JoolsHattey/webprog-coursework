@@ -1,4 +1,4 @@
 img, body {
-    width: 24px;
-    height: 24px;
+    width: var(--icon-width);
+    height: var(--icon-height)
 }
