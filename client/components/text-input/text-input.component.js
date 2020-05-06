@@ -55,6 +55,11 @@ export class TextInput extends Component {
 
     getValue() {
         const inputValue = this.inputEl.value;
+        if(inputValue === "" && this.required === 'true') {
+            $(this, '.bar').classList.add('warn');
+            this.inputEl.classList.add('warnInput')
+            this.inputEl.focus()
+        };
         if(inputValue === "") return;
         return inputValue;
     }
@@ -72,6 +77,12 @@ export class TextInput extends Component {
         this.inputEl.setAttribute('style', `height: ${this.inputEl.scrollHeight}px;`)
     }
 
+    get required() {
+        return this.getAttribute('required');
+    }
+    set required(newValue) {
+        this.setAttribute('required', newValue);
+    }
     get size() {
         return this.getAttribute('size');
     }
