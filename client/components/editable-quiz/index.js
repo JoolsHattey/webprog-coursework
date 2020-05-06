@@ -41,6 +41,9 @@ export class EditableQuestionnaire extends Component {
             for(const [i, q] of questionnaireData.questions.entries()) {
                 await this.createNewQuestion(i, q);
             };
+            Array.from(this.questionsContainer.children).forEach(element => {
+                element.visible = true;
+            })
             this.questionsContainer.classList.remove('hide')
             $(this, 'progress-spinner').classList.add('hide');
         }
@@ -103,9 +106,14 @@ export class EditableQuestionnaire extends Component {
 
     async createNewQuestion(index, questionData) {
 
+        if(!questionData) {
+            questionData = {type: 'text'}
+        }
+
         const q = new Card({
             stylesheet: '/components/editable-quiz/styles.css'
         });
+        q.triggerVisible();
 
         q.index = index;
 
