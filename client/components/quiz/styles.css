@@ -15,3 +15,12 @@ progress[value] {
     height: 20px;
     border-radius: 10px;
 }
+
+#timer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+#timer icon-el {
+    margin-right: 5px;
+}

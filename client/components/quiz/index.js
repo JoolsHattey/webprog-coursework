@@ -10,6 +10,7 @@ import { Checkbox } from '../checkbox/checkbox.component.js';
 import { RadioGroup } from '../radio-selector/radio-selector.component.js';
 import { CheckboxGroup } from '../checkbox/checkbox-group.component.js';
 import { TextInput } from '../text-input/text-input.component.js';
+import { ModalCard } from '../modal-card/modal-card.component.js';
 
 export class Questionnaire extends Component {
     constructor(questionnaireData, uid) {
@@ -25,6 +26,7 @@ export class Questionnaire extends Component {
         this.uid = uid;
         $(this, '#quizContent').style.display = 'none';
         this.initTitleCard(questionnaireData);
+        
         this.initMiniTitleCard(questionnaireData);
         this.initQuestionCards(questionnaireData);
         this.initFinishCard();
@@ -45,7 +47,12 @@ export class Questionnaire extends Component {
         $(this.titleContainer, '#startBtn').onclick = () => {
             $(this, '#quizContent').style.display = 'block';
             this.titleContainer.style.display = 'none';
-            $(this, '#miniTitleCard').classList.remove('hide')
+            $(this, '#miniTitleCard').classList.remove('hide');
+            if(questionnaireData.options?.quizMode) {
+                $(this.titleContainer, '#timeLimit').append(this.millisToMinutesAndSeconds(questionnaireData.options.quizOptions.timeLimit))
+                $(this.titleContainer, '#timeLimit').classList.remove('hide');
+                this.startTimer(questionnaireData.options.quizOptions)
+            };
         }
         firebase.auth().onAuthStateChanged(user => {
             if(user) {
@@ -61,10 +68,12 @@ export class Questionnaire extends Component {
 
     async initMiniTitleCard(questionnaireData) {
         this.miniTitleCard = new Card({
-            template: '/components/quiz/quiz-mini-title-card.html'
+            template: '/components/quiz/quiz-mini-title-card.html',
+            stylesheet: '/components/quiz/styles.css'
         });
         await this.miniTitleCard.templatePromise;
-        $(this.miniTitleCard, '#title').append(questionnaireData.name)
+        if(questionnaireData.options?.quizMode) this.initTimer();
+        $(this.miniTitleCard, '#title').append(questionnaireData.name);
         $(this, '#miniTitleCard').appendChild(this.miniTitleCard);
     }
 
@@ -91,6 +100,43 @@ export class Questionnaire extends Component {
             this.nextQuestion(questionnaireData.questions[this.currentQ].required);
         }
     }
+
+    async initTimer() {
+        this.quizEndDialog = new ModalCard({
+            template: '/components/quiz/quiz-time-limit-dialog.html',
+            stylesheet: '/components/quiz/styles.css'
+        });
+        this.container.appendChild(this.quizEndDialog);
+        await this.quizEndDialog.templatePromise;
+        this.timerEl = $(this.miniTitleCard, '#timer');
+        this.timerEl.classList.remove('hide');
+    }
+
+    startTimer(options) {
+        let timeLeft = options.timeLimit;
+        this.timerEl.children[1].textContent = this.millisToMinutesAndSeconds(timeLeft);
+        const timerIntervalID = window.setInterval(() => {
+            timeLeft-=1000;
+            this.timerEl.children[1].textContent = this.millisToMinutesAndSeconds(timeLeft);
+        }, 1000);
+        const timerTimeoutID = window.setTimeout(() => {
+            console.log("the end");
+            window.clearInterval(timerIntervalID);
+            this.quizEndDialog.open()
+            this.quizEndDialog.resultsObservable.subscribe({next: data => {
+                $(this, '#quizContent').classList.add('hide');
+                $(this, '#miniTitleCard').classList.add('hide')
+                this.container.appendChild(this.finishCard);
+                console.log(this.response)
+            }})
+        }, options.timeLimit);
+    }
+
+    millisToMinutesAndSeconds(millis) {
+        var minutes = Math.floor(millis / 60000);
+        var seconds = ((millis % 60000) / 1000).toFixed(0);
+        return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+      }
 
     nextQuestion(requireAnswer) {
         if(requireAnswer && !this.answerarray[this.currentQ].getValue()) {
