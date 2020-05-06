@@ -8,6 +8,12 @@ export class Router {
        this.routerOutlet = null;
     }
 
+    /**
+     * Creates a route
+     * @param {string} uri Address path to use for route
+     * @param {Component} component Component to be displayed on route
+     * @param {*} authGuard Optional auth guard promise
+     */
     get(uri, component, authGuard) {
         if(!uri || !component) throw new Error('uri or component must be given');
 
