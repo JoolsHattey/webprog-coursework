@@ -1,0 +1,12 @@
+progress-spinner {
+    position: absolute;
+    margin: auto;
+    top: 300px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 65px;
+}
+body {
+    position: relative;
+}
