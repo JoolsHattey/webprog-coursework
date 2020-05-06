@@ -2,7 +2,7 @@
 
 import { Router } from './router.js';
 import { RouterOutlet } from './components/router-outlet/router-outlet.component.js';
-import { getAuthStatus, login, initAuth, authObservable } from './auth.js';
+import { getAuthStatus, getAuthStatusAsync, login, initAuth, authObservable } from './auth.js';
 import { HomePage } from './views/home-page/index.js';
 import { AdminPage } from './views/admin-page/index.js';
 import { QuizPage } from './views/quiz-page/index.js';
@@ -17,21 +17,17 @@ import { JsonFileUpload } from './components/file-upload/json-file-upload.compon
  * Client Routes
  * **************************************** */
 
-const routerOutlet = document.querySelector('router-outlet');
+const routerOutlet = $(document, 'router-outlet');
 export const routerInstance = new Router(); 
 
 routerInstance.get('/home', HomePage);
-routerInstance.get('/admin', AdminPage, {getAuthStatus, ifParams: false});
-routerInstance.get(`/quiz/:quizID/:mode`, QuizPage, {getAuthStatus, ifParams: {param: 'mode', value: 'edit'}});
+routerInstance.get('/admin', AdminPage, {getAuthStatusAsync, ifParams: false});
+routerInstance.get(`/quiz/:quizID/:mode`, QuizPage, {getAuthStatusAsync, ifParams: {param: 'mode', value: 'edit'}});
 
 routerInstance.init(routerOutlet);
 
-const appBar = document.querySelector('app-bar');
+const appBar = $(document, 'app-bar');
 initAuth(appBar);
-
-authObservable.subscribe({next: x => {
-    console.log(x)
-}})
 
 
 

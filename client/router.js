@@ -48,11 +48,12 @@ export class Router {
         }
     }
 
-    goToPage(route, path, params) {
+    async goToPage(route, path, params) {
         const req = { path, params };
         if(route.authGuard) {
+            const auth = await route.authGuard.getAuthStatusAsync();
             if(params[route.authGuard.ifParams.param] === route.authGuard.ifParams.value) {
-                if(route.authGuard.getAuthStatus()) {
+                if(auth) {
                     // Set address bar to router path
                     history.pushState({}, "", path)
                     this.routerOutlet.routeComponent(route.component, req);
@@ -60,9 +61,13 @@ export class Router {
                     console.log("Not Authenticated")
                 }
             } else {
-                // Set address bar to router path
-                history.pushState({}, "", path);
-                this.routerOutlet.routeComponent(route.component, req);
+                if(auth) {
+                    // Set address bar to router path
+                    history.pushState({}, "", path);
+                    this.routerOutlet.routeComponent(route.component, req);
+                } else {
+                    console.log("Not Authenticated")
+                }
             }
         } else {
             // Set address bar to router path
