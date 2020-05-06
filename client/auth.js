@@ -31,6 +31,7 @@ export function initAuth(appBar) {
 
 let authStatus;
 
+
 export function login() {
     const provider = new firebase.auth.GoogleAuthProvider();
     
@@ -38,7 +39,12 @@ export function login() {
         .then(result => {
             const token = result.credential.accessToken;
             const user = result.user;
-            sendToken();
+            console.log(user)
+            user.getIdTokenResult().then((token) => {
+                console.log(token);
+                console.log(jwt_decode(token));
+            });
+            sendAuthToken({token: user.uid});
         }).catch(error => {
             const errorCode = error.code;
             const errorMessage = error.message;
@@ -59,7 +65,12 @@ export function getAuthStatus() {
 export function getAuthStatusAsync() {
     return new Promise(resolve => {
         firebase.auth().onAuthStateChanged(user => {
-            if(user) resolve(true);
+            if(user) {
+                user.getIdTokenResult().then((token) => {
+                    console.log(token);
+                    resolve(token);
+                });
+            }
             else resolve(false);
         });
     });
@@ -76,7 +87,7 @@ function sendToken() {
 }
 
 async function sendAuthToken(authToken) {
-    const response = await fetch("/authenticate", {
+    const response = await fetch("/api/authenticate", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

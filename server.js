@@ -36,6 +36,11 @@ function authenticateUser(req, res) {
     firestore.verifyAuth(req.body.token);
 }
 
+function getUserRole(req, res) {
+    console.log(req.body)
+    firestore.getUserRole(req.body.token)
+}
+
 
 const router = express.Router();
 
@@ -53,7 +58,11 @@ router.get('/questionnaire/:uid', getQuestionnaire);
 router.get('/questionnaires', getQuestionnaires);
 router.post('/editquestionnaire/:uid', express.json(), editQuestionnaire);
 
-router.post('/authenticate', express.json(), authenticateUser);
+router.post('/authenticate', express.json(), getUserRole);
+
+router.get('/yiss', getUserRole)
+
+
 
 
 

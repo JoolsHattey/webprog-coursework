@@ -36,6 +36,21 @@ async function verifyAuth(idToken) {
     }
 }
 
+async function grantModeratorRole(email) {
+    const user = await firebase.auth().getUserByEmail(email); // 1
+    if (user.customClaims && user.customClaims.moderator === true) {
+        return;
+    } // 2
+    return firebase.auth().setCustomUserClaims(user.uid, {
+        moderator: true
+    }); // 3
+}
+
+async function getUserRole(uid) {
+    const user = await firebase.auth().getUser(uid);
+    console.log(user);
+}
+
 async function getResponses(uid) {
     let result = new Array;
     const snapshot = await firebase.firestore().collection("questionnaires").doc(uid).collection("responses").get();
@@ -76,5 +91,7 @@ module.exports = {
     getQuestionnaire,
     editQuestionnaire,
     getQuestionnaires,
-    verifyAuth
+    verifyAuth,
+    grantModeratorRole,
+    getUserRole
 }

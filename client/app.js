@@ -21,8 +21,8 @@ const routerOutlet = $(document, 'router-outlet');
 export const routerInstance = new Router(); 
 
 routerInstance.get('/home', HomePage);
-routerInstance.get('/admin', AdminPage, {getAuthStatusAsync, ifParams: false});
-routerInstance.get(`/quiz/:quizID/:mode`, QuizPage, {getAuthStatusAsync, ifParams: {param: 'mode', value: 'edit'}});
+routerInstance.get('/admin', AdminPage, {getAuthStatusAsync, ifParams: false, authRole: 'moderator'});
+routerInstance.get(`/quiz/:quizID/:mode`, QuizPage, {getAuthStatusAsync, ifParams: {param: 'mode', value: 'edit'}, authRole: 'moderator'});
 
 routerInstance.init(routerOutlet);
 

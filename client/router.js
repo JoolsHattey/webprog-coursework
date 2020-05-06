@@ -54,26 +54,50 @@ export class Router {
         }
     }
 
+    async authenticate(authGuard, route, params) {
+        const auth = await authGuard.getAuthStatusAsync();
+        if(auth) {
+            if(auth?.claims[route.authGuard.authRole]) {
+                if(route.authGuard.ifParams) {
+                    if(params[route.authGuard.ifParams.param] === route.authGuard.ifParams.value) {
+                        return true;
+                    } else {
+                        return true
+                    }
+                } else {
+                    return true
+                }
+            } else {
+                if(route.authGuard.ifParams) {
+                    if(params[route.authGuard.ifParams.param] === route.authGuard.ifParams.value) {
+                        return false;
+                    } else {
+                        return true
+                    }
+                }
+            }
+        } else {
+            if(route.authGuard.ifParams) {
+                if(params[route.authGuard.ifParams.param] === route.authGuard.ifParams.value) {
+                    return false;
+                } else {
+                    return true
+                }
+            }
+        }
+    }
+
     async goToPage(route, path, params) {
         const req = { path, params };
         if(route.authGuard) {
-            const auth = await route.authGuard.getAuthStatusAsync();
-            if(params[route.authGuard.ifParams.param] === route.authGuard.ifParams.value) {
-                if(auth) {
-                    // Set address bar to router path
-                    history.pushState({}, "", path)
-                    this.routerOutlet.routeComponent(route.component, req);
-                } else {
-                    console.log("Not Authenticated")
-                }
-            } else {
-                if(auth) {
-                    // Set address bar to router path
-                    history.pushState({}, "", path);
-                    this.routerOutlet.routeComponent(route.component, req);
-                } else {
-                    console.log("Not Authenticated")
-                }
+            const auth = await this.authenticate(route.authGuard, route, params);
+            if(auth) {
+                // Set address bar to router path
+                history.pushState({}, "", path)
+                this.routerOutlet.routeComponent(route.component, req);
+            }
+            else {
+                console.log("not authenticated")
             }
         } else {
             // Set address bar to router path
