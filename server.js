@@ -5,6 +5,9 @@ const app = express();
 const port = 8080;
 const path = require('path');
 const firestore = require('./firestore');
+const { Parser } = require('json2csv');
+
+const fs = require('fs');
 
 
 async function submitResponse(req, res) {
@@ -41,6 +44,22 @@ function getUserRole(req, res) {
     firestore.getUserRole(req.body.token)
 }
 
+async function getResponsesCSV(req, res) {
+    try {
+        const responses = await firestore.getResponses(req.params.uid);
+        const fields = [];
+        const opts = { fields };
+        const parser = new Parser(opts);
+        const csv = parser.parse(responses);
+        console.log(csv);
+        fs.writeFile('thing.csv', csv, function (err) {
+            if (err) return console.log(err);
+          });
+      } catch (err) {
+        console.error(err);
+      }
+}
+
 
 const router = express.Router();
 
@@ -60,7 +79,7 @@ router.post('/editquestionnaire/:uid', express.json(), editQuestionnaire);
 
 router.post('/authenticate', express.json(), getUserRole);
 
-router.get('/yiss', getUserRole)
+router.get('/yiss/:uid', getResponsesCSV)
 
 
 

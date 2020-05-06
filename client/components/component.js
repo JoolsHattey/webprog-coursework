@@ -1,3 +1,4 @@
+import { $ } from "../app.js";
 
 
 export class Component extends HTMLElement {
@@ -24,10 +25,14 @@ export class Component extends HTMLElement {
             }
         }
     }
-    connectedCallback() {
+    async connectedCallback() {
         if(this.hasAttribute('draggable')) {
-            this.addEventListener('touchstart', this.touchStart);
-            this.addEventListener('touchmove', this.touchMove);
+            await this.templatePromise;
+            const dragHandle = $(this, '#dragHandle');
+            dragHandle.addEventListener('touchstart', e => this.touchStart(e));
+            dragHandle.addEventListener('touchmove', e => this.touchMove(e));
+            dragHandle.addEventListener('touchend', e => this.touchEnd(e))
+            dragHandle.addEventListener('dragstart', e => this.drag(e));
         }
     }
     addStyleSheet(path) {
@@ -41,10 +46,16 @@ export class Component extends HTMLElement {
         this.container.innerHTML = await res.text();
     }
     touchStart(e) {
+        this.style.transition = '0s';
         this.touchStartPos = e.changedTouches[0].clientY;
     }
     touchMove(e) {
-        this.container.style.transform = `translateY(${e.changedTouches[0].clientY-this.touchStartPos}px)`
+        this.style.transform = `translate3d(0, ${e.changedTouches[0].clientY-this.touchStartPos}px, 0)`;
         e.preventDefault();
     }
+    touchEnd(e) {
+        this.style.transition = '0.3s';
+        this.style.transform = 'translate3d(0, 0, 0)';
+    }
+    drag(e) {console.log(e)}
 }

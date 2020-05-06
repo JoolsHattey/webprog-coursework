@@ -24,9 +24,12 @@ export class QuizPage extends Component {
         const request = await fetch(`/api/questionnaire/${uid}`);
         const quesitonnaire = await(request.json());
 
+
         let q;
         if(editMode === "edit") {
-            q = new EditableQuestionnaire(quesitonnaire, uid);
+            const req = await fetch(`/api/responses/${uid}`);
+            const responses = await(req.json());
+            q = new EditableQuestionnaire(uid, quesitonnaire, responses);
         } else {
             q = new Questionnaire(quesitonnaire, uid);
         }

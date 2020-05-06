@@ -1,4 +1,4 @@
-img, body {
+img, body, :host {
     width: var(--icon-width);
     height: var(--icon-height)
 }

@@ -8,15 +8,17 @@ import { $, $r } from '../../app.js';
 import { ModalCard } from '../modal-card/modal-card.component.js';
 
 export class EditableQuestionnaire extends Component {
-    constructor(questionnaireData, uid) {
+    constructor(uid, questionnaireData, responsesData) {
         super({
             template: '/components/editable-quiz/index.html',
             stylesheet: '/components/editable-quiz/styles.css'
         });
-        this.initElement(questionnaireData, uid);
+        this.initElement(questionnaireData, responsesData, uid);
     }
 
-    async initElement(questionnaireData, uid) {
+    async initElement(questionnaireData, responsesData, uid) {
+
+        console.log(responsesData)
 
         await this.templatePromise;
 
@@ -29,7 +31,41 @@ export class EditableQuestionnaire extends Component {
                 "questions": []
             };
         }
-        this.questionsContainer = this.shadowRoot.querySelector("#questionsContainer");
+        this.questionsContainer = $(this, '#questionsContainer');
+        this.questionsContainer.addEventListener('dragover', (e) => {
+            e.preventDefault()
+            console.log(e)
+        })
+        this.questionsContainer.addEventListener('dragenter', (e) => {
+            console.log(e)
+        })
+        this.questionsContainer.addEventListener('drop', (e) => {
+            console.log(e)
+        })
+
+        this.quizEditorContainer = $(this, '#editableQuestionsContainer');
+        this.responsesContainer = $(this, '#responsesContainer');
+
+        const questionsBtn = $(this, '#questionsBtn');
+        const responsesBtn = $(this, '#responsesBtn');
+
+        responsesBtn.addEventListener('click', () => {
+            this.quizEditorContainer.classList.add('hide');
+            this.responsesContainer.classList.remove('hide');
+        })
+        questionsBtn.addEventListener('click', () => {
+            this.responsesContainer.classList.add('hide');
+            this.quizEditorContainer.classList.remove('hide');
+        })
+
+        const responsesTitleCard = new Card({
+            template: '/components/editable-quiz/quiz-responses-title-card.html',
+            styles: '/components/editable-quiz/styles.css'
+        });
+        this.responsesContainer.append(responsesTitleCard);
+        await responsesTitleCard.templatePromise;
+        $(responsesTitleCard, '#title').textContent = `${responsesData.length} ${responsesData.length === 1 ? 'Response' : 'Responses'}`;
+
 
     
         // this.createTitle();
@@ -44,7 +80,7 @@ export class EditableQuestionnaire extends Component {
             Array.from(this.questionsContainer.children).forEach(element => {
                 element.visible = true;
             })
-            this.questionsContainer.classList.remove('hide')
+            this.quizEditorContainer.classList.remove('hide')
             $(this, 'progress-spinner').classList.add('hide');
         }
     }
@@ -114,6 +150,7 @@ export class EditableQuestionnaire extends Component {
             stylesheet: '/components/editable-quiz/styles.css'
         });
         q.triggerVisible();
+        q.draggable = true;
 
         q.index = index;
 

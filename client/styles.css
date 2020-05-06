@@ -6,6 +6,10 @@
     --dark-theme-color: #003d33;
 }
 
+:host {
+    display: block;
+}
+
 .page {
     margin: 10px;
 }

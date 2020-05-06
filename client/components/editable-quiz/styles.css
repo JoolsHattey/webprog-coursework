@@ -92,3 +92,6 @@ progress-spinner {
 dropdown-el {
     margin: 8px 0 4px 0;
 }
+#dragHandle {
+    margin: -20px auto auto auto;
+}
