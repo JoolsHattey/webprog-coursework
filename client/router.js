@@ -10,11 +10,14 @@ export class Router {
 
     /**
      * Creates a route
-     * @param {string} uri Address path to use for route
-     * @param {Component} component Component to be displayed on route
-     * @param {*} authGuard Optional auth guard promise
+     * @param {Object} routeOptions
+     * @param {string} routeOptions.uri Address path to use for route
+     * @param {Component} routeOptions.component Component to be displayed on route
+     * @param {boolean} [routeOptions.defaultRoute]
+     * @param {string} [routeOptions.redirectTo] If it's a default route specify a route path to redirect to
+     * @param {*} [routeOptions.authGuard] Auth guard
      */
-    get(uri, component, authGuard) {
+    get({uri, component, defaultRoute, redirectTo, authGuard}) {
         if(!uri || !component) throw new Error('uri or component must be given');
 
         if(typeof uri !== "string") throw new TypeError('typeof uri must be a string');
@@ -27,7 +30,9 @@ export class Router {
         const route = {
             uri,
             component,
-            authGuard
+            authGuard,
+            defaultRoute,
+            redirectTo
         }
         this.routes.push(route);
     }
@@ -46,8 +51,13 @@ export class Router {
     matchRoute(route, path) {
         const regEx = new RegExp("^" + route.uri.replace(/:[^\s/]+/g, '([\\w-]+)') + "$");
         if(path.match(regEx)) {
-            const params = this.getParams(route, path);
-            this.goToPage(route, path, params);
+            if(route.defaultRoute) {
+                this.navigate(route.redirectTo);
+                console.log("DEFAULT")
+            } else {
+                const params = this.getParams(route, path);
+                this.goToPage(route, path, params);
+            }
             return true;
         } else {
             return false;
