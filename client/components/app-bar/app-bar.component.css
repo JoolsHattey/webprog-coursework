@@ -30,6 +30,10 @@
     display: flex;
     flex-direction: row;
 }
+#quizEditorButtons button {
+    margin-left: 12px;
+    margin-right: 12px;
+}
 .titleContainer {
     width: 100%;
     display: flex;

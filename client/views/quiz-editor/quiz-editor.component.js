@@ -25,6 +25,7 @@ export class QuizEditor extends Component {
         await this.appBar.templatePromise;
         $(this.appBar, '#editorHome').addEventListener('click', () => {
             $clear($(this, '#editor'));
+            $clear($(this, '#quizsContainer'));
             history.pushState({}, "", `/quizeditor`)
             this.getQuestionnaireList()
         });

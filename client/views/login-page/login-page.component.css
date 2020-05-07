@@ -1,0 +1,16 @@
+:host, body {
+    width: 100%;
+}
+
+
+:host {
+    height: 100%;
+}
+
+.loginCard {
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    width: 80%;
+    height: 500px;
+}

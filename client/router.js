@@ -107,7 +107,7 @@ export class Router {
                 this.routerOutlet.routeComponent(route.component, req);
             }
             else {
-                console.log("not authenticated")
+                this.navigate('/login')
             }
         } else {
             // Set address bar to router path
