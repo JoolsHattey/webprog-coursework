@@ -41,3 +41,7 @@ progress[value] {
     height: 100%;
     width: 100%;
 }
+#editFab {
+    bottom: 80px;
+    right: 10px;
+}

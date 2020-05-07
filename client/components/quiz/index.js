@@ -4,13 +4,14 @@ import { Component } from '../component.js';
 import { Card } from '../card/card.component.js';
 import { Input } from '../input/index.js';
 import { Selector } from '../selector/selector.component.js';
-import { $, $r } from '../../app.js';
+import { $, $r, routerInstance } from '../../app.js';
 import { SnackBar } from "../snack-bar/snack-bar.component.js";
 import { Checkbox } from '../checkbox/checkbox.component.js';
 import { RadioGroup } from '../radio-selector/radio-selector.component.js';
 import { CheckboxGroup } from '../checkbox/checkbox-group.component.js';
 import { TextInput } from '../text-input/text-input.component.js';
 import { ModalCard } from '../modal-card/modal-card.component.js';
+import { getAuthStatusAsync } from '../../auth.js';
 
 export class Questionnaire extends Component {
     constructor(questionnaireData, uid) {
@@ -26,7 +27,6 @@ export class Questionnaire extends Component {
         this.uid = uid;
         $(this, '#quizContent').style.display = 'none';
         this.initTitleCard(questionnaireData);
-        
         this.initMiniTitleCard(questionnaireData);
         this.initQuestionCards(questionnaireData);
         this.initFinishCard();
@@ -47,7 +47,9 @@ export class Questionnaire extends Component {
         $(this.titleContainer, '#startBtn').onclick = () => this.startButton();
         firebase.auth().onAuthStateChanged(user => {
             if(user) {
-
+                const fabBtn = $(this, '#editFab');
+                fabBtn.classList.remove('hide');
+                fabBtn.addEventListener('click', () => routerInstance.navigate(`/quizeditor/${this.uid}`));
             } else {
                 if(questionnaireData.options.requireLogin) {
                     $(this.titleContainer, '#startBtn').disabled = true;

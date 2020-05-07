@@ -108,6 +108,21 @@ main {
     box-shadow: none!important;
 }
 
+.md-fab {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background-color: var(--primary-theme-color);
+    box-shadow: 0 6px 10px 0 #666;
+    border: none;
+    outline: none;
+    transition: all 0.1s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+}
+
 .hide {
     display: none!important;
 }
