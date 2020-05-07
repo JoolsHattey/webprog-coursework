@@ -2,6 +2,9 @@
 <html>
     <head>
         <base href="/client">
+        <meta name="theme-color" content="#00695c">
+        <link rel="apple-touch-icon" href="/assets/app-icons/icon_192px.png">
+        <link rel="manifest" href="/manifest.webmanifest">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
         <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="/styles.css">
@@ -14,7 +17,15 @@
         <router-outlet></router-outlet>
 
     </body>
+    <script>
+        if('serviceWorker' in navigator) {
+            navigator.serviceWorker
+                .register('/sw.js')
+                .then(() => { console.log('Service Worker Registered'); });
+        }
+    </script>
     <script src="https://www.gstatic.com/firebasejs/7.9.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.9.1/firebase-auth.js"></script>
     <script type="module" src="./app.js"></script>
+    <noscript>Please enable Javascript to view this page</noscript>
 </html>
