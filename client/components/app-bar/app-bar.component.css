@@ -1,3 +1,7 @@
+:root {
+    --expanded-content-pos: -63px;
+}
+
 #topRow {
     width: 100%;
     height: 56px;
@@ -6,13 +10,21 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 4px 8px 1px black;
+    background-color: white;
+    z-index: 2;
 }
 
 #expandedContent {
     height: 106px;
     background-color: white;
     padding: 5px 5px 0 5px;
+    transition: 0.5s;
+    transform: translate3d(0, var(--expanded-content-pos), 0);
+    z-index: 1;
+    box-shadow: 0 4px 8px 1px black;
+}
+#expandedContent * {
+    z-index: 1;
 }
 #quizEditorButtons {
     display: flex;
