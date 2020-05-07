@@ -7,3 +7,12 @@ progress-spinner {
     margin: auto;
     padding-top: 100px;
 }
+
+:host {
+    display: flex;
+}
+:host, body {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}

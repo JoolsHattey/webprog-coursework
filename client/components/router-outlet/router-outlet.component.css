@@ -8,10 +8,14 @@ progress-spinner {
     width: 65px;
 }
 body {
-    margin-top: 56px;
     position: relative;
     overflow: scroll;
+    display: flex;
+    align-items: stretch;
+    background-color: #CCE0DE;
 }
-:host {
+:host, body {
     height: 100%;
+    width: 100%;
+    margin: 0;
 }

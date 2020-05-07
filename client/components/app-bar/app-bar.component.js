@@ -19,7 +19,6 @@ export class AppBar extends Component {
         this.container.classList.add("appBar");
         this.homeBtn = $(this, '#home');
         this.profileBtn = $(this, '#profile');
-        this.homeBtn.onclick = () => routerInstance.navigate('/home');
         this.createProfileCard();
     }
 
@@ -51,6 +50,16 @@ export class AppBar extends Component {
         profileCard.visible = false;
         this.profileBtn.onclick = () => profileCard.triggerVisible()
         this.container.appendChild(profileCard);
+    }
+    expand() {
+        this.style.height = '130px';
+        $(this, '#expandedContent').classList.remove('hide');
+        $(this, '#quizEditorButtons').classList.remove('hide');
+    }
+    closeExpanded() {
+        this.style.height = '56px';
+        $(this, '#expandedContent').classList.add('hide');
+        $(this, '#quizEditorButtons').classList.add('hide');
     }
     /**
      * 

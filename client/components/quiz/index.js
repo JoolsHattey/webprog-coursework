@@ -44,16 +44,7 @@ export class Questionnaire extends Component {
         $(this.titleContainer, '#title').append(questionnaireData.name);
         $(this.titleContainer, '#numQ').append(`${questionnaireData.questions.length} Questions`);
         console.log("yiss")
-        $(this.titleContainer, '#startBtn').onclick = () => {
-            $(this, '#quizContent').style.display = 'block';
-            this.titleContainer.style.display = 'none';
-            $(this, '#miniTitleCard').classList.remove('hide');
-            if(questionnaireData.options?.quizMode) {
-                $(this.titleContainer, '#timeLimit').append(this.millisToMinutesAndSeconds(questionnaireData.options.quizOptions.timeLimit))
-                $(this.titleContainer, '#timeLimit').classList.remove('hide');
-                this.startTimer(questionnaireData.options.quizOptions)
-            };
-        }
+        $(this.titleContainer, '#startBtn').onclick = () => this.startButton();
         firebase.auth().onAuthStateChanged(user => {
             if(user) {
 
@@ -64,6 +55,13 @@ export class Questionnaire extends Component {
                 }
             }
         })
+    }
+
+    startButton() {
+        $(this, '#quizContent').style.display = 'block';
+        this.titleContainer.style.display = 'none';
+        $(this, '#miniTitleCard').classList.remove('hide');
+        $(this, '#quizNavBtnContainer').classList.remove('hide');
     }
 
     async initMiniTitleCard(questionnaireData) {
@@ -205,11 +203,9 @@ export class Questionnaire extends Component {
                 input.required = questionData.required;
                 break;
             case "single-select":
-                // input = new Selector(questionData.options, "radio");
                 input = new RadioGroup(questionData.options)
                 break;
             case "multi-select":
-                // input = new Selector(questionData.options, "checkbox");
                 input = new CheckboxGroup(questionData.options);
                 break;
         }

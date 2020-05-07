@@ -30,3 +30,7 @@
 .show {
     display: inline-block!important;;
 }
+:host {
+    position: absolute;
+    z-index: 10;
+}

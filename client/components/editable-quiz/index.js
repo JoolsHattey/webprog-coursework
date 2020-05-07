@@ -8,15 +8,16 @@ import { $, $r } from '../../app.js';
 import { ModalCard } from '../modal-card/modal-card.component.js';
 
 export class EditableQuestionnaire extends Component {
-    constructor(uid, questionnaireData, responsesData) {
+    constructor(uid, questionnaireData, responsesData, appBar) {
         super({
             template: '/components/editable-quiz/index.html',
             stylesheet: '/components/editable-quiz/styles.css'
         });
-        this.initElement(questionnaireData, responsesData, uid);
+        this.appBar = appBar;
+        this.initElement(questionnaireData, responsesData, uid, appBar);
     }
 
-    async initElement(questionnaireData, responsesData, uid) {
+    async initElement(questionnaireData, responsesData, uid, appBar) {
 
         console.log(responsesData)
 
@@ -46,14 +47,18 @@ export class EditableQuestionnaire extends Component {
         this.quizEditorContainer = $(this, '#editableQuestionsContainer');
         this.responsesContainer = $(this, '#responsesContainer');
 
-        const questionsBtn = $(this, '#questionsBtn');
-        const responsesBtn = $(this, '#responsesBtn');
+        const questionsBtn = $(appBar, '#questionsBtn');
+        const responsesBtn = $(appBar, '#responsesBtn');
 
         responsesBtn.addEventListener('click', () => {
+            responsesBtn.classList.add('selected');
+            questionsBtn.classList.remove('selected');
             this.quizEditorContainer.classList.add('hide');
             this.responsesContainer.classList.remove('hide');
         })
         questionsBtn.addEventListener('click', () => {
+            questionsBtn.classList.add('selected');
+            responsesBtn.classList.remove('selected');
             this.responsesContainer.classList.add('hide');
             this.quizEditorContainer.classList.remove('hide');
         })
@@ -69,7 +74,12 @@ export class EditableQuestionnaire extends Component {
 
     
         // this.createTitle();
-        this.createButtons(questionnaireData);
+        
+
+        const exandedContent = $(appBar, '#expandedContent');
+        appBar.expand()
+        
+        this.createButtons(questionnaireData, exandedContent);
 
         this.elements = new Array;
         if(questionnaireData) {
@@ -85,9 +95,8 @@ export class EditableQuestionnaire extends Component {
         }
     }
 
-    async createButtons(questionnaireData) {
-        this.container.querySelector("#newQ")
-            .onclick = () => this.createNewQuestion();
+    async createButtons(questionnaireData, container) {
+        $(this, "#newQ").onclick = () => this.createNewQuestion();
 
         const modalOptions = this.quiz.options;
         const modal = new ModalCard({
@@ -95,7 +104,7 @@ export class EditableQuestionnaire extends Component {
             stylesheet: '/components/editable-quiz/styles.css'
         }, modalOptions, '70%', '30%');
         await modal.templatePromise;
-        $(this, '#settingsBtn').onclick = () => {
+        $(this.appBar, '#settingsBtn').onclick = () => {
             modal.open();
             modal.resultsObservable.subscribe({next: data => {
                 console.log(data);
@@ -107,20 +116,20 @@ export class EditableQuestionnaire extends Component {
             }});
         }
 
-        const saveBtn = $(this, '#saveBtn');
+        const saveBtn = $(this.appBar, '#saveBtn');
         saveBtn.onclick = () => this.save();
 
-        const lastSavedTime = $(this, '#lastSavedTime');
-        const lastSaved = new Date(this.quiz.saveTime);
-        const currentTime = Date.now();
-        const time = currentTime - this.quiz.saveTime;
-        if(time < 60000) {
-            lastSavedTime.append('less than a minute ago');
-        } else if(time < 3600000) {
-            lastSavedTime.append(`${Math.ceil(time/60000)} minutes ago`);
-        } else {
-            lastSavedTime.append(`${lastSaved.getDay()}/${lastSaved.getMonth()}/${lastSaved.getFullYear()}\n${lastSaved.getHours()}:${lastSaved.getMinutes()}`);
-        }
+        // const lastSavedTime = $(this, '#lastSavedTime');
+        // const lastSaved = new Date(this.quiz.saveTime);
+        // const currentTime = Date.now();
+        // const time = currentTime - this.quiz.saveTime;
+        // if(time < 60000) {
+        //     lastSavedTime.append('less than a minute ago');
+        // } else if(time < 3600000) {
+        //     lastSavedTime.append(`${Math.ceil(time/60000)} minutes ago`);
+        // } else {
+        //     lastSavedTime.append(`${lastSaved.getDay()}/${lastSaved.getMonth()}/${lastSaved.getFullYear()}\n${lastSaved.getHours()}:${lastSaved.getMinutes()}`);
+        // }
 
         const shareModal = new ModalCard({
             template: '/components/editable-quiz/quiz-share-dialog.html',
@@ -128,10 +137,10 @@ export class EditableQuestionnaire extends Component {
         }, null, '70%', '30%');
         await shareModal.templatePromise;
         $(shareModal, '#closeBtn').onclick = () => shareModal.close();
-        $(this, '#shareBtn').onclick = () => {
+        $(this.appBar, '#shareBtn').onclick = () => {
             shareModal.open();
         }
-        const quizURL = `${window.location.host}/quiz/${this.uid}/view`;
+        const quizURL = `${window.location.host}/quiz/${this.uid}`;
         $(shareModal, 'input-elmnt').setValue(quizURL);
         $(shareModal, '#clipboardBtn').onclick = () => {
             navigator.clipboard.writeText(quizURL);
@@ -299,7 +308,7 @@ export class EditableQuestionnaire extends Component {
     }
 
     changeTitle(title) {
-        this.shadowRoot.querySelector('input-elmnt').setValue(title);
+        $(this.appBar, 'text-input').setValue(title);
     }
 }
 

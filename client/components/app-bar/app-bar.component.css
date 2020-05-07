@@ -1,9 +1,7 @@
-.appBar {
+#topRow {
     width: 100%;
-    height: 100%;
-    top: 0;
-    background-color: #00695c;
-    color: white;
+    height: 56px;
+    color: black;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -11,11 +9,56 @@
     box-shadow: 0 4px 8px 1px black;
 }
 
+#expandedContent {
+    height: 106px;
+    background-color: white;
+    padding: 5px 5px 0 5px;
+}
+#quizEditorButtons {
+    display: flex;
+    flex-direction: row;
+}
+.titleContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-content: space-between;
+}
+.titleBtnContainer {
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+#saveBtnContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.tabs {
+    padding-top: 10px;
+}
+.tabs button {
+    border: none;
+    background-color: white;
+    outline: none;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
 :host {
-    position: fixed;
+    top: 0;
+    position: sticky;
     height: 56px;
     width: 100%;
-    z-index: 10;
+    z-index: 5;
+    flex-grow: 1;
+    background-color: white;
 }
 
 /* img {

@@ -6,7 +6,9 @@ import { EditableQuestionnaire } from '../../components/editable-quiz/index.js';
 
 export class QuizPage extends Component {
     constructor(req) {
-        super();
+        super({
+            stylesheet: '/views/quiz-page/styles.css'
+        });
         this.container.classList.add("page");
         // this.addTemplate('/views/quiz-page/index.html').then(() => {
             

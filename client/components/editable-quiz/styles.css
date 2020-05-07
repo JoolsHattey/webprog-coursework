@@ -3,28 +3,26 @@ body {
     flex-direction: column;
 }
 
+:host {
+    display: flex;
+    flex-grow: 1;
+}
+:host, body {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+
 #newQ {
     align-self: center;
 }
 
-.titleContainer {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-content: space-between;
+.header {
+    background-color: white;
+    padding: 8px;
 }
-.titleBtnContainer {
-    margin: 10px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-}
-#saveBtnContainer {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
+
+
 #deleteBtn {
     
 }

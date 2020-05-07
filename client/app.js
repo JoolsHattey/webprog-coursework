@@ -12,6 +12,7 @@ import { Icon } from './components/icon/icon.component.js';
 import { Toggle } from './components/toggle/toggle.component.js';
 import { TextInput } from './components/text-input/text-input.component.js';
 import { JsonFileUpload } from './components/file-upload/json-file-upload.component.js';
+import { QuizEditor } from './views/quiz-editor/quiz-editor.component.js';
 
 /********************************************
  * Client Routes
@@ -20,9 +21,9 @@ import { JsonFileUpload } from './components/file-upload/json-file-upload.compon
 const routerOutlet = $(document, 'router-outlet');
 export const routerInstance = new Router(); 
 
-routerInstance.get('/home', HomePage);
-routerInstance.get('/admin', AdminPage, {getAuthStatusAsync, ifParams: false, authRole: 'moderator'});
-routerInstance.get(`/quiz/:quizID/:mode`, QuizPage, {getAuthStatusAsync, ifParams: {param: 'mode', value: 'edit'}, authRole: 'moderator'});
+routerInstance.get(`/quiz/:quizID`, QuizPage);
+routerInstance.get('/quizeditor/:quizID', QuizEditor, {getAuthStatusAsync, authRole: 'moderator'});
+routerInstance.get('/quizeditor', QuizEditor, {getAuthStatusAsync, authRole: 'moderator'});
 
 routerInstance.init(routerOutlet);
 
@@ -55,6 +56,13 @@ export async function $r(elName, template) {
         el.innerHTML = await res.text();
     }
     return el;
+}
+/**
+ * Clear inner content of element
+ * @param {Element} el 
+ */
+export async function $clear(el) {
+  el.innerHTML = '';
 }
 
 
