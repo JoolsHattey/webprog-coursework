@@ -2,6 +2,10 @@ html, body, main {
     margin: 0;
     padding: 0;
     width: 100%;
+    
+}
+:host {
+    height: 100%;
 }
 
 main {
@@ -11,4 +15,5 @@ main {
 
 .page {
     margin: 10px;
+    width: 100%;
 }
