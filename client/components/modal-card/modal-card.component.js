@@ -5,11 +5,13 @@ import { $, Observable } from "../../app.js";
 import { Card } from "../card/card.component.js";
 
 export class ModalCard extends Card {
-    constructor(componentStructure, options) {
+    constructor(componentStructure, options, width, height) {
         super(componentStructure);
         this.addStyleSheet("/components/modal-card/modal-card.component.css");
         this.container.classList.add("modal");
         this.dialogData = options;
+        this.style.setProperty('--modal-width', width);
+        this.style.setProperty('--modal-height', height);
         this.initElement();
     }
     async initElement() {
@@ -28,7 +30,6 @@ export class ModalCard extends Card {
                         if(option !== 'file') {
                             this.dialogData[option] = $(this, `#${option}`).getValue();
                         }
-                        
                     }
                     observer.next(this.dialogData);
                     this.close();
@@ -43,6 +44,7 @@ export class ModalCard extends Card {
         });
     }
     open() {
+        document.body.append(this)
         for(const option in this.dialogData) {
             $(this, `#${option}`).setValue(this.dialogData[option]);
         }
@@ -51,6 +53,7 @@ export class ModalCard extends Card {
     }
 
     close() {
+        document.body.removeChild(this);
         this.container.classList.remove('opened');
         this.overlay.classList.remove('show');
     }

@@ -7,11 +7,11 @@
     bottom: 0;
     margin: auto;
     z-index: 2;
-    width: 200px;
-    height: 500px;
+    height: var(--modal-height);
+    width: var(--modal-width);
 }
 .opened {
-    display: block!important;
+    display: inline-block!important;
 }
 .overlay {
     display: none;
@@ -28,5 +28,5 @@
     transition: 0.5s;
 }
 .show {
-    display: block!important;;
+    display: inline-block!important;;
 }

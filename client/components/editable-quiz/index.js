@@ -126,8 +126,7 @@ export class EditableQuestionnaire extends Component {
         const shareModal = new ModalCard({
             template: '/components/editable-quiz/quiz-share-dialog.html',
             stylesheet: '/components/editable-quiz/styles.css'
-        });
-        this.container.appendChild(shareModal);
+        }, null, '70%', '30%');
         await shareModal.templatePromise;
         $(shareModal, '#closeBtn').onclick = () => shareModal.close();
         $(this, '#shareBtn').onclick = () => {

@@ -8,5 +8,8 @@ progress-spinner {
     width: 65px;
 }
 body {
+    margin-top: 56px;
     position: relative;
+    height: 100vh;
+    overflow: scroll;
 }
