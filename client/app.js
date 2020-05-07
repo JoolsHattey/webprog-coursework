@@ -42,6 +42,12 @@ export function $(ctx, queryName) {
     }
     return ctx.querySelector(queryName);
 }
+/**
+ * 
+ * @param {string} elName 
+ * @param {string} template 
+ * @return {Element}
+ */
 export async function $r(elName, template) {
     const el = document.createElement(elName);
     if(template) {

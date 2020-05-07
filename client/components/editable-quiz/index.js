@@ -93,8 +93,7 @@ export class EditableQuestionnaire extends Component {
         const modal = new ModalCard({
             template: '/components/editable-quiz/quiz-config-dialog.html',
             stylesheet: '/components/editable-quiz/styles.css'
-        }, modalOptions);
-        this.container.appendChild(modal);
+        }, modalOptions, '70%', '30%');
         await modal.templatePromise;
         $(this, '#settingsBtn').onclick = () => {
             modal.open();
@@ -215,6 +214,11 @@ export class EditableQuestionnaire extends Component {
         const qAnswersContainer = $(q, '#questionAnswers');
         const newOptionBtn = $(q, '#newOptionBtn');
 
+        qAnswersContainer.children[0].addEventListener('dragover', (e) => {
+            e.preventDefault();
+            console.log(e);
+        })
+
         if(questionData.type === 'single-select' || questionData.type === 'multi-select') {
             for(const [i, v] of questionData.options.entries()) {
                 this.createAnswerOption(qAnswersContainer, v, questionData.type, false, i, index);
@@ -252,6 +256,7 @@ export class EditableQuestionnaire extends Component {
     async createAnswerOption(answerContainer, name, type, newItem, index, qIndex) {
         console.log(index)
         const el = await $r('div', '/components/editable-quiz/quiz-answer-option.html');
+        el.classList.add('qAnswerItem')
         answerContainer.children[0].appendChild(el);
         if(name === "") {
             name = `Option ${index+1}`
@@ -273,6 +278,11 @@ export class EditableQuestionnaire extends Component {
             answerContainer.children[0].removeChild(el);
             this.quiz.questions[qIndex].options.splice(index, 1);
         }
+        el.draggable = true;
+        el.addEventListener('dragstart', (e) => {
+            e.dataTransfer.setData('text/html', e.target.id)
+            console.log(e)
+        })
     }
 
     async save() {
