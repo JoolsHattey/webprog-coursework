@@ -2,7 +2,6 @@
     width: 100%;
     height: 100%;
     top: 0;
-    z-index: 1;
     background-color: #00695c;
     color: white;
     display: flex;
@@ -13,7 +12,10 @@
 }
 
 :host {
+    position: fixed;
     height: 56px;
+    width: 100%;
+    z-index: 10;
 }
 
 /* img {
@@ -27,7 +29,7 @@
     top: 40px;
     width: 250px;
     height: 300px;
-    z-index: 1;
+    z-index: 10;
 }
 #profileCardContent {
     height: 100%;
