@@ -1,5 +1,5 @@
-:root {
-    --expanded-content-pos: -63px;
+body {
+    background-color: #CCE0DE;
 }
 
 #topRow {
@@ -13,26 +13,37 @@
     background-color: white;
     z-index: 2;
 }
-
 #expandedContent {
-    height: 106px;
+    position: absolute;
+    top: 56px;
+    left: 0;
+    width: 100%;
     background-color: white;
-    padding: 5px 16px 0 16px;
-    transition: 0.5s;
-    transform: translate3d(0, var(--expanded-content-pos), 0);
+    transition: height 0.35s ease-out;
+    overflow: hidden;
+    height: 0;
     z-index: 1;
-    box-shadow: 0 4px 8px 1px black;
+    box-shadow: 0 4px 8px 1px grey;
+}
+.innerExpandedContent {
+    padding: 0 16px 0 16px;
 }
 #expandedContent * {
     z-index: 1;
+    
+}
+.expanded {
+    height: 106px!important;
 }
 #quizEditorButtons {
     display: flex;
     flex-direction: row;
+    
 }
 #quizEditorButtons button {
     margin-left: 12px;
     margin-right: 12px;
+    animation: fadein 1s;
 }
 .titleContainer {
     width: 100%;

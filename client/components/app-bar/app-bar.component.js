@@ -59,13 +59,14 @@ export class AppBar extends Component {
         this.container.appendChild(profileCard);
     }
     expand() {
-        this.style.height = '130px';
-        this.style.setProperty('--expanded-content-pos', '0px')
+        this.style.height = '162px';
+        $(this, '#expandedContent').classList.add('expanded');
         $(this, '#quizEditorButtons').classList.remove('hide');
+
     }
     closeExpanded() {
         this.style.height = '56px';
-        this.style.setProperty('--expanded-content-pos', '-83px')
+        $(this, '#expandedContent').classList.remove('expanded');
         $(this, '#quizEditorButtons').classList.add('hide');
     }
     /**
