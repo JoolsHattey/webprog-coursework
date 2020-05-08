@@ -119,6 +119,13 @@ export class EditableQuestionnaire extends Component {
         const saveBtn = $(this.appBar, '#saveBtn');
         saveBtn.onclick = () => this.save();
 
+        const quizURL = `${window.location.host}/quiz/${this.uid}`;
+        const previewBtn = $(this.appBar, '#previewBtn');
+        previewBtn.onclick = () => {
+            const w = window.open(window.location.host, '_blank');
+            w.location.assign(`/quiz/${this.uid}`);
+        }
+
         // const lastSavedTime = $(this, '#lastSavedTime');
         // const lastSaved = new Date(this.quiz.saveTime);
         // const currentTime = Date.now();
@@ -140,7 +147,6 @@ export class EditableQuestionnaire extends Component {
         $(this.appBar, '#shareBtn').onclick = () => {
             shareModal.open();
         }
-        const quizURL = `${window.location.host}/quiz/${this.uid}`;
         $(shareModal, 'input-elmnt').setValue(quizURL);
         $(shareModal, '#clipboardBtn').onclick = () => {
             navigator.clipboard.writeText(quizURL);
