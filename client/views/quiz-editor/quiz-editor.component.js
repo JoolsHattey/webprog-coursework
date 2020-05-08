@@ -4,6 +4,7 @@ import { Component } from "../../components/component.js";
 import { EditableQuestionnaire } from "../../components/editable-quiz/index.js";
 import { $, routerInstance, $clear } from "../../app.js";
 import { Card } from "../../components/card/card.component.js";
+import { ModalCard } from "../../components/modal-card/modal-card.component.js";
 
 export class QuizEditor extends Component {
     constructor(req) {
@@ -29,6 +30,42 @@ export class QuizEditor extends Component {
             history.pushState({}, "", `/quizeditor`)
             this.getQuestionnaireList()
         });
+
+        const newQuizBtn = $(this, '#newQuizBtn');
+        const newQuizModal = new ModalCard({
+            template: '/views/quiz-editor/new-quiz-dialog.html'
+        }, {}, '50%', '50%');
+        await newQuizModal.templatePromise;
+        $(newQuizModal, 'json-file-upload').addEventListener('upload', (e) => {
+            newQuizModal.dialogData.file = e.detail;
+        });
+        newQuizBtn.onclick = () => {
+            newQuizModal.open();
+            newQuizModal.resultsObservable.subscribe({next: x => {
+                if(x.file) {
+                    this.createNewQuiz(x.file);
+                } else {
+                    console.log("yes")
+                    this.createNewQuiz({
+                        name: 'Untitled Quiz',
+                        questions: []
+                    })
+                }
+            }});
+        }
+    }
+
+    async createNewQuiz(quizData) {
+        const res = await fetch('/api/createquestionnaire', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(quizData),
+        });
+        const quiz = await res.json();
+        console.log(quiz.id)
+        routerInstance.navigate(`/quizeditor/${quiz.id}`);
     }
 
     async getQuestionnaireList() {
