@@ -9,10 +9,10 @@ export class TextInput extends Component {
             template: '/components/text-input/text-input.component.html',
             stylesheet: '/components/text-input/text-input.component.css'
         });
-        this.initElement();
+        this.elInit = this.initElement();
     }
 
-    initElement() {
+    async initElement() {
         if(this.hasAttribute('size')) {
             this.sizeNotInit = this.setSize(this.getAttribute('size'));
         }
@@ -64,17 +64,16 @@ export class TextInput extends Component {
             this.container.classList.add('singleLine');
         } else if(value === 'multiline') {
             this.inputEl = document.createElement('textarea');
-            this.inputEl.setAttribute('style', `height: ${this.inputEl.scrollHeight}px;overflow-y:hidden;`)
             this.inputEl.rows = 1;
             this.container.classList.remove('singleLine');
             this.container.classList.add('multiLine');
-            this.inputEl.addEventListener('input', () => this.resize(), false);
+            this.inputEl.addEventListener('input', () => this.resize(), false); 
         }
         this.inputEl.id = 'input';
         this.container.replaceChild(this.inputEl, el);
     }
 
-    getValue() {
+    async getValue() {
         const inputValue = this.inputEl.value;
         if(inputValue === "" && this.required === 'true') {
             $(this, '.bar').classList.add('warn');
@@ -86,16 +85,19 @@ export class TextInput extends Component {
     }
     async setValue(newValue) {
         await this.sizeNotInit;
+        await this.elInit;
         this.inputEl.value = newValue;
-        console.log("settingsS")
-        this.inputEl.dispatchEvent(new Event('input'));
+        this.resize();
+        this.inputEl.dispatchEvent(new Event('input'))
     }
 
     resize() {
+        console.log(this.inputEl)
         console.log(this.inputEl.scrollHeight)
         console.log("yiss")
         this.inputEl.setAttribute('style', 'height: auto;')
-        this.inputEl.setAttribute('style', `height: ${this.inputEl.scrollHeight}px;`)
+        this.inputEl.setAttribute('style', `height: ${this.inputEl.scrollHeight > 20 ? this.inputEl.scrollHeight : 20}px;`)
+        
     }
 
     get required() {
