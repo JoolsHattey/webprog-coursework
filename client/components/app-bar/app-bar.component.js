@@ -16,13 +16,6 @@ export class AppBar extends Component {
 
     async initElement() {
         await this.templatePromise;
-        firebase.auth().onAuthStateChanged(user => {
-            if(user) {
-                this.setUser(user);
-            } else {
-                this.clearUser();
-            }
-        });
         this.container.classList.add("appBar");
         this.homeBtn = $(this, '#home');
         this.profileBtn = $(this, '#profile');
@@ -36,6 +29,7 @@ export class AppBar extends Component {
         });
         profileCard.classList.add('profileCard')
         await profileCard.templatePromise;
+        console.log('HMMMM')
         this.profileImg = $(profileCard, '#profileImg');
         this.profileName = $(profileCard, '#profileName');
         this.profileEmail = $(profileCard, '#profileEmail');
@@ -57,6 +51,14 @@ export class AppBar extends Component {
         profileCard.visible = false;
         this.profileBtn.onclick = () => profileCard.triggerVisible()
         this.container.appendChild(profileCard);
+
+        firebase.auth().onAuthStateChanged(user => {
+            if(user) {
+                this.setUser(user);
+            } else {
+                this.clearUser();
+            }
+        });
     }
     expand() {
         this.style.height = '162px';
