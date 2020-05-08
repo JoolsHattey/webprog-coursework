@@ -9,22 +9,29 @@ export class TextInput extends Component {
             template: '/components/text-input/text-input.component.html',
             stylesheet: '/components/text-input/text-input.component.css'
         });
+        this.initElement();
+    }
+
+    initElement() {
         if(this.hasAttribute('size')) {
-            this.sizeNotInit = this.setSize(this.getAttribute('size'))
+            this.sizeNotInit = this.setSize(this.getAttribute('size'));
         }
         if(this.hasAttribute('fontsize')) {
-            this.setFontSize(this.getAttribute('fontsize'))
+            this.setFontSize(this.getAttribute('fontsize'));
         }
     }
 
-    static get observedAttributes() { return ['size','underline'] }
+    static get observedAttributes() { return ['size','underline', 'fontsize'] }
 
     attributeChangedCallback(name, oldValue, newValue) {
         if(name === 'size') {
             this.setSize(newValue);
         }
         if(name === 'underline') {
-            this.setUnderline(newValue)
+            this.setUnderline(newValue);
+        }
+        if(name === 'fontsize') {
+            this.setFontSize(newValue);
         }
     }
 
@@ -40,9 +47,11 @@ export class TextInput extends Component {
     async setFontSize(value) {
         await this.templatePromise;
         if(value === 'large') {
-            $(this, '#input').classList.add('largeText');
+            this.inputEl.classList.add('largeText');
+            this.inputEl.classList.remove('smallText');
         } else {
-            $(this, '#input').classList.add('smallText');
+            this.inputEl.classList.add('smallText');
+            this.inputEl.classList.remove('largeText');
         }
     }
 

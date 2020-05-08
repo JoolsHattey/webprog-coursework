@@ -17,7 +17,7 @@
 #expandedContent {
     height: 106px;
     background-color: white;
-    padding: 5px 5px 0 5px;
+    padding: 5px 16px 0 16px;
     transition: 0.5s;
     transform: translate3d(0, var(--expanded-content-pos), 0);
     z-index: 1;
