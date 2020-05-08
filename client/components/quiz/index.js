@@ -12,6 +12,7 @@ import { CheckboxGroup } from '../checkbox/checkbox-group.component.js';
 import { TextInput } from '../text-input/text-input.component.js';
 import { ModalCard } from '../modal-card/modal-card.component.js';
 import { getAuthStatusAsync } from '../../auth.js';
+import { CardStack } from '../card-stack/card-stack.component.js';
 
 export class Questionnaire extends Component {
     constructor(questionnaireData, uid) {
@@ -25,7 +26,7 @@ export class Questionnaire extends Component {
     async initElement(questionnaireData, uid) {
         await this.templatePromise;
         this.uid = uid;
-        $(this, '#quizContent').style.display = 'none';
+        $(this, 'card-stack').style.display = 'none';
         this.initTitleCard(questionnaireData);
         this.initMiniTitleCard(questionnaireData);
         this.initQuestionCards(questionnaireData);
@@ -60,7 +61,7 @@ export class Questionnaire extends Component {
     }
 
     startButton() {
-        $(this, '#quizContent').style.display = 'block';
+        $(this, 'card-stack').style.display = 'block';
         this.titleContainer.style.display = 'none';
         $(this, '#miniTitleCard').classList.remove('hide');
         $(this, '#quizNavBtnContainer').classList.remove('hide');
@@ -90,15 +91,22 @@ export class Questionnaire extends Component {
             this.questions.push(q);
         });
 
-        this.questionContainer.appendChild(this.questions[0]);
+        const stack = $(this, 'card-stack');
+        stack.init(this.questions);
+
+        // this.questionContainer.appendChild(this.questions[0]);
         const btn = $(this, '#nextBtn');
 
         this.progress = $(this, 'progress');
         this.progress.setAttribute('value', (1 / this.questions.length)*100);
 
         btn.onclick = () => {
-            this.nextQuestion(questionnaireData.questions[this.currentQ].required);
+            // this.nextQuestion(questionnaireData.questions[this.currentQ].required);
+            stack.next();
         }
+        $(this, '#backBtn').onclick = () => {
+            stack.prev();
+        };
     }
 
     async initTimer() {
@@ -212,7 +220,6 @@ export class Questionnaire extends Component {
                 break;
         }
         this.answerarray.push(input);
-        console.log(this.answerarray)
         this.question.container.appendChild(input);
     }
 

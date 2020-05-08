@@ -1,0 +1,14 @@
+:host {
+    height: 100%;
+}
+body {
+    position: relative;
+    height: 100%;
+}
+card-el {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    transition: 0.5s;
+    height: 50%;
+}
