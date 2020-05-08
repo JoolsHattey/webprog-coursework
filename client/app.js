@@ -29,10 +29,6 @@ routerInstance.get({uri: '/quizeditor', component: QuizEditor, authGuard: {getAu
 
 routerInstance.init(routerOutlet);
 
-const appBar = $(document, 'app-bar');
-initAuth(appBar);
-
-
 
 /**
  * @param {Element} ctx 

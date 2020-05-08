@@ -12,6 +12,9 @@ export class TextInput extends Component {
         if(this.hasAttribute('size')) {
             this.sizeNotInit = this.setSize(this.getAttribute('size'))
         }
+        if(this.hasAttribute('fontsize')) {
+            this.setFontSize(this.getAttribute('fontsize'))
+        }
     }
 
     static get observedAttributes() { return ['size','underline'] }
@@ -31,6 +34,15 @@ export class TextInput extends Component {
             $(this, '#input').classList.remove('noUnderline');
         } else {
             $(this, '#input').classList.add('noUnderline');
+        }
+    }
+
+    async setFontSize(value) {
+        await this.templatePromise;
+        if(value === 'large') {
+            $(this, '#input').classList.add('largeText');
+        } else {
+            $(this, '#input').classList.add('smallText');
         }
     }
 

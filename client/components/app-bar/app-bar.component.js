@@ -16,6 +16,13 @@ export class AppBar extends Component {
 
     async initElement() {
         await this.templatePromise;
+        firebase.auth().onAuthStateChanged(user => {
+            if(user) {
+                this.setUser(user);
+            } else {
+                this.clearUser();
+            }
+        });
         this.container.classList.add("appBar");
         this.homeBtn = $(this, '#home');
         this.profileBtn = $(this, '#profile');
@@ -58,7 +65,7 @@ export class AppBar extends Component {
     }
     closeExpanded() {
         this.style.height = '56px';
-        this.style.setProperty('--expanded-content-pos', '-63px')
+        this.style.setProperty('--expanded-content-pos', '-83px')
         $(this, '#quizEditorButtons').classList.add('hide');
     }
     /**
