@@ -18,6 +18,7 @@ export class Icon extends Component {
         await this.templatePromise;
         this.iconImg = $(this, 'img');
         this.iconImg.src = `/assets/icons/${this.innerHTML}_icon_${this.getAttribute('colour')}.png`;
+        this.iconImg.alt = `${this.innerHTML} icon`
         switch (this.getAttribute('size')) {
             case 'default':
                 this.style.setProperty('--icon-width', '24px');

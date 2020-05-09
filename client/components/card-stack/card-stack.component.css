@@ -11,6 +11,7 @@ body {
     top: 20px;
     transition: 0.5s;
     height: 50%;
+    transform-origin: top;
 }
 
 .linearMode {

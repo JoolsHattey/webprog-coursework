@@ -15,6 +15,15 @@
     z-index: 100;
 }
 
+.titleContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.titleContainer icon-el {
+    margin-right: 8px;
+}
+
 progress {
     display: flex;
     flex-direction: row;

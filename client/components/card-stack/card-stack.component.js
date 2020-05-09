@@ -20,9 +20,7 @@ export class CardStack extends Component {
         this.cardContainer.classList.add('linearMode')
         for(const [i, el] of cards.entries()) {
             el.classList.add('stackedCard');
-            this.cardContainer.appendChild(el);
             el.style.zIndex = cards.length-i;
-            el.style.transformOrigin = 'top';
             el.style.transform = `scale3d(${1-(i*0.1)}, ${1-(i*0.1)}, ${1-(i*0.1)})`;
             el.style.transform += `translate3d(0, ${-(i*5)}px, 0)`;
             el.addEventListener('touchstart', this.touchStartEvent);
@@ -30,33 +28,39 @@ export class CardStack extends Component {
             el.addEventListener('touchend', this.touchEndEvent);
             if(i > 2) {
                 el.style.opacity = 0;
-                // el.classList.add('fadeOut');
             }
+            if(i < 4) {
+                this.cardContainer.appendChild(el);
+            }
+            
         }
         this.currentCard = 0;
         this.hidden = true;
         this.style.opacity = 0;
     }
     next() {
+
         if(this.hidden) {
             this.hidden = false;
             this.style.opacity = 1;
         }
         else if(this.currentCard < this.cards.length) {
             console.log('NEXT')
-            this.cards[this.currentCard].style.transform = `translate3d(0, ${window.innerHeight-300}px, 0)`;
+            this.cards[this.currentCard].style.transform = `translate3d(0, ${window.innerHeight-250}px, 0)`;
             for(const [i, el] of this.cards.entries()) {
                 if(i > this.currentCard) {
                     if(i-this.currentCard < 4) {
                         el.style.opacity = 1;
-                        // el.classList.add('fadeIn');
                     }
                     el.style.transform = `scale3d(${1-((i-this.currentCard-1)*0.1)}, ${1-((i-this.currentCard-1)*0.1)}, ${1-((i-this.currentCard-1)*0.1)})`;
                     el.style.transform += `translate3d(0, ${-(((i-this.currentCard)-1)*5)}px, 0)`;
                     console.log(el, i)
                 }
-            }
+            }           
             this.currentCard++;
+        }
+        if(this.cards[this.currentCard+4]) {
+            this.cardContainer.appendChild(this.cards[this.currentCard+4])
         }
     }
     prev() {
@@ -68,14 +72,15 @@ export class CardStack extends Component {
                 if(i > this.currentCard) {
                     if(i-this.currentCard > 2) {
                         el.style.opacity = 0;
-                        // el.classList.add('fadeOut');
                     }
                     el.style.transform = `scale3d(${1-((i-this.currentCard)*0.1)}, ${1-((i-this.currentCard)*0.1)}, ${1-((i-this.currentCard)*0.1)})`;
                     el.style.transform += `translate3d(0, ${-((i-this.currentCard)*5)}px, 0)`;
                 }
 
             }
-            
+        }
+        if(this.cards[this.currentCard+5]) {
+            this.cardContainer.removeChild(this.cards[this.currentCard+5])
         }
     }
     touchStart(event) {
@@ -122,7 +127,7 @@ export class CardStack extends Component {
     switchToStack() {}
 
     get currentCard() {
-        return this.getAttribute('currentcard');
+        return parseInt(this.getAttribute('currentcard'));
     }
     set currentCard(newValue) {
         this.setAttribute('currentcard', newValue);

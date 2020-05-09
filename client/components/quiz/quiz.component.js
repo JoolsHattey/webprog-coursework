@@ -77,7 +77,8 @@ export class Quiz extends Component {
 
     async createTitleCard(quizData) {
         const titleCard = new Card({
-            template: '/components/quiz/quiz-title.html'
+            template: '/components/quiz/quiz-title.html',
+            stylesheet: '/components/quiz/styles.css'
         });
         await titleCard.templatePromise;
         $(titleCard, '#title').append(quizData.name);
@@ -89,7 +90,7 @@ export class Quiz extends Component {
         const question = new Card();
         question.createTitle(questionData.text);
         question.id = questionData.id;
-        question.container.appendChild(this.createInput(questionData));
+        question.createContent(this.createInput(questionData))
         return question;
     }
 

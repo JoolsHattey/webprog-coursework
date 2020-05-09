@@ -7,7 +7,7 @@ export class Card extends Component {
      * 
      * @param {Object} options 
      * @param {string} options.template HTML template to define component structure
-     * @param {string} options.styles CSS stylesheet for component styling
+     * @param {string} options.stylesheet CSS stylesheet for component styling
      */
     constructor(options) {
         super(options);
@@ -15,13 +15,14 @@ export class Card extends Component {
         this.addStyleSheet("/components/card/card.component.css");
     }
     createTitle(name) {
-        const title = document.createElement("div");
+        const title = document.createElement("h3");
         title.append(name);
         this.container.appendChild(title);
     }
     createContent(content) {
         const contentEl = document.createElement("div");
         contentEl.append(content);
+        this.container.appendChild(contentEl);
     }
     insertElement(el) {
         this.container.appendChild(el);

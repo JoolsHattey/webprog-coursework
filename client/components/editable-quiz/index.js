@@ -137,11 +137,11 @@ export class EditableQuestionnaire extends Component {
         const shareModal = new ModalCard({
             template: '/components/editable-quiz/quiz-share-dialog.html',
             stylesheet: '/components/editable-quiz/styles.css'
-        }, null, '70%', '30%');
+        }, null, '70%', '20%');
         await shareModal.templatePromise;
         $(shareModal, '#closeBtn').onclick = () => shareModal.close();
         $(this.appBar, '#shareBtn').onclick = () => shareModal.open();
-        $(shareModal, 'input-elmnt').setValue(quizURL);
+        $(shareModal, 'text-input').setValue(quizURL);
         $(shareModal, '#clipboardBtn').onclick = () => navigator.clipboard.writeText(quizURL);
     }
 

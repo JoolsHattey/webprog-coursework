@@ -103,7 +103,7 @@ export class Router {
             const auth = await this.authenticate(route.authGuard, route, params);
             if(auth) {
                 // Set address bar to router path
-                history.pushState({}, "", path)
+                history.pushState(history.state, "", path)
                 this.routerOutlet.routeComponent(route.component, req);
             }
             else {
@@ -111,7 +111,7 @@ export class Router {
             }
         } else {
             // Set address bar to router path
-            history.pushState({}, "", path)
+            history.pushState(history.state, "", path)
             this.routerOutlet.routeComponent(route.component, req);            
         }
     }
@@ -137,3 +137,5 @@ export class Router {
         return params;
     }
 }
+
+window.onpopstate = (e) => console.log(e)
