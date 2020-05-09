@@ -58,10 +58,20 @@ main {
     display: flex;
     flex-direction: row;
     align-items: center;
+    transition: background 0.8s;
 }
-
-.md-button:hover {
+.md-button:active:not([disabled]) {
+    background-color: var(--light-theme-color);
+    background-size: 100%;
+    transition: background 0s;
+}
+.md-button:hover:not([disabled]) {
     cursor: pointer;
+    background: var(--primary-theme-color) radial-gradient(circle, transparent 1%, var(--primary-theme-color) 1%) center/15000%;
+}
+.md-button:disabled {
+    background-color: grey;
+    box-shadow: none!important;
 }
 
 .md-icon-btn {
@@ -74,20 +84,6 @@ main {
     border: none;
     background-color: transparent;
 }
-
-.md-button {
-    background-position: center;
-    transition: background 0.8s;
-}
-.md-button:hover {
-    background: #47a7f5 radial-gradient(circle, transparent 1%, #47a7f5 1%) center/15000%;
-}
-.md-button:active {
-    background-color: var(--light-theme-color);
-    background-size: 100%;
-    transition: background 0s;
-}
-
 .md-icon-text-btn {
     padding: 8px 10px!important;
 }
@@ -96,20 +92,6 @@ main {
     width: 18px!important;
     height: 18px!important;
 }
-.md-button:hover {
-    background: var(--primary-theme-color) radial-gradient(circle, transparent 1%, var(--primary-theme-color) 1%) center/15000%;
-}
-.md-button:active {
-    background-color: #48a999;
-    background-size: 100%;
-    transition: background 0s;
-}
-
-.md-button:disabled {
-    background-color: grey;
-    box-shadow: none!important;
-}
-
 .md-fab {
     width: 56px;
     height: 56px;
@@ -124,7 +106,6 @@ main {
     justify-content: center;
     position: absolute;
 }
-
 .md-extended-fab {
     width: auto;
     height: 48px;

@@ -55,6 +55,7 @@ export class Quiz extends Component {
         $(this, '#backBtn').onclick = () => {
             this.stack.prev();
         };
+        $(this, '#backBtn').disabled = true;
 
         const observer = new MutationObserver(mutations => {
             mutations.forEach(mutation => {
@@ -140,7 +141,9 @@ export class Quiz extends Component {
             $(this, '#nextBtn').textContent = 'Submit';
             $(this, '#nextBtn').removeEventListener('click', this.nextBtnEvent);
             $(this, '#nextBtn').addEventListener('click', this.submitBtnEvent);
-        } else {
+        } else if(this.currentQ === 1) {
+            $(this, '#backBtn').disabled = false;
+        }else {
             $(this, '#nextBtn').textContent = 'Next';
         }
     }
@@ -154,6 +157,8 @@ export class Quiz extends Component {
             $(this, '#nextBtn').addEventListener('click', this.nextBtnEvent);
         } else if(this.currentQ === this.questions.length-2) {
             $(this, '#nextBtn').textContent = 'Next';
+        } else if(this.currentQ === 0) {
+            $(this, '#backBtn').disabled = true;
         }
     }
 

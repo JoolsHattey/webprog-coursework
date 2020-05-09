@@ -122,8 +122,8 @@ export class Observable {
     constructor(_subscribe) {
         this._subscribe = _subscribe;
     }
-    subscribe(observer) {
-        const safeObserver = new SafeObserver(observer);
+    subscribe(next, error, complete) {
+        const safeObserver = new SafeObserver({next, error, complete});
         return this._subscribe(safeObserver);
     }
 }
