@@ -4,35 +4,35 @@ const express = require('express');
 const app = express();
 const port = 8080;
 const path = require('path');
-const firestore = require('./firestore');
 const { Parser } = require('json2csv');
-
 const fs = require('fs');
 
+const storage = require('./storage');
+storage.init();
 
 async function submitResponse(req, res) {
-    firestore.addResponse(req.params.uid, req.body);
+    storage.addResponse(req.params.uid, req.body);
 }
 
 async function getResponses(req, res) {
-    res.send(await firestore.getResponses(req.params.uid));
+    res.send(await storage.getResponses(req.params.uid));
 }
 
 async function createQuestionnaire(req, res) {
-    res.send(await firestore.createQuestionnaire(req.body));
+    res.send(await storage.createQuestionnaire(req.body));
 }
 
 async function getQuestionnaire(req, res) {
-    res.send(await firestore.getQuestionnaire(req.params.uid));
+    res.send(await storage.getQuestionnaire(req.params.uid));
 }
 
 async function editQuestionnaire(req, res) {
     console.log(req.body)
-    firestore.editQuestionnaire(req.params.uid, req.body);
+    storage.editQuestionnaire(req.params.uid, req.body);
 }
 
 async function getQuestionnaires(req, res) {
-    res.send(await firestore.getQuestionnaires())
+    res.send(await storage.getQuestionnaires())
 }
 
 function authenticateUser(req, res) {
@@ -46,7 +46,7 @@ function getUserRole(req, res) {
 
 async function getResponsesCSV(req, res) {
     try {
-        const responses = await firestore.getResponses(req.params.uid);
+        const responses = await storage.getResponses(req.params.uid);
         const fields = [];
         const opts = { fields };
         const parser = new Parser(opts);
@@ -59,6 +59,10 @@ async function getResponsesCSV(req, res) {
         console.error(err);
       }
 }
+
+// firestore.syncLocalDB();
+
+console.log(process.env.NODE_ENV)
 
 
 const router = express.Router();

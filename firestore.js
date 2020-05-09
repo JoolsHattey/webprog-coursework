@@ -2,6 +2,7 @@
 
 const firebase = require('firebase-admin');
 const serviceAccount = require("./webprog-coursework-e4b42-firebase-adminsdk-p67gn-eff495bc54.json");
+const localDB = require('./localDB');
 
 firebase.initializeApp({
     credential: firebase.credential.cert(serviceAccount),
@@ -57,6 +58,7 @@ async function getResponses(uid) {
     snapshot.forEach(doc => {
         result.push(doc.data());
     });
+    console.log(result)
     return result;
 }
 
@@ -84,6 +86,24 @@ async function getQuestionnaires(authToken) {
     return result;
 }
 
+async function syncLocalDB() {
+    await localDB.init();
+    const snapshot = await firebase.firestore().collection("questionnaires").get();
+    for(const quiz of snapshot.docs) {
+        localDB.insertQuiz(quiz.data(), quiz.id);
+        const responses = await firebase.firestore().collection("questionnaires").doc(quiz.id).collection("responses").get();
+        responses.forEach(response => {
+            localDB.insertResponse(response.data(), response.id, quiz.id);
+        });
+    }
+}
+
+firebase.firestore().collection('questionnaires').onSnapshot(x => {
+    x.docs.forEach(x => {
+        console.log(x.data())
+    })
+})
+
 module.exports = {
     addResponse,
     getResponses,
@@ -93,5 +113,6 @@ module.exports = {
     getQuestionnaires,
     verifyAuth,
     grantModeratorRole,
-    getUserRole
+    getUserRole,
+    syncLocalDB
 }
