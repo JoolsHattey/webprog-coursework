@@ -18,11 +18,11 @@ export class SnackBar extends Component {
     }
     show() {
         document.body.appendChild(this)
-        // this.style.transform = `translate3d(0, 0, 0)`
-        // setTimeout(() => {
-        //     this.style.transform = '';
-        //     setTimeout(() => document.body.removeChild(this), 1000)
-        // }, 2000);
+        this.style.transform = `translate3d(0, 0, 0)`
+        setTimeout(() => {
+            this.style.transform = 'translate3d(0, 80px, 0)';
+            setTimeout(() => document.body.removeChild(this), 1000)
+        }, 2000);
     }
 }
 

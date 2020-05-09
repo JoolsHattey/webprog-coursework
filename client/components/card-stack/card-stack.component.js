@@ -23,9 +23,11 @@ export class CardStack extends Component {
             el.style.zIndex = cards.length-i;
             el.style.transform = `scale3d(${1-(i*0.1)}, ${1-(i*0.1)}, ${1-(i*0.1)})`;
             el.style.transform += `translate3d(0, ${-(i*5)}px, 0)`;
-            el.addEventListener('touchstart', this.touchStartEvent);
-            el.addEventListener('touchmove', this.touchMoveEvent);
-            el.addEventListener('touchend', this.touchEndEvent);
+            if(i < this.cards.length-1) {
+                el.addEventListener('touchstart', this.touchStartEvent);
+                el.addEventListener('touchmove', this.touchMoveEvent);
+                el.addEventListener('touchend', this.touchEndEvent);
+            }
             if(i > 2) {
                 el.style.opacity = 0;
             }
