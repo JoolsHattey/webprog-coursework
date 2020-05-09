@@ -41,7 +41,7 @@ export class QuizEditor extends Component {
         });
         newQuizBtn.onclick = () => {
             newQuizModal.open();
-            newQuizModal.resultsObservable.subscribe({next: x => {
+            newQuizModal.resultsObservable.subscribe(x => {
                 if(x.file) {
                     this.createNewQuiz(x.file);
                 } else {
@@ -51,7 +51,7 @@ export class QuizEditor extends Component {
                         questions: []
                     })
                 }
-            }});
+            });
         }
     }
 

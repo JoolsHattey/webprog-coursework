@@ -15,7 +15,7 @@
     z-index: 100;
 }
 
-progress[value] {
+progress {
     display: flex;
     flex-direction: row;
     margin: auto;
@@ -24,6 +24,10 @@ progress[value] {
     width: 100%;
     height: 4px;
     border-radius: 10px;
+}
+progress::-webkit-progress-value {
+    background: #000c69;
+    transition:  0.2s;
 }
 
 #timer {

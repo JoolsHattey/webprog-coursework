@@ -5,6 +5,15 @@ import { $, Observable } from "../../app.js";
 import { Card } from "../card/card.component.js";
 
 export class ModalCard extends Card {
+    /**
+     * 
+     * @param {Object} componentStructure 
+     * @param {string} componentStructure.template HTML template to define component structure
+     * @param {string} componentStructure.stylesheet CSS stylesheet for component styling
+     * @param {*} options 
+     * @param {string} width Either px or %
+     * @param {string} height 
+     */
     constructor(componentStructure, options, width, height) {
         super(componentStructure);
         this.addStyleSheet("/components/modal-card/modal-card.component.css");

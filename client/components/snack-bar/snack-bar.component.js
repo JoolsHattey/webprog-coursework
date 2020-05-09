@@ -9,7 +9,7 @@ export class SnackBar extends Component {
             template: '/components/snack-bar/snack-bar.component.html',
             stylesheet: '/components/snack-bar/snack-bar.component.css'
         });
-        this.container.classList.add('hide');
+        this.classList.add('hidden');
     }
     addTitle(name) {
         this.templatePromise.then(() => {
@@ -17,8 +17,12 @@ export class SnackBar extends Component {
         });
     }
     show() {
-        this.container.classList.remove('hide');
-        setTimeout(() => this.container.classList.add('hide'), 2000);
+        document.body.appendChild(this)
+        // this.style.transform = `translate3d(0, 0, 0)`
+        // setTimeout(() => {
+        //     this.style.transform = '';
+        //     setTimeout(() => document.body.removeChild(this), 1000)
+        // }, 2000);
     }
 }
 

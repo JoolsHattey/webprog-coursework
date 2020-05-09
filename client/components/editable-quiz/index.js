@@ -13,8 +13,17 @@ export class EditableQuestionnaire extends Component {
             template: '/components/editable-quiz/index.html',
             stylesheet: '/components/editable-quiz/styles.css'
         });
+        console.log("CREAETD")
         this.appBar = appBar;
         this.initElement(questionnaireData, responsesData, uid, appBar);
+    }
+
+    connectedCallback() {
+        console.log("ININTTEEDS")
+    }
+
+    disconnectedCallback() {
+        console.log("GOODBYE")
     }
 
     async initElement(questionnaireData, responsesData, uid, appBar) {
@@ -99,32 +108,19 @@ export class EditableQuestionnaire extends Component {
         $(this, "#newQ").onclick = () => this.createNewQuestion();
 
         const modalOptions = this.quiz.options;
-        const modal = new ModalCard({
+        this.configModal = new ModalCard({
             template: '/components/editable-quiz/quiz-config-dialog.html',
             stylesheet: '/components/editable-quiz/styles.css'
         }, modalOptions, '70%', '30%');
-        await modal.templatePromise;
-        $(this.appBar, '#settingsBtn').onclick = () => {
-            modal.open();
-            modal.resultsObservable.subscribe({next: data => {
-                console.log(data);
-                if(data !== undefined) {
-                    console.log("set data")
-                    this.quiz.options = data
-                }
-                console.log(this.quiz);
-            }});
-        }
+        await this.configModal.templatePromise;
+        $(this.appBar, '#settingsBtn').onclick = () => this.settings();
 
         const saveBtn = $(this.appBar, '#saveBtn');
         saveBtn.onclick = () => this.save();
 
         const quizURL = `${window.location.host}/quiz/${this.uid}`;
         const previewBtn = $(this.appBar, '#previewBtn');
-        previewBtn.onclick = () => {
-            const w = window.open(window.location.host, '_blank');
-            w.location.assign(`/quiz/${this.uid}`);
-        }
+        previewBtn.onclick = () => this.preview();
 
         // const lastSavedTime = $(this, '#lastSavedTime');
         // const lastSaved = new Date(this.quiz.saveTime);
@@ -144,13 +140,9 @@ export class EditableQuestionnaire extends Component {
         }, null, '70%', '30%');
         await shareModal.templatePromise;
         $(shareModal, '#closeBtn').onclick = () => shareModal.close();
-        $(this.appBar, '#shareBtn').onclick = () => {
-            shareModal.open();
-        }
+        $(this.appBar, '#shareBtn').onclick = () => shareModal.open();
         $(shareModal, 'input-elmnt').setValue(quizURL);
-        $(shareModal, '#clipboardBtn').onclick = () => {
-            navigator.clipboard.writeText(quizURL);
-        }
+        $(shareModal, '#clipboardBtn').onclick = () => navigator.clipboard.writeText(quizURL);
     }
 
     async createNewQuestion(index, questionData) {
@@ -298,6 +290,25 @@ export class EditableQuestionnaire extends Component {
             e.dataTransfer.setData('text/html', e.target.id)
             console.log(e)
         })
+    }
+
+    settings() {
+        this.configModal.open();
+        this.configModal.resultsObservable.subscribe(data => {
+            console.log(data);
+            if(data !== undefined) {
+                console.log("set data")
+                this.quiz.options = data
+            }
+            console.log(this.quiz);
+        });
+    }
+    preview() {
+        const w = window.open(window.location.host, '_blank');
+        w.location.assign(`/quiz/${this.uid}`);
+    }
+    send() {
+
     }
 
     async save() {

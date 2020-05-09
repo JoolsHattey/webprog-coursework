@@ -7,3 +7,12 @@
     bottom: 16px;
     right: 16px;
 }
+#editor {
+    height: 100%;
+    overflow: scroll;
+}
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}

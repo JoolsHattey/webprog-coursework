@@ -12,6 +12,7 @@ export class AppBar extends Component {
             stylesheet: '/components/app-bar/app-bar.component.css'
         });
         this.initElement();
+
     }
 
     async initElement() {

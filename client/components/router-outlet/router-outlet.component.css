@@ -9,7 +9,6 @@ progress-spinner {
 }
 body {
     position: relative;
-    overflow: scroll;
     display: flex;
     align-items: stretch;
     background-color: #CCE0DE;

@@ -1,8 +1,7 @@
 "use strict";
 
 import { Component } from '../../components/component.js';
-import { Questionnaire } from '../../components/quiz/index.js';
-import { EditableQuestionnaire } from '../../components/editable-quiz/index.js';
+import { Quiz } from '../../components/quiz/quiz.component.js';
 
 export class QuizPage extends Component {
     constructor(req) {
@@ -10,9 +9,6 @@ export class QuizPage extends Component {
             stylesheet: '/views/quiz-page/styles.css'
         });
         this.container.classList.add("page");
-        // this.addTemplate('/views/quiz-page/index.html').then(() => {
-            
-        // });
         if(!req.params.quizID) {
             this.createQuestionnaire();
         } else {
@@ -21,34 +17,10 @@ export class QuizPage extends Component {
         
     }
 
-    async getQuestionnaire(uid, editMode) {
-
-        const request = await fetch(`/api/questionnaire/${uid}`);
-        const quesitonnaire = await(request.json());
-
-
-        let q;
-        if(editMode === "edit") {
-            const req = await fetch(`/api/responses/${uid}`);
-            const responses = await(req.json());
-            q = new EditableQuestionnaire(uid, quesitonnaire, responses);
-        } else {
-            q = new Questionnaire(quesitonnaire, uid);
-        }
-        this.container.appendChild(q);
-    }
-
-    async createQuestionnaire() {
-
-        const request = await fetch('/api/createquestionnaire', {
-            method: 'POST'
-        });
-        const questionnaire = await(request.json());
-
-        console.log(questionnaire)
-
-        const q = new EditableQuestionnaire({ name: "", questions: [] }, questionnaire.id);
-
+    async getQuestionnaire(quizID, editMode) {
+        const request = await fetch(`/api/questionnaire/${quizID}`);
+        const quizData = await(request.json());
+        const q = new Quiz(quizID, quizData);
         this.container.appendChild(q);
     }
 }

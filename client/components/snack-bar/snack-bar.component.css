@@ -1,21 +1,23 @@
 body {
-    position: absolute;
-    bottom: 10px;
-    left: 0;
-    right: 0;
-    margin-left: auto;
-    margin-right: auto;
-    background-color: #333;
-    height: 48px;
-    width: 344px;
-    border-radius: 5px;
-    transition: 0.3s;
+    padding: 16px;
 }
 
 p {
     color: white;
 }
 
-.hide {
-    transform: translateY(80px);
+:host {
+    bottom: 70px;
+    left: 0;
+    right: 0;
+    position: absolute;
+    z-index: 20;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #333;
+    height: 48px;
+    width: 344px;
+    border-radius: 5px;
+    transition: 1s;
+    transform: translate3d(0, 80px, 0);
 }

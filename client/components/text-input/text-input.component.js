@@ -73,7 +73,7 @@ export class TextInput extends Component {
         this.container.replaceChild(this.inputEl, el);
     }
 
-    async getValue() {
+    getValue() {
         const inputValue = this.inputEl.value;
         if(inputValue === "" && this.required === 'true') {
             $(this, '.bar').classList.add('warn');

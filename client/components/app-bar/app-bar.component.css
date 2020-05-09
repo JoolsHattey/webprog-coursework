@@ -102,7 +102,6 @@ body {
     height: 56px;
     width: 100%;
     z-index: 5;
-    flex-grow: 1;
     background-color: white;
 }
 
