@@ -24,7 +24,7 @@ export class CardStack extends Component {
             el.style.zIndex = cards.length-i;
             el.style.transformOrigin = 'top';
             el.style.transform = `scale3d(${1-(i*0.1)}, ${1-(i*0.1)}, ${1-(i*0.1)})`;
-            el.style.marginTop = `${(cards.length-i)*9}px`;
+            el.style.transform += `translate3d(0, ${-(i*5)}px, 0)`;
             el.addEventListener('touchstart', this.touchStartEvent);
             el.addEventListener('touchmove', this.touchMoveEvent);
             el.addEventListener('touchend', this.touchEndEvent);
@@ -45,7 +45,6 @@ export class CardStack extends Component {
         else if(this.currentCard < this.cards.length) {
             console.log('NEXT')
             this.cards[this.currentCard].style.transform = `translate3d(0, ${window.innerHeight-300}px, 0)`;
-            this.cards[this.currentCard].style.marginTop = `${(this.cards.length-this.currentCard)*9}px`
             for(const [i, el] of this.cards.entries()) {
                 if(i > this.currentCard) {
                     if(i-this.currentCard < 4) {
@@ -53,6 +52,8 @@ export class CardStack extends Component {
                         // el.classList.add('fadeIn');
                     }
                     el.style.transform = `scale3d(${1-((i-this.currentCard-1)*0.1)}, ${1-((i-this.currentCard-1)*0.1)}, ${1-((i-this.currentCard-1)*0.1)})`;
+                    el.style.transform += `translate3d(0, ${-(((i-this.currentCard)-1)*5)}px, 0)`;
+                    console.log(el, i)
                 }
             }
             this.currentCard++;
@@ -63,7 +64,6 @@ export class CardStack extends Component {
             console.log('BACK')
             this.currentCard--;
             this.cards[this.currentCard].style.transform = 'translate3d(0, 0, 0)';
-            this.cards[this.currentCard].style.marginTop = `${(this.cards.length-this.currentCard)*9}px`
             for(const [i, el] of this.cards.entries()) {
                 if(i > this.currentCard) {
                     if(i-this.currentCard > 2) {
@@ -71,6 +71,7 @@ export class CardStack extends Component {
                         // el.classList.add('fadeOut');
                     }
                     el.style.transform = `scale3d(${1-((i-this.currentCard)*0.1)}, ${1-((i-this.currentCard)*0.1)}, ${1-((i-this.currentCard)*0.1)})`;
+                    el.style.transform += `translate3d(0, ${-((i-this.currentCard)*5)}px, 0)`;
                 }
 
             }
