@@ -15,6 +15,18 @@
     z-index: 100;
 }
 
+#titleCard {
+    position: relative;
+    width: 100%;
+    height: 15%;
+    margin-bottom: 17%;
+}
+#titleCard card-el {
+    position: absolute;
+    z-index: 50;
+    
+}
+
 .titleContainer {
     display: flex;
     flex-direction: row;
@@ -35,7 +47,7 @@ progress {
     border-radius: 10px;
 }
 progress::-webkit-progress-value {
-    background: #000c69;
+    background: #435398;
     transition:  0.2s;
 }
 
@@ -49,6 +61,9 @@ progress::-webkit-progress-value {
 }
 :host {
     display: flex;
+}
+:host {
+    position: relative;
 }
 :host, body {
     position: relative;

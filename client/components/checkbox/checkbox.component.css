@@ -2,8 +2,6 @@ label {
     z-index: 0;
     position: relative;
     display: inline-block;
-    color: rgba(var(--pure-material-onsurface-rgb, 0, 0, 0), 0.87);
-    font-family: var(--pure-material-font, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);
     font-size: 16px;
     line-height: 1.5;
     margin: 10px 0;
@@ -23,7 +21,7 @@ label > input {
     border-radius: 50%;
     width: 40px;
     height: 40px;
-    background-color: rgba(var(--pure-material-onsurface-rgb, 0, 0, 0), 0.6);
+    background-color: var(--primary-theme-colour);
     box-shadow: none;
     outline: none;
     opacity: 0;
@@ -46,7 +44,7 @@ label > span::before {
     box-sizing: border-box;
     margin: 3px 11px 3px 1px;
     border: solid 2px; /* Safari */
-    border-color: rgba(var(--pure-material-onsurface-rgb, 0, 0, 0), 0.6);
+    border-color: var(--primary-theme-colour);
     border-radius: 2px;
     width: 18px;
     height: 18px;
@@ -72,18 +70,18 @@ label > span::after {
 /* Checked, Indeterminate */
 label > input:checked,
 label > input:indeterminate {
-    background-color: rgb(var(--pure-material-primary-rgb, 33, 150, 243));
+    background-color: var(--primary-theme-colour);
 }
 
 label > input:checked + span::before,
 label > input:indeterminate + span::before {
-    border-color: rgb(var(--pure-material-primary-rgb, 33, 150, 243));
-    background-color: rgb(var(--pure-material-primary-rgb, 33, 150, 243));
+    border-color: var(--primary-theme-colour);
+    background-color: var(--primary-theme-colour);
 }
 
 label > input:checked + span::after,
 label > input:indeterminate + span::after {
-    border-color: rgb(var(--pure-material-onprimary-rgb, 255, 255, 255));
+    border-color: white
 }
 
 label > input:indeterminate + span::after {
@@ -112,12 +110,12 @@ label > input:active {
 }
 
 label > input:active + span::before {
-    border-color: rgb(var(--pure-material-primary-rgb, 33, 150, 243));
+    border-color: var(--primary-theme-colour);
 }
 
 label > input:checked:active + span::before {
     border-color: transparent;
-    background-color: rgba(var(--pure-material-onsurface-rgb, 0, 0, 0), 0.6);
+    background-color: var(--primary-theme-colour);
 }
 
 /* Disabled */
@@ -126,7 +124,7 @@ label > input:disabled {
 }
 
 label > input:disabled + span {
-    color: rgba(var(--pure-material-onsurface-rgb, 0, 0, 0), 0.38);
+    color: var(--primary-theme-colour);
     cursor: initial;
 }
 

@@ -46,7 +46,9 @@ export class Quiz extends Component {
 
         this.progress = $(this, 'progress');
 
-        this.nextBtnEvent = () => this.stack.next();
+        this.nextBtnEvent = () => {
+            this.stack.next();
+        }
 
         this.submitBtnEvent = () => this.submitResponse();
 
@@ -60,11 +62,14 @@ export class Quiz extends Component {
         const observer = new MutationObserver(mutations => {
             mutations.forEach(mutation => {
                 if(mutation.type == "attributes") {
-                    console.log(mutation.target.currentCard)
+                    console.log(mutation.target.currentCard, this.currentQ)
                     if(mutation.target.currentCard > this.currentQ) {
                         this.nextQuestion();
-                    } else {
+                    } else if(mutation.target.currentCard < this.currentQ) {
                         this.previousQuestion();
+                    } else {
+                        $(this, '#nextBtn').textContent = 'Next';
+                        this.progress.setAttribute('value', ((1 / this.questions.length) * 100));
                     }
                 }
             })
@@ -136,6 +141,7 @@ export class Quiz extends Component {
         }
         this.currentQ++;
         this.progress.setAttribute('value', (((this.currentQ+1) / this.questions.length) * 100));
+        console.log(this.currentQ)
         if(this.currentQ === this.questions.length-1) {
             $(this, '#nextBtn').textContent = 'Review';
         } else if(this.currentQ === this.questions.length) {
@@ -144,8 +150,6 @@ export class Quiz extends Component {
             $(this, '#nextBtn').addEventListener('click', this.submitBtnEvent);
         } else if(this.currentQ === 1) {
             $(this, '#backBtn').disabled = false;
-        }else {
-            $(this, '#nextBtn').textContent = 'Next';
         }
     }
 
@@ -158,7 +162,7 @@ export class Quiz extends Component {
             $(this, '#nextBtn').addEventListener('click', this.nextBtnEvent);
         } else if(this.currentQ === this.questions.length-2) {
             $(this, '#nextBtn').textContent = 'Next';
-        } else if(this.currentQ === 0) {
+        } else if(this.currentQ === -1) {
             $(this, '#backBtn').disabled = true;
         }
     }

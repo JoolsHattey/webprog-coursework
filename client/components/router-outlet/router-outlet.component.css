@@ -11,7 +11,7 @@ body {
     position: relative;
     display: flex;
     align-items: stretch;
-    background-color: #CCE0DE;
+    background-color: var(--background-theme-colour);
 }
 :host, body {
     height: 100%;

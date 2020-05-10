@@ -1,9 +1,10 @@
 /* Global Styles */
 
 :root {
-    --primary-theme-color: #00695c;
-    --light-theme-color: #439889;
-    --dark-theme-color: #003d33;
+    --primary-theme-colour: #00695c;
+    --light-theme-colour: #439889;
+    --dark-theme-colour: #003d33;
+    --background-theme-colour: #CCE0DE;
 }
 
 :host {
@@ -46,7 +47,7 @@ main {
 
 .md-button {
     border: none;
-    background-color: var(--primary-theme-color);
+    background-color: var(--primary-theme-colour);
     color: white;
     /* padding: 0 16px; */
     min-width: 64px;
@@ -58,16 +59,17 @@ main {
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: center;
     transition: background 0.8s;
 }
 .md-button:active:not([disabled]) {
-    background-color: var(--light-theme-color);
+    background-color: var(--light-theme-colour);
     background-size: 100%;
     transition: background 0s;
 }
 .md-button:hover:not([disabled]) {
     cursor: pointer;
-    background: var(--primary-theme-color) radial-gradient(circle, transparent 1%, var(--primary-theme-color) 1%) center/15000%;
+    background: var(--primary-theme-colour) radial-gradient(circle, transparent 1%, var(--primary-theme-colour) 1%) center/15000%;
 }
 .md-button:disabled {
     background-color: grey;
@@ -96,7 +98,7 @@ main {
     width: 56px;
     height: 56px;
     border-radius: 50%;
-    background-color: var(--primary-theme-color);
+    background-color: var(--primary-theme-colour);
     box-shadow: 0 6px 10px 0 #666;
     border: none;
     outline: none;
@@ -110,7 +112,7 @@ main {
     width: auto;
     height: 48px;
     border-radius: 24px;
-    background-color: var(--primary-theme-color);
+    background-color: var(--primary-theme-colour);
     box-shadow: 0 6px 10px 0 #666;
     border: none;
     outline: none;

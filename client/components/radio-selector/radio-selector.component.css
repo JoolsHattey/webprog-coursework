@@ -56,24 +56,24 @@ span:before, span:after {
     content: '';
     border-radius: 50%;
     transition: all .3s ease;
-    transition-property: transform, border-colour;
+    transition-property: transform, border-color;
 }
 
 span:before {
     width: 20px;
     height: 20px;
-    border: 2px solid var(--primary-theme-color);
+    border: 2px solid var(--primary-theme-colour);
 }
 
 span:after {
     width: 10px;
     height: 10px;
     transform: scale(0);
-    background-color: var(--primary-theme-color);
+    background-color: var(--primary-theme-colour);
 }
 
 input:checked + span:before {
-    border-color: var(--primary-theme-color);
+    border-color: var(--primary-theme-colour);
     animation: ripple 0.2s linear forwards;
 }
 

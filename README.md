@@ -5,6 +5,9 @@
 
 ## Quiz Editor
 
+## Quiz Page
+
+### Stacked Question Layout
 
 # Architecture
 

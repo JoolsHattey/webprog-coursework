@@ -19,70 +19,83 @@ export class CardStack extends Component {
         this.cards = cards;
         this.cardContainer.classList.add('linearMode')
         for(const [i, el] of cards.entries()) {
+            const scaleValue = 1-((i+4)*0.1);
+            const transformValue = -((i+4)*15);
             el.classList.add('stackedCard');
             el.style.zIndex = cards.length-i;
-            el.style.transform = `scale3d(${1-(i*0.1)}, ${1-(i*0.1)}, ${1-(i*0.1)})`;
-            el.style.transform += `translate3d(0, ${-(i*5)}px, 0)`;
+            el.style.transform = `scale3d(${scaleValue}, ${scaleValue}, ${scaleValue})`;
+            el.style.transform += `translate3d(0, ${transformValue}px, 0)`;
             if(i < this.cards.length-1) {
                 el.addEventListener('touchstart', this.touchStartEvent);
                 el.addEventListener('touchmove', this.touchMoveEvent);
                 el.addEventListener('touchend', this.touchEndEvent);
             }
-            if(i > 2) {
-                el.style.opacity = 0;
-            }
-            if(i < 4) {
-                this.cardContainer.appendChild(el);
-            }
-            
+            el.style.opacity = 0;
+
+            if(i < 4) this.cardContainer.appendChild(el);
         }
         this.currentCard = 0;
         this.hidden = true;
-        this.style.opacity = 0;
+        // this.style.opacity = 0;
     }
     next() {
-
-        if(this.hidden) {
-            this.hidden = false;
-            this.style.opacity = 1;
-        }
-        else if(this.currentCard < this.cards.length) {
-            console.log('NEXT')
-            this.cards[this.currentCard].style.transform = `translate3d(0, ${window.innerHeight-250}px, 0)`;
-            for(const [i, el] of this.cards.entries()) {
-                if(i > this.currentCard) {
-                    if(i-this.currentCard < 4) {
-                        el.style.opacity = 1;
-                    }
-                    el.style.transform = `scale3d(${1-((i-this.currentCard-1)*0.1)}, ${1-((i-this.currentCard-1)*0.1)}, ${1-((i-this.currentCard-1)*0.1)})`;
-                    el.style.transform += `translate3d(0, ${-(((i-this.currentCard)-1)*5)}px, 0)`;
-                    console.log(el, i)
+        if(this.currentCard < this.cards.length) {
+            if(this.hidden) {
+                this.hidden = false;
+                for(const [i, el] of this.cards.entries()) {
+                    el.style.transitionDelay = `${i*0.15}s`;
                 }
-            }           
-            this.currentCard++;
-        }
-        if(this.cards[this.currentCard+4]) {
-            this.cardContainer.appendChild(this.cards[this.currentCard+4])
+            } else {
+                for(const [i, el] of this.cards.entries()) {
+                    el.style.transitionDelay = `0s`;
+                }
+                this.currentCard++;
+            }
+            this.animateNext();
         }
     }
     prev() {
         if(this.currentCard > 0) {
             console.log('BACK')
             this.currentCard--;
-            this.cards[this.currentCard].style.transform = 'translate3d(0, 0, 0)';
-            for(const [i, el] of this.cards.entries()) {
-                if(i > this.currentCard) {
-                    if(i-this.currentCard > 2) {
-                        el.style.opacity = 0;
-                    }
-                    el.style.transform = `scale3d(${1-((i-this.currentCard)*0.1)}, ${1-((i-this.currentCard)*0.1)}, ${1-((i-this.currentCard)*0.1)})`;
-                    el.style.transform += `translate3d(0, ${-((i-this.currentCard)*5)}px, 0)`;
-                }
-
+            this.animateBack();
+        }
+    }
+    animateNext() {
+        for(const [i, el] of this.cards.entries()) {
+            const scaleValue = 1-((i-this.currentCard)*0.1);
+            const tranlateValue = -((i-this.currentCard)*15);
+            if(i >= this.currentCard) {
+                el.style.transform = `scale3d(${scaleValue}, ${scaleValue}, ${scaleValue})`;
+                el.style.transform += `translate3d(0, ${tranlateValue}px, 0)`;
+            }
+            if(i <= this.currentCard + 2) {
+                el.style.opacity = 1;
+            }
+            if(i === this.currentCard - 1) {
+                el.style.transform = `translate3d(0, ${window.innerHeight-250}px, 0)`;
+            } else if(i === this.currentCard + 3) {
+                this.cardContainer.appendChild(el);
+            } else if(i === this.currentCard - 2) {
+                this.cardContainer.removeChild(el);
             }
         }
-        if(this.cards[this.currentCard+5]) {
-            this.cardContainer.removeChild(this.cards[this.currentCard+5])
+    }
+    animateBack() {
+        for(const [i, el] of this.cards.entries()) {
+            const scaleValue = 1-((i-this.currentCard)*0.1);
+            const tranlateValue = -((i-this.currentCard)*15);
+            if(i >= this.currentCard) {
+                el.style.transform = `scale3d(${scaleValue}, ${scaleValue}, ${scaleValue})`;
+                el.style.transform += `translate3d(0, ${tranlateValue}px, 0)`;
+            }
+            if(i === this.currentCard + 3) {
+                el.style.opacity = 0;
+            } else if(i === this.currentCard + 4) {
+                this.cardContainer.removeChild(el);
+            } else if(i === this.currentCard - 1) {
+                this.cardContainer.appendChild(el);
+            }
         }
     }
     touchStart(event) {
