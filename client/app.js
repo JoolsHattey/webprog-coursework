@@ -2,15 +2,11 @@
 
 import { Router } from './router.js';
 import { RouterOutlet } from './components/router-outlet/router-outlet.component.js';
-import { getAuthStatus, getAuthStatusAsync, login, initAuth, authObservable } from './auth.js';
-import { HomePage } from './views/home-page/index.js';
+import { getAdminStatus } from './auth.js';
 import { QuizPage } from './views/quiz-page/index.js';
 import { AppBar } from './components/app-bar/app-bar.component.js';
 import { ProgressSpinner } from './components/progress-spinner/progress-spinner.component.js';
 import { Icon } from './components/icon/icon.component.js';
-import { Toggle } from './components/toggle/toggle.component.js';
-import { TextInput } from './components/text-input/text-input.component.js';
-import { JsonFileUpload } from './components/file-upload/json-file-upload.component.js';
 import { QuizEditor } from './views/quiz-editor/quiz-editor.component.js';
 import { LoginPage } from './views/login-page/login-page.component.js';
 
@@ -24,8 +20,8 @@ export const routerInstance = new Router();
 routerInstance.get({uri: '/', component: LoginPage,defaultRoute: true, redirectTo: '/login'});
 routerInstance.get({uri: '/login', component: LoginPage});
 routerInstance.get({uri: `/quiz/:quizID`, component: QuizPage});
-routerInstance.get({uri: '/quizeditor/:quizID', component: QuizEditor, authGuard: {getAuthStatusAsync, authRole: 'moderator'}});
-routerInstance.get({uri: '/quizeditor', component: QuizEditor, authGuard: {getAuthStatusAsync, authRole: 'moderator'}});
+routerInstance.get({uri: '/quizeditor/:quizID', component: QuizEditor, authGuard: getAdminStatus});
+routerInstance.get({uri: '/quizeditor', component: QuizEditor, authGuard: getAdminStatus});
 
 routerInstance.init(routerOutlet);
 

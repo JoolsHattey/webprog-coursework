@@ -1,20 +1,23 @@
-import { $ } from "../app.js";
+'use strict';
 
+/**
+ * @typedef {Object} ComponentStructure
+ * @property {string} options.template HTML template to define component structure
+ * @property {string} options.stylesheet CSS stylesheet for component styling
+ */
 
 export class Component extends HTMLElement {
     /**
-     * 
-     * @param {Object} options 
-     * @param {string} options.template HTML template to define component structure
-     * @param {string} options.stylesheet CSS stylesheet for component styling
+     * @param {ComponentStructure} options 
      */
     constructor(options) {
         super();
         this.attachShadow({mode: 'open'});
-        this.head = document.createElement("head");
-        this.addStyleSheet("/styles.css");
-        this.shadowRoot.appendChild(this.head);
-        this.container = document.createElement("body");
+        this.head = document.createElement('head');
+        this.shadowRoot.appendChild(this.head)
+        this.addStyleSheet('/styles.css');
+        this.container = document.createElement('body');
+        this.container.classList.add('hide');
         this.shadowRoot.appendChild(this.container);
         if(options) {
             if(options.stylesheet) {
@@ -25,41 +28,32 @@ export class Component extends HTMLElement {
             }
         }
     }
-    async connectedCallback() {
-        if(this.hasAttribute('draggable')) {
-            await this.templatePromise;
-            const dragHandle = $(this, '#dragHandle');
-            dragHandle.addEventListener('touchstart', e => this.touchStart(e));
-            dragHandle.addEventListener('touchmove', e => this.touchMove(e));
-            dragHandle.addEventListener('touchend', e => this.touchEnd(e))
-            dragHandle.addEventListener('dragstart', e => this.drag(e));
-        }
+    /**
+     * Hide element until loaded in the DOM to prevent FOUC
+     */
+    connectedCallback() {
+        this.container.classList.remove('hide');
     }
-    addStyleSheet(path) {
+    /**
+     * Adds a stylesheet to the elements head
+     * @param {string} path CSS stylesheet path
+     */
+    async addStyleSheet(path) {
         const linkElem = document.createElement("link");
         linkElem.setAttribute("rel", "stylesheet");
         linkElem.setAttribute("href", path);
         this.head.appendChild(linkElem);
     }
+    /**
+     * Parses HTML template file into the body of the component
+     * @param {string} path HTML template path
+     */
     async addTemplate(path) {
         const parser = new DOMParser();
         const res = await fetch(path);
         const textTemplate = await res.text();
         const htmlTemplate = parser.parseFromString(textTemplate, 'text/html').querySelector('template');
-        console.log(htmlTemplate, path)
-        this.container.append(htmlTemplate.content.cloneNode(true))
+        console.log(htmlTemplate, path);
+        this.container.append(htmlTemplate.content.cloneNode(true));
     }
-    touchStart(e) {
-        this.style.transition = '0s';
-        this.touchStartPos = e.changedTouches[0].clientY;
-    }
-    touchMove(e) {
-        this.style.transform = `translate3d(0, ${e.changedTouches[0].clientY-this.touchStartPos}px, 0)`;
-        e.preventDefault();
-    }
-    touchEnd(e) {
-        this.style.transition = '0.3s';
-        this.style.transform = 'translate3d(0, 0, 0)';
-    }
-    drag(e) {console.log(e)}
 }

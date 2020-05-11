@@ -3,9 +3,10 @@ const localDB = require('./localDB');
 
 let dataStore;
 
-const localDBMode = false;
+let localDBMode;
 
-async function init() {
+async function init(dbMode) {
+    localDBMode = dbMode;
     if(localDBMode) {
         await localDB.init();
     }

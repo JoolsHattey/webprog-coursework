@@ -5,6 +5,7 @@ import { EditableQuestionnaire } from "../../components/editable-quiz/index.js";
 import { $, routerInstance, $clear } from "../../app.js";
 import { Card } from "../../components/card/card.component.js";
 import { ModalCard } from "../../components/modal-card/modal-card.component.js";
+import { Toggle } from '../../components/toggle/toggle.component.js';
 
 export class QuizEditor extends Component {
     constructor(req) {

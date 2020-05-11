@@ -33,7 +33,7 @@ export function initUI(container) {
         tosUrl: '<your-tos-url>',
         // Privacy policy url/callback.
         privacyPolicyUrl: function() {
-        window.location.assign('<your-privacy-policy-url>');
+            window.location.assign('<your-privacy-policy-url>');
         }
     };
     const ui = new firebaseui.auth.AuthUI(firebase.auth())
@@ -85,43 +85,18 @@ export function logout() {
     firebase.auth().signOut();
 }
 
-export function getAuthStatus() {
-    if(firebase.auth().currentUser) {
-        return true;
-    }
-    return false;
-}
-
-export function getAuthStatusAsync() {
+/**
+ * Returns a promise which when resolved will give a boolean value for the admin status
+ * @returns {boolean}
+ */
+export function getAdminStatus() {
     return new Promise(resolve => {
         firebase.auth().onAuthStateChanged(user => {
             if(user) {
                 user.getIdTokenResult().then((token) => {
-                    console.log(token);
-                    resolve(token);
+                    resolve(token.claims.moderator);
                 });
-            }
-            else resolve(false);
-        });
-    });
-}
-
-function sendToken() {
-    firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function(idToken) {
-        const authToken = { "token": idToken }
-        sendAuthToken(authToken);
-    }).catch(function(error) {
-        // Handle error
-    });
-    
-}
-
-async function sendAuthToken(authToken) {
-    const response = await fetch("/api/authenticate", {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(authToken)
-    });
+            } else resolve(false)
+        })
+    })
 }

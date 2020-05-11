@@ -2,6 +2,7 @@
 
 import { Component } from '../../components/component.js';
 import { Quiz } from '../../components/quiz/quiz.component.js';
+import { TextInput } from '../../components/text-input/text-input.component.js';
 
 export class QuizPage extends Component {
     constructor(req) {
@@ -14,7 +15,6 @@ export class QuizPage extends Component {
         } else {
             this.getQuestionnaire(req.params.quizID, req.params.mode);
         }
-        
     }
 
     async getQuestionnaire(quizID, editMode) {

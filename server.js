@@ -9,7 +9,7 @@ const fs = require('fs');
 
 
 const storage = require('./storage');
-storage.init();
+storage.init(process.env.DBMODE);
 
 async function submitResponse(req, res) {
     storage.addResponse(req.params.uid, req.body);
@@ -60,10 +60,6 @@ async function getResponsesCSV(req, res) {
         console.error(err);
       }
 }
-
-// firestore.syncLocalDB();
-
-console.log(process.env.NODE_ENV)
 
 
 const router = express.Router();

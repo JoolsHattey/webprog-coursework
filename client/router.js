@@ -1,6 +1,15 @@
 "use strict";
 import { Component } from "./components/component.js";
 
+/**
+ * @typedef {Object} Route
+ * @property {string} uri Address path to use for route
+ * @property {Component} component Component to be displayed on route
+ * @property {boolean} [defaultRoute]
+ * @property {string} [redirectTo] If it's a default route specify a route path to redirect to
+ * @property {Promise<boolean>} [authGuard]
+ */
+
 export class Router {
 
     constructor() {
@@ -10,31 +19,19 @@ export class Router {
 
     /**
      * Creates a route
-     * @param {Object} routeOptions
-     * @param {string} routeOptions.uri Address path to use for route
-     * @param {Component} routeOptions.component Component to be displayed on route
-     * @param {boolean} [routeOptions.defaultRoute]
-     * @param {string} [routeOptions.redirectTo] If it's a default route specify a route path to redirect to
-     * @param {*} [routeOptions.authGuard] Auth guard
+     * @param {Route} routeOptions
      */
-    get({uri, component, defaultRoute, redirectTo, authGuard}) {
-        if(!uri || !component) throw new Error('uri or component must be given');
+    get(routeOptions) {
+        if(!routeOptions.uri || !routeOptions.component) throw new Error('uri or component must be given');
 
-        if(typeof uri !== "string") throw new TypeError('typeof uri must be a string');
-        if(!component instanceof Component) throw new TypeError('typeof component must be a Component');
+        if(typeof routeOptions.uri !== "string") throw new TypeError('typeof uri must be a string');
+        if(!routeOptions.component instanceof Component) throw new TypeError('typeof component must be a Component');
 
         this.routes.forEach(route=>{
-            if(route.uri === uri) throw new Error(`the uri ${route.uri} already exists`);
+            if(route.uri === routeOptions.uri) throw new Error(`the uri ${route.uri} already exists`);
         });
 
-        const route = {
-            uri,
-            component,
-            authGuard,
-            defaultRoute,
-            redirectTo
-        }
-        this.routes.push(route);
+        this.routes.push(routeOptions);
     }
 
     init(routerOutlet) {
@@ -100,7 +97,7 @@ export class Router {
     async goToPage(route, path, params) {
         const req = { path, params };
         if(route.authGuard) {
-            const auth = await this.authenticate(route.authGuard, route, params);
+            const auth = await route.authGuard()
             if(auth) {
                 // Set address bar to router path
                 history.pushState(history.state, "", path)
