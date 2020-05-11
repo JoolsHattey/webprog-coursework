@@ -1,25 +1,28 @@
-<icon-el id="dragHandle" colour="dark">drag</icon-el>
+<template>
+    <icon-el id="dragHandle" colour="dark">drag</icon-el>
 
-<text-input size="multiline" fontSize="small"></text-input>
+    <text-input size="multiline" fontSize="small"></text-input>
 
-<dropdown-el></dropdown-el>
+    <dropdown-el></dropdown-el>
 
-<div id="questionAnswers" class="hide">
-    <div></div>
-    <div id="newOptionBtn">
-        <icon-el class="answerTypeIcon" colour="dark"></icon-el>
-        <p>Add option</p>
-    </div>    
-</div>
-
-<div class="divider"></div>
-
-<div id="questionActions">
-    <button id="deleteBtn" class="md-icon-btn"><icon-el colour="dark">delete</icon-el></button>
-    <button id="duplicateBtn" class="md-icon-btn"><icon-el colour="dark">copy</icon-el></button>
-    <div>
-        <div>Required</div>
-        <toggle-el></toggle-el>
+    <div id="questionAnswers" class="hide">
+        <div></div>
+        <div id="newOptionBtn">
+            <icon-el class="answerTypeIcon" colour="dark"></icon-el>
+            <p>Add option</p>
+        </div>    
     </div>
-</div>
+
+    <div class="divider"></div>
+
+    <div id="questionActions">
+        <button id="deleteBtn" class="md-icon-btn"><icon-el colour="dark">delete</icon-el></button>
+        <button id="duplicateBtn" class="md-icon-btn"><icon-el colour="dark">copy</icon-el></button>
+        <div>
+            <div>Required</div>
+            <toggle-el></toggle-el>
+        </div>
+    </div>
+</template>
+
 

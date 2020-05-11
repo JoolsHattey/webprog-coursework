@@ -50,8 +50,12 @@ export function $(ctx, queryName) {
 export async function $r(elName, template) {
     const el = document.createElement(elName);
     if(template) {
-        let res = await fetch(template);
-        el.innerHTML = await res.text();
+      const parser = new DOMParser();
+      const res = await fetch(template);
+      const textTemplate = await res.text();
+      const htmlTemplate = parser.parseFromString(textTemplate, 'text/html').querySelector('template');
+      console.log(htmlTemplate)
+      el.append(htmlTemplate.content.cloneNode(true))
     }
     return el;
 }

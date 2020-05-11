@@ -42,8 +42,12 @@ export class Component extends HTMLElement {
         this.head.appendChild(linkElem);
     }
     async addTemplate(path) {
-        let res = await fetch(path);
-        this.container.innerHTML = await res.text();
+        const parser = new DOMParser();
+        const res = await fetch(path);
+        const textTemplate = await res.text();
+        const htmlTemplate = parser.parseFromString(textTemplate, 'text/html').querySelector('template');
+        console.log(htmlTemplate, path)
+        this.container.append(htmlTemplate.content.cloneNode(true))
     }
     touchStart(e) {
         this.style.transition = '0s';
