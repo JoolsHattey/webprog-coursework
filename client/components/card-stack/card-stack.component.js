@@ -1,7 +1,6 @@
 'use strict';
 
 import { Component } from "../component.js";
-import { $ } from "../../app.js";
 
 export class CardStack extends Component {
     constructor() {

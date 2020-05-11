@@ -4,7 +4,8 @@ import { Component } from "./components/component.js";
 /**
  * @typedef {Object} Route
  * @property {string} uri Address path to use for route
- * @property {Component} component Component to be displayed on route
+ * @property {Component | Function} destination Component or function to lazy load component
+ * @property {boolean} lazy Specify if route is lazy loaded
  * @property {boolean} [defaultRoute]
  * @property {string} [redirectTo] If it's a default route specify a route path to redirect to
  * @property {Promise<boolean>} [authGuard]
@@ -22,10 +23,10 @@ export class Router {
      * @param {Route} routeOptions
      */
     get(routeOptions) {
-        if(!routeOptions.uri || !routeOptions.component) throw new Error('uri or component must be given');
+        // if(!routeOptions.uri || !routeOptions.component) throw new Error('uri or component must be given');
 
         if(typeof routeOptions.uri !== "string") throw new TypeError('typeof uri must be a string');
-        if(!routeOptions.component instanceof Component) throw new TypeError('typeof component must be a Component');
+        // if(!routeOptions.component instanceof Component) throw new TypeError('typeof component must be a Component');
 
         this.routes.forEach(route=>{
             if(route.uri === routeOptions.uri) throw new Error(`the uri ${route.uri} already exists`);
@@ -99,17 +100,26 @@ export class Router {
         if(route.authGuard) {
             const auth = await route.authGuard()
             if(auth) {
+                if(route.lazy) {
+                    const loadedComponent = await route.destination()
+                    this.routerOutlet.routeComponent(loadedComponent, req);      
+                } else {
+                    this.routerOutlet.routeComponent(route.domponent, req);
+                }
                 // Set address bar to router path
-                history.pushState(history.state, "", path)
-                this.routerOutlet.routeComponent(route.component, req);
-            }
-            else {
+                history.pushState(history.state, "", path);
+            } else {
                 this.navigate('/login')
             }
         } else {
+            if(route.lazy) {
+                const loadedComponent = await route.destination()
+                this.routerOutlet.routeComponent(loadedComponent, req);      
+            } else {
+                this.routerOutlet.routeComponent(route.domponent, req);
+            }
             // Set address bar to router path
-            history.pushState(history.state, "", path)
-            this.routerOutlet.routeComponent(route.component, req);            
+            history.pushState(history.state, "", path);
         }
     }
 

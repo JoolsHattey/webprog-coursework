@@ -6,6 +6,9 @@ import { $, routerInstance, $clear } from "../../app.js";
 import { Card } from "../../components/card/card.component.js";
 import { ModalCard } from "../../components/modal-card/modal-card.component.js";
 import { Toggle } from '../../components/toggle/toggle.component.js';
+import { AppBar } from '../../components/app-bar/app-bar.component.js';
+import { TextInput } from '../../components/text-input/text-input.component.js';
+import { Dropdown } from '../../components/dropdown/dropdown.component.js'
 
 export class QuizEditor extends Component {
     constructor(req) {
@@ -13,7 +16,7 @@ export class QuizEditor extends Component {
             template: '/views/quiz-editor/quiz-editor.component.html',
             stylesheet: '/views/quiz-editor/quiz-editor.component.css'
         });
-        this.initElement(req);
+        this.elLoaded =this.initElement(req);
     }
 
     async initElement(req) {

@@ -2,12 +2,12 @@
 
 import { Component } from "../component.js";
 import { Card } from "../card/card.component.js";
-import { CardStack } from "../card-stack/card-stack.component.js";
 import { TextInput } from "../text-input/text-input.component.js";
 import { CheckboxGroup } from "../checkbox/checkbox-group.component.js";
 import { RadioGroup } from "../radio-selector/radio-selector.component.js";
 import { $ } from "../../app.js";
 import { SnackBar } from "../snack-bar/snack-bar.component.js";
+import { CardStack } from '../../components/card-stack/card-stack.component.js'
 
 export class Quiz extends Component {
     constructor(quizID, quizData) {
@@ -34,29 +34,30 @@ export class Quiz extends Component {
     async createQuestionCards(questions) {
         const qCards = new Array;
         questions.forEach(element => {
-            const qCard = this.createQuestionCard(element);
-            qCards.push(qCard);
+            const question = new Card();
+            question.createTitle(element.text);
+            question.id = element.id;
+            question.createContent(this.createInput(element));
+            qCards.push(question);
         });
 
-        const finishCard = await this.createFinishCard();
+        const finishCard = new Card({
+            template: '/components/quiz/quiz-finish.html'
+        });
         qCards.push(finishCard);
 
-        this.stack = $(this, 'card-stack');
+        this.stack = new CardStack();
+        $(this, '#cardStackContainer').appendChild(this.stack);
+        console.log(this.stack)
         this.stack.init(qCards);
 
         this.progress = $(this, 'progress');
 
-        this.nextBtnEvent = () => {
-            this.stack.next();
-        }
-
+        this.nextBtnEvent = () => this.stack.next();
         this.submitBtnEvent = () => this.submitResponse();
 
         $(this, '#nextBtn').addEventListener('click', this.nextBtnEvent);
-
-        $(this, '#backBtn').onclick = () => {
-            this.stack.prev();
-        };
+        $(this, '#backBtn').addEventListener('click', () => this.stack.prev());
         $(this, '#backBtn').disabled = true;
 
         const observer = new MutationObserver(mutations => {
@@ -89,21 +90,6 @@ export class Quiz extends Component {
         $(titleCard, '#title').append(quizData.name);
         $(titleCard, '#numQ').append(`${quizData.questions.length} Questions`)
         $(this, '#titleCard').appendChild(titleCard)
-    }
-
-    createQuestionCard(questionData) {
-        const question = new Card();
-        question.createTitle(questionData.text);
-        question.id = questionData.id;
-        question.createContent(this.createInput(questionData))
-        return question;
-    }
-
-    async createFinishCard() {
-        const finishCard = new Card({
-            template: '/components/quiz/quiz-finish.html'
-        });
-        return finishCard;
     }
 
     createInput(questionData) {
@@ -141,7 +127,6 @@ export class Quiz extends Component {
         }
         this.currentQ++;
         this.progress.setAttribute('value', (((this.currentQ+1) / this.questions.length) * 100));
-        console.log(this.currentQ)
         if(this.currentQ === this.questions.length-1) {
             $(this, '#nextBtn').textContent = 'Review';
         } else if(this.currentQ === this.questions.length) {

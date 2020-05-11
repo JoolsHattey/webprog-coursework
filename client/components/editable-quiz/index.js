@@ -6,6 +6,7 @@ import { Input } from '../input/index.js';
 import { Dropdown } from '../dropdown/dropdown.component.js';
 import { $, $r } from '../../app.js';
 import { ModalCard } from '../modal-card/modal-card.component.js';
+import { TextInput } from '../text-input/text-input.component.js';
 
 export class EditableQuestionnaire extends Component {
     constructor(uid, questionnaireData, responsesData, appBar) {
@@ -15,7 +16,7 @@ export class EditableQuestionnaire extends Component {
         });
         console.log("CREAETD")
         this.appBar = appBar;
-        this.initElement(questionnaireData, responsesData, uid, appBar);
+        this.elLoaded = this.initElement(questionnaireData, responsesData, uid, appBar);
     }
 
     connectedCallback() {

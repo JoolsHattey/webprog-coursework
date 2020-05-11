@@ -3,12 +3,8 @@
 import { Router } from './router.js';
 import { RouterOutlet } from './components/router-outlet/router-outlet.component.js';
 import { getAdminStatus } from './auth.js';
-import { QuizPage } from './views/quiz-page/index.js';
-import { AppBar } from './components/app-bar/app-bar.component.js';
 import { ProgressSpinner } from './components/progress-spinner/progress-spinner.component.js';
 import { Icon } from './components/icon/icon.component.js';
-import { QuizEditor } from './views/quiz-editor/quiz-editor.component.js';
-import { LoginPage } from './views/login-page/login-page.component.js';
 
 /********************************************
  * Client Routes
@@ -17,14 +13,13 @@ import { LoginPage } from './views/login-page/login-page.component.js';
 const routerOutlet = $(document, 'router-outlet');
 export const routerInstance = new Router(); 
 
-routerInstance.get({uri: '/', component: LoginPage,defaultRoute: true, redirectTo: '/login'});
-routerInstance.get({uri: '/login', component: LoginPage});
-routerInstance.get({uri: `/quiz/:quizID`, component: QuizPage});
-routerInstance.get({uri: '/quizeditor/:quizID', component: QuizEditor, authGuard: getAdminStatus});
-routerInstance.get({uri: '/quizeditor', component: QuizEditor, authGuard: getAdminStatus});
+routerInstance.get({uri: '/', destination: null, defaultRoute: true, redirectTo: '/login'});
+routerInstance.get({uri: '/login', destination: () => import('./views/login-page/login-page.component.js').then(m => m.LoginPage), lazy: true});
+routerInstance.get({uri: `/quiz/:quizID`, destination: () => import('./views/quiz-page/index.js').then(m => m.QuizPage), lazy: true});
+routerInstance.get({uri: '/quizeditor/:quizID', destination: () => import('./views/quiz-editor/quiz-editor.component.js').then(m => m.QuizEditor), lazy: true, authGuard: getAdminStatus});
+routerInstance.get({uri: '/quizeditor', destination: () => import('./views/quiz-editor/quiz-editor.component.js').then(m => m.QuizEditor), lazy: true, authGuard: getAdminStatus});
 
 routerInstance.init(routerOutlet);
-
 
 /**
  * @param {Element} ctx 

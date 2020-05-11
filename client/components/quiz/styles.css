@@ -74,3 +74,6 @@ progress::-webkit-progress-value {
     bottom: 80px;
     right: 10px;
 }
+#cardStackContainer {
+    height: 100%;
+}
