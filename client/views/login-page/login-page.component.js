@@ -2,7 +2,7 @@
 
 import { Component } from "../../components/component.js";
 import { Card } from "../../components/card/card.component.js";
-import { initUI } from "../../auth.js";
+import { initUI, getAdminStatus } from "../../auth.js";
 import { $, routerInstance } from "../../app.js";
 
 export class LoginPage extends Component {
@@ -18,14 +18,14 @@ export class LoginPage extends Component {
             stylesheet: '/views/login-page/login-page.component.css'
         });
         loginCard.classList.add('hide')
-        firebase.auth().onAuthStateChanged(user => {
-            if(user) {
+        getAdminStatus().then(auth => {
+            if(auth) {
                 loginCard.classList.add('hide');
                 routerInstance.navigate('/quizeditor');
             } else {
                 loginCard.classList.remove('hide');
             }
-        });
+        })
 
         await this.templatePromise;
         

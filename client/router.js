@@ -51,7 +51,6 @@ export class Router {
         if(path.match(regEx)) {
             if(route.defaultRoute) {
                 this.navigate(route.redirectTo);
-                console.log("DEFAULT")
             } else {
                 const params = this.getParams(route, path);
                 this.goToPage(route, path, params);
@@ -59,39 +58,6 @@ export class Router {
             return true;
         } else {
             return false;
-        }
-    }
-
-    async authenticate(authGuard, route, params) {
-        const auth = await authGuard.getAuthStatusAsync();
-        if(auth) {
-            if(auth?.claims[route.authGuard.authRole]) {
-                if(route.authGuard.ifParams) {
-                    if(params[route.authGuard.ifParams.param] === route.authGuard.ifParams.value) {
-                        return true;
-                    } else {
-                        return true
-                    }
-                } else {
-                    return true
-                }
-            } else {
-                if(route.authGuard.ifParams) {
-                    if(params[route.authGuard.ifParams.param] === route.authGuard.ifParams.value) {
-                        return false;
-                    } else {
-                        return true
-                    }
-                }
-            }
-        } else {
-            if(route.authGuard.ifParams) {
-                if(params[route.authGuard.ifParams.param] === route.authGuard.ifParams.value) {
-                    return false;
-                } else {
-                    return true
-                }
-            }
         }
     }
 

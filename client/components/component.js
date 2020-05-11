@@ -53,7 +53,6 @@ export class Component extends HTMLElement {
         const res = await fetch(path);
         const textTemplate = await res.text();
         const htmlTemplate = parser.parseFromString(textTemplate, 'text/html').querySelector('template');
-        console.log(htmlTemplate, path);
         this.container.append(htmlTemplate.content.cloneNode(true));
     }
 }

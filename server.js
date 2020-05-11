@@ -1,6 +1,7 @@
 "use strict";
 
 const express = require('express');
+const compression = require('compression');
 const app = express();
 const port = 8080;
 const path = require('path');
@@ -65,6 +66,8 @@ async function getResponsesCSV(req, res) {
 const router = express.Router();
 
 app.use('/api', router);
+
+app.use(compression());
 
 app.use(express.static(__dirname + '/client'));
 app.get('*', (req, res) => {

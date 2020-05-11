@@ -7,6 +7,7 @@ import { Dropdown } from '../dropdown/dropdown.component.js';
 import { $, $r } from '../../app.js';
 import { ModalCard } from '../modal-card/modal-card.component.js';
 import { TextInput } from '../text-input/text-input.component.js';
+import { Toggle } from '../toggle/toggle.component.js';
 
 export class EditableQuestionnaire extends Component {
     constructor(uid, questionnaireData, responsesData, appBar) {
@@ -153,6 +154,7 @@ export class EditableQuestionnaire extends Component {
         }
 
         const q = new Card({
+            template: '/components/editable-quiz/quiz-item.html',
             stylesheet: '/components/editable-quiz/styles.css'
         });
         q.triggerVisible();
@@ -160,8 +162,9 @@ export class EditableQuestionnaire extends Component {
 
         q.index = index;
 
-        await q.addTemplate('/components/editable-quiz/quiz-item.html');
-        const i = q.shadowRoot.querySelector('text-input')
+        await q.templatePromise;
+        console.log(q)
+        const i = $(q, 'text-input');
         
         if(questionData) {
             q.id = questionData.id;
@@ -178,7 +181,7 @@ export class EditableQuestionnaire extends Component {
             {"value": "multi-select",
             "text": "Checkboxes"}
         ]
-        const drop = q.shadowRoot.querySelector('dropdown-el');
+        const drop = $(q, 'dropdown-el');
         drop.setOptions(options);
 
         drop.setOption(questionData.type)

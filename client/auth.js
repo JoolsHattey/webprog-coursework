@@ -87,7 +87,7 @@ export function logout() {
 
 /**
  * Returns a promise which when resolved will give a boolean value for the admin status
- * @returns {boolean}
+ * @returns {Promise<boolean>}
  */
 export function getAdminStatus() {
     return new Promise(resolve => {

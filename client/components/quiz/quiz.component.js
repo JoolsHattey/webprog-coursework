@@ -48,7 +48,6 @@ export class Quiz extends Component {
 
         this.stack = new CardStack();
         $(this, '#cardStackContainer').appendChild(this.stack);
-        console.log(this.stack)
         this.stack.init(qCards);
 
         this.progress = $(this, 'progress');
@@ -63,7 +62,6 @@ export class Quiz extends Component {
         const observer = new MutationObserver(mutations => {
             mutations.forEach(mutation => {
                 if(mutation.type == "attributes") {
-                    console.log(mutation.target.currentCard, this.currentQ)
                     if(mutation.target.currentCard > this.currentQ) {
                         this.nextQuestion();
                     } else if(mutation.target.currentCard < this.currentQ) {

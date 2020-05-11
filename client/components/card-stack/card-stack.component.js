@@ -55,7 +55,6 @@ export class CardStack extends Component {
     }
     prev() {
         if(this.currentCard > 0) {
-            console.log('BACK')
             this.currentCard--;
             this.animateBack();
         }
@@ -98,7 +97,6 @@ export class CardStack extends Component {
         }
     }
     touchStart(event) {
-        console.log(event.target)
         event.target.style.transition = '0s'
         this.touchStartPos = event.changedTouches[0].clientY;
         this.touchStartTime = event.timeStamp;
@@ -111,7 +109,6 @@ export class CardStack extends Component {
     touchEnd(event) {
         event.target.style.transition = '0.5s'
         const speed = (Math.abs(this.touchStartPos-event.changedTouches[0].clientY))/(event.timeStamp-this.touchStartTime);
-        console.log(speed)
         if(speed > 0.5) {
             this.next();
         } else {
