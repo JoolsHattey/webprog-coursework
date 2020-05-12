@@ -11,18 +11,29 @@ export class SnackBar extends Component {
         });
         this.classList.add('hidden');
     }
-    addTitle(name) {
-        this.templatePromise.then(() => {
-            $(this, '#content').append(name);
-        });
+    async addTitle(name) {
+        await this.templatePromise;
+        $(this, '#content').append(name);
     }
-    show() {
+    async show(timeout) {
+        await this.templatePromise;
         document.body.appendChild(this)
+        if(this.getAttribute('loading') === 'true') {
+            $(this, 'progress-spinner').classList.remove('hide');
+        }
         this.style.transform = `translate3d(0, 0, 0)`
+        if(timeout) {
         setTimeout(() => {
-            this.style.transform = 'translate3d(0, 80px, 0)';
+            this.style.transform = 'translate3d(0, 9%, 0)';
             setTimeout(() => document.body.removeChild(this), 1000)
-        }, 2000);
+        }, timeout);
+        } else {
+            this.style.transform = 'translate3d(0, 9%, 0)';
+        }
+    }
+    hide() {
+        this.style.transform = 'translate3d(0, 0, 0)';
+        setTimeout(() => document.body.removeChild(this), 1000);
     }
 }
 

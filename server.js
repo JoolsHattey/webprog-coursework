@@ -10,7 +10,7 @@ const fs = require('fs');
 const gdrive = require('./gdrive');
 
 
-const storage = require('./storage');
+const storage = require('./storage.js');
 storage.init(process.env.DBMODE);
 
 async function submitResponse(req, res) {
@@ -68,7 +68,7 @@ async function exportToGoogleDrive(req, res) {
     const quiz = await storage.getQuestionnaire(req.params.uid);
     const data = await gdrive.saveData(req.body, quiz, responses);
     console.log({fileID: data});
-    res.send({fileID: data});
+    res.send(data);
 }
 
 

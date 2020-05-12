@@ -1,7 +1,7 @@
 'use strict';
 
 import { Component } from "../component.js";
-import { $ } from "../../app.js";
+import { $, $r } from "../../app.js";
 import { Card } from "../card/card.component.js";
 import { ModalCard } from "../modal-card/modal-card.component.js";
 import { SnackBar } from "../snack-bar/snack-bar.component.js";
@@ -97,7 +97,14 @@ export class EditableQuiz extends Component {
         const numResponses = this.data.responses.length;
         $(responsesCard, '#title').append(`${numResponses} ${numResponses === 1 ? 'Response' : 'Responses'}`);
         $(responsesCard, '#exportDriveBtn').addEventListener('click', () => {
-            initDrive(this.id);
+            const snack = new SnackBar();
+            snack.setAttribute('loading', 'true');
+            snack.addTitle('Creating Google Sheet');
+            snack.show();
+            initDrive(this.id).then(data => {
+                snack.hide();
+                window.open(data.url);
+            });
         })
     }
 
@@ -159,6 +166,38 @@ export class EditableQuiz extends Component {
                 element.index++;
             }
         });
+    }
+
+    async createAnswerOption(answerContainer, name, type, newItem, index, qIndex) {
+        console.log(index)
+        const el = await $r('div', '/components/editable-quiz/quiz-answer-option.html');
+        el.classList.add('qAnswerItem');
+        answerContainer.children[0].appendChild(el);
+        if(name === "") {
+            name = `Option ${index+1}`
+        }
+        $(el, 'text-input').setValue(name);
+        const answerTypeIcon = $(el, '.answerTypeIcon');
+        if(type === 'single-select') {
+            answerTypeIcon.append('radio');
+        } else {
+            answerTypeIcon.append('check_box');
+        }
+        if(newItem) {
+            await $(el, 'text-input').sizeNotInit;
+            $(el, 'text-input').inputEl.focus();
+            console.log(qIndex)
+            this.quiz.questions[qIndex].options[index] = name
+        }
+        $(el, 'button').onclick = () => {
+            answerContainer.children[0].removeChild(el);
+            this.quiz.questions[qIndex].options.splice(index, 1);
+        }
+        el.draggable = true;
+        el.addEventListener('dragstart', (e) => {
+            e.dataTransfer.setData('text/html', e.target.id)
+            console.log(e)
+        })
     }
 }
 customElements.define('editable-quiz', EditableQuiz);

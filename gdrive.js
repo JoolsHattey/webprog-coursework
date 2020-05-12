@@ -60,16 +60,18 @@ async function saveData(authToken, quizData, responseData, url) {
             }
         ]
     };
-    sheets.spreadsheets.create({
-        resource,
-        fields: 'spreadsheetId',
-    }, (err, spreadsheet) => {
-        if(err) {
-            console.log(err);
-        } else {
-            console.log(`Spreadsheet ID: ${spreadsheet.spreadsheetId}`);
-        }
-    });
+    try {
+        const spreadsheet = await sheets.spreadsheets.create({
+            resource,
+            fields: 'spreadsheetId',
+            fields: 'spreadsheetUrl',
+        });
+        return {url: spreadsheet.data.spreadsheetUrl}
+    } catch (error) {
+        console.log(error);
+    }
+    
+
 }
 
 module.exports = {

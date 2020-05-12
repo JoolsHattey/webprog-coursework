@@ -1,7 +1,7 @@
 /* $offset: 187;
 $duration: 1.4s; */
 
-body {
+:host {
   width: 65px;
   height: 65px;
 }
