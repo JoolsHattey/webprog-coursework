@@ -56,6 +56,7 @@ export class CardStack extends Component {
     prev() {
         if(this.currentCard > 0) {
             this.currentCard--;
+            this.cards[this.currentCard].style.transition = '0.5s'
             this.animateBack();
         }
     }
@@ -103,17 +104,41 @@ export class CardStack extends Component {
     }
     touchMove(event) {
         event.preventDefault();
-        event.target.style.transform = `translate3d(0, ${event.changedTouches[0].clientY-this.touchStartPos}px, 0)`;
+        // Swipe up
+        if(event.changedTouches[0].clientY-this.touchStartPos > 0) {
+            event.target.style.transform = `translate3d(0, ${event.changedTouches[0].clientY-this.touchStartPos}px, 0)`;
+            
+        } else {
+            const moveValue = (event.changedTouches[0].clientY-this.touchStartPos)
+            for(const [i, el] of this.cards.entries()) {
+                el.style.transition = '0s'
+                const tranlateValue = -(((i-this.currentCard)*15)-(moveValue/50));
+                const scaleValue = 1-(tranlateValue / -150)
+                if(i >= this.currentCard) {
+                    el.style.transform = `scale3d(${scaleValue}, ${scaleValue}, ${scaleValue})`;
+                    el.style.transform += `translate3d(0, ${tranlateValue}px, 0)`;
+                } else if(i === this.currentCard - 1) {
+                    el.style.transform = `translate3d(0, ${((event.changedTouches[0].clientY-this.touchStartPos)+window.innerHeight)}px, 0)`;
+                }
+            }
+        }
+        
 
     }
     touchEnd(event) {
         event.target.style.transition = '0.5s'
         const speed = (Math.abs(this.touchStartPos-event.changedTouches[0].clientY))/(event.timeStamp-this.touchStartTime);
-        if(speed > 0.5) {
-            this.next();
+        if(this.touchStartPos>event.changedTouches[0].clientY) {
+            this.prev();
         } else {
-            event.target.style.transform = 'translate3d(0, 0, 0)';
+            if(speed > 0.5) {
+                this.next();
+            } else {
+                event.target.style.transform = 'translate3d(0, 0, 0)';
+            }
+            console.log('down')
         }
+
     }
     // switchToFlow() {
     //     console.log("FLOW")
