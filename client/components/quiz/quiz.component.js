@@ -35,9 +35,12 @@ export class Quiz extends Component {
         const qCards = new Array;
         questions.forEach(element => {
             const question = new Card();
-            question.createTitle(element.text);
+            const qLabel = document.createElement('label');
+            qLabel.for = element.id;
+            qLabel.append(element.text)
+            question.container.appendChild(qLabel)
             question.id = element.id;
-            question.createContent(this.createInput(element));
+            question.container.appendChild(this.createInput(element));
             qCards.push(question);
         });
 

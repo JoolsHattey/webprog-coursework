@@ -21,6 +21,7 @@ export class QuizPage extends Component {
         console.log(q.templatePromise)
         // await q.templatePromise;
         this.container.appendChild(q);
+        document.title = quizData.name;
     }
 }
 

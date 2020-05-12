@@ -38,9 +38,9 @@ export class TextInput extends Component {
     async setUnderline(newValue) {
         await this.templatePromise;
         if(newValue === 'true') {
-            $(this, '#input').classList.remove('noUnderline');
+            this.inputEl.classList.remove('noUnderline');
         } else {
-            $(this, '#input').classList.add('noUnderline');
+            this.inputEl.classList.add('noUnderline');
         }
     }
 
@@ -57,7 +57,7 @@ export class TextInput extends Component {
 
     async setSize(value) {
         await this.templatePromise;
-        const el = $(this, '#input');
+        const el = $(this, 'div');
         if(value === 'singleline') {
             this.inputEl = document.createElement('input');
             this.container.classList.remove('multiLine');

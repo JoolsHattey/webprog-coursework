@@ -12,4 +12,6 @@
 # Architecture
 
 # Server Storage
-Data is stored primarily on a Cloud Firestore. There is also a local backup db option which uses SQLite
+Data is stored primarily on a Cloud Firestore. There is also a local backup db option which uses SQLite.
+
+You can choose to use the local db option by running the 'start:local-db' script. This will work completely fine without outside network.
