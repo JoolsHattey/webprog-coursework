@@ -14,9 +14,9 @@ async function init(dbMode) {
 
 
 
-async function addResponse(responseData) {
-    if(localDBMode) return await localDB.insertResponse(responseData);
-    return await firestore.addResponse(responseData);
+async function addResponse(quizID, responseData) {
+    if(localDBMode) return await localDB.insertResponse(quizID, responseData);
+    return await firestore.addResponse(quizID, responseData);
 }
 async function getResponses(quizID) {
     if(localDBMode) return await localDB.getResponses(quizID);

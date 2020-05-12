@@ -56,9 +56,9 @@ async function getResponses(quizID) {
     return responses;
 }
 
-async function insertResponse(responseData, responseID, quizID) {
+async function insertResponse(quizID, responseData) {
     const response = JSON.stringify(responseData.questions);
-    await db.run('INSERT OR REPLACE INTO response VALUES (?, ?, ?)', [responseID, quizID, response]);
+    await db.run('INSERT OR REPLACE INTO response VALUES (?, ?, ?)', [uid(20), quizID, response]);
 }
 
 

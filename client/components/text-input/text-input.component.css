@@ -88,10 +88,20 @@ textarea {
 }
 
 .warn:before, .warn:after {
-    background: #c62828!important;
+    background: #D93025!important;
 }
 .warnInput {
-    border-bottom: 1px solid #c62828!important;
+    border-bottom: 1px solid #D93025!important;
+}
+#requiredAlert {
+    margin-top: 8px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    color: #D93025;
+}
+#requiredAlert div {
+    margin-left: 4px;
 }
 
 #input:focus ~ .highlight {

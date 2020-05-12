@@ -5,6 +5,7 @@ import { $ } from "../../app.js";
 import { Card } from "../card/card.component.js";
 import { ModalCard } from "../modal-card/modal-card.component.js";
 import { SnackBar } from "../snack-bar/snack-bar.component.js";
+import { initDrive } from "../../drive.js";
 
 export class EditableQuiz extends Component {
     constructor(uid, quizData, responseData, appBar) {
@@ -34,6 +35,7 @@ export class EditableQuiz extends Component {
         $(this, 'progress-spinner').remove();
         this.initShareDialog();
         this.initSettingsDialog();
+        this.initResponsesTab();
     }
 
     preview() {
@@ -85,6 +87,20 @@ export class EditableQuiz extends Component {
         $(this, '#responsesContainer').classList.remove('hide');
     }
 
+    async initResponsesTab() {
+        const responsesCard = new Card({
+            template: '/components/editable-quiz/quiz-responses-title-card.html',
+            stylesheet: '/components/editable-quiz/editable-quiz.component.css'
+        });
+        await responsesCard.templatePromise;
+        $(this, '#responsesContainer').appendChild(responsesCard);
+        const numResponses = this.data.responses.length;
+        $(responsesCard, '#title').append(`${numResponses} ${numResponses === 1 ? 'Response' : 'Responses'}`);
+        $(responsesCard, '#exportDriveBtn').addEventListener('click', () => {
+            initDrive(this.id);
+        })
+    }
+
     async createQuestion(index, questionData) {
         if(!questionData) {
             questionData = {type: 'text'};
@@ -93,7 +109,6 @@ export class EditableQuiz extends Component {
             template: '/components/editable-quiz/question.html',
             stylesheet: '/components/editable-quiz/editable-quiz.component.css'
         });
-        q.addEventListener('touchmove', e => console.log(e))
         q.index = index;
         await q.templatePromise;
         if(index < this.questionsContainer.children.length) {

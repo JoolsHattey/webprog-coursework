@@ -7,6 +7,7 @@ async function authorise(credentials, userAuthCode, url) {
         client_id, client_secret, redirect_uris[0]);
     try {
         const token = await oAuth2Client.getToken((userAuthCode.authToken));
+        oAuth2Client.refre
         oAuth2Client.setCredentials(token.tokens);
         return oAuth2Client;
     } catch (err) {

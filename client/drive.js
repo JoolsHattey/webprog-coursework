@@ -7,6 +7,7 @@ export async function initDrive(uid) {
             scope: 'https://www.googleapis.com/auth/drive.file',
             response_type: 'code token id_token'
         }, function(result) {
+            console.log(result)
             fetch(`/api/exportdrive/${uid}`, {
                 method: 'POST',
                 headers: {

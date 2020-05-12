@@ -77,6 +77,7 @@ export class TextInput extends Component {
         const inputValue = this.inputEl.value;
         if(inputValue === "" && this.required === 'true') {
             $(this, '.bar').classList.add('warn');
+            $(this, '#requiredAlert').classList.remove('hide');
             this.inputEl.classList.add('warnInput')
             this.inputEl.focus()
         };
