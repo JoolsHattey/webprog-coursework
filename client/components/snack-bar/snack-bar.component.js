@@ -9,7 +9,6 @@ export class SnackBar extends Component {
             template: '/components/snack-bar/snack-bar.component.html',
             stylesheet: '/components/snack-bar/snack-bar.component.css'
         });
-        this.classList.add('hidden');
     }
     async addTitle(name) {
         await this.templatePromise;
@@ -21,19 +20,17 @@ export class SnackBar extends Component {
         if(this.getAttribute('loading') === 'true') {
             $(this, 'progress-spinner').classList.remove('hide');
         }
-        this.style.transform = `translate3d(0, 0, 0)`
+        this.style.transform = 'scale3d(1, 1, 1)';
         if(timeout) {
         setTimeout(() => {
-            this.style.transform = 'translate3d(0, 9%, 0)';
-            setTimeout(() => document.body.removeChild(this), 1000)
+            this.style.transform = 'scale3d(0, 0, 0)';
+            setTimeout(() => document.body.removeChild(this), 100)
         }, timeout);
-        } else {
-            this.style.transform = 'translate3d(0, 9%, 0)';
         }
     }
     hide() {
-        this.style.transform = 'translate3d(0, 0, 0)';
-        setTimeout(() => document.body.removeChild(this), 1000);
+        this.style.transform = 'scale3d(0, 0, 0)';
+        setTimeout(() => document.body.removeChild(this), 100)
     }
 }
 

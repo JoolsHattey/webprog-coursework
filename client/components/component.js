@@ -14,10 +14,9 @@ export class Component extends HTMLElement {
         super();
         this.attachShadow({mode: 'open'});
         this.head = document.createElement('head');
-        this.shadowRoot.appendChild(this.head)
         this.addStyleSheet('/styles.css');
         this.container = document.createElement('body');
-        this.shadowRoot.appendChild(this.container);
+        this.shadowRoot.append(this.head, this.container);
         if(options) {
             if(options.stylesheet) {
                 this.addStyleSheet(options.stylesheet);

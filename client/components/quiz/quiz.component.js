@@ -24,7 +24,7 @@ export class Quiz extends Component {
         this.questions = quizData.questions;
         this.currentQ = 0;
         this.answerArray = new Array;
-        this.response = { questions: [] };
+        this.response = { questions: [], time: null };
         this.createTitleCard(quizData);
         this.createQuestionCards(quizData.questions);
         this.completeSnack = new SnackBar();
@@ -154,9 +154,12 @@ export class Quiz extends Component {
     }
 
     async submitResponse() {
+
+        this.response.time = Date.now();
+
         console.log(this.quizID, this.response);
 
-        this.completeSnack.show();
+        this.completeSnack.show(5000);
 
         $(this, '#nextBtn').disabled = true;
         $(this, '#backBtn').disabled = true;

@@ -1,5 +1,6 @@
 const {google} = require('googleapis');
 const credentials = require('./credentials.json');
+const dayjs = require('dayjs');
 
 async function authorise(credentials, userAuthCode, url) {
     const {client_secret, client_id, redirect_uris} = credentials.web;
@@ -32,7 +33,13 @@ async function saveData(authToken, quizData, responseData, url) {
     const rows = [columnHeaders];
     responseData.forEach(response => {
         const row = {values: []};
+        row.values.push({
+            userEnteredValue: {
+                stringValue: new dayjs(response.time).format('DD-MM-YYYY HH:mm:ss')
+            }
+        });
         response.questions.forEach(question => {
+            
             row.values.push({
                 userEnteredValue: {
                     stringValue: question.answer ? question.answer.toString() : null

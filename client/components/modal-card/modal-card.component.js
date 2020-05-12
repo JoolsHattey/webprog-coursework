@@ -25,6 +25,7 @@ export class ModalCard extends Card {
         this.overlay = document.createElement('div');
         this.overlay.classList.add('overlay');
         this.shadowRoot.appendChild(this.overlay);
+        this.overlay.addEventListener('click', () => this.close())
         await this.templatePromise;
         const saveBtn = $(this, '#saveBtn');
         const cancelBtn = $(this, '#cancelBtn');
