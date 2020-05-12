@@ -7,6 +7,7 @@ const port = 8080;
 const path = require('path');
 const { Parser } = require('json2csv');
 const fs = require('fs');
+const gdrive = require('./gdrive');
 
 
 const storage = require('./storage');
@@ -62,6 +63,14 @@ async function getResponsesCSV(req, res) {
       }
 }
 
+async function exportToGoogleDrive(req, res) {
+    const responses = await storage.getResponses(req.params.uid);
+    const quiz = await storage.getQuestionnaire(req.params.uid);
+    const data = await gdrive.saveData(req.body, quiz, responses);
+    console.log({fileID: data});
+    res.send({fileID: data});
+}
+
 
 const router = express.Router();
 
@@ -82,6 +91,8 @@ router.get('/questionnaires', getQuestionnaires);
 router.post('/editquestionnaire/:uid', express.json(), editQuestionnaire);
 
 router.post('/authenticate', express.json(), getUserRole);
+
+router.post('/exportdrive/:uid', express.json(), exportToGoogleDrive);
 
 router.get('/yiss/:uid', getResponsesCSV)
 

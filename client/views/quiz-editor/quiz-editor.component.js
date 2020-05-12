@@ -28,12 +28,12 @@ export class QuizEditor extends Component {
         await this.templatePromise
         this.appBar = $(this, 'app-bar');
         await this.appBar.templatePromise;
-        $(this.appBar, '#editorHome').addEventListener('click', () => {
-            $clear($(this, '#editor'));
-            $clear($(this, '#quizsContainer'));
-            history.pushState({}, "", `/quizeditor`)
-            this.getQuestionnaireList()
-        });
+        // $(this.appBar, '#editorHome').addEventListener('click', () => {
+        //     $clear($(this, '#editor'));
+        //     $clear($(this, '#quizsContainer'));
+        //     history.pushState({}, "", `/quizeditor`)
+        //     this.getQuestionnaireList()
+        // });
 
         const newQuizBtn = $(this, '#newQuizBtn');
         const newQuizModal = new ModalCard({

@@ -6,7 +6,6 @@ import { Card } from "../card/card.component.js";
 
 export class ModalCard extends Card {
     /**
-     * 
      * @param {Object} componentStructure 
      * @param {string} componentStructure.template HTML template to define component structure
      * @param {string} componentStructure.stylesheet CSS stylesheet for component styling

@@ -8,6 +8,8 @@ import { $, $r } from '../../app.js';
 import { ModalCard } from '../modal-card/modal-card.component.js';
 import { TextInput } from '../text-input/text-input.component.js';
 import { Toggle } from '../toggle/toggle.component.js';
+import { getDriveAuth } from '../../auth.js';
+import { initDrive } from '../../drive.js';
 
 export class EditableQuestionnaire extends Component {
     constructor(uid, questionnaireData, responsesData, appBar) {
@@ -17,7 +19,7 @@ export class EditableQuestionnaire extends Component {
         });
         console.log("CREAETD")
         this.appBar = appBar;
-        this.elLoaded = this.initElement(questionnaireData, responsesData, uid, appBar);
+        this.initElement(questionnaireData, responsesData, uid, appBar);
     }
 
     connectedCallback() {
@@ -81,6 +83,9 @@ export class EditableQuestionnaire extends Component {
         this.responsesContainer.append(responsesTitleCard);
         await responsesTitleCard.templatePromise;
         $(responsesTitleCard, '#title').textContent = `${responsesData.length} ${responsesData.length === 1 ? 'Response' : 'Responses'}`;
+        $(responsesTitleCard, '#exportDriveBtn').addEventListener('click', () => {
+            initDrive(uid);
+        })
 
 
     
@@ -143,8 +148,10 @@ export class EditableQuestionnaire extends Component {
         await shareModal.templatePromise;
         $(shareModal, '#closeBtn').onclick = () => shareModal.close();
         $(this.appBar, '#shareBtn').onclick = () => shareModal.open();
-        $(shareModal, 'text-input').setValue(quizURL);
+        // $(shareModal, 'text-input').setValue(quizURL);
         $(shareModal, '#clipboardBtn').onclick = () => navigator.clipboard.writeText(quizURL);
+
+        
     }
 
     async createNewQuestion(index, questionData) {
@@ -157,14 +164,16 @@ export class EditableQuestionnaire extends Component {
             template: '/components/editable-quiz/quiz-item.html',
             stylesheet: '/components/editable-quiz/styles.css'
         });
+        console.log(q)
         q.triggerVisible();
-        q.draggable = true;
 
         q.index = index;
 
         await q.templatePromise;
         console.log(q)
         const i = $(q, 'text-input');
+
+        console.log(i.class)
         
         if(questionData) {
             q.id = questionData.id;

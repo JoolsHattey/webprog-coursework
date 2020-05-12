@@ -61,6 +61,16 @@ export function initAuth(appBar) {
 
 let authStatus;
 
+export function getDriveAuth() {
+    return new Promise(resolve => {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        provider.addScope('https://www.googleapis.com/auth/drive.file');
+        firebase.auth().signInWithPopup(provider)
+            .then(result => {
+                resolve(result)
+            })
+    })
+}
 
 export function login() {
     const provider = new firebase.auth.GoogleAuthProvider();

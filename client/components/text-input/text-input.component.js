@@ -9,7 +9,7 @@ export class TextInput extends Component {
             template: '/components/text-input/text-input.component.html',
             stylesheet: '/components/text-input/text-input.component.css'
         });
-        this.elInit = this.initElement();
+        this.initElement();
     }
 
     async initElement() {
@@ -57,7 +57,7 @@ export class TextInput extends Component {
 
     async setSize(value) {
         await this.templatePromise;
-        const el = $(this, 'div');
+        const el = $(this, '#input');
         if(value === 'singleline') {
             this.inputEl = document.createElement('input');
             this.container.classList.remove('multiLine');
@@ -85,7 +85,7 @@ export class TextInput extends Component {
     }
     async setValue(newValue) {
         await this.sizeNotInit;
-        await this.elInit;
+        // await this.elInit;
         this.inputEl.value = newValue;
         this.resize();
         this.inputEl.dispatchEvent(new Event('input'))
