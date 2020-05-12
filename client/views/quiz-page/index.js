@@ -2,8 +2,6 @@
 
 import { Component } from '../../components/component.js';
 import { Quiz } from '../../components/quiz/quiz.component.js';
-import { TextInput } from '../../components/text-input/text-input.component.js';
-import { CardStack } from '../../components/card-stack/card-stack.component.js';
 
 export class QuizPage extends Component {
     constructor(req) {

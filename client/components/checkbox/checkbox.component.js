@@ -40,7 +40,8 @@ export class Checkbox extends Component {
         }
         return;
     }
-    setValue(newValue) {
+    async setValue(newValue) {
+        await this.templatePromise;
         this.inputEl.checked = newValue;
     }
     /**

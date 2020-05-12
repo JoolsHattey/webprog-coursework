@@ -32,7 +32,8 @@ export class Toggle extends Component {
     getValue() {
         return $(this, 'input').checked;
     }
-    setValue(value) {
+    async setValue(value) {
+        await this.templatePromise;
         if(typeof value === 'string') {
             $(this, 'input').checked = value === 'true';
         } else {

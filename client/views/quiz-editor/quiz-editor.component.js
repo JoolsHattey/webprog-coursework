@@ -1,7 +1,6 @@
 'use strict';
 
 import { Component } from "../../components/component.js";
-import { EditableQuestionnaire } from "../../components/editable-quiz/index.js";
 import { $, routerInstance, $clear } from "../../app.js";
 import { Card } from "../../components/card/card.component.js";
 import { ModalCard } from "../../components/modal-card/modal-card.component.js";
@@ -9,6 +8,8 @@ import { Toggle } from '../../components/toggle/toggle.component.js';
 import { AppBar } from '../../components/app-bar/app-bar.component.js';
 import { TextInput } from '../../components/text-input/text-input.component.js';
 import { Dropdown } from '../../components/dropdown/dropdown.component.js'
+import { Checkbox } from '../../components/checkbox/checkbox.component.js'
+import { EditableQuiz } from "../../components/editable-quiz/editable-quiz.component.js";
 
 export class QuizEditor extends Component {
     constructor(req) {
@@ -16,10 +17,11 @@ export class QuizEditor extends Component {
             template: '/views/quiz-editor/quiz-editor.component.html',
             stylesheet: '/views/quiz-editor/quiz-editor.component.css'
         });
-        this.elLoaded =this.initElement(req);
+        this.elLoaded = this.initElement(req);
     }
 
     async initElement(req) {
+        
         if(!req.params.quizID) {
             this.getQuestionnaireList();
         } else {
@@ -28,12 +30,13 @@ export class QuizEditor extends Component {
         await this.templatePromise
         this.appBar = $(this, 'app-bar');
         await this.appBar.templatePromise;
-        // $(this.appBar, '#editorHome').addEventListener('click', () => {
-        //     $clear($(this, '#editor'));
-        //     $clear($(this, '#quizsContainer'));
-        //     history.pushState({}, "", `/quizeditor`)
-        //     this.getQuestionnaireList()
-        // });
+        console.log(this.appBar)
+        $(this.appBar, '#editorHome').addEventListener('click', () => {
+            $clear($(this, '#editor'));
+            $clear($(this, '#quizsContainer'));
+            history.pushState({}, "", `/quizeditor`)
+            this.getQuestionnaireList()
+        });
 
         const newQuizBtn = $(this, '#newQuizBtn');
         const newQuizModal = new ModalCard({
@@ -98,7 +101,7 @@ export class QuizEditor extends Component {
         const quesitonnaire = await(request.json());
         const req = await fetch(`/api/responses/${uid}`);
         const responses = await(req.json());
-        const q = new EditableQuestionnaire(uid, quesitonnaire, responses, this.appBar);
+        const q = new EditableQuiz(uid, quesitonnaire, responses, this.appBar);
         $(this, '#editor').appendChild(q);
         $(this, '#quizList').classList.add('hide');
         $(this, '#editor').classList.remove('hide');

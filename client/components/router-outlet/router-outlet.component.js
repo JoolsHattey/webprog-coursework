@@ -18,7 +18,7 @@ export class RouterOutlet extends Component {
      */
     async routeComponent(component, req) {
         const newComponent = new component(req);
-        await newComponent.templatePromise;
+        // await newComponent.templatePromise;
         this.container.children[0].remove();
         this.container.appendChild(newComponent);
     }

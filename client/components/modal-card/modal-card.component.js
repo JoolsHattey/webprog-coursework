@@ -1,6 +1,5 @@
 'use strict';
 
-import { Component } from "../component.js";
 import { $, Observable } from "../../app.js";
 import { Card } from "../card/card.component.js";
 
@@ -51,8 +50,10 @@ export class ModalCard extends Card {
             }
         });
     }
-    open() {
-        document.body.append(this)
+    async open() {
+        document.body.append(this);
+        console.log(this.shadowRoot)
+        await this.templatePromise;
         for(const option in this.dialogData) {
             $(this, `#${option}`).setValue(this.dialogData[option]);
         }

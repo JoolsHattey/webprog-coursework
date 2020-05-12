@@ -5,7 +5,7 @@ import { RouterOutlet } from './components/router-outlet/router-outlet.component
 import { getAdminStatus } from './auth.js';
 import { ProgressSpinner } from './components/progress-spinner/progress-spinner.component.js';
 import { Icon } from './components/icon/icon.component.js';
-import { TextInput } from './components/text-input/text-input.component.js';
+
 
 /********************************************
  * Client Routes
@@ -29,7 +29,7 @@ routerInstance.init(routerOutlet);
  */
 export function $(ctx, queryName) {
     if(ctx.shadowRoot) {
-        return ctx.shadowRoot.querySelector(queryName);
+      return ctx.shadowRoot.querySelector(queryName);
     }
     return ctx.querySelector(queryName);
 }

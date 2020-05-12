@@ -17,7 +17,6 @@ export class Component extends HTMLElement {
         this.shadowRoot.appendChild(this.head)
         this.addStyleSheet('/styles.css');
         this.container = document.createElement('body');
-        this.container.classList.add('hide');
         this.shadowRoot.appendChild(this.container);
         if(options) {
             if(options.stylesheet) {
@@ -27,12 +26,6 @@ export class Component extends HTMLElement {
                 this.templatePromise = this.addTemplate(options.template);
             }
         }
-    }
-    /**
-     * Hide element until loaded in the DOM to prevent FOUC
-     */
-    connectedCallback() {
-        this.container.classList.remove('hide');
     }
     /**
      * Adds a stylesheet to the elements head
