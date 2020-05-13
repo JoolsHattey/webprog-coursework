@@ -27,7 +27,7 @@ export class Dropdown extends Component {
         });
     }
 
-    async setOption(option) {
+    async setValue(option) {
         await this.initElement();
         this.inputSelector.value = option;
     }

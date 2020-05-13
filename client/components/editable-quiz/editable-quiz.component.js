@@ -90,7 +90,7 @@ export class EditableQuiz extends Component {
             navigator.clipboard.writeText(quizURL);
             const snackBar = new SnackBar();
             snackBar.addTitle('Link copied to clipboard');
-            snackBar.show();
+            snackBar.show(5000);
         });
     }
 
@@ -154,7 +154,27 @@ export class EditableQuiz extends Component {
         } else {
             this.questionsContainer.appendChild(q);
         }
-        $(q, 'text-input').setValue(questionData.text)
+        $(q, 'text-input').setValue(questionData.text);
+
+        const answerOptionsContainer = $(q, '#questionAnswers');
+        const newAnswerOptionBtn = $(answerOptionsContainer, '#newOptionBtn');
+        console.log(answerOptionsContainer)
+        if(questionData.type === 'single-select' || questionData.type === 'multi-select') {
+            for(const [i, opt] of questionData.options.entries()) {
+                await this.createAnswerOption(answerOptionsContainer, opt, questionData.type, false, i, index);
+            }
+            if(this.data.questions[index].type === "single-select") {
+                newAnswerOptionBtn.children[0].textContent = 'radio'
+            } else if(this.data.questions[index].type === "multi-select") {
+                newAnswerOptionBtn.children[0].textContent = 'check_box'
+            }
+            newAnswerOptionBtn.children[0].initElement();
+            answerOptionsContainer.classList.remove('hide');
+        }
+        newAnswerOptionBtn.addEventListener('click', () => {
+            this.createAnswerOption(answerOptionsContainer, null, this.data.questions[index].type, true, this.data.questions[index].options.length-1, index);
+        });
+        
         const dropDown = $(q, 'dropdown-el');
         dropDown.setOptions([
             {"value": "text",
@@ -166,9 +186,17 @@ export class EditableQuiz extends Component {
             {"value": "multi-select",
             "text": "Checkboxes"}
         ]);
+        dropDown.setValue(questionData.type);
         dropDown.setOnChange((e) => {
             this.data.questions[index].type = e.target.value;
+            if(e.target.value === "single-select") {
+                newAnswerOptionBtn.children[0].textContent = 'radio'
+            } else if(e.target.value === "single-select") {
+                newAnswerOptionBtn.children[0].textContent = 'check_box'
+            }
+            newAnswerOptionBtn.children[0].initElement();
         });
+
         const requiredToggle = $(q, 'toggle-el');
         requiredToggle.setValue(questionData.required);
         requiredToggle.setOnChange((e) => {
@@ -206,7 +234,7 @@ export class EditableQuiz extends Component {
         const el = await $r('div', '/components/editable-quiz/quiz-answer-option.html');
         el.classList.add('qAnswerItem');
         answerContainer.children[0].appendChild(el);
-        if(name === "") {
+        if(name === null) {
             name = `Option ${index+1}`
         }
         $(el, 'text-input').setValue(name);
@@ -220,17 +248,12 @@ export class EditableQuiz extends Component {
             await $(el, 'text-input').sizeNotInit;
             $(el, 'text-input').inputEl.focus();
             console.log(qIndex)
-            this.quiz.questions[qIndex].options[index] = name
+            this.data.questions[qIndex].options[index] = name
         }
         $(el, 'button').onclick = () => {
             answerContainer.children[0].removeChild(el);
-            this.quiz.questions[qIndex].options.splice(index, 1);
+            this.data.questions[qIndex].options.splice(index, 1);
         }
-        el.draggable = true;
-        el.addEventListener('dragstart', (e) => {
-            e.dataTransfer.setData('text/html', e.target.id)
-            console.log(e)
-        })
     }
 }
 customElements.define('editable-quiz', EditableQuiz);

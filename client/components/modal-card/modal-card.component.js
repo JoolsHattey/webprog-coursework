@@ -15,7 +15,6 @@ export class ModalCard extends Card {
     constructor(componentStructure, options, width, height) {
         super(componentStructure);
         this.addStyleSheet("/components/modal-card/modal-card.component.css");
-        this.container.classList.add("modal");
         this.dialogData = options;
         this.style.setProperty('--modal-width', width);
         this.style.setProperty('--modal-height', height);

@@ -11,7 +11,6 @@ export class Card extends Component {
      */
     constructor(options) {
         super(options);
-        this.container.classList.add("card");
         this.addStyleSheet("/components/card/card.component.css");
     }
     createTitle(name) {
