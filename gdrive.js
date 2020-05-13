@@ -8,7 +8,6 @@ async function authorise(credentials, userAuthCode, url) {
         client_id, client_secret, url);
     try {
         const token = await oAuth2Client.getToken((userAuthCode.authToken));
-        oAuth2Client.refre
         oAuth2Client.setCredentials(token.tokens);
         return oAuth2Client;
     } catch (err) {
@@ -46,7 +45,6 @@ async function saveData(authToken, quizData, responseData, url) {
                 }
             });
         });
-        console.log(row.values, columnHeaders.values)
         rows.push(row);
     });
 

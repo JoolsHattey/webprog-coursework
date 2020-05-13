@@ -98,12 +98,6 @@ async function syncLocalDB() {
     }
 }
 
-firebase.firestore().collection('questionnaires').onSnapshot(x => {
-    x.docs.forEach(x => {
-        console.log(x.data())
-    })
-})
-
 module.exports = {
     addResponse,
     getResponses,

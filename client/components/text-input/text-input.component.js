@@ -13,6 +13,7 @@ export class TextInput extends Component {
     }
 
     async initElement() {
+        
         if(this.hasAttribute('size')) {
             this.sizeNotInit = this.setSize(this.getAttribute('size'));
         }
@@ -77,7 +78,7 @@ export class TextInput extends Component {
         const inputValue = this.inputEl.value;
         if(inputValue === "" && this.required === 'true') {
             $(this, '.bar').classList.add('warn');
-            $(this, '#requiredAlert').classList.remove('hide');
+            $(this, '#requiredAlert').style = '';
             this.inputEl.classList.add('warnInput')
             this.inputEl.focus()
         };
