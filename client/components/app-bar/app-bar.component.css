@@ -68,6 +68,10 @@ body {
     flex-direction: row;
     align-items: center;
 }
+#saveStatus {
+    padding: 0 0 0 5px;
+    color: grey;
+}
 .tabs {
     padding-top: 10px;
     display: flex;

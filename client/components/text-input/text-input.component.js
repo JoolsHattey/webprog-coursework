@@ -98,7 +98,10 @@ export class TextInput extends Component {
         console.log("yiss")
         this.inputEl.setAttribute('style', 'height: auto;')
         this.inputEl.setAttribute('style', `height: ${this.inputEl.scrollHeight > 20 ? this.inputEl.scrollHeight : 20}px;`)
-        
+    }
+
+    setOnChange(callback) {
+        this.inputEl.addEventListener('change', callback);
     }
 
     get required() {

@@ -8,6 +8,7 @@ import { RadioGroup } from "../radio-selector/radio-selector.component.js";
 import { $ } from "../../app.js";
 import { SnackBar } from "../snack-bar/snack-bar.component.js";
 import { CardStack } from '../../components/card-stack/card-stack.component.js'
+import { ModalCard } from "../modal-card/modal-card.component.js";
 
 export class Quiz extends Component {
     constructor(quizID, quizData) {
@@ -90,7 +91,12 @@ export class Quiz extends Component {
         await titleCard.templatePromise;
         $(titleCard, '#title').append(quizData.name);
         $(titleCard, '#numQ').append(`${quizData.questions.length} Questions`)
-        $(this, '#titleCard').appendChild(titleCard)
+        $(this, '#titleCard').appendChild(titleCard);
+        const infoDialog = new ModalCard({
+            template: '/components/quiz/quiz-tutorial-dialog.html',
+            stylesheet: '/components/quiz/styles.css'
+        }, null, '70%', '60%');
+        $(titleCard, '#infoBtn').addEventListener('click', () => infoDialog.open())
     }
 
     createInput(questionData) {

@@ -21,12 +21,17 @@ export class EditableQuiz extends Component {
         this.appBar = appBar;
         this.id = uid;
         this.data = quizData;
-        this.data.responses = responseData;
+        this.responses = responseData;
         this.appBar.expand();
         $(this.appBar, 'text-input').setValue(quizData.name);
+        $(this.appBar, 'text-input').setOnChange(e => {
+            this.data.name = e.target.value;
+            this.save();
+        })
         $(this.appBar, '#responsesBtn').addEventListener('click', () => this.responsesTab());
         $(this.appBar, '#questionsBtn').addEventListener('click', () => this.questionsTab());
         $(this.appBar, '#previewBtn').addEventListener('click', () => this.preview());
+        this.initSaveStatus(quizData.saveTime);
         this.questionsContainer = $(this, '#questionsContainer');
         for(const [i, question] of quizData.questions.entries()) {
             await this.createQuestion(i, question);
@@ -41,6 +46,32 @@ export class EditableQuiz extends Component {
     preview() {
         const w = window.open(window.location.host, '_blank');
         w.location.assign(`/quiz/${this.id}`);
+    }
+
+    initSaveStatus(saveTime) {
+        const lastSavedTime = $(this.appBar, '#saveStatus');
+        const lastSaved = new Date(saveTime);
+        const currentTime = Date.now();
+        const time = currentTime - saveTime;
+        if(time < 60000) {
+            lastSavedTime.textContent = 'Last saved less than a minute ago';
+        } else if(time < 3600000) {
+            lastSavedTime.textContent = `Last saved ${Math.ceil(time/60000)} minutes ago`;
+        } else {
+            lastSavedTime.textContent = `Last saved ${lastSaved.getDay()}/${lastSaved.getMonth()}/${lastSaved.getFullYear()} ${lastSaved.getHours()}:${lastSaved.getMinutes()}`;
+        }
+    }
+
+    async save() {
+        $(this.appBar, '#saveStatus').textContent = 'Saving...';
+        await fetch(`/api/editquestionnaire/${this.id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(this.data)
+        })
+        this.initSaveStatus(Date.now())
     }
 
     async initShareDialog() {
@@ -94,7 +125,7 @@ export class EditableQuiz extends Component {
         });
         await responsesCard.templatePromise;
         $(this, '#responsesContainer').appendChild(responsesCard);
-        const numResponses = this.data.responses.length;
+        const numResponses = this.responses.length;
         $(responsesCard, '#title').append(`${numResponses} ${numResponses === 1 ? 'Response' : 'Responses'}`);
         $(responsesCard, '#exportDriveBtn').addEventListener('click', () => {
             const snack = new SnackBar();
@@ -156,6 +187,7 @@ export class EditableQuiz extends Component {
                 element.index--;
             }
         });
+        this.save();
     }
 
     duplicateQuestion(index) {
@@ -166,6 +198,7 @@ export class EditableQuiz extends Component {
                 element.index++;
             }
         });
+        this.save();
     }
 
     async createAnswerOption(answerContainer, name, type, newItem, index, qIndex) {

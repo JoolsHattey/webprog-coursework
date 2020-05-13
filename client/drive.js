@@ -9,6 +9,7 @@ export function initDrive(uid) {
                 response_type: 'code token id_token'
             }, function(result) {
                 console.log(result)
+                
                 fetch(`/api/exportdrive/${uid}`, {
                     method: 'POST',
                     headers: {

@@ -31,7 +31,8 @@ async function getQuestionnaire(req, res) {
 
 async function editQuestionnaire(req, res) {
     console.log(req.body)
-    storage.editQuestionnaire(req.params.uid, req.body);
+    await storage.editQuestionnaire(req.params.uid, req.body);
+    res.sendStatus(200)
 }
 
 async function getQuestionnaires(req, res) {
