@@ -5,7 +5,7 @@ const dayjs = require('dayjs');
 async function authorise(credentials, userAuthCode, url) {
     const {client_secret, client_id, redirect_uris} = credentials.web;
     const oAuth2Client = new google.auth.OAuth2(
-        client_id, client_secret, redirect_uris[0]);
+        client_id, client_secret, url);
     try {
         const token = await oAuth2Client.getToken((userAuthCode.authToken));
         oAuth2Client.refre

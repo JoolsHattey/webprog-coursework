@@ -67,7 +67,7 @@ async function getResponsesCSV(req, res) {
 async function exportToGoogleDrive(req, res) {
     const responses = await storage.getResponses(req.params.uid);
     const quiz = await storage.getQuestionnaire(req.params.uid);
-    const data = await gdrive.saveData(req.body, quiz, responses);
+    const data = await gdrive.saveData(req.body, quiz, responses, req.get('origin'));
     console.log({fileID: data});
     res.send(data);
 }
