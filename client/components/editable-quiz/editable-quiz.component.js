@@ -6,7 +6,7 @@ import { Card } from "../card/card.component.js";
 import { ModalCard } from "../modal-card/modal-card.component.js";
 import { SnackBar } from "../snack-bar/snack-bar.component.js";
 import { initDrive } from "../../drive.js";
-import { TouchDrag } from "../touch-drag-list/touch-drag-list.component.js";
+import { TouchDragList } from "../touch-drag-list/touch-drag-list.component.js";
 
 export class EditableQuiz extends Component {
     constructor(uid, quizData, responseData, appBar) {
@@ -155,11 +155,6 @@ export class EditableQuiz extends Component {
         q.index = index;
         await q.templatePromise;
         this.questionTouchList.addItem(q);
-        // if(index < this.questionsContainer.children.length) {
-        //     this.questionsContainer.insertBefore(q, this.questionsContainer.children[index-1].nextSibling)
-        // } else {
-        //     this.questionsContainer.appendChild(q);
-        // }
         $(q, 'text-input').setValue(questionData.text);
 
         const answerOptionsContainer = $(q, '#questionAnswers');
@@ -176,7 +171,7 @@ export class EditableQuiz extends Component {
             const touchList = $(q, 'touch-drag-list');
             touchList.addStyleSheet('/components/editable-quiz/editable-quiz.component.css')
             touchList.init('qAnswerItem');
-            answerOptionsContainer.children[0].addEventListener('reorder', e => {
+            touchList.addEventListener('reorder', e => {
                 this.moveOption(index, e.detail.oldIndex, e.detail.newIndex);
             });
             this.touchLists.push(touchList);

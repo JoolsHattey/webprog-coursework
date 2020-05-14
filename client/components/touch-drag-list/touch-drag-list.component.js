@@ -1,9 +1,8 @@
 'use strict';
 
-import { $ } from "../../app.js";
 import { Component } from "../component.js";
 
-export class TouchDrag extends Component {
+export class TouchDragList extends Component {
     constructor() {
         super();
         this.items = [];
@@ -99,8 +98,8 @@ export class TouchDrag extends Component {
                 oldIndex,
                 newIndex
             }
-        })
-        this.container.dispatchEvent(event)
+        });
+        this.dispatchEvent(event);
 
         const currentEl = this.container.removeChild(el);
         this.container.insertBefore(currentEl, this.container.children[newIndex]);
@@ -122,4 +121,4 @@ export class TouchDrag extends Component {
         }
     }
 }
-customElements.define('touch-drag-list', TouchDrag);
+customElements.define('touch-drag-list', TouchDragList);
