@@ -44,7 +44,7 @@ body {
 .qAnswerItem {
     display: flex;
     flex-direction: row;
-    margin: 5px 0 5px 0;
+    padding: 5px 0 5px 0;
     align-items: center;
     justify-content: space-between;
 }

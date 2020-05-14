@@ -15,6 +15,7 @@ export class TouchDrag {
     init(container, parentDoc) {
         this.container = container;
         this.parentDoc = parentDoc;
+        this.things = 0;
     }
 
     /**
@@ -29,79 +30,93 @@ export class TouchDrag {
     }
 
     touchStart(e, el) {
+        this.things = 0;
         el.style.transition = '0s';
         this.touchStartPos = e.changedTouches[0].clientY;
     }
     touchMove(e, el) {
         e.preventDefault();
-        el.style.transform = `translate3d(0,${e.changedTouches[0].clientY-this.touchStartPos}px,0)`;
+        e.stopPropagation();
+        const pos = e.changedTouches[0].clientY-this.touchStartPos;
+        el.style.transform = `translate3d(0,${pos}px,0)`;
+
+        if(this.oldPos<pos) {
+            this.currentDirection = 'down'
+        } else {
+            this.currentDirection = 'up'
+        }
+        if(!this.swipeDirection) {
+            if(e.changedTouches[0].clientY<this.touchStartPos) {
+                this.swipeDirection = 'up';
+            } else {
+                this.swipeDirection = 'down';
+            }
+        }
+        
+
+        // Detect collisions with other list items by getting elements from point of active item
         (this.parentDoc.elementsFromPoint(e.changedTouches[0].clientX, e.changedTouches[0].clientY)).some(item => {
+            this.things++;
             if(item.classList.contains('qAnswerItem') && !(item.index === el.index)) {
+                console.log($(item, 'text-input').getValue())
                 this.tempNewIndex = item.index;
-                if(e.changedTouches[0].clientY<this.touchStartPos) {
-                    // Moving item up
-                    Array.from(this.container.children).forEach(opt => {
-                        if(parseInt(opt.index) >= parseInt(item.index) && !(opt.index === el.index)) {
-                            opt.style.transition = '0.3s'
-                            opt.style.transform = 'translate3d(0,100%,0)';
-                        } else if(parseInt(opt.index) < parseInt(item.index)) {
-                            opt.style.transform = 'translate3d(0,0,0)';
-                        }
-                    })
+                if(this.swipeDirection === 'up') {
+                    item.style.transition = '0.3s';
+                    if(this.currentDirection === 'down') {
+                        item.style.transform = 'translate3d(0,0,0)';
+                        this.tempNewIndex = item.index+1;
+                    } else {
+                        item.style.transform = 'translate3d(0,100%,0)';
+                    }
                 } else {
-                    // Moving item down
-                    Array.from(this.container.children).forEach(opt => {
-                        if(parseInt(opt.index) <= parseInt(item.index) && !(opt.index === el.index)) {
-                            opt.style.transition = '0.3s'
-                            opt.style.transform = 'translate3d(0,-100%,0)';
-                        }
-                        if(parseInt(opt.index) > parseInt(item.index) && !(opt.index === el.index)) {
-                            opt.style.transform = 'translate3d(0,0,0)';
-                        }
-                    })
+                    item.style.transition = '0.3s';
+                    if(this.currentDirection === 'up') {
+                        item.style.transform = 'translate3d(0,0,0)';
+                        this.tempNewIndex = item.index-1;
+                    } else {
+                        item.style.transform = 'translate3d(0,-100%,0)';
+                    }
                 }
-                
                 return true;
             }
         });
+        this.oldPos = pos;
     }
     touchEnd(e, el) {
+        this.swipeDirection = null;
         el.style.transition = '0.3s';
         el.style.transform = `translate3d(0,0,0)`;
-        this.moveOption(el.index, this.tempNewIndex, el);
+        this.moveItem(el.index, this.tempNewIndex, el);
+        console.log(`did ${this.things} things`)
     }
 
 
-moveOption(oldIndex, newIndex, el) {
-    const event = new CustomEvent('reorder', {
-        detail: {
-            oldIndex,
-            newIndex
-        }
-    })
-    this.container.dispatchEvent(event)
+    moveItem(oldIndex, newIndex, el) {
+        const event = new CustomEvent('reorder', {
+            detail: {
+                oldIndex,
+                newIndex
+            }
+        })
+        this.container.dispatchEvent(event)
 
-    const currentEl = this.container.removeChild(el);
-    this.container.insertBefore(currentEl, this.container.children[newIndex]);
-    Array.from(this.container.children).forEach(item => {
-        item.style.transition = '0s';
-        item.style.transform = 'translate3d(0,0,0)';
-    });
-    
-    if(newIndex < oldIndex ) {
-        currentEl.index = newIndex;
-        $(currentEl, 'text-input').setValue(currentEl.index + $(currentEl,  'text-input').getValue());
-        for(let i=newIndex+1; i<=oldIndex; i++) {
-            this.container.children[i].index++;
-            $(this.container.children[i], 'text-input').setValue(this.container.children[i].index + $(this.container.children[i], 'text-input').getValue());
-        }
-    } else {
-        currentEl.index = newIndex+1;
-        $(currentEl, 'text-input').setValue(currentEl.index + $(currentEl,  'text-input').getValue());
-        for(let i=newIndex; i>=oldIndex; i--) {
-            this.container.children[i].index--;
-            $(this.container.children[i], 'text-input').setValue(this.container.children[i].index + $(this.container.children[i], 'text-input').getValue());
+        const currentEl = this.container.removeChild(el);
+        this.container.insertBefore(currentEl, this.container.children[newIndex]);
+        Array.from(this.container.children).forEach(item => {
+            item.style.transition = '0s';
+            item.style.transform = 'translate3d(0,0,0)';
+        });
+        
+        if(newIndex < oldIndex ) {
+            currentEl.index = newIndex;
+            for(let i=newIndex+1; i<=oldIndex; i++) {
+                this.container.children[i].index++;
+            }
+        } else {
+            currentEl.index = newIndex+1;
+            for(let i=newIndex; i>=oldIndex; i--) {
+                this.container.children[i].index--;
+            }
         }
     }
-}
 }
