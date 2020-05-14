@@ -1,9 +1,10 @@
 'use strict';
 
-import { $, Observable } from "../../app.js";
+import { $ } from "../../app.js";
 import { Card } from "../card/card.component.js";
 
 export class ModalCard extends Card {
+
     /**
      * @param {Object} componentStructure 
      * @param {string} componentStructure.template HTML template to define component structure
@@ -20,36 +21,38 @@ export class ModalCard extends Card {
         this.style.setProperty('--modal-height', height);
         this.initElement();
     }
+
     async initElement() {
         this.overlay = document.createElement('div');
         this.overlay.classList.add('overlay');
         this.shadowRoot.appendChild(this.overlay);
         this.overlay.addEventListener('click', () => this.close())
         await this.templatePromise;
-        const saveBtn = $(this, '#saveBtn');
-        const cancelBtn = $(this, '#cancelBtn');
-        console.log(cancelBtn);
-        this.resultsObservable = new Observable(observer => {
-            if(saveBtn) {
-                saveBtn.onclick = () => {
-                    console.log(this.dialogData)
-                    for(const option in this.dialogData) {
-                        if(option !== 'file') {
-                            this.dialogData[option] = $(this, `#${option}`).getValue();
-                        }
-                    }
-                    observer.next(this.dialogData);
-                    this.close();
-                }    
-            }
-            if(cancelBtn) {
-                cancelBtn.onclick = () => {
-                    observer.next();
-                    this.close();
-                }    
-            }
-        });
+        this.saveBtn = $(this, '#saveBtn');
+        this.cancelBtn = $(this, '#cancelBtn');
     }
+
+    afterClosed(callback) {
+        if(this.saveBtn) {
+            this.saveBtn.onclick = () => {
+                console.log(this.dialogData)
+                for(const option in this.dialogData) {
+                    if(option !== 'file') {
+                        this.dialogData[option] = $(this, `#${option}`).getValue();
+                    }
+                }
+                callback(this.dialogData);
+                this.close();
+            }    
+        }
+        if(this.cancelBtn) {
+            this.cancelBtn.onclick = () => {
+                callback();
+                this.close();
+            }    
+        }
+    }
+
     async open() {
         document.body.append(this);
         console.log(this.shadowRoot)
