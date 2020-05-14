@@ -1,6 +1,7 @@
 'use strict';
 
 import { Component } from "../component.js";
+import { $ } from "../../app.js";
 
 export class TouchDragList extends Component {
     constructor() {
@@ -15,14 +16,16 @@ export class TouchDragList extends Component {
 
     /**
      * Adds a new item to the list and attaches touch event listeners
-     * @param {Element} el 
+     * @param {Element} el The list item to be added
+     * @param {Element} dragHandle The drag handle of the item to control movement
      */
-    addItem(el) {
+    addItem(el, dragHandle) {
         this.items.push(el);
-        el.addEventListener('touchstart', e => this.touchStart(e, el));
-        el.addEventListener('touchmove', e => this.touchMove(e, el));
-        el.addEventListener('touchend', e => this.touchEnd(e, el));
         this.container.append(el);
+        const dragHandleEl = $(el, dragHandle);
+        dragHandleEl.addEventListener('touchstart', e => this.touchStart(e, el));
+        dragHandleEl.addEventListener('touchmove', e => this.touchMove(e, el));
+        dragHandleEl.addEventListener('touchend', e => this.touchEnd(e, el));
     }
 
     touchStart(e, el) {

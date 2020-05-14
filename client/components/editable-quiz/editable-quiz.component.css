@@ -45,6 +45,7 @@ body {
     display: flex;
     flex-direction: row;
     padding: 5px 0 5px 0;
+    margin-left: -24px;
     align-items: center;
     justify-content: space-between;
 }
@@ -100,6 +101,12 @@ dropdown-el {
 }
 #dragHandle {
     margin: -20px auto auto auto;
+}
+.answerOptionDragHandle {
+
+}
+.qAnswerItem icon-el {
+    transform: rotate(90deg);
 }
 #shareModal {
     

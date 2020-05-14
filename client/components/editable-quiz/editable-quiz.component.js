@@ -154,7 +154,7 @@ export class EditableQuiz extends Component {
         
         q.index = index;
         await q.templatePromise;
-        this.questionTouchList.addItem(q);
+        this.questionTouchList.addItem(q, '#dragHandle');
         $(q, 'text-input').setValue(questionData.text);
 
         const answerOptionsContainer = $(q, '#questionAnswers');
@@ -245,10 +245,11 @@ export class EditableQuiz extends Component {
     async createAnswerOption(answerContainer, name, type, newItem, index, qIndex) {
         const el = await $r('div', '/components/editable-quiz/quiz-answer-option.html');
         el.classList.add('qAnswerItem');
-        answerContainer.children[0].appendChild(el);
+        // answerContainer.children[0].appendChild(el);
         if(name === null) {
-            name = `Option ${index+1}`
+            name = `Option ${index+1}`;
         }
+        this.touchLists[qIndex].addItem(el, '.answerOptionDragHandle');
         $(el, 'text-input').setValue(name);
         el.index = index;
         const answerTypeIcon = $(el, '.answerTypeIcon');
@@ -267,7 +268,7 @@ export class EditableQuiz extends Component {
             answerContainer.children[0].removeChild(el);
             this.data.questions[qIndex].options.splice(index, 1);
         }
-        this.touchLists[qIndex].addItem(el);
+        
     }
 
     moveOption(qIndex, oldIndex, newIndex) {
