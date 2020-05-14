@@ -5,12 +5,12 @@
 
 ## Quiz Editor
 
-## Drag and drop questions
+### Drag and drop questions
 I had to create a custom drag and drop and the HTML drag and drop api does not support mobile.
 I created a component to manage a list of elements which can be dragged to reorder.
 It uses touch events so that it works on mobile and outputs custom events on reorder.
 
-## Authentication
+### Authentication
 This app uses Firebase authentication, the benefits of using this are that it can support
 multiple authnetication providers while still giving the same Firebase token ID which can be
 used to set admin claims which only allow specific users to edit quizs.

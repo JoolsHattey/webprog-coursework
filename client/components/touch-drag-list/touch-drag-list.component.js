@@ -49,30 +49,35 @@ export class TouchDragList extends Component {
                 this.swipeDirection = 'down';
             }
         }
+        console.log(pos);
         
         // Detect collisions with other list items by getting elements from point of active item
         (this.shadowRoot.elementsFromPoint(e.changedTouches[0].clientX, e.changedTouches[0].clientY)).some(item => {
             this.things++;
             if((item.classList.contains(this.queryName) || item.tagName.toLowerCase() === this.queryName) && !(item.index === el.index)) {
-                console.log(item)
-                this.tempNewIndex = item.index;
-                if(this.swipeDirection === 'up') {
-                    item.style.transition = '0.3s';
-                    if(this.currentDirection === 'down') {
-                        item.style.transform = 'translate3d(0,0,0)';
-                        this.tempNewIndex = item.index+1;
+                // console.log(item.clientHeight)
+                const thing = (Math.abs(item.index-el.index))*(this.items[item.index].clientHeight/2);
+                if(Math.abs(pos)>thing) {
+                    this.tempNewIndex = item.index;
+                    if(this.swipeDirection === 'up') {
+                        item.style.transition = '0.3s';
+                        if(this.currentDirection === 'down') {
+                            item.style.transform = 'translate3d(0,0,0)';
+                            this.tempNewIndex = item.index+1;
+                        } else {
+                            item.style.transform = 'translate3d(0,100%,0)';
+                        }
                     } else {
-                        item.style.transform = 'translate3d(0,100%,0)';
-                    }
-                } else {
-                    item.style.transition = '0.3s';
-                    if(this.currentDirection === 'up') {
-                        item.style.transform = 'translate3d(0,0,0)';
-                        this.tempNewIndex = item.index-1;
-                    } else {
-                        item.style.transform = 'translate3d(0,-100%,0)';
+                        item.style.transition = '0.3s';
+                        if(this.currentDirection === 'up') {
+                            item.style.transform = 'translate3d(0,0,0)';
+                            this.tempNewIndex = item.index-1;
+                        } else {
+                            item.style.transform = 'translate3d(0,-100%,0)';
+                        }
                     }
                 }
+
                 return true;
             }
         });
