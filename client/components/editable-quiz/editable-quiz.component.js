@@ -6,6 +6,7 @@ import { Card } from "../card/card.component.js";
 import { ModalCard } from "../modal-card/modal-card.component.js";
 import { SnackBar } from "../snack-bar/snack-bar.component.js";
 import { initDrive } from "../../drive.js";
+import { TouchDrag } from "../../touch-dnd.js";
 
 export class EditableQuiz extends Component {
     constructor(uid, quizData, responseData, appBar) {
@@ -34,6 +35,7 @@ export class EditableQuiz extends Component {
         this.initSaveStatus(quizData.saveTime);
         this.questionsContainer = $(this, '#questionsContainer');
         this.qCards = [];
+        this.touchLists = [];
         for(const [i, question] of quizData.questions.entries()) {
             await this.createQuestion(i, question);
         }
@@ -96,12 +98,12 @@ export class EditableQuiz extends Component {
     }
 
     async initSettingsDialog() {
-        const setingsDialog = new ModalCard({
+        const settingsDialog = new ModalCard({
             template: '/components/editable-quiz/quiz-config-dialog.html',
             stylesheet: '/components/editable-quiz/editable-quiz.component.css'
         }, this.data.options, '70%', '30%');
         $(this.appBar, '#settingsBtn').addEventListener('click', () => {
-            setingsDialog.open();
+            settingsDialog.open();
         });
     }
 
@@ -148,7 +150,7 @@ export class EditableQuiz extends Component {
             template: '/components/editable-quiz/question.html',
             stylesheet: '/components/editable-quiz/editable-quiz.component.css'
         });
-        this.qCards.push(q);
+        
         q.index = index;
         await q.templatePromise;
         if(index < this.questionsContainer.children.length) {
@@ -162,9 +164,6 @@ export class EditableQuiz extends Component {
         const newAnswerOptionBtn = $(answerOptionsContainer, '#newOptionBtn');
         console.log(answerOptionsContainer)
         if(questionData.type === 'single-select' || questionData.type === 'multi-select') {
-            for(const [i, opt] of questionData.options.entries()) {
-                await this.createAnswerOption(answerOptionsContainer, opt, questionData.type, false, i, index);
-            }
             if(this.data.questions[index].type === "single-select") {
                 newAnswerOptionBtn.children[0].textContent = 'radio'
             } else if(this.data.questions[index].type === "multi-select") {
@@ -172,7 +171,19 @@ export class EditableQuiz extends Component {
             }
             newAnswerOptionBtn.children[0].initElement();
             answerOptionsContainer.classList.remove('hide');
+            const touchList = new TouchDrag();
+            touchList.init(answerOptionsContainer.children[0], q.shadowRoot);
+            answerOptionsContainer.children[0].addEventListener('reorder', e => {
+                this.moveOption(index, e.detail.oldIndex, e.detail.newIndex);
+            });
+            this.touchLists.push(touchList);
+            for(const [i, opt] of questionData.options.entries()) {
+                await this.createAnswerOption(answerOptionsContainer, opt, questionData.type, false, i, index);
+            }
+        } else {
+            this.touchLists.push(null);
         }
+        
         newAnswerOptionBtn.addEventListener('click', () => {
             this.createAnswerOption(answerOptionsContainer, null, this.data.questions[index].type, true, this.data.questions[index].options.length-1, index);
         });
@@ -206,6 +217,8 @@ export class EditableQuiz extends Component {
         });
         $(q, '#deleteBtn').addEventListener('click', () => this.deleteQuestion(index));
         $(q, '#duplicateBtn').addEventListener('click', () => this.duplicateQuestion(index));
+        
+        this.qCards.push(q);
     }
 
     deleteQuestion(index) {
@@ -260,51 +273,13 @@ export class EditableQuiz extends Component {
         let touchStartPos;
         let elements;
         let tempNewIndex;
-        el.addEventListener('touchstart', e => {
-            el.style.transition = '0s';
-            touchStartPos = e.changedTouches[0].clientY;
-        });
-        el.addEventListener('touchmove', e => {
-            e.preventDefault();
-            el.style.transform = `translate3d(0,${e.changedTouches[0].clientY-touchStartPos}px,0)`;
-            (this.qCards[qIndex].shadowRoot.elementsFromPoint(e.changedTouches[0].clientX, e.changedTouches[0].clientY)).some(item => {
-                if(item.classList.contains('qAnswerItem') && item.index !== el.index) {
-                    tempNewIndex = item.index;
-                    if(e.changedTouches[0].clientY<touchStartPos) {
-                        console.log('up')
-                        Array.from(answerContainer.children[0].children).forEach(opt => {
-                            if(parseInt(opt.index) >= parseInt(item.index) && !(opt.index === el.index)) {
-                                opt.style.transition = '0.3s'
-                                opt.style.transform = 'translate3d(0,100%,0)';
-                            } else if(parseInt(opt.index) < parseInt(item.index)) {
-                                opt.style.transform = 'translate3d(0,0,0)';
-                            }
-                        })
-                    } else {
-                        console.log('down')
-                        Array.from(answerContainer.children[0].children).forEach(opt => {
-                            if(parseInt(opt.index) <= parseInt(item.index) && !(opt.index === el.index)) {
-                                opt.style.transition = '0.3s'
-                                opt.style.transform = 'translate3d(0,-100%,0)';
-                            }
-                            if(parseInt(opt.index) > parseInt(item.index) && !(opt.index === el.index)) {
-                                opt.style.transform = 'translate3d(0,0,0)';
-                            }
-                        })
-                    }
-                    
-                    return true;
-                }
-            });
-        });
-        el.addEventListener('touchend', e => {
-            el.style.transition = '0.3s';
-            el.style.transform = `translate3d(0,0,0)`;
-            this.moveOption(qIndex, el.index, tempNewIndex, el, answerContainer);
-        });
+
+        console.log(this.touchLists)
+
+        this.touchLists[qIndex].addItem(el);
     }
 
-    moveOption(qIndex, oldIndex, newIndex, el, answerContainer) {
+    moveOption(qIndex, oldIndex, newIndex) {
         this.data.questions[qIndex].options;
         if (newIndex >= this.data.questions[qIndex].options.length) {
             let k = newIndex - this.data.questions[qIndex].options.length + 1;
@@ -312,26 +287,8 @@ export class EditableQuiz extends Component {
                 this.data.questions[qIndex].options.push(undefined);
             }
         }
-        
         this.data.questions[qIndex].options.splice(newIndex, 0, this.data.questions[qIndex].options.splice(oldIndex, 1)[0]);
-
-        const currentEl = answerContainer.children[0].removeChild(el);
-        console.log(currentEl.innerHTML)
-        answerContainer.children[0].insertBefore(currentEl, answerContainer.children[0].children[newIndex]);
-        Array.from(answerContainer.children[0].children).forEach(item => {
-            item.style.transition = '0s';
-            item.style.transform = 'translate3d(0,0,0)';
-        });
-        currentEl.index = newIndex;
-        if(newIndex < oldIndex ) {
-            for(let i=newIndex+1; i<oldIndex; i++) {
-                answerContainer.children[0].children[i].index++;
-            }
-        } else {
-            for(let i=newIndex; i>=oldIndex; i--) {
-                answerContainer.children[0].children[i].index--;
-            }
-        }
+        console.log(this.data.questions[qIndex].options)
     }
 }
 customElements.define('editable-quiz', EditableQuiz);

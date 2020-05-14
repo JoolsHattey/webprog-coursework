@@ -5,6 +5,9 @@
 
 ## Quiz Editor
 
+## Authentication
+To log into the quiz editor
+
 ## Quiz Page
 
 ### Stacked Question Layout

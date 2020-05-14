@@ -87,16 +87,12 @@ export class TextInput extends Component {
     }
     async setValue(newValue) {
         await this.sizeNotInit;
-        // await this.elInit;
         this.inputEl.value = newValue;
         this.resize();
         this.inputEl.dispatchEvent(new Event('input'))
     }
 
     resize() {
-        console.log(this.inputEl)
-        console.log(this.inputEl.scrollHeight)
-        console.log("yiss")
         this.inputEl.setAttribute('style', 'height: auto;')
         this.inputEl.setAttribute('style', `height: ${this.inputEl.scrollHeight > 20 ? this.inputEl.scrollHeight : 20}px;`)
     }

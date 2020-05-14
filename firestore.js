@@ -13,9 +13,10 @@ firebase.initializeApp({
  * User
  * ****************** */
 
-function addResponse(uid, response, authToken) {
-    firebase.firestore().collection("questionnaires").doc(uid)
+async function addResponse(uid, response, authToken) {
+    const docRef = await firebase.firestore().collection("questionnaires").doc(uid)
         .collection("responses").add(response);
+    return docRef.id;
 }
 
 async function getQuestionnaire(uid, authToken) {

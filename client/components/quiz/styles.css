@@ -80,3 +80,6 @@ progress::-webkit-progress-value {
 img {
     width: 100%;
 }
+card-el {
+    width: 100%;
+}

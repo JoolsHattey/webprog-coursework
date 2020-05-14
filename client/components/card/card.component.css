@@ -1,11 +1,12 @@
 :host{
     width: 100%;
+    
+    
 }
 body {
     height: 100%;
     margin: 20px!important;
     padding: 20px!important;
-    width: auto!important;
     border: solid;
     border-width: thin;
     border-radius: 6px;

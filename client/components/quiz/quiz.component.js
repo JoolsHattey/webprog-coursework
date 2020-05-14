@@ -45,10 +45,10 @@ export class Quiz extends Component {
             qCards.push(question);
         });
 
-        const finishCard = new Card({
+        this.finishCard = new Card({
             template: '/components/quiz/quiz-finish.html'
         });
-        qCards.push(finishCard);
+        qCards.push(this.finishCard);
 
         this.stack = new CardStack();
         $(this, '#cardStackContainer').appendChild(this.stack);
@@ -160,6 +160,9 @@ export class Quiz extends Component {
     }
 
     async submitResponse() {
+
+        $(this.finishCard, '#afterSubmit').classList.remove('hide')
+        $(this.finishCard, '#beforeSubmit').classList.add('hide')
 
         this.response.time = Date.now();
 
