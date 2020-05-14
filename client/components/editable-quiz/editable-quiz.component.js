@@ -159,7 +159,6 @@ export class EditableQuiz extends Component {
 
         const answerOptionsContainer = $(q, '#questionAnswers');
         const newAnswerOptionBtn = $(answerOptionsContainer, '#newOptionBtn');
-        console.log(answerOptionsContainer)
         if(questionData.type === 'single-select' || questionData.type === 'multi-select') {
             if(this.data.questions[index].type === "single-select") {
                 newAnswerOptionBtn.children[0].textContent = 'radio'
@@ -244,7 +243,6 @@ export class EditableQuiz extends Component {
     }
 
     async createAnswerOption(answerContainer, name, type, newItem, index, qIndex) {
-        console.log(index)
         const el = await $r('div', '/components/editable-quiz/quiz-answer-option.html');
         el.classList.add('qAnswerItem');
         answerContainer.children[0].appendChild(el);
@@ -269,12 +267,6 @@ export class EditableQuiz extends Component {
             answerContainer.children[0].removeChild(el);
             this.data.questions[qIndex].options.splice(index, 1);
         }
-        let touchStartPos;
-        let elements;
-        let tempNewIndex;
-
-        console.log(this.touchLists)
-
         this.touchLists[qIndex].addItem(el);
     }
 

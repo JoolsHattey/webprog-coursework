@@ -46,7 +46,6 @@ export async function $r(elName, template) {
       const res = await fetch(template);
       const textTemplate = await res.text();
       const htmlTemplate = parser.parseFromString(textTemplate, 'text/html').querySelector('template');
-      console.log(htmlTemplate)
       el.append(htmlTemplate.content.cloneNode(true))
     }
     return el;

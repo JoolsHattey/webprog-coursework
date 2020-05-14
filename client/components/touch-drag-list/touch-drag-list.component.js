@@ -22,7 +22,6 @@ export class TouchDragList extends Component {
         el.addEventListener('touchstart', e => this.touchStart(e, el));
         el.addEventListener('touchmove', e => this.touchMove(e, el));
         el.addEventListener('touchend', e => this.touchEnd(e, el));
-        console.log(this.items);
         this.container.append(el);
     }
 
