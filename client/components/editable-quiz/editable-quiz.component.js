@@ -6,7 +6,7 @@ import { Card } from "../card/card.component.js";
 import { ModalCard } from "../modal-card/modal-card.component.js";
 import { SnackBar } from "../snack-bar/snack-bar.component.js";
 import { initDrive } from "../../drive.js";
-import { TouchDrag } from "../../touch-dnd.js";
+import { TouchDrag } from "../touch-drag-list/touch-drag-list.component.js";
 
 export class EditableQuiz extends Component {
     constructor(uid, quizData, responseData, appBar) {
@@ -33,9 +33,10 @@ export class EditableQuiz extends Component {
         $(this.appBar, '#questionsBtn').addEventListener('click', () => this.questionsTab());
         $(this.appBar, '#previewBtn').addEventListener('click', () => this.preview());
         this.initSaveStatus(quizData.saveTime);
-        this.questionsContainer = $(this, '#questionsContainer');
+        this.questionTouchList = $(this, 'touch-drag-list');
         this.qCards = [];
         this.touchLists = [];
+        this.questionTouchList.init('card-el');
         for(const [i, question] of quizData.questions.entries()) {
             await this.createQuestion(i, question);
         }
@@ -153,11 +154,12 @@ export class EditableQuiz extends Component {
         
         q.index = index;
         await q.templatePromise;
-        if(index < this.questionsContainer.children.length) {
-            this.questionsContainer.insertBefore(q, this.questionsContainer.children[index-1].nextSibling)
-        } else {
-            this.questionsContainer.appendChild(q);
-        }
+        this.questionTouchList.addItem(q);
+        // if(index < this.questionsContainer.children.length) {
+        //     this.questionsContainer.insertBefore(q, this.questionsContainer.children[index-1].nextSibling)
+        // } else {
+        //     this.questionsContainer.appendChild(q);
+        // }
         $(q, 'text-input').setValue(questionData.text);
 
         const answerOptionsContainer = $(q, '#questionAnswers');
@@ -171,8 +173,9 @@ export class EditableQuiz extends Component {
             }
             newAnswerOptionBtn.children[0].initElement();
             answerOptionsContainer.classList.remove('hide');
-            const touchList = new TouchDrag();
-            touchList.init(answerOptionsContainer.children[0], q.shadowRoot);
+            const touchList = $(q, 'touch-drag-list');
+            touchList.addStyleSheet('/components/editable-quiz/editable-quiz.component.css')
+            touchList.init('qAnswerItem');
             answerOptionsContainer.children[0].addEventListener('reorder', e => {
                 this.moveOption(index, e.detail.oldIndex, e.detail.newIndex);
             });
@@ -219,6 +222,7 @@ export class EditableQuiz extends Component {
         $(q, '#duplicateBtn').addEventListener('click', () => this.duplicateQuestion(index));
         
         this.qCards.push(q);
+        
     }
 
     deleteQuestion(index) {

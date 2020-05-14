@@ -1,21 +1,17 @@
 'use strict';
 
-import { $ } from "./app.js";
+import { $ } from "../../app.js";
+import { Component } from "../component.js";
 
-export class TouchDrag {
+export class TouchDrag extends Component {
     constructor() {
+        super();
         this.items = [];
     }
 
-    /**
-     * Initialise the list with the container that holds the elements and the parent document/shadow root
-     * @param {Element} container 
-     * @param {Document|ShadowRoot} parentDoc 
-     */
-    init(container, parentDoc) {
-        this.container = container;
-        this.parentDoc = parentDoc;
+    init(query) {
         this.things = 0;
+        this.queryName = query;
     }
 
     /**
@@ -27,16 +23,19 @@ export class TouchDrag {
         el.addEventListener('touchstart', e => this.touchStart(e, el));
         el.addEventListener('touchmove', e => this.touchMove(e, el));
         el.addEventListener('touchend', e => this.touchEnd(e, el));
+        console.log(this.items);
+        this.container.append(el);
     }
 
     touchStart(e, el) {
         this.things = 0;
+        this.startTime = e.timeStamp;
         el.style.transition = '0s';
         this.touchStartPos = e.changedTouches[0].clientY;
     }
     touchMove(e, el) {
-        e.preventDefault();
         e.stopPropagation();
+        e.preventDefault();
         const pos = e.changedTouches[0].clientY-this.touchStartPos;
         el.style.transform = `translate3d(0,${pos}px,0)`;
 
@@ -53,12 +52,11 @@ export class TouchDrag {
             }
         }
         
-
         // Detect collisions with other list items by getting elements from point of active item
-        (this.parentDoc.elementsFromPoint(e.changedTouches[0].clientX, e.changedTouches[0].clientY)).some(item => {
+        (this.shadowRoot.elementsFromPoint(e.changedTouches[0].clientX, e.changedTouches[0].clientY)).some(item => {
             this.things++;
-            if(item.classList.contains('qAnswerItem') && !(item.index === el.index)) {
-                console.log($(item, 'text-input').getValue())
+            if((item.classList.contains(this.queryName) || item.tagName.toLowerCase() === this.queryName) && !(item.index === el.index)) {
+                console.log(item)
                 this.tempNewIndex = item.index;
                 if(this.swipeDirection === 'up') {
                     item.style.transition = '0.3s';
@@ -83,11 +81,15 @@ export class TouchDrag {
         this.oldPos = pos;
     }
     touchEnd(e, el) {
+        e.stopPropagation();
+        e.preventDefault();
         this.swipeDirection = null;
         el.style.transition = '0.3s';
-        el.style.transform = `translate3d(0,0,0)`;
         this.moveItem(el.index, this.tempNewIndex, el);
-        console.log(`did ${this.things} things`)
+        
+        el.style.transform = `translate3d(0,0,0)`;
+        
+        console.log(`did ${this.things} things, ${this.things/((e.timeStamp-this.startTime)/1000)} per second`)
     }
 
 
@@ -120,3 +122,4 @@ export class TouchDrag {
         }
     }
 }
+customElements.define('touch-drag-list', TouchDrag);
