@@ -5,6 +5,13 @@
 
 ## Quiz Editor
 
+### Response Export
+You can export the responses for a quiz either as a JSON file directly donwloaded or you
+can choose to create a Google Sheet which is exported to your Google Drive. Clicking export 
+to Google Sheets will request login scopes to access the API (requested scopes are not able
+to access any files not created by this app), this will then send the auth code to the server
+which creates a spreasheet from the responses and saves to Google Drive.
+
 ### Drag and drop questions
 I had to create a custom drag and drop and the HTML drag and drop api does not support mobile.
 I created a component to manage a list of elements which can be dragged to reorder.

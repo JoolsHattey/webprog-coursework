@@ -20,15 +20,16 @@ export class TouchDragList extends Component {
      * @param {Element} dragHandle The drag handle of the item to control movement
      */
     addItem(el, dragHandle) {
-        this.items.push(el);
         this.container.append(el);
         const dragHandleEl = $(el, dragHandle);
-        dragHandleEl.addEventListener('touchstart', e => this.touchStart(e, el));
+        dragHandleEl.addEventListener('touchstart', e => this.touchStart(e, el, dragHandleEl));
         dragHandleEl.addEventListener('touchmove', e => this.touchMove(e, el));
-        dragHandleEl.addEventListener('touchend', e => this.touchEnd(e, el));
+        dragHandleEl.addEventListener('touchend', e => this.touchEnd(e, el, dragHandleEl));
+        this.items.push(el);
     }
 
-    touchStart(e, el) {
+    touchStart(e, el, dragHandle) {
+        dragHandle.style.opacity = 1;
         this.things = 0;
         this.startTime = e.timeStamp;
         el.style.transition = '0s';
@@ -86,7 +87,8 @@ export class TouchDragList extends Component {
         });
         this.oldPos = pos;
     }
-    touchEnd(e, el) {
+    touchEnd(e, el, dragHandle) {
+        dragHandle.style.opacity = 0.5;
         e.stopPropagation();
         e.preventDefault();
         this.swipeDirection = null;
