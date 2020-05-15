@@ -29,6 +29,22 @@ body {
     height: 100%;
 }
 
+.textResponses {
+    display: flex;
+    flex-direction: column;
+    overflow: scroll;
+    max-height: 4rem;
+}
+.textResponses div {
+    background-color: lightgrey;
+    margin: 0.1rem;
+    padding: 0.1rem;
+}
+
+#responsesContainer card-el {
+    width: 100%;
+}
+
 #deleteBtn {
     
 }
@@ -51,9 +67,14 @@ body {
     display: flex;
     flex-direction: row;
     padding: 5px 0 5px 0;
-    margin-left: -24px;
+    margin-left: -1rem;
     align-items: center;
     justify-content: space-between;
+    background-color: white;
+}
+.qAnswerItemDragging {
+    box-shadow: 0px 2px 2px #888, 0px -2px 2px #888;
+    z-index: 10;
 }
 .answerOptionName {
     display: flex;

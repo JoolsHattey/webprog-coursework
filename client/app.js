@@ -12,7 +12,7 @@ import { Icon } from './components/icon/icon.component.js';
  * **************************************** */
 
 const routerOutlet = $(document, 'router-outlet');
-export const routerInstance = new Router(); 
+export const routerInstance = new Router();
 
 routerInstance.get({uri: '/', destination: null, defaultRoute: true, redirectTo: '/login'});
 routerInstance.get({uri: '/login', destination: () => import('./views/login-page/login-page.component.js').then(m => m.LoginPage), lazy: true});

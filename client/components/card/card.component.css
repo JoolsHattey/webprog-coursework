@@ -1,12 +1,14 @@
 :host{
-    width: 100%!important;
-    
+    /* width: auto!important; */
+    padding: 20px!important;
+    box-sizing: border-box;
     
 }
 body {
     height: 100%!important;
-    width: auto!important;
-    margin: 20px!important;
+    /* width: auto; */
+    
+    box-sizing: border-box;
     padding: 20px!important;
     border: solid;
     border-width: thin;

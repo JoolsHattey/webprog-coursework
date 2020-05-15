@@ -14,9 +14,17 @@ body {
     transform-origin: top;
 }
 
+card-el {
+    width: 100%!important;
+    height: 60%!important;
+    box-sizing: border-box;
+
+}
+
 .linearMode {
     position: relative;
     height: 100%;
+
 }
 
 .flowMode {

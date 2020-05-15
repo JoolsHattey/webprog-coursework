@@ -8,7 +8,7 @@
 }
 
 card-el {
-    height: auto!important;
+    height: auto;
 }
 
 :host {
@@ -90,6 +90,9 @@ main {
     outline: none;
     border: none;
     background-color: transparent;
+}
+.md-icon-btn:disabled {
+    opacity: 0.5;
 }
 .md-icon-text-btn {
     padding: 8px 10px!important;

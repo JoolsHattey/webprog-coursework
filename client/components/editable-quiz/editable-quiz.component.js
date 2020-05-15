@@ -7,6 +7,8 @@ import { ModalCard } from "../modal-card/modal-card.component.js";
 import { SnackBar } from "../snack-bar/snack-bar.component.js";
 import { initDrive } from "../../drive.js";
 import { TouchDragList } from "../touch-drag-list/touch-drag-list.component.js";
+import { PieChart } from "../chart/pie-chart.component.js";
+import { BarChart } from "../chart/bar-chart.component.js";
 
 export class EditableQuiz extends Component {
     constructor(uid, quizData, responseData, appBar) {
@@ -27,11 +29,12 @@ export class EditableQuiz extends Component {
         $(this.appBar, 'text-input').setValue(quizData.name);
         $(this.appBar, 'text-input').setOnChange(e => {
             this.data.name = e.target.value;
-            this.save();
+            this.unsavedChanges();
         })
         $(this.appBar, '#responsesBtn').addEventListener('click', () => this.responsesTab());
         $(this.appBar, '#questionsBtn').addEventListener('click', () => this.questionsTab());
         $(this.appBar, '#previewBtn').addEventListener('click', () => this.preview());
+        $(this.appBar, '#saveBtn').addEventListener('click', () => this.save());
         this.initSaveStatus(quizData.saveTime);
         this.questionTouchList = $(this, 'touch-drag-list');
         this.qCards = [];
@@ -62,12 +65,18 @@ export class EditableQuiz extends Component {
         } else if(time < 3600000) {
             lastSavedTime.textContent = `Last saved ${Math.ceil(time/60000)} minutes ago`;
         } else {
-            lastSavedTime.textContent = `Last saved ${lastSaved.getDay()}/${lastSaved.getMonth()}/${lastSaved.getFullYear()} ${lastSaved.getHours()}:${lastSaved.getMinutes()}`;
+            lastSavedTime.textContent = `Last saved ${lastSaved.getDay()}/${lastSaved.getMonth()}/${lastSaved.getFullYear()} ${lastSaved.getHours()}:${lastSaved.getMinutes() < 10 ? '0'+lastSaved.getMinutes() : lastSaved.getMinutes()}`;
         }
+    }
+
+    unsavedChanges() {
+        $(this.appBar, '#saveBtn').disabled = false;
     }
 
     async save() {
         $(this.appBar, '#saveStatus').textContent = 'Saving...';
+        const saveTime = Date.now();
+        this.data.saveTime = saveTime;
         await fetch(`/api/editquestionnaire/${this.id}`, {
             method: 'POST',
             headers: {
@@ -75,7 +84,8 @@ export class EditableQuiz extends Component {
             },
             body: JSON.stringify(this.data)
         })
-        this.initSaveStatus(Date.now())
+        $(this.appBar, '#saveBtn').disabled = true;
+        this.initSaveStatus(saveTime);
     }
 
     async initShareDialog() {
@@ -141,6 +151,58 @@ export class EditableQuiz extends Component {
                 window.open(data.url);
             });
         })
+        for(const [i, question] of this.data.questions.entries()) {
+            const questionResponseCard = new Card({
+                template: '/components/editable-quiz/quiz-responses-question-card.html',
+                stylesheet: '/components/editable-quiz/editable-quiz.component.css'
+            });
+            await questionResponseCard.templatePromise;
+            $(this, '#responsesContainer').append(questionResponseCard)
+            $(questionResponseCard, '#title').append(question.text)
+            const questionResponses = [question.options?.length];
+            this.responses.forEach(response => {
+                questionResponses.push(response.questions[i].answer)
+            })
+            const chartContainer = $(questionResponseCard, '#questionResponses');
+            function foo(arr) {
+                var a = [], b = [], prev;
+            
+                arr.sort();
+                for ( var i = 0; i < arr.length; i++ ) {
+                    if ( arr[i] !== prev ) {
+                        a.push(arr[i]);
+                        b.push(1);
+                    } else {
+                        b[b.length-1]++;
+                    }
+                    prev = arr[i];
+                }
+            
+                return [a, b];
+            }
+            switch (question.type) {
+                case 'single-select':
+                    const chart = new PieChart(foo(questionResponses)[1]);
+                    console.log(chart)
+                    chartContainer.append(chart);
+                    break;
+                case 'multi-select':
+                    chartContainer.append(new BarChart());
+                    break;
+                default:
+                    console.log(questionResponses)
+                    questionResponses.forEach(item => {
+                        if(item) {
+                            const thing = document.createElement('div');
+                            thing.append(item);
+                            chartContainer.classList.add('textResponses');
+                            chartContainer.append(thing)
+                        }
+                    })
+                    break;
+            }
+            
+        }
     }
 
     async createQuestion(index, questionData) {
@@ -211,6 +273,7 @@ export class EditableQuiz extends Component {
         requiredToggle.setValue(questionData.required);
         requiredToggle.setOnChange((e) => {
             this.data.questions[index].required = e.target.checked;
+            this.unsavedChanges();
         });
         $(q, '#deleteBtn').addEventListener('click', () => this.deleteQuestion(index));
         $(q, '#duplicateBtn').addEventListener('click', () => this.duplicateQuestion(index));
@@ -220,15 +283,10 @@ export class EditableQuiz extends Component {
     }
 
     deleteQuestion(index) {
-        this.questionsContainer.children[index].remove();
+        this.questionTouchList.removeItem(index);
         this.data.questions.splice(index, 1);
         console.log(this.data.questions);
-        Array.from(this.questionsContainer.children).forEach(element => {
-            if(element.index > index) {
-                element.index--;
-            }
-        });
-        this.save();
+        this.unsavedChanges();
     }
 
     duplicateQuestion(index) {
@@ -239,7 +297,7 @@ export class EditableQuiz extends Component {
                 element.index++;
             }
         });
-        this.save();
+        this.unsavedChanges();
     }
 
     async createAnswerOption(answerContainer, name, type, newItem, index, qIndex) {
@@ -280,7 +338,8 @@ export class EditableQuiz extends Component {
             }
         }
         this.data.questions[qIndex].options.splice(newIndex, 0, this.data.questions[qIndex].options.splice(oldIndex, 1)[0]);
-        console.log(this.data.questions[qIndex].options)
+        console.log(this.data.questions[qIndex].options);
+        this.unsavedChanges();
     }
 }
 customElements.define('editable-quiz', EditableQuiz);
