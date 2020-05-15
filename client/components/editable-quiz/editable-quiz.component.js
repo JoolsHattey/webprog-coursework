@@ -36,7 +36,7 @@ export class EditableQuiz extends Component {
         this.questionTouchList = $(this, 'touch-drag-list');
         this.qCards = [];
         this.touchLists = [];
-        this.questionTouchList.init('card-el');
+        this.questionTouchList.init('card-el', true);
         for(const [i, question] of quizData.questions.entries()) {
             await this.createQuestion(i, question);
         }

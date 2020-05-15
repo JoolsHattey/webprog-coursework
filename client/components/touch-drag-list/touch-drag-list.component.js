@@ -5,13 +5,19 @@ import { $ } from "../../app.js";
 
 export class TouchDragList extends Component {
     constructor() {
-        super();
+        super({
+            stylesheet: '/components/touch-drag-list/touch-drag-list.component.css'
+        });
         this.items = [];
     }
 
-    init(query) {
+    init(query, scroll) {
         this.things = 0;
         this.queryName = query;
+        if(scroll) {
+            this.container.style.height = '100%';
+            this.container.style.overflow = 'scroll';
+        }
     }
 
     /**
@@ -31,6 +37,7 @@ export class TouchDragList extends Component {
     touchStart(e, el, dragHandle) {
         dragHandle.style.opacity = 1;
         this.things = 0;
+        this.scrollAmount = 0;
         this.startTime = e.timeStamp;
         el.style.transition = '0s';
         this.touchStartPos = e.changedTouches[0].clientY;
@@ -39,7 +46,7 @@ export class TouchDragList extends Component {
         e.stopPropagation();
         e.preventDefault();
         const pos = e.changedTouches[0].clientY-this.touchStartPos;
-        el.style.transform = `translate3d(0,${pos}px,0)`;
+        
 
         if(this.oldPos<pos) {
             this.currentDirection = 'down'
@@ -53,10 +60,15 @@ export class TouchDragList extends Component {
                 this.swipeDirection = 'down';
             }
         }
-        console.log(pos);
-        
+        console.log(e.changedTouches[0].clientY)
+        if((e.changedTouches[0].clientY+100)>window.innerHeight) {
+            this.container.scrollBy(0, 5);
+            this.scrollAmount += 5;
+        }
+        el.style.transform = `translate3d(0,${pos+this.scrollAmount}px,0)`;
+        // console.log((this.shadowRoot.elementsFromPoint(e.changedTouches[0].clientX, e.changedTouches[0].clientY)));
         // Detect collisions with other list items by getting elements from point of active item
-        (this.shadowRoot.elementsFromPoint(e.changedTouches[0].clientX, e.changedTouches[0].clientY)).some(item => {
+        (this.shadowRoot.elementsFromPoint(window.innerWidth/2, e.changedTouches[0].clientY)).some(item => {
             this.things++;
             if((item.classList.contains(this.queryName) || item.tagName.toLowerCase() === this.queryName) && !(item.index === el.index)) {
                 // console.log(item.clientHeight)
@@ -81,7 +93,6 @@ export class TouchDragList extends Component {
                         }
                     }
                 }
-
                 return true;
             }
         });

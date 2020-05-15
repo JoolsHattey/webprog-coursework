@@ -22,6 +22,12 @@ body {
     padding: 8px;
 }
 
+#editableQuestionsContainer {
+    height: 100%;
+}
+#editableQuestionsContainer touch-drag-list {
+    height: 100%;
+}
 
 #deleteBtn {
     

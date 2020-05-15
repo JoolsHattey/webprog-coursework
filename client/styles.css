@@ -7,6 +7,10 @@
     --background-theme-colour: #CCE0DE;
 }
 
+card-el {
+    height: auto!important;
+}
+
 :host {
     display: block;
 }
