@@ -10,6 +10,7 @@ import { TextInput } from '../../components/text-input/text-input.component.js';
 import { Dropdown } from '../../components/dropdown/dropdown.component.js'
 import { Checkbox } from '../../components/checkbox/checkbox.component.js'
 import { EditableQuiz } from "../../components/editable-quiz/editable-quiz.component.js";
+import { BottomSheet } from "../../components/bottom-sheet/bottom-sheet.component.js";
 
 export class QuizEditor extends Component {
     constructor(req) {
@@ -38,27 +39,51 @@ export class QuizEditor extends Component {
         });
 
         const newQuizBtn = $(this, '#newQuizBtn');
-        const newQuizModal = new ModalCard({
-            template: '/views/quiz-editor/new-quiz-dialog.html'
-        }, {}, '50%', '50%');
-        await newQuizModal.templatePromise;
-        $(newQuizModal, 'json-file-upload').addEventListener('upload', (e) => {
-            newQuizModal.dialogData.file = e.detail;
+        const newQuizSheet = new BottomSheet({
+            template: '/views/quiz-editor/new-quiz-dialog.html',
+            stylesheet: '/views/quiz-editor/quiz-editor.component.css'
         });
-        newQuizBtn.onclick = () => {
-            newQuizModal.open();
-            newQuizModal.resultsObservable.subscribe(x => {
-                if(x.file) {
-                    this.createNewQuiz(x.file);
-                } else {
-                    console.log("yes")
-                    this.createNewQuiz({
-                        name: 'Untitled Quiz',
-                        questions: []
-                    })
-                }
-            });
-        }
+        // $(newQuizSheet, 'json-file-upload').addEventListener('upload', (e) => {
+        //     newQuizSheet.dialogData.file = e.detail;
+        // });
+        newQuizBtn.addEventListener('click', () => {
+            newQuizSheet.open();
+            // newQuizSheet.afterClose
+            // newQuizModal.resultsObservable.subscribe(x => {
+            //     if(x.file) {
+            //         this.createNewQuiz(x.file);
+            //     } else {
+            //         console.log("yes")
+            //         this.createNewQuiz({
+            //             name: 'Untitled Quiz',
+            //             questions: []
+            //         })
+            //     }
+            // });
+        });
+
+
+        // const newQuizModal = new ModalCard({
+        //     template: '/views/quiz-editor/new-quiz-dialog.html'
+        // }, {}, '50%', '50%');
+        // await newQuizModal.templatePromise;
+        // $(newQuizModal, 'json-file-upload').addEventListener('upload', (e) => {
+        //     newQuizModal.dialogData.file = e.detail;
+        // });
+        // newQuizBtn.onclick = () => {
+        //     newQuizModal.open();
+        //     newQuizModal.resultsObservable.subscribe(x => {
+        //         if(x.file) {
+        //             this.createNewQuiz(x.file);
+        //         } else {
+        //             console.log("yes")
+        //             this.createNewQuiz({
+        //                 name: 'Untitled Quiz',
+        //                 questions: []
+        //             })
+        //         }
+        //     });
+        // }
     }
 
     async createNewQuiz(quizData) {
