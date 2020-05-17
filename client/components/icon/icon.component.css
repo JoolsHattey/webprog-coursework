@@ -1,4 +1,6 @@
 img, body, :host {
+    margin: 0;
+    padding: 0;
     width: var(--icon-width);
     height: var(--icon-height)
 }

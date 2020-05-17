@@ -9,6 +9,7 @@ import { initDrive } from "../../drive.js";
 import { TouchDragList } from "../touch-drag-list/touch-drag-list.component.js";
 import { PieChart } from "../chart/pie-chart.component.js";
 import { BarChart } from "../chart/bar-chart.component.js";
+import { BottomSheet } from "../bottom-sheet/bottom-sheet.component.js";
 
 export class EditableQuiz extends Component {
     constructor(uid, quizData, responseData, appBar) {
@@ -90,21 +91,27 @@ export class EditableQuiz extends Component {
 
     async initShareDialog() {
         const quizURL = `${window.location.host}/quiz/${this.id}`;
-        const shareModal = new ModalCard({
+        // const shareModal = new ModalCard({
+        //     template: '/components/editable-quiz/quiz-share-dialog.html',
+        //     stylesheet: '/components/editable-quiz/editable-quiz.component.css'
+        // }, null, '70%', '20%');
+        // await shareModal.templatePromise;
+        // $(shareModal, '#closeBtn').addEventListener('click', () => shareModal.close());
+        
+        // $(shareModal, '#clipboardBtn').addEventListener('click', () => {
+        //     navigator.clipboard.writeText(quizURL);
+        //     const snackBar = new SnackBar();
+        //     snackBar.addTitle('Link copied to clipboard');
+        //     snackBar.show(5000);
+        // });
+        const shareModal = new BottomSheet({
             template: '/components/editable-quiz/quiz-share-dialog.html',
             stylesheet: '/components/editable-quiz/editable-quiz.component.css'
-        }, null, '70%', '20%');
-        await shareModal.templatePromise;
-        $(shareModal, '#closeBtn').addEventListener('click', () => shareModal.close());
+        })
+
         $(this.appBar, '#shareBtn').addEventListener('click', () => {
             shareModal.open();
             $(shareModal, 'text-input').setValue(quizURL);
-        });
-        $(shareModal, '#clipboardBtn').addEventListener('click', () => {
-            navigator.clipboard.writeText(quizURL);
-            const snackBar = new SnackBar();
-            snackBar.addTitle('Link copied to clipboard');
-            snackBar.show(5000);
         });
     }
 

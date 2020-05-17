@@ -1,15 +1,14 @@
-:host{
-    /* width: auto!important; */
+:host {
+    display: block;
     padding: 20px!important;
     box-sizing: border-box;
-    
+    height: fit-content;
 }
 body {
-    height: 100%!important;
-    /* width: auto; */
-    
+    height: fit-content;
     box-sizing: border-box;
     padding: 20px!important;
+    margin: 0;
     border: solid;
     border-width: thin;
     border-radius: 6px;

@@ -5,10 +5,10 @@ import { $ } from "../../app.js";
 
 export class TouchDragList extends Component {
     constructor() {
-        super({
-            stylesheet: '/components/touch-drag-list/touch-drag-list.component.css'
-        });
+        super();
         this.items = [];
+        this.style.display = 'block';
+        this.container.style.margin = '0';
     }
 
     init(query, scroll) {
@@ -52,7 +52,7 @@ export class TouchDragList extends Component {
         e.stopPropagation();
         e.preventDefault();
         const touchPos = e.changedTouches[0].clientY;
-        const pos = e.changedTouches[0].clientY-this.touchStartPos;
+        const pos = touchPos-this.touchStartPos;
         if(this.oldPos<pos) {
             this.currentDirection = 'down';
         } else {
@@ -75,6 +75,7 @@ export class TouchDragList extends Component {
         const item = elements.find(x => (x.classList.contains(this.queryName) || x.tagName.toLowerCase() === this.queryName) && !(x.index === el.index))
         this.things++;
         if(item) {
+            //TODO
             const thing = (Math.abs(item.index-el.index))*(this.items[item.index].clientHeight/2);
             if(Math.abs(pos)>thing) {
                 this.tempNewIndex = item.index;

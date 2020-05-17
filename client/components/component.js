@@ -15,7 +15,8 @@ export class Component extends HTMLElement {
         this.attachShadow({mode: 'open'});
         this.head = document.createElement('head');
         this.styleTag = document.createElement('style');
-        this.addStyleSheet('/styles.css');
+        // this.styleTag.append(':host {display:block;}')
+        // this.addStyleSheet('/styles.css');
         this.container = document.createElement('body');
         this.shadowRoot.append(this.styleTag, this.container);
         if(options) {
@@ -38,9 +39,10 @@ export class Component extends HTMLElement {
         // linkElem.setAttribute("rel", "stylesheet");
         // linkElem.setAttribute("href", path);
         // this.head.appendChild(linkElem);
-        const res = await fetch(path);
-        const cssText = await res.text();
-        this.styleTag.append(cssText);
+        // const res = await fetch(path);
+        // const cssText = await res.text();
+        // this.styleTag.append(cssText);
+        this.styleTag.append(`@import '${path}';`)
     }
     /**
      * Parses HTML template file into the body of the component
