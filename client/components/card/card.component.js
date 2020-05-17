@@ -48,4 +48,4 @@ export class Card extends Component {
     }
 }
 
-customElements.define("card-el", Card);
+window.customElements.define("card-el", Card);

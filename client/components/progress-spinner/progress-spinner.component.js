@@ -11,4 +11,4 @@ export class ProgressSpinner extends Component {
     }
 }
 
-customElements.define('progress-spinner', ProgressSpinner);
+window.customElements.define('progress-spinner', ProgressSpinner);

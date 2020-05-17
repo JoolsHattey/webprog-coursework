@@ -34,4 +34,4 @@ export class SnackBar extends Component {
     }
 }
 
-customElements.define('snack-bar', SnackBar);
+window.customElements.define('snack-bar', SnackBar);

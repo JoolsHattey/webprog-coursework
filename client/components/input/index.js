@@ -95,4 +95,4 @@ export class Input extends Component {
     }
 }
 
-customElements.define('input-elmnt', Input);
+window.customElements.define('input-elmnt', Input);

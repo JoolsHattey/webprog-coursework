@@ -29,4 +29,4 @@ export class JsonFileUpload extends Component {
     }
 }
 
-customElements.define('json-file-upload', JsonFileUpload);
+window.customElements.define('json-file-upload', JsonFileUpload);

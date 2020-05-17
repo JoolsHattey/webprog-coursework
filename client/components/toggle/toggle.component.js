@@ -49,4 +49,4 @@ export class Toggle extends Component {
     }
 }
 
-customElements.define('toggle-el', Toggle);
+window.customElements.define('toggle-el', Toggle);

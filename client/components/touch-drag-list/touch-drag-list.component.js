@@ -151,4 +151,4 @@ export class TouchDragList extends Component {
         }
     }
 }
-customElements.define('touch-drag-list', TouchDragList);
+window.customElements.define('touch-drag-list', TouchDragList);

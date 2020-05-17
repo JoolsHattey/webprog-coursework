@@ -13,7 +13,6 @@ export class TextInput extends Component {
     }
 
     async initElement() {
-        
         if(this.hasAttribute('size')) {
             this.sizeNotInit = this.setSize(this.getAttribute('size'));
         }
@@ -70,17 +69,44 @@ export class TextInput extends Component {
             this.container.classList.add('multiLine');
             this.inputEl.addEventListener('input', () => this.resize(), false); 
         }
+        if(this.required) {
+            this.inputEl.addEventListener('keyup', (e) => {
+                console.log(e.target.value)
+                const event = new CustomEvent('validinput', {
+                    detail: {
+                        valid: !(e.target.value === '')
+                    }
+                });
+                this.dispatchEvent(event);
+                this.warn(false);
+            });
+        }
         this.inputEl.id = 'input';
         this.container.replaceChild(this.inputEl, el);
+    }
+
+    warn(value) {
+        if(!this.warnVisible && !value) {
+
+        } else if(this.warnVisible && !value) {
+            $(this, '.bar').classList.remove('warn');
+            $(this, '#requiredAlert').style = 'display: none;';
+            this.inputEl.classList.remove('warnInput');
+            this.warnVisible = false;
+        } else {
+            $(this, '.bar').classList.add('warn');
+            $(this, '#requiredAlert').style = '';
+            this.inputEl.classList.add('warnInput');
+            this.inputEl.focus();
+            this.warnVisible = true;
+        }
+        
     }
 
     getValue() {
         const inputValue = this.inputEl.value;
         if(inputValue === "" && this.required === 'true') {
-            $(this, '.bar').classList.add('warn');
-            $(this, '#requiredAlert').style = '';
-            this.inputEl.classList.add('warnInput')
-            this.inputEl.focus()
+            this.warn(true);
         };
         if(inputValue === "") return;
         return inputValue;
@@ -121,4 +147,4 @@ export class TextInput extends Component {
     }
 }
 
-customElements.define('text-input', TextInput);
+window.customElements.define('text-input', TextInput);

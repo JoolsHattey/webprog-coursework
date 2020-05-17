@@ -28,4 +28,4 @@ export class PieChart extends Chart {
         }
     }
 }
-customElements.define('pie-chart', PieChart);
+window.customElements.define('pie-chart', PieChart);

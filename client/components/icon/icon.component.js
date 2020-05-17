@@ -34,4 +34,4 @@ export class Icon extends Component {
     }
 }
 
-customElements.define('icon-el', Icon);
+window.customElements.define('icon-el', Icon);

@@ -4,6 +4,7 @@
 }
 body {
     height: 100%;
+    margin: 0;
 }
 .stackedCard {
     position: absolute;
@@ -19,6 +20,10 @@ card-el {
     height: 60%!important;
     box-sizing: border-box;
 
+}
+
+card-el {
+    height: 100%;
 }
 
 .linearMode {

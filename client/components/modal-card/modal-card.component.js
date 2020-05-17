@@ -71,4 +71,4 @@ export class ModalCard extends Card {
     }
 }
 
-customElements.define('modal-card', ModalCard);
+window.customElements.define('modal-card', ModalCard);

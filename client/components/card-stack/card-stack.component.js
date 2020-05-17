@@ -37,22 +37,27 @@ export class CardStack extends Component {
     }
     next() {
         if(this.currentCard < this.cards.length) {
-            if(this.hidden) {
-                this.hidden = false;
-                for(const [i, el] of this.cards.entries()) {
-                    el.style.transitionDelay = `${i*0.15}s`;
+            if(!this.lockNext) {
+                if(this.hidden) {
+                    this.hidden = false;
+                    for(const [i, el] of this.cards.entries()) {
+                        el.style.transitionDelay = `${i*0.15}s`;
+                    }
+                } else {
+                    for(const [i, el] of this.cards.entries()) {
+                        el.style.transitionDelay = `0s`;
+                    }
+                    this.currentCard++;
                 }
-            } else {
-                for(const [i, el] of this.cards.entries()) {
-                    el.style.transitionDelay = `0s`;
-                }
-                this.currentCard++;
+                this.lockNext = true;
+                this.animateNext();
             }
-            this.animateNext();
+            
         }
     }
     prev() {
         if(this.currentCard > 0) {
+            this.lockNext = false;
             this.currentCard--;
             this.cards[this.currentCard].style.transition = '0.5s'
             this.animateBack();
@@ -125,6 +130,7 @@ export class CardStack extends Component {
         }
     }
     touchEnd(event) {
+        event.stopPropagation();
         this.cards.forEach(el => {
             el.style.transition = '0.5s';
         });
@@ -133,7 +139,15 @@ export class CardStack extends Component {
         if(this.touchStartPos>event.changedTouches[0].clientY) {
             this.prev();
         } else {
-            if(speed > 0.5) {
+            if(this.lockNext) {
+                const newEvent = new CustomEvent('lockrejected', {
+                    detail: {
+                        currentCard: this.currentCard
+                    }
+                });
+                this.dispatchEvent(newEvent);
+                event.target.style.transform = 'translate3d(0, 0, 0)';
+            } else if(speed > 0.5) {
                 this.next();
             } else {
                 event.target.style.transform = 'translate3d(0, 0, 0)';
@@ -151,4 +165,4 @@ export class CardStack extends Component {
     }
 }
 
-customElements.define('card-stack', CardStack);
+window.customElements.define('card-stack', CardStack);

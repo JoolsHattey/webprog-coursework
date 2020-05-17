@@ -69,4 +69,4 @@ export class BottomSheet extends Component {
     }
 }
 
-customElements.define('bottom-sheet', BottomSheet);
+window.customElements.define('bottom-sheet', BottomSheet);

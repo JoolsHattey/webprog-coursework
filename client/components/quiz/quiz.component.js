@@ -38,10 +38,11 @@ export class Quiz extends Component {
             const question = new Card();
             const qLabel = document.createElement('label');
             qLabel.for = element.id;
-            qLabel.append(element.text)
-            question.container.appendChild(qLabel)
+            qLabel.append(element.text);
+            question.container.appendChild(qLabel);
             question.id = element.id;
-            question.container.appendChild(this.createInput(element));
+            const newInput = this.createInput(element);
+            question.container.appendChild(newInput);
             qCards.push(question);
         });
 
@@ -53,6 +54,16 @@ export class Quiz extends Component {
         this.stack = new CardStack();
         $(this, '#cardStackContainer').appendChild(this.stack);
         this.stack.init(qCards);
+
+        this.stack.addEventListener('lockrejected', e => {
+            this.answerArray[e.detail.currentCard].getValue()
+        })
+
+        this.answerArray.forEach(input => {
+            input.addEventListener('validinput', e => {
+                this.stack.lockNext = !e.detail.valid;
+            });
+        })
 
         this.progress = $(this, 'progress');
 
@@ -105,13 +116,11 @@ export class Quiz extends Component {
             case "text":
                 input = new TextInput();
                 input.size = 'singleline'
-                input.required = questionData.required;
                 input.id = questionData.id;
                 break;
             case "number":
                 input = new TextInput();
                 input.size = 'singleline'
-                input.required = questionData.required;
                 break;
             case "single-select":
                 input = new RadioGroup(questionData.options)
@@ -120,11 +129,15 @@ export class Quiz extends Component {
                 input = new CheckboxGroup(questionData.options);
                 break;
         }
+        input.required = questionData.required;
         this.answerArray.push(input);
         return input;
     }
 
     nextQuestion() {
+        if(this.answerArray[this.currentQ+1].getValue()) {
+            this.stack.lockNext = false;
+        }
         if(this.currentQ >= 0) {
             const inputValue = this.answerArray[this.currentQ].getValue();
             this.response.questions[this.currentQ] = {
@@ -184,4 +197,4 @@ export class Quiz extends Component {
 
 }
 
-customElements.define('quiz-item', Quiz);
+window.customElements.define('quiz-item', Quiz);

@@ -11,4 +11,4 @@ export class BarChart extends Chart {
 
     }
 }
-customElements.define('bar-chart', BarChart);
+window.customElements.define('bar-chart', BarChart);

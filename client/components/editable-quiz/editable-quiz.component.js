@@ -379,4 +379,4 @@ export class EditableQuiz extends Component {
         this.unsavedChanges();
     }
 }
-customElements.define('editable-quiz', EditableQuiz);
+window.customElements.define('editable-quiz', EditableQuiz);

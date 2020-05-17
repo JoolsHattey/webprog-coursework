@@ -52,4 +52,4 @@ export class Checkbox extends Component {
     }
 }
 
-customElements.define('checkbox-el', Checkbox);
+window.customElements.define('checkbox-el', Checkbox);

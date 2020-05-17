@@ -24,15 +24,42 @@ export class RadioGroup extends Component {
             $(el, 'label').append(v)
             this.container.appendChild(el)
         }
-        
+        this.warnEl = await $r('div', '/components/radio-selector/input-warn.html');
+        this.warnEl.classList.add('hide');
+        this.container.appendChild(this.warnEl)
+        $(this, 'input[name="test"]:checked').addEventListener('click', () => console.log('chagne'))
+    }
+    warn(value) {
+        if(!this.warnVisible && !value) {
+
+        } else if(this.warnVisible && !value) {
+            this.warnEl.classList.add('hide');
+            this.warnVisible = false;
+        } else {
+            this.warnEl.classList.remove('hide');
+            this.warnVisible = true;
+        }
     }
     getValue() {
-        return $(this, 'input[name="test"]:checked')?.value;
+        const inputValue = $(this, 'input[name="test"]:checked')?.value;
+        console.log(inputValue)
+        if(inputValue && !this.required) {
+            return inputValue;
+        } else {
+            this.warn(true);
+            return inputValue;
+        }
     }
     setValue() {
 
     }
+    get required() {
+        return this.getAttribute('required');
+    }
+    set required(newValue) {
+        this.setAttribute('required', newValue);
+    }
 
 }
 
-customElements.define('radio-button', RadioGroup);
+window.customElements.define('radio-button', RadioGroup);

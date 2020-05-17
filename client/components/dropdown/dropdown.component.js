@@ -38,4 +38,4 @@ export class Dropdown extends Component {
     }
 }
 
-customElements.define('dropdown-el', Dropdown);
+window.customElements.define('dropdown-el', Dropdown);

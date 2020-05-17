@@ -24,4 +24,4 @@ export class RouterOutlet extends Component {
     }
 }
 
-customElements.define('router-outlet', RouterOutlet);
+window.customElements.define('router-outlet', RouterOutlet);

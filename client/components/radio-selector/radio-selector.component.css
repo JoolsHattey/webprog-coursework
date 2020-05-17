@@ -80,3 +80,19 @@ input:checked + span:before {
 input:checked + span:after {
     transform: scale(1);
 }
+
+.hide {
+    display: none;
+}
+
+#requiredAlert {
+    margin-top: 8px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    color: #D93025;
+    height: 1rem;
+}
+#requiredAlert div {
+    margin-left: 4px;
+}

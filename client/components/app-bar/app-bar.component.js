@@ -90,4 +90,4 @@ export class AppBar extends Component {
     }
 }
 
-customElements.define('app-bar', AppBar);
+window.customElements.define('app-bar', AppBar);
