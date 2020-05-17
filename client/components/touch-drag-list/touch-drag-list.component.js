@@ -36,6 +36,13 @@ export class TouchDragList extends Component {
 
     removeItem(index) {
         this.container.children[index].remove();
+        this.items.splice(index, 1);
+    }
+
+    removeAllItems() {
+        for(const [i, v] of this.items.entries()) {
+            this.removeItem(i);
+        }
     }
 
     touchStart(e, el, dragHandle) {
