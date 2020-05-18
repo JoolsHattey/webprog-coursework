@@ -27,7 +27,7 @@ export class Chart extends Component {
             const colourCode = document.createElement('div');
             colourCode.style.backgroundColor = colours[i];
             colourCode.classList.add('colourCode');
-            item.append(colourCode, labels[i], v, ` ${v/total*100}%`);
+            item.append(colourCode, labels[i], v, ` ${(v/total*100).toFixed(1)}%`);
             legend.append(item);
         };
         this.container.append(legend);

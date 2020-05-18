@@ -29,7 +29,6 @@ export class AppBar extends Component {
         });
         profileCard.classList.add('profileCard')
         await profileCard.templatePromise;
-        console.log('HMMMM')
         this.profileImg = $(profileCard, '#profileImg');
         this.profileName = $(profileCard, '#profileName');
         this.profileEmail = $(profileCard, '#profileEmail');

@@ -56,16 +56,22 @@ export class BottomSheet extends Component {
         }
     }
     open() {
-        document.body.append(this);
-        this.overlay.style.opacity = 0.5;
+        if(!this.opened) {
+            document.body.append(this);
+            this.overlay.style.opacity = 0.5;
+            this.opened = true;
+        }
     }
     close() {
-        this.container.style.transform = `translate3d(0,0,0)`;
-        this.overlay.style.opacity = 0;
-        window.setTimeout(() => {
-            this.container.style.transform = null;
-            document.body.removeChild(this);
-        }, 300);
+        if(this.opened) {
+            this.opened = false;
+            this.container.style.transform = `translate3d(0,0,0)`;
+            this.overlay.style.opacity = 0;
+            window.setTimeout(() => {
+                this.container.style.transform = null;
+                document.body.removeChild(this);
+            }, 300);
+        }
     }
 }
 

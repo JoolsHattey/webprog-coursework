@@ -74,6 +74,26 @@ body {
     padding: 0 0 0 5px;
     color: grey;
 }
+.tabs .bar {
+    position: absolute;
+    z-index: 10;
+    bottom: 0;
+    height: 3px;
+    left: 20px;
+    width: 60px;
+    background: var(--primary-theme-colour);
+    display: block;
+    transition: left .2s ease;
+    -webkit-transition: left .2s ease;
+}
+#questionsBtn.selected ~ span.bar {
+    left: 20px;
+    width: 60px;
+}
+#responsesBtn.selected ~ span.bar {
+    left: 100px;
+    width: 60px;
+}
 .tabs {
     padding-top: 10px;
     display: flex;
@@ -83,18 +103,6 @@ body {
 .tabs div {
     height: 30px;
     margin: 5px;
-}
-.tabs span {
-    width: 20px;
-    height: 5px;
-}
-
-.selected::after {
-    content: '';
-    background-color: green;
-    width: 20px;
-    height: 20px;
-    
 }
 body {
     display: flex;
