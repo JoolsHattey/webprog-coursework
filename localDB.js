@@ -58,7 +58,12 @@ async function getResponses(quizID) {
 
 async function insertResponse(quizID, responseData) {
     const response = JSON.stringify(responseData.questions);
-    await db.run('INSERT OR REPLACE INTO response VALUES (?, ?, ?)', [uid(20), quizID, response]);
+    try {
+        await db.run('INSERT OR REPLACE INTO response VALUES (?, ?, ?)', [uid(20), quizID, response]);
+    } catch (error) {
+        throw error;
+    }
+    
 }
 
 

@@ -28,8 +28,6 @@ export class Quiz extends Component {
         this.response = { questions: [], time: null };
         this.createTitleCard(quizData);
         this.createQuestionCards(quizData.questions);
-        this.completeSnack = new SnackBar();
-        this.completeSnack.addTitle('Quiz submitted');
     }
 
     async createQuestionCards(questions) {
@@ -184,18 +182,27 @@ export class Quiz extends Component {
 
         console.log(this.quizID, this.response);
 
-        this.completeSnack.show(5000);
 
         $(this, '#nextBtn').disabled = true;
         $(this, '#backBtn').disabled = true;
 
-        await fetch(`/api/submitresponse/${this.quizID}`, {
+        const res = await fetch(`/api/submitresponse/${this.quizID}`, {
             method: 'POST',
             body: JSON.stringify(this.response),
             headers: {
                 'Content-Type': 'application/json'
             }
         });
+        if(res.ok) {
+            const completeSnack = new SnackBar();
+            completeSnack.addTitle('Quiz submitted');
+            completeSnack.show(5000);
+        } else {
+            const errorSnack = new SnackBar();
+            errorSnack.addTitle('Error Submitting Quiz')
+            completeSnack.show(5000);
+            $(this, '#nextBtn').disabled = false;
+        }
     }
 
 }

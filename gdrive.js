@@ -81,6 +81,7 @@ async function saveData(authToken, quizData, responseData, url) {
         return {url: spreadsheet.data.spreadsheetUrl}
     } catch (error) {
         console.log(error);
+        throw new Error();
     }
     
 

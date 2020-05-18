@@ -22,6 +22,3 @@ export function initDrive(uid) {
     });
 }
 
-export async function getGoogleDriveAuth() {
-    
-}

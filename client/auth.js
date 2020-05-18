@@ -61,17 +61,29 @@ export function initAuth(appBar) {
 
 let authStatus;
 
-export function getDriveAuth() {
+export function getGoogleDriveAuth() {
     return new Promise(resolve => {
-        const provider = new firebase.auth.GoogleAuthProvider();
-        provider.addScope('https://www.googleapis.com/auth/drive.file');
-        firebase.auth().signInWithPopup(provider)
-            .then(result => {
-                resolve(result)
+        if(gapi.auth2) {
+            gapi.auth2.authorize({
+                client_id: '669091989709-1ft3bvjahneklp47kefipe1h6gglnr4o.apps.googleusercontent.com',
+                scope: 'https://www.googleapis.com/auth/drive.file',
+                response_type: 'code token id_token'
+            }, function(result) {
+                resolve(result.code);
             })
-    })
+        } else {
+            gapi.load('auth2', () => {
+                gapi.auth2.authorize({
+                    client_id: '669091989709-1ft3bvjahneklp47kefipe1h6gglnr4o.apps.googleusercontent.com',
+                    scope: 'https://www.googleapis.com/auth/drive.file',
+                    response_type: 'code token id_token'
+                }, function(result) {
+                    resolve(result.code);
+                });
+            });
+        }
+    });
 }
-
 export function login() {
     const provider = new firebase.auth.GoogleAuthProvider();
     

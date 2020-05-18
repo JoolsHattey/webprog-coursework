@@ -10,6 +10,7 @@ import { TouchDragList } from "../touch-drag-list/touch-drag-list.component.js";
 import { PieChart } from "../chart/pie-chart.component.js";
 import { BarChart } from "../chart/bar-chart.component.js";
 import { BottomSheet } from "../bottom-sheet/bottom-sheet.component.js";
+import { getGoogleDriveAuth } from "../../auth.js";
 
 export class EditableQuiz extends Component {
     constructor(uid, quizData, responseData, appBar) {
@@ -139,6 +140,34 @@ export class EditableQuiz extends Component {
         $(this, '#responsesContainer').classList.remove('hide');
     }
 
+    async exportToGoogleDrive() {
+        const snack = new SnackBar();
+        snack.setAttribute('loading', 'true');
+        snack.addTitle('Creating Google Sheet');
+        snack.show();
+        const authCode = await getGoogleDriveAuth();
+        const res = await fetch(`/api/exportdrive/${this.id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({authToken: authCode})
+        });
+        if(res.ok) {
+            snack.hide();
+            const successSnack = new SnackBar();
+            successSnack.addTitle('Successfully created Google Sheet')
+            successSnack.addLink('Open', (await res.json()).url)
+            successSnack.show();
+            // window.open((await res.json()).url);
+        } else {
+            snack.hide();
+            const errorSnack = new SnackBar();
+            errorSnack.addTitle('Error creating Google Sheet');
+            errorSnack.show(4000);
+        }
+    }
+
     async initResponsesTab() {
         const responsesCard = new Card({
             template: '/components/editable-quiz/quiz-responses-title-card.html',
@@ -148,16 +177,7 @@ export class EditableQuiz extends Component {
         $(this, '#responsesContainer').appendChild(responsesCard);
         const numResponses = this.responses.length;
         $(responsesCard, '#title').append(`${numResponses} ${numResponses === 1 ? 'Response' : 'Responses'}`);
-        $(responsesCard, '#exportDriveBtn').addEventListener('click', () => {
-            const snack = new SnackBar();
-            snack.setAttribute('loading', 'true');
-            snack.addTitle('Creating Google Sheet');
-            snack.show();
-            initDrive(this.id).then(data => {
-                snack.hide();
-                window.open(data.url);
-            });
-        })
+        $(responsesCard, '#exportDriveBtn').addEventListener('click', () => this.exportToGoogleDrive());
         for(const [i, question] of this.data.questions.entries()) {
             const questionResponseCard = new Card({
                 template: '/components/editable-quiz/quiz-responses-question-card.html',

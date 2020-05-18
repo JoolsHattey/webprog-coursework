@@ -6,6 +6,10 @@ $duration: 1.4s; */
   height: 65px;
 }
 
+body {
+  margin: 0;
+}
+
 .spinner {
   animation: rotator 1.4s linear infinite;
 }

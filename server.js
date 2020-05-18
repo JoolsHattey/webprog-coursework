@@ -16,29 +16,59 @@ storage.init(process.env.DBMODE);
 const firestore = require('./firestore')
 
 async function submitResponse(req, res) {
-    storage.addResponse(req.params.uid, req.body);
-}
-
-async function getResponses(req, res) {
-    res.send(await storage.getResponses(req.params.uid));
-}
-
-async function createQuestionnaire(req, res) {
-    res.send(await storage.createQuestionnaire(req.body));
+    try {
+        await storage.addResponse(req.params.uid, req.body);
+        res.sendStatus(200);
+    } catch (error) {
+        res.sendStatus(400);
+    }
 }
 
 async function getQuestionnaire(req, res) {
-    res.send(await storage.getQuestionnaire(req.params.uid));
+    try {
+        res.send(await storage.getQuestionnaire(req.params.uid));
+    } catch (error) {
+        res.sendStatus(400);
+    }
+    
+}
+
+async function getResponses(req, res) {
+    try {
+        res.send(await storage.getResponses(req.params.uid));
+    } catch (error) {
+        res.sendStatus(400);
+    }
+    
+}
+
+async function createQuestionnaire(req, res) {
+    try {
+        res.send(await storage.createQuestionnaire(req.body));
+    } catch (error) {
+        res.sendStatus(400);
+    }
+    
 }
 
 async function editQuestionnaire(req, res) {
     console.log(req.body)
-    await storage.editQuestionnaire(req.params.uid, req.body);
-    res.sendStatus(200)
+    try {
+        await storage.editQuestionnaire(req.params.uid, req.body);
+        res.sendStatus(200);
+    } catch (error) {
+        res.sendStatus(400);
+    }
+    
 }
 
 async function getQuestionnaires(req, res) {
-    res.send(await storage.getQuestionnaires())
+    try {
+        res.send(await storage.getQuestionnaires())
+    } catch (error) {
+        res.sendStatus(400);
+    }
+    
 }
 
 function authenticateUser(req, res) {
@@ -73,9 +103,13 @@ async function yiss(req, res) {
 async function exportToGoogleDrive(req, res) {
     const responses = await storage.getResponses(req.params.uid);
     const quiz = await storage.getQuestionnaire(req.params.uid);
-    const data = await gdrive.saveData(req.body, quiz, responses, req.get('origin'));
-    console.log({fileID: data});
-    res.send(data);
+    try {
+        const data = await gdrive.saveData(req.body, quiz, responses, req.get('origin'));
+        console.log({fileID: data});
+        res.send(data);
+    } catch (error) {
+        res.sendStatus(400);
+    }
 }
 
 

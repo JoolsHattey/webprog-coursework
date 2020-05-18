@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS "quiz" (
 	PRIMARY KEY("uid")
 );
 
-INSERT INTO "quiz" (uid) VALUES ('yeetyettyetyetyet');
+-- INSERT INTO "quiz" (uid) VALUES ('yeetyettyetyetyet');
 
 -- Down
 

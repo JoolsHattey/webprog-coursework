@@ -14,6 +14,14 @@ export class SnackBar extends Component {
         await this.templatePromise;
         $(this, '#content').append(name);
     }
+    async addLink(name, url) {
+        await this.templatePromise;
+        const link = $(this, 'a');
+        link.append(name);
+        link.href = url;
+        link.classList.remove('hide');
+        link.addEventListener('click', () => this.hide());
+    }
     async show(timeout) {
         await this.templatePromise;
         document.body.appendChild(this)

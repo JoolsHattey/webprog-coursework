@@ -13,10 +13,16 @@ firebase.initializeApp({
  * User
  * ****************** */
 
-async function addResponse(uid, response, authToken) {
-    const docRef = await firebase.firestore().collection("questionnaires").doc(uid)
-        .collection("responses").add(response);
-    return docRef.id;
+async function addResponse(quizID, response) {
+    try {
+        const docRef = await firebase.firestore().collection("questionnaires").doc(quizID)
+            .collection("responses").add(response);
+        return docRef.id;
+    } catch (error) {
+        console.log(error)
+        throw new Error(error.message)
+    }
+    
 }
 
 async function getQuestionnaire(uid, authToken) {
