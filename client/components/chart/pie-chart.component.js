@@ -3,11 +3,12 @@
 import { Chart } from "./chart.component.js";
 
 export class PieChart extends Chart {
-    constructor(data) {
+    constructor(data, labels) {
         super();
-        this.drawChart(data);
+        this.drawChart(data, labels);
     }
-    drawChart(data) {
+    drawChart(data, labels) {
+        this.addLegend(data, labels)
         let lastend = 0;
         let myTotal = 0; // Automatically calculated so don't touch
         const myColor = ['red', 'green', 'blue', 'purple']; // Colors of each slice

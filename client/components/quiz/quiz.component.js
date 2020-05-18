@@ -24,7 +24,7 @@ export class Quiz extends Component {
         this.quizID = quizID;
         this.questions = quizData.questions;
         this.currentQ = 0;
-        this.answerArray = new Array;
+        this.inputs = new Array;
         this.response = { questions: [], time: null };
         this.createTitleCard(quizData);
         this.createQuestionCards(quizData.questions);
@@ -56,10 +56,10 @@ export class Quiz extends Component {
         this.stack.init(qCards);
 
         this.stack.addEventListener('lockrejected', e => {
-            this.answerArray[e.detail.currentCard].getValue()
+            this.inputs[e.detail.currentCard].getValue()
         })
 
-        this.answerArray.forEach(input => {
+        this.inputs.forEach(input => {
             input.addEventListener('validinput', e => {
                 this.stack.lockNext = !e.detail.valid;
             });
@@ -130,16 +130,19 @@ export class Quiz extends Component {
                 break;
         }
         input.required = questionData.required;
-        this.answerArray.push(input);
+        // Input elements are stored in array which can be easily accessed with question counter
+        this.inputs.push(input);
         return input;
     }
 
     nextQuestion() {
-        if(this.answerArray[this.currentQ+1].getValue()) {
+        // Check if next input is already filled to prevent stack from locking
+        // E.g. if user is reviewing quetions
+        if(this.inputs[this.currentQ+1].validInput) {
             this.stack.lockNext = false;
         }
         if(this.currentQ >= 0) {
-            const inputValue = this.answerArray[this.currentQ].getValue();
+            const inputValue = this.inputs[this.currentQ].getValue();
             this.response.questions[this.currentQ] = {
                 id: this.questions[this.currentQ].id,
                 answer: inputValue
@@ -147,6 +150,7 @@ export class Quiz extends Component {
         }
         this.currentQ++;
         this.progress.setAttribute('value', (((this.currentQ+1) / this.questions.length) * 100));
+        // Change buttons based on question number
         if(this.currentQ === this.questions.length-1) {
             $(this, '#nextBtn').textContent = 'Review';
         } else if(this.currentQ === this.questions.length) {

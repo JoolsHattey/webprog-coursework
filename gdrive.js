@@ -19,7 +19,14 @@ async function saveData(authToken, quizData, responseData, url) {
     const auth = await authorise(credentials, authToken, url);
     const sheets = google.sheets({version: 'v4', auth});
 
+    responseData.sort((a, b) => a.time - b.time);
+
     const columnHeaders = {values: []};
+    columnHeaders.values.push({
+        userEnteredValue: {
+            stringValue: 'Date'
+        }
+    })
     quizData.questions.forEach(question => {
         console.log(question)
         columnHeaders.values.push({

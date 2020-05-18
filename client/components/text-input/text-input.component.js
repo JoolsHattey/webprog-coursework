@@ -77,6 +77,7 @@ export class TextInput extends Component {
                         valid: !(e.target.value === '')
                     }
                 });
+                this.validInput = !(e.target.value === '');
                 this.dispatchEvent(event);
                 this.warn(false);
             });

@@ -1,0 +1,7 @@
+.legend {
+    margin: 1rem;
+}
+body {
+    display: flex;
+    flex-direction: row;
+}

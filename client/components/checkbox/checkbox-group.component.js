@@ -14,6 +14,15 @@ export class CheckboxGroup extends Component {
         options.forEach(opt => {
             const option = new Checkbox();
             option.textLabel = opt;
+            option.addEventListener('click', (e) => {
+                const event = new CustomEvent('validinput', {
+                    detail: {
+                        valid: !(e.target.value === '')
+                    }
+                });
+                this.dispatchEvent(event);
+                // this.warn(false);
+            })
             this.checkboxes.push(option);
             this.container.append(option);
         });

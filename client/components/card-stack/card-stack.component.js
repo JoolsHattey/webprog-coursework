@@ -38,6 +38,8 @@ export class CardStack extends Component {
     next() {
         if(this.currentCard < this.cards.length) {
             if(!this.lockNext) {
+
+                
                 if(this.hidden) {
                     this.hidden = false;
                     for(const [i, el] of this.cards.entries()) {
@@ -51,8 +53,14 @@ export class CardStack extends Component {
                 }
                 this.lockNext = true;
                 this.animateNext();
+            } else {
+                const newEvent = new CustomEvent('lockrejected', {
+                    detail: {
+                        currentCard: this.currentCard
+                    }
+                });
+                this.dispatchEvent(newEvent);
             }
-            
         }
     }
     prev() {

@@ -21,7 +21,17 @@ export class RadioGroup extends Component {
             input.value = v;
             const label = $(el, 'label');
             label.setAttribute('for', i);
-            $(el, 'label').append(v)
+            $(el, 'label').append(v);
+            el.addEventListener('click', (e) => {
+                const event = new CustomEvent('validinput', {
+                    detail: {
+                        valid: !(e.target.value === '')
+                    }
+                });
+                this.validInput = !(e.target.value === '');
+                this.dispatchEvent(event);
+                this.warn(false);
+            });
             this.container.appendChild(el)
         }
         this.warnEl = await $r('div', '/components/radio-selector/input-warn.html');

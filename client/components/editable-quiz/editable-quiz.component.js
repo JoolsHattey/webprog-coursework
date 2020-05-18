@@ -189,7 +189,7 @@ export class EditableQuiz extends Component {
             }
             switch (question.type) {
                 case 'single-select':
-                    const chart = new PieChart(foo(questionResponses)[1]);
+                    const chart = new PieChart(foo(questionResponses)[1], question.options);
                     console.log(chart)
                     chartContainer.append(chart);
                     break;
