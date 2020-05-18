@@ -8,7 +8,6 @@ export class PieChart extends Chart {
         this.drawChart(data, labels);
     }
     drawChart(data, labels) {
-        this.addLegend(data, labels)
         let lastend = 0;
         let myTotal = 0; // Automatically calculated so don't touch
         const myColor = ['red', 'green', 'blue', 'purple']; // Colors of each slice
@@ -16,6 +15,8 @@ export class PieChart extends Chart {
         for (let e = 0; e < data.length; e++) {
             myTotal += data[e];
         }
+
+        this.addLegend(data, labels, myTotal, myColor)
 
         for (let i = 0; i < data.length; i++) {
             this.ctx.fillStyle = myColor[i];

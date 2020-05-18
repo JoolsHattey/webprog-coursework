@@ -2,6 +2,11 @@
     margin: 1rem;
 }
 body {
+    margin: 0;
     display: flex;
     flex-direction: row;
+}
+.colourCode {
+    width: 0.5rem;
+    height: 0.5rem;
 }

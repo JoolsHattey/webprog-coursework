@@ -166,7 +166,7 @@ export class EditableQuiz extends Component {
             await questionResponseCard.templatePromise;
             $(this, '#responsesContainer').append(questionResponseCard)
             $(questionResponseCard, '#title').append(question.text)
-            const questionResponses = [question.options?.length];
+            const questionResponses = [];
             this.responses.forEach(response => {
                 questionResponses.push(response.questions[i].answer)
             })
@@ -184,12 +184,13 @@ export class EditableQuiz extends Component {
                     }
                     prev = arr[i];
                 }
-            
+                console.log([a, b])
                 return [a, b];
             }
             switch (question.type) {
                 case 'single-select':
-                    const chart = new PieChart(foo(questionResponses)[1], question.options);
+                    console.log(questionResponses)
+                    const chart = new PieChart(foo(questionResponses)[1], foo(questionResponses)[0]);
                     console.log(chart)
                     chartContainer.append(chart);
                     break;

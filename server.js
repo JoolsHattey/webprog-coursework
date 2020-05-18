@@ -13,6 +13,8 @@ const gdrive = require('./gdrive');
 const storage = require('./storage.js');
 storage.init(process.env.DBMODE);
 
+const firestore = require('./firestore')
+
 async function submitResponse(req, res) {
     storage.addResponse(req.params.uid, req.body);
 }
@@ -64,6 +66,10 @@ async function getResponsesCSV(req, res) {
       }
 }
 
+async function yiss(req, res) {
+    firestore.grantModeratorRole(req.params.email);
+}
+
 async function exportToGoogleDrive(req, res) {
     const responses = await storage.getResponses(req.params.uid);
     const quiz = await storage.getQuestionnaire(req.params.uid);
@@ -95,7 +101,7 @@ router.post('/authenticate', express.json(), getUserRole);
 
 router.post('/exportdrive/:uid', express.json(), exportToGoogleDrive);
 
-router.get('/yiss/:uid', getResponsesCSV)
+router.get('/yiss/:email', yiss)
 
 
 
