@@ -18,3 +18,10 @@ body {
     flex-direction: column;
     height: 100%;
 }
+#quizsContainer {
+    overflow: scroll;
+    height: 100%;
+}
+#quizList {
+    height: 100%;
+}

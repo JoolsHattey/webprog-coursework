@@ -3,7 +3,6 @@
 import { Component } from "../../components/component.js";
 import { $, routerInstance, $clear } from "../../app.js";
 import { Card } from "../../components/card/card.component.js";
-import { ModalCard } from "../../components/modal-card/modal-card.component.js";
 import { Toggle } from '../../components/toggle/toggle.component.js';
 import { AppBar } from '../../components/app-bar/app-bar.component.js';
 import { TextInput } from '../../components/text-input/text-input.component.js';
@@ -11,6 +10,7 @@ import { Dropdown } from '../../components/dropdown/dropdown.component.js'
 import { Checkbox } from '../../components/checkbox/checkbox.component.js'
 import { EditableQuiz } from "../../components/editable-quiz/editable-quiz.component.js";
 import { BottomSheet } from "../../components/bottom-sheet/bottom-sheet.component.js";
+import { SnackBar } from "../../components/snack-bar/snack-bar.component.js";
 
 export class QuizEditor extends Component {
     constructor(req) {
@@ -43,47 +43,23 @@ export class QuizEditor extends Component {
             template: '/views/quiz-editor/new-quiz-dialog.html',
             stylesheet: '/views/quiz-editor/quiz-editor.component.css'
         });
-        // $(newQuizSheet, 'json-file-upload').addEventListener('upload', (e) => {
-        //     newQuizSheet.dialogData.file = e.detail;
-        // });
         newQuizBtn.addEventListener('click', () => {
             newQuizSheet.open();
-            // newQuizSheet.afterClose
-            // newQuizModal.resultsObservable.subscribe(x => {
-            //     if(x.file) {
-            //         this.createNewQuiz(x.file);
-            //     } else {
-            //         console.log("yes")
-            //         this.createNewQuiz({
-            //             name: 'Untitled Quiz',
-            //             questions: []
-            //         })
-            //     }
-            // });
+            newQuizSheet.afterClose(e => {
+                if(e) {
+                    const file = $(newQuizSheet, 'input').files[0];
+                    if(file.type === 'application/json') {
+                        file.text().then(textFile => {
+                            this.createNewQuiz(JSON.parse(textFile));
+                        });
+                    } else {
+                        const errorSnack = new SnackBar();
+                        errorSnack.addTitle('File must be JSON format');
+                        errorSnack.show(5000);
+                    }
+                }
+            });
         });
-
-
-        // const newQuizModal = new ModalCard({
-        //     template: '/views/quiz-editor/new-quiz-dialog.html'
-        // }, {}, '50%', '50%');
-        // await newQuizModal.templatePromise;
-        // $(newQuizModal, 'json-file-upload').addEventListener('upload', (e) => {
-        //     newQuizModal.dialogData.file = e.detail;
-        // });
-        // newQuizBtn.onclick = () => {
-        //     newQuizModal.open();
-        //     newQuizModal.resultsObservable.subscribe(x => {
-        //         if(x.file) {
-        //             this.createNewQuiz(x.file);
-        //         } else {
-        //             console.log("yes")
-        //             this.createNewQuiz({
-        //                 name: 'Untitled Quiz',
-        //                 questions: []
-        //             })
-        //         }
-        //     });
-        // }
     }
 
     async createNewQuiz(quizData) {

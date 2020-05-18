@@ -55,10 +55,12 @@ main {
     background-color: var(--primary-theme-colour);
     color: white;
     /* padding: 0 16px; */
-    min-width: 64px;
-    height: 36px;
-    border-radius: 4px;
-    box-shadow: 0 0 4px #999;
+    font-weight: 500;
+    font-size: 0.875rem;
+    min-width: 4rem;
+    height: 2.25rem;
+    border-radius: 0.25rem;
+    box-shadow: 0 0 0.25rem #999;
     outline: none;
     background-position: center;
     display: flex;

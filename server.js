@@ -83,7 +83,11 @@ function getUserRole(req, res) {
 async function getResponsesCSV(req, res) {
     try {
         const responses = await storage.getResponses(req.params.uid);
+        const quiz = await storage.getQuestionnaire(req.params.uid);
         const fields = [];
+        quiz.questions.forEach(element => {
+            fields.push(element.text);
+        });
         const opts = { fields };
         const parser = new Parser(opts);
         const csv = parser.parse(responses);
@@ -112,6 +116,12 @@ async function exportToGoogleDrive(req, res) {
     }
 }
 
+async function yeet(req, res) {
+    const responses = await storage.getResponses(req.params.uid);
+    const quiz = await storage.getQuestionnaire(req.params.uid);
+    const data = await gdrive.createSheetLocal(quiz, responses);
+    console.log(data)
+}
 
 const router = express.Router();
 
@@ -134,6 +144,8 @@ router.post('/editquestionnaire/:uid', express.json(), editQuestionnaire);
 router.post('/authenticate', express.json(), getUserRole);
 
 router.post('/exportdrive/:uid', express.json(), exportToGoogleDrive);
+
+router.get('/export/:uid', getResponsesCSV)
 
 router.get('/yiss/:email', yiss)
 

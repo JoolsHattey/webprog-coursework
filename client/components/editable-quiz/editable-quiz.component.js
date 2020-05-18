@@ -3,7 +3,6 @@
 import { Component } from "../component.js";
 import { $, $r } from "../../app.js";
 import { Card } from "../card/card.component.js";
-import { ModalCard } from "../modal-card/modal-card.component.js";
 import { SnackBar } from "../snack-bar/snack-bar.component.js";
 import { initDrive } from "../../drive.js";
 import { TouchDragList } from "../touch-drag-list/touch-drag-list.component.js";
@@ -113,17 +112,23 @@ export class EditableQuiz extends Component {
         $(this.appBar, '#shareBtn').addEventListener('click', () => {
             shareModal.open();
             $(shareModal, 'text-input').setValue(quizURL);
+            $(shareModal, '#clipboardBtn').addEventListener('click', () => {
+                navigator.clipboard.writeText(quizURL);
+                const snackBar = new SnackBar();
+                snackBar.addTitle('Link copied to clipboard');
+                snackBar.show(5000);
+            });
         });
     }
 
     async initSettingsDialog() {
-        const settingsDialog = new ModalCard({
-            template: '/components/editable-quiz/quiz-config-dialog.html',
-            stylesheet: '/components/editable-quiz/editable-quiz.component.css'
-        }, this.data.options, '70%', '30%');
-        $(this.appBar, '#settingsBtn').addEventListener('click', () => {
-            settingsDialog.open();
-        });
+        // const settingsDialog = new ModalCard({
+        //     template: '/components/editable-quiz/quiz-config-dialog.html',
+        //     stylesheet: '/components/editable-quiz/editable-quiz.component.css'
+        // }, this.data.options, '70%', '30%');
+        // $(this.appBar, '#settingsBtn').addEventListener('click', () => {
+        //     settingsDialog.open();
+        // });
     }
 
     questionsTab() {
@@ -168,6 +173,10 @@ export class EditableQuiz extends Component {
         }
     }
 
+    async exportResponses() {
+        const res = await fetch(`/api/export/${this.id}`);
+    }
+
     async initResponsesTab() {
         const responsesCard = new Card({
             template: '/components/editable-quiz/quiz-responses-title-card.html',
@@ -177,6 +186,7 @@ export class EditableQuiz extends Component {
         $(this, '#responsesContainer').appendChild(responsesCard);
         const numResponses = this.responses.length;
         $(responsesCard, '#title').append(`${numResponses} ${numResponses === 1 ? 'Response' : 'Responses'}`);
+        $(responsesCard, '#exportLocalBtn').addEventListener('click', () => this.exportResponses());
         $(responsesCard, '#exportDriveBtn').addEventListener('click', () => this.exportToGoogleDrive());
         for(const [i, question] of this.data.questions.entries()) {
             const questionResponseCard = new Card({

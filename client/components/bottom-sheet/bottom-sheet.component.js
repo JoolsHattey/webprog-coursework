@@ -1,6 +1,7 @@
 'use strict';
 
 import { Component } from "../component.js";
+import { $ } from "../../app.js";
 
 /**
  * @typedef {Object} ComponentStructure
@@ -17,7 +18,22 @@ export class BottomSheet extends Component {
         this.addStyleSheet('/components/bottom-sheet/bottom-sheet.component.css');
         this.initElement();
     }
-    initElement() {
+    async initElement() {
+        await this.templatePromise;
+        const saveBtn = $(this, "[data-modal-action='save']");
+        if(saveBtn) {
+            saveBtn.addEventListener('click', () => {
+                this.afterCloseCallback(true);
+                this.close();
+            });
+        }
+        const cancelBtn = $(this, "[data-modal-action='cancel']");
+        if(cancelBtn) {
+            cancelBtn.addEventListener('click', () => {
+                this.afterCloseCallback();
+                this.close();
+            });
+        }
         this.overlay = document.createElement('div');
         this.overlay.classList.add('overlay');
         this.shadowRoot.append(this.overlay);
@@ -50,6 +66,7 @@ export class BottomSheet extends Component {
         const distance = touchPos - this.touchStartPos;
         const speed = distance / (e.timeStamp-this.touchStartTime);
         if(pos > (window.innerHeight*0.15) || speed > 0.5) {
+            this.afterCloseCallback();
             this.close();
         } else {
             this.container.style.transform = null;
@@ -72,6 +89,9 @@ export class BottomSheet extends Component {
                 document.body.removeChild(this);
             }, 300);
         }
+    }
+    afterClose(callback) {
+        this.afterCloseCallback = callback;
     }
 }
 

@@ -15,10 +15,40 @@ async function authorise(credentials, userAuthCode, url) {
     }
 }
 
+async function createSheetLocal(quizData, responseData) {
+    const sheets = google.sheets({version: 'v4'});
+    const resource = createSheet(quizData, responseData);
+
+    const spreadsheet = await sheets.spreadsheets.create({
+        resource,
+        fields: 'spreadsheetId',
+        fields: 'spreadsheetUrl',
+    });
+    console.log(spreadsheet)
+}
+
 async function saveData(authToken, quizData, responseData, url) {
     const auth = await authorise(credentials, authToken, url);
     const sheets = google.sheets({version: 'v4', auth});
 
+    const resource = createSheet(quizData, responseData);
+
+    try {
+        const spreadsheet = await sheets.spreadsheets.create({
+            resource,
+            fields: 'spreadsheetId',
+            fields: 'spreadsheetUrl',
+        });
+        return {url: spreadsheet.data.spreadsheetUrl}
+    } catch (error) {
+        console.log(error);
+        throw new Error();
+    }
+    
+
+}
+
+function createSheet(quizData, responseData) {
     responseData.sort((a, b) => a.time - b.time);
 
     const columnHeaders = {values: []};
@@ -72,21 +102,11 @@ async function saveData(authToken, quizData, responseData, url) {
             }
         ]
     };
-    try {
-        const spreadsheet = await sheets.spreadsheets.create({
-            resource,
-            fields: 'spreadsheetId',
-            fields: 'spreadsheetUrl',
-        });
-        return {url: spreadsheet.data.spreadsheetUrl}
-    } catch (error) {
-        console.log(error);
-        throw new Error();
-    }
-    
 
+    return resource;
 }
 
 module.exports = {
-    saveData
+    saveData,
+    createSheetLocal
 }

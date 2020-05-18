@@ -6,7 +6,7 @@ body {
 
 #topRow {
     width: 100%;
-    height: 56px;
+    height: 3.5rem;
     color: black;
     display: flex;
     flex-direction: row;
@@ -17,7 +17,7 @@ body {
 }
 #expandedContent {
     position: absolute;
-    top: 56px;
+    top: 3.5rem;
     left: 0;
     width: 100%;
     background-color: white;
@@ -25,17 +25,17 @@ body {
     overflow: hidden;
     height: 0;
     z-index: 1;
-    box-shadow: 0 4px 8px 1px grey;
+    box-shadow: 0 0.25rem 0.5rem 0.00625rem grey;
 }
 .innerExpandedContent {
-    padding: 0 16px 0 16px;
+    padding: 0 1rem 0 1rem;
 }
 #expandedContent * {
     z-index: 1;
     
 }
 .expanded {
-    height: 106px!important;
+    height: 6.625rem!important;
 }
 #quizEditorButtons {
     display: flex;
@@ -43,8 +43,8 @@ body {
     
 }
 #quizEditorButtons button {
-    margin-left: 12px;
-    margin-right: 12px;
+    margin-left: 0.75rem;
+    margin-right: 0.75rem;
     animation: fadein 1s;
 }
 .titleContainer {
@@ -59,7 +59,7 @@ body {
     align-items: center;
 }
 .titleBtnContainer {
-    margin: 10px;
+    margin: 0.625rem;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -71,38 +71,59 @@ body {
     align-items: center;
 }
 #saveStatus {
-    padding: 0 0 0 5px;
+    padding: 0 0 0 0.3125rem;
     color: grey;
+}
+
+#questionsBtn.selected ~ span.bar {
+    left: 0.125rem;
+    width: 5.25rem;
+}
+#responsesBtn.selected ~ span.bar {
+    left: 5.625rem;
+    width: 5.625rem;
+}
+#questionsBtn {
+    width: 4rem;
+}
+#responsesBtn {
+    width: 4.375rem;
+}
+.selected {
+    color: var(--dark-theme-colour);
+}
+.tabs {
+    bottom: 0;
+    height: 2.25rem;
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    font-size: 0.875rem;
 }
 .tabs .bar {
     position: absolute;
     z-index: 10;
     bottom: 0;
-    height: 3px;
-    left: 20px;
-    width: 60px;
+    height: 0.1875rem;
+    border-radius: 0.1875rem 0.1875rem 0 0;
+    left: 1.25rem;
+    width: 5.5rem;
     background: var(--primary-theme-colour);
     display: block;
     transition: left .2s ease;
     -webkit-transition: left .2s ease;
 }
-#questionsBtn.selected ~ span.bar {
-    left: 20px;
-    width: 60px;
-}
-#responsesBtn.selected ~ span.bar {
-    left: 100px;
-    width: 60px;
-}
-.tabs {
-    padding-top: 10px;
-    display: flex;
-    flex-direction: row;
-    font-size: 14px;
-}
 .tabs div {
-    height: 30px;
-    margin: 5px;
+    height: 2.25rem;
+    padding: 0 0.75rem 0 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+}
+.tabs div:active {
+    background-color: var(--light-theme-colour);
+    opacity: 0.3;
 }
 body {
     display: flex;
@@ -113,7 +134,7 @@ body {
 :host {
     top: 0;
     position: sticky;
-    height: 56px;
+    height: 3.5rem;
     width: 100%;
     z-index: 5;
     background-color: white;
@@ -127,9 +148,9 @@ body {
 .profileCard {
     position: absolute;
     right: 0;
-    top: 40px;
-    width: 250px;
-    height: 300px;
+    top: 2.5rem;
+    width: 15.625rem;
+    height: 18.75rem;
     z-index: 10;
 }
 #profileCardContent {
@@ -144,7 +165,7 @@ body {
     align-items: center;
 }
 #loggedIn * {
-    margin: 10px;
+    margin: 0.625rem;
 }
 #loggedOut {
     display: flex;
@@ -152,20 +173,20 @@ body {
     align-items: center;
 }
 #profileImg {
-    height: 50px;
-    width: 50px;
+    height: 3.125rem;
+    width: 3.125rem;
     object-fit: cover;
     border-radius: 50%;
 }
 
 .card {
-    margin: 20px;
-    padding: 20px;
+    margin: 1.25rem;
+    padding: 1.25rem;
     border: solid;
     border-width: thin;
-    border-radius: 3px;
+    border-radius: 0.1875rem;
     border-color: rgba(0,0,0,0.22);
-    box-shadow: 0 0 0 rgba(0,0,0,0.01), 0 2px 5px rgba(0,0,0,0.22);
+    box-shadow: 0 0 0 rgba(0,0,0,0.01), 0 0.125rem 0.3125rem rgba(0,0,0,0.22);
     background-color: white;
     color: black;
 }

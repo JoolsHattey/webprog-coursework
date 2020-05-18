@@ -130,7 +130,6 @@ dropdown-el {
 }
 #dragHandle {
     opacity: 0.5;
-    transition: 0.3s;
     margin: -20px auto auto auto;
     transform: rotate(90deg);
 }
@@ -148,4 +147,8 @@ dropdown-el {
 }
 .titleContainer icon-el {
     margin-right: 8px
+}
+.btnGroup {
+    display: flex;
+    flex-direction: column;
 }

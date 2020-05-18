@@ -1,3 +1,6 @@
+:host {
+    z-index: 100;
+}
 body {
     /* padding: 14px; */
     margin: 0;
