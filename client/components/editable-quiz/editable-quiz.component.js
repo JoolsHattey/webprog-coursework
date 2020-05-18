@@ -244,8 +244,18 @@ export class EditableQuiz extends Component {
         q.index = index;
         await q.templatePromise;
         this.questionTouchList.addItem(q, '#dragHandle');
-        $(q, 'text-input').setValue(questionData.text);
-
+        const questionIDInput = $(q, '#questionID');
+        questionIDInput.setValue(questionData.id);
+        questionIDInput.setOnChange(e => {
+            this.data.questions[index].id = e.target.value;
+            this.unsavedChanges();
+        });
+        const questionTitleInput = $(q, '#questionTitle');
+        questionTitleInput.setValue(questionData.text);
+        questionTitleInput.setOnChange(e => {
+            this.data.question[index].text = e.target.value;
+            this.unsavedChanges();
+        });
         const answerOptionsContainer = $(q, '#questionAnswers');
         const newAnswerOptionBtn = $(answerOptionsContainer, '#newOptionBtn');
         if(questionData.type === 'single-select' || questionData.type === 'multi-select') {

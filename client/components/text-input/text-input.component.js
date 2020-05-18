@@ -124,7 +124,8 @@ export class TextInput extends Component {
         this.inputEl.setAttribute('style', `height: ${this.inputEl.scrollHeight > 20 ? this.inputEl.scrollHeight : 20}px;`)
     }
 
-    setOnChange(callback) {
+    async setOnChange(callback) {
+        await this.sizeNotInit;
         this.inputEl.addEventListener('change', callback);
     }
 
