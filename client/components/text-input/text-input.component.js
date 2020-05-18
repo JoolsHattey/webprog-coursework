@@ -83,7 +83,7 @@ export class TextInput extends Component {
             });
         }
         this.inputEl.id = 'input';
-        this.container.replaceChild(this.inputEl, el);
+        this.container.children[0].replaceChild(this.inputEl, el);
     }
 
     warn(value) {
@@ -126,6 +126,11 @@ export class TextInput extends Component {
 
     setOnChange(callback) {
         this.inputEl.addEventListener('change', callback);
+    }
+
+    async setLabel(newValue) {
+        await this.templatePromise;
+        this.container.children[0].children[0].before(newValue);
     }
 
     get required() {

@@ -36,10 +36,6 @@ export class Quiz extends Component {
         const qCards = new Array;
         questions.forEach(element => {
             const question = new Card();
-            const qLabel = document.createElement('label');
-            qLabel.for = element.id;
-            qLabel.append(element.text);
-            question.container.appendChild(qLabel);
             question.id = element.id;
             const newInput = this.createInput(element);
             question.container.appendChild(newInput);
@@ -117,6 +113,7 @@ export class Quiz extends Component {
                 input = new TextInput();
                 input.size = 'singleline'
                 input.id = questionData.id;
+                input.setLabel(questionData.text)
                 break;
             case "number":
                 input = new TextInput();
@@ -138,8 +135,10 @@ export class Quiz extends Component {
     nextQuestion() {
         // Check if next input is already filled to prevent stack from locking
         // E.g. if user is reviewing quetions
-        if(this.inputs[this.currentQ+1].validInput) {
-            this.stack.lockNext = false;
+        if(this.currentQ < this.questions.length-1) {
+            if(this.inputs[this.currentQ+1].validInput) {
+                this.stack.lockNext = false;
+            }
         }
         if(this.currentQ >= 0) {
             const inputValue = this.inputs[this.currentQ].getValue();

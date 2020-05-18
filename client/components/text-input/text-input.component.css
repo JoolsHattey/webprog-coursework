@@ -48,7 +48,7 @@ textarea {
     outline: none;
 }
 
-#input:focus ~ label, #input:valid ~ label {
+#input:focus ~ .highlight, #input:valid ~ .highlight {
     top:-20px;
     font-size:14px;
     color:#5264AE;
