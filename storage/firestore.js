@@ -1,13 +1,33 @@
 "use strict";
 
 const firebase = require('firebase-admin');
-const serviceAccount = require("./webprog-coursework-e4b42-firebase-adminsdk-p67gn-eff495bc54.json");
+const serviceAccount = require("../webprog-coursework-e4b42-firebase-adminsdk-p67gn-eff495bc54.json");
 const localDB = require('./localDB');
 
 firebase.initializeApp({
     credential: firebase.credential.cert(serviceAccount),
     databaseURL: "https://webprog-coursework-e4b42.firebaseio.com"
 });
+
+const firebaseAuth = async (req, res, next) => {
+    if(!req.headers.id_token) {
+        return res.status(400).json({
+            error: {
+                message: 'This request requires authentication headers'
+            }
+        });
+    }
+    try {
+        const userPayload = await firebase.auth().verifyIdToken(req.headers.id_token);
+        req.user = userPayload;
+        next();
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            error
+        });
+    }
+}
 
 /**********************
  * User
@@ -115,5 +135,6 @@ module.exports = {
     verifyAuth,
     grantModeratorRole,
     getUserRole,
-    syncLocalDB
+    syncLocalDB,
+    firebaseAuth
 }

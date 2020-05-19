@@ -1,3 +1,5 @@
+@import '../../styles.css';
+
 :host, body {
     width: 100%;
 }

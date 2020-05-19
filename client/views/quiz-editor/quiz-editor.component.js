@@ -11,6 +11,7 @@ import { Checkbox } from '../../components/checkbox/checkbox.component.js'
 import { EditableQuiz } from "../../components/editable-quiz/editable-quiz.component.js";
 import { BottomSheet } from "../../components/bottom-sheet/bottom-sheet.component.js";
 import { SnackBar } from "../../components/snack-bar/snack-bar.component.js";
+import { getServerAuthCode } from "../../auth.js";
 
 export class QuizEditor extends Component {
     constructor(req) {
@@ -63,10 +64,12 @@ export class QuizEditor extends Component {
     }
 
     async createNewQuiz(quizData) {
+        const authCode = await getServerAuthCode();
         const res = await fetch('/api/createquestionnaire', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'id_token': authCode
             },
             body: JSON.stringify(quizData),
         });
@@ -99,7 +102,12 @@ export class QuizEditor extends Component {
     async getQuestionnaire(uid) {
         const request = await fetch(`/api/questionnaire/${uid}`);
         const quesitonnaire = await(request.json());
-        const req = await fetch(`/api/responses/${uid}`);
+        const authCode = await getServerAuthCode();
+        const req = await fetch(`/api/responses/${uid}`, {
+            headers: {
+                'id_token': authCode
+            },
+        });
         const responses = await(req.json());
         const q = new EditableQuiz(uid, quesitonnaire, responses, this.appBar);
         $(this, '#editor').appendChild(q);

@@ -10,10 +10,12 @@ const fs = require('fs');
 const gdrive = require('./gdrive');
 
 
-const storage = require('./storage.js');
-storage.init(process.env.DBMODE);
+const storage = require('./storage/storage.js');
+const localDBMode = process.env.DBMODE
+storage.init(localDBMode);
 
-const firestore = require('./firestore')
+const firestore = require('./storage/firestore')
+
 
 async function submitResponse(req, res) {
     try {
@@ -134,19 +136,18 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '/client/index.html'));
 });
 
-router.post('/submitresponse/:uid', express.json(), submitResponse);
-router.get('/responses/:uid', getResponses);
-router.post('/createquestionnaire', express.json(), createQuestionnaire);
+// User routes
 router.get('/questionnaire/:uid', getQuestionnaire);
 router.get('/questionnaires', getQuestionnaires);
-router.post('/editquestionnaire/:uid', express.json(), editQuestionnaire);
+router.post('/submitresponse/:uid', express.json(), submitResponse);
 
-router.post('/authenticate', express.json(), getUserRole);
-
-router.post('/exportdrive/:uid', express.json(), exportToGoogleDrive);
+// Admin routes
+router.get('/responses/:uid', firestore.firebaseAuth, getResponses);
+router.post('/createquestionnaire', firestore.firebaseAuth, express.json(), createQuestionnaire);
+router.post('/editquestionnaire/:uid', firestore.firebaseAuth, express.json(), editQuestionnaire);
+router.post('/exportdrive/:uid', firestore.firebaseAuth, express.json(), exportToGoogleDrive);
 
 router.get('/export/:uid', getResponsesCSV)
-
 router.get('/yiss/:email', yiss)
 
 
@@ -155,4 +156,7 @@ router.get('/yiss/:email', yiss)
 
 
 
-app.listen(port, () => console.log(`Questionnaire Engine listening on port ${port}`));
+app.listen(port, () => {
+    console.log(`Questionnaire Engine listening on port ${port}`);
+    console.log(`Storage Mode: ${localDBMode ? 'Local SQLite' : 'Firestore'}`);
+});

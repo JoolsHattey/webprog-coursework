@@ -2,8 +2,6 @@ const sqlite3 = require('sqlite3');
 const { open } = require('sqlite');
 const uid = require('uid');
 
-const testData = require('./example-questionnaire.json');
-
 let db;
 
 async function init() {

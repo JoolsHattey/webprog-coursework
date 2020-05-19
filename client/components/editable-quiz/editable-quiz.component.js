@@ -9,7 +9,7 @@ import { TouchDragList } from "../touch-drag-list/touch-drag-list.component.js";
 import { PieChart } from "../chart/pie-chart.component.js";
 import { BarChart } from "../chart/bar-chart.component.js";
 import { BottomSheet } from "../bottom-sheet/bottom-sheet.component.js";
-import { getGoogleDriveAuth } from "../../auth.js";
+import { getGoogleDriveAuth, getServerAuthCode } from "../../auth.js";
 
 export class EditableQuiz extends Component {
     constructor(uid, quizData, responseData, appBar) {
@@ -77,10 +77,12 @@ export class EditableQuiz extends Component {
         $(this.appBar, '#saveStatus').textContent = 'Saving...';
         const saveTime = Date.now();
         this.data.saveTime = saveTime;
+        const authCode = await getServerAuthCode();
         await fetch(`/api/editquestionnaire/${this.id}`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'id_token': authCode
             },
             body: JSON.stringify(this.data)
         })
@@ -127,10 +129,12 @@ export class EditableQuiz extends Component {
         snack.addTitle('Creating Google Sheet');
         snack.show();
         const authCode = await getGoogleDriveAuth();
+        const serverAuthCode = await getServerAuthCode();
         const res = await fetch(`/api/exportdrive/${this.id}`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'id_token': serverAuthCode
             },
             body: JSON.stringify({authToken: authCode})
         });

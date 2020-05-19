@@ -3,7 +3,7 @@
 import { Component } from '../component.js';
 import { Card } from '../card/card.component.js';
 import { routerInstance, $ } from '../../app.js';
-import { login, logout } from '../../auth.js';
+import { initLogin, logout } from '../../auth.js';
 
 export class AppBar extends Component {
     constructor() {
@@ -37,7 +37,7 @@ export class AppBar extends Component {
         this.loggedOutContent = $(profileCard, '#loggedOut');
         $(profileCard, '#loginBtn').onclick = () => {
             profileCard.triggerVisible();
-            login();
+            initLogin();
         }
         $(profileCard, '#logoutBtn').onclick = () => {
             profileCard.triggerVisible();

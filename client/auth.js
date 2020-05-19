@@ -77,12 +77,24 @@ export function getGoogleDriveAuth() {
                     client_id: '669091989709-1ft3bvjahneklp47kefipe1h6gglnr4o.apps.googleusercontent.com',
                     scope: 'https://www.googleapis.com/auth/drive.file',
                     response_type: 'code token id_token'
-                }, function(result) {
+                }, function(result) {b
                     resolve(result.code);
                 });
             });
         }
     });
+}
+export function getServerAuthCode() {
+    return new Promise(resolve => {
+        firebase.auth().onAuthStateChanged(user => {
+            if(user) {
+                user.getIdTokenResult().then((result) => {
+                    console.log(result)
+                    resolve(result.token);
+                });
+            } else resolve(false)
+        })
+    })
 }
 export function login() {
     const provider = new firebase.auth.GoogleAuthProvider();
@@ -126,3 +138,5 @@ export function getAdminStatus() {
         })
     })
 }
+
+export function initLogin() {}
