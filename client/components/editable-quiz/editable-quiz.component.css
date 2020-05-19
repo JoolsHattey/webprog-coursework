@@ -17,11 +17,16 @@ body {
 
 #newQ {
     align-self: center;
+    position: absolute;
+    width: 10.1rem;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 
 .header {
     background-color: white;
-    padding: 8px;
+    padding: 0.5rem;
 }
 
 #editableQuestionsContainer {
@@ -109,7 +114,7 @@ progress-spinner {
     margin: 2px;
 }
 .divider {
-    margin: 8px 0 20px 0;
+    margin: 0.5rem 0 20px 0;
     width: 270px;
 }
 #questionActions {
@@ -123,10 +128,10 @@ progress-spinner {
     align-items: center;
 }
 #questionActions div div {
-    margin-right: 8px;
+    margin-right: 0.5rem;
 }
 dropdown-el {
-    margin: 8px 0 4px 0;
+    margin: 0.5rem 0 4px 0;
 }
 #dragHandle {
     opacity: 0.5;
@@ -146,9 +151,14 @@ dropdown-el {
     align-items: center;
 }
 .titleContainer icon-el {
-    margin-right: 8px
+    margin-right: 0.5rem
 }
 .btnGroup {
     display: flex;
     flex-direction: column;
+}
+
+#editableQuestionsList body {
+    padding-bottom: 3rem;
+    box-sizing: border-box;
 }

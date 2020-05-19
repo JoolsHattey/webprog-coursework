@@ -20,6 +20,9 @@ export class BottomSheet extends Component {
     }
     async initElement() {
         await this.templatePromise;
+        const chip = document.createElement('div');
+        chip.classList.add('chip');
+        this.container.children[0].before(chip);
         const saveBtn = $(this, "[data-modal-action='save']");
         if(saveBtn) {
             saveBtn.addEventListener('click', () => {

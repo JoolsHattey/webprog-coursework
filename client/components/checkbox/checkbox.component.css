@@ -2,9 +2,9 @@ label {
     z-index: 0;
     position: relative;
     display: inline-block;
-    font-size: 16px;
+    font-size: 1rem;
     line-height: 1.5;
-    margin: 10px 0;
+    margin: 0.625rem 0;
 }
 
 /* Input */
@@ -14,13 +14,13 @@ label > input {
     -webkit-appearance: none;
     z-index: -1;
     position: absolute;
-    left: -10px;
-    top: -8px;
+    left: -0.625rem;
+    top: -0.5rem;
     display: block;
     margin: 0;
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
+    width: 2.5rem;
+    height: 2.5rem;
     background-color: var(--primary-theme-colour);
     box-shadow: none;
     outline: none;
@@ -42,12 +42,12 @@ label > span::before {
     content: "";
     display: inline-block;
     box-sizing: border-box;
-    margin: 3px 11px 3px 1px;
-    border: solid 2px; /* Safari */
+    margin: 0.1875rem 0.6875rem 0.1875rem 0.0625rem;
+    border: solid 0.125rem; /* Safari */
     border-color: var(--primary-theme-colour);
-    border-radius: 2px;
-    width: 18px;
-    height: 18px;
+    border-radius: 0.125rem;
+    width: 1.125rem;
+    height: 1.125rem;
     vertical-align: top;
     transition: border-color 0.2s, background-color 0.2s;
 }
@@ -57,14 +57,14 @@ label > span::after {
     content: "";
     display: block;
     position: absolute;
-    top: 3px;
-    left: 1px;
-    width: 10px;
-    height: 5px;
-    border: solid 2px transparent;
+    top: 0.1875rem;
+    left: 0.0625rem;
+    width: 0.625rem;
+    height: 0.3125rem;
+    border: solid 0.125rem transparent;
     border-right: none;
     border-top: none;
-    transform: translate(3px, 4px) rotate(-45deg);
+    transform: translate(0.1875rem, 0.25rem) rotate(-45deg);
 }
 
 /* Checked, Indeterminate */
@@ -86,7 +86,7 @@ label > input:indeterminate + span::after {
 
 label > input:indeterminate + span::after {
     border-left: none;
-    transform: translate(4px, 3px);
+    transform: translate(0.25rem, 0.1875rem);
 }
 
 /* Hover, Focus */

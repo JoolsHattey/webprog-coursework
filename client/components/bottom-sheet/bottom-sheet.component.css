@@ -13,6 +13,7 @@ body {
     margin: 0;
     transform: translate3d(0, -30%, 0);
     background-color: white;
+    border-radius: 0.25rem;
     animation: expand 0.3s;
     padding: 1.25rem!important;
     z-index: 1;
@@ -32,6 +33,16 @@ body {
     opacity: 0.5;
     transition: 0.3s;
     animation: showOverlay 0.3s;
+}
+
+.chip {
+    position: absolute;
+    align-self: center;
+    top: 0.75rem;
+    height: 0.25rem;
+    width: 1.5rem;
+    border-radius: 0.125rem;
+    background-color: #DADCE0;
 }
 
 @keyframes expand {

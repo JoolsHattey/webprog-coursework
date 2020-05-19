@@ -47,7 +47,6 @@ export class EditableQuiz extends Component {
         $(this, '#editableQuestionsContainer').classList.remove('hide');
         $(this, 'progress-spinner').remove();
         this.initShareDialog();
-        this.initSettingsDialog();
         this.initResponsesTab();
     }
 
@@ -91,19 +90,6 @@ export class EditableQuiz extends Component {
 
     async initShareDialog() {
         const quizURL = `${window.location.host}/quiz/${this.id}`;
-        // const shareModal = new ModalCard({
-        //     template: '/components/editable-quiz/quiz-share-dialog.html',
-        //     stylesheet: '/components/editable-quiz/editable-quiz.component.css'
-        // }, null, '70%', '20%');
-        // await shareModal.templatePromise;
-        // $(shareModal, '#closeBtn').addEventListener('click', () => shareModal.close());
-        
-        // $(shareModal, '#clipboardBtn').addEventListener('click', () => {
-        //     navigator.clipboard.writeText(quizURL);
-        //     const snackBar = new SnackBar();
-        //     snackBar.addTitle('Link copied to clipboard');
-        //     snackBar.show(5000);
-        // });
         const shareModal = new BottomSheet({
             template: '/components/editable-quiz/quiz-share-dialog.html',
             stylesheet: '/components/editable-quiz/editable-quiz.component.css'
@@ -119,16 +105,6 @@ export class EditableQuiz extends Component {
                 snackBar.show(5000);
             });
         });
-    }
-
-    async initSettingsDialog() {
-        // const settingsDialog = new ModalCard({
-        //     template: '/components/editable-quiz/quiz-config-dialog.html',
-        //     stylesheet: '/components/editable-quiz/editable-quiz.component.css'
-        // }, this.data.options, '70%', '30%');
-        // $(this.appBar, '#settingsBtn').addEventListener('click', () => {
-        //     settingsDialog.open();
-        // });
     }
 
     questionsTab() {

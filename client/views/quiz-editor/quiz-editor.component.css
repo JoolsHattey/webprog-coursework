@@ -25,3 +25,11 @@ body {
 #quizList {
     height: 100%;
 }
+.btnGroup {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.newQuizModal h3 {
+    text-align: center;
+}

@@ -22,10 +22,14 @@ body {
     width: 100%;
     background-color: white;
     transition: height 0.35s ease-out;
-    overflow: hidden;
+    overflow: hidden; 
     height: 0;
     z-index: 1;
     box-shadow: 0 0.25rem 0.5rem 0.00625rem grey;
+    opacity: 0;
+}
+#expandedContent.expanded {
+    opacity: 1;
 }
 .innerExpandedContent {
     padding: 0 1rem 0 1rem;
@@ -122,8 +126,7 @@ body {
     align-items: center;
 }
 .tabs div:active {
-    background-color: var(--light-theme-colour);
-    opacity: 0.3;
+    background-color: rgba(67, 152, 137, 0.3);
 }
 body {
     display: flex;
