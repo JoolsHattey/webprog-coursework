@@ -34,7 +34,7 @@ async function getResponsesCSV(quizID) {
                 records[i][element.id] = element.answer;
             });
         };
-        const csv = csvWriter.stringifyRecords(records);
+        const csv = csvWriter.getHeaderString() + csvWriter.stringifyRecords(records);
         return csv;
     } catch (err) {
         throw err;
