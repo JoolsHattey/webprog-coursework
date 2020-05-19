@@ -21,11 +21,11 @@
   "homepage": "https://github.com/joolsh625/webprog-coursework#readme",
   "dependencies": {
     "compression": "^1.7.4",
+    "csv-writer": "^1.6.0",
     "dayjs": "^1.8.26",
     "express": "^4.17.1",
     "firebase-admin": "^8.9.2",
     "googleapis": "^39.2.0",
-    "json2csv": "^5.0.1",
     "sqlite": "^4.0.7",
     "sqlite3": "^4.2.0",
     "uid": "^1.0.0"

@@ -5,10 +5,7 @@ const compression = require('compression');
 const app = express();
 const port = 8080;
 const path = require('path');
-const { Parser } = require('json2csv');
-const fs = require('fs');
 const gdrive = require('./gdrive');
-
 
 const storage = require('./storage/storage.js');
 const localDBMode = process.env.DBMODE
@@ -66,39 +63,19 @@ async function editQuestionnaire(req, res) {
 
 async function getQuestionnaires(req, res) {
     try {
-        res.send(await storage.getQuestionnaires())
+        res.send(await storage.getQuestionnaires());
     } catch (error) {
         res.sendStatus(400);
     }
     
 }
 
-function authenticateUser(req, res) {
-    firestore.verifyAuth(req.body.token);
-}
-
-function getUserRole(req, res) {
-    console.log(req.body)
-    firestore.getUserRole(req.body.token)
-}
-
 async function getResponsesCSV(req, res) {
     try {
-        const responses = await storage.getResponses(req.params.uid);
-        const quiz = await storage.getQuestionnaire(req.params.uid);
-        const fields = [];
-        quiz.questions.forEach(element => {
-            fields.push(element.text);
-        });
-        const opts = { fields };
-        const parser = new Parser(opts);
-        const csv = parser.parse(responses);
-        console.log(csv);
-        fs.writeFile('thing.csv', csv, function (err) {
-            if (err) return console.log(err);
-          });
+        res.send(await storage.getResponsesCSV(req.params.uid));
       } catch (err) {
-        console.error(err);
+        console.log(err)
+        res.sendStatus(400);
       }
 }
 
@@ -116,13 +93,6 @@ async function exportToGoogleDrive(req, res) {
     } catch (error) {
         res.sendStatus(400);
     }
-}
-
-async function yeet(req, res) {
-    const responses = await storage.getResponses(req.params.uid);
-    const quiz = await storage.getQuestionnaire(req.params.uid);
-    const data = await gdrive.createSheetLocal(quiz, responses);
-    console.log(data)
 }
 
 const router = express.Router();
@@ -145,9 +115,10 @@ router.post('/submitresponse/:uid', express.json(), submitResponse);
 router.get('/responses/:uid', firestore.firebaseAuth, getResponses);
 router.post('/createquestionnaire', firestore.firebaseAuth, express.json(), createQuestionnaire);
 router.post('/editquestionnaire/:uid', firestore.firebaseAuth, express.json(), editQuestionnaire);
+router.get('/export/:uid', firestore.firebaseAuth, getResponsesCSV)
 router.post('/exportdrive/:uid', firestore.firebaseAuth, express.json(), exportToGoogleDrive);
 
-router.get('/export/:uid', getResponsesCSV)
+
 router.get('/yiss/:email', yiss)
 
 

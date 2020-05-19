@@ -33,3 +33,16 @@ body {
 .newQuizModal h3 {
     text-align: center;
 }
+.quizItemInfo p {
+    color: grey;
+    font-size: 0.875rem;
+}
+.titleContainer {
+    display: flex;
+    flex-direction: column;
+}
+.quizItem {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}

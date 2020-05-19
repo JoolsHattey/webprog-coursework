@@ -82,16 +82,21 @@ export class QuizEditor extends Component {
         const response = await fetch("/api/questionnaires");
         const data = await response.json();
         const container = $(this, '#quizsContainer');
-        data.forEach(element => {
-            const quizItem = new Card();
-            quizItem.createTitle(element.name);
+        for(const element of data) {
+            const quizItem = new Card({
+                stylesheet: '/views/quiz-editor/quiz-editor.component.css',
+                template: '/views/quiz-editor/quiz-item.html'
+            });
+            await quizItem.templatePromise;
+            $(quizItem, 'p').append(`ID: ${element.uid}`);
+            $(quizItem, 'h3').append(element.name);
             container.appendChild(quizItem);
             quizItem.addEventListener('click', () => {
                 $clear($(this, '#quizsContainer'));
                 history.pushState({}, "", `/quizeditor/${element.uid}`)
                 this.getQuestionnaire(element.uid)
             });
-        });
+        };
         container.classList.remove('hide');
         $(this, '#quizList').classList.remove('hide');
         $(this, '#editor').classList.add('hide');

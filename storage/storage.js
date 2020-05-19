@@ -1,7 +1,7 @@
 const firestore = require('./firestore');
 const localDB = require('./localDB');
-
-let dataStore;
+const createCsvStringifier = require('csv-writer').createObjectCsvStringifier;
+const dayjs = require('dayjs');
 
 let localDBMode;
 
@@ -12,7 +12,34 @@ async function init(dbMode) {
     }
 }
 
-
+async function getResponsesCSV(quizID) {
+    try {
+        const responses = await getResponses(quizID);
+        const quiz = await getQuestionnaire(quizID);
+        const headers = [{id: 'time', title: 'Submission Time'}];
+        const records = [];
+        quiz.questions.forEach(element => {
+            headers.push({
+                id: element.id, title: element.text
+            });
+        });
+        const csvWriter = createCsvStringifier({
+            header: headers
+        });
+        responses.sort((a, b) => a.time - b.time);
+        for(const [i, response] of responses.entries()) {
+            records.push({})
+            records[i].time = new dayjs(response.time).format('DD-MM-YYYY HH:mm:ss');
+            response.questions.forEach(element => {
+                records[i][element.id] = element.answer;
+            });
+        };
+        const csv = csvWriter.stringifyRecords(records);
+        return csv;
+    } catch (err) {
+        throw err;
+    }
+}
 
 async function addResponse(quizID, responseData) {
     if(localDBMode) return await localDB.insertResponse(quizID, responseData);
@@ -46,5 +73,6 @@ module.exports = {
     createQuestionnaire,
     getQuestionnaire,
     editQuestionnaire,
-    getQuestionnaires
+    getQuestionnaires,
+    getResponsesCSV
 }

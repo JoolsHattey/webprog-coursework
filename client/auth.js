@@ -77,7 +77,7 @@ export function getGoogleDriveAuth() {
                     client_id: '669091989709-1ft3bvjahneklp47kefipe1h6gglnr4o.apps.googleusercontent.com',
                     scope: 'https://www.googleapis.com/auth/drive.file',
                     response_type: 'code token id_token'
-                }, function(result) {b
+                }, function(result) {
                     resolve(result.code);
                 });
             });

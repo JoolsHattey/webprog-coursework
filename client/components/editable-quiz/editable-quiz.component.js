@@ -154,7 +154,17 @@ export class EditableQuiz extends Component {
     }
 
     async exportResponses() {
-        const res = await fetch(`/api/export/${this.id}`);
+        const serverAuthCode = await getServerAuthCode();
+        const res = await fetch(`/api/export/${this.id}`, {
+            headers: {
+                'id_token': serverAuthCode
+            }
+        });
+        const data = await res.text();
+        const link = document.createElement('a');
+        link.setAttribute('href', `data:text/csv;charset=utf-8,${encodeURIComponent(data)}`);
+        link.setAttribute('download', `${this.data.name} - Responses.csv`);
+        link.click();
     }
 
     async initResponsesTab() {

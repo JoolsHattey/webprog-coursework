@@ -33,7 +33,7 @@ export class BottomSheet extends Component {
         const cancelBtn = $(this, "[data-modal-action='cancel']");
         if(cancelBtn) {
             cancelBtn.addEventListener('click', () => {
-                this.afterCloseCallback();
+                if(this.afterCloseCallback) this.afterCloseCallback();
                 this.close();
             });
         }
@@ -69,7 +69,7 @@ export class BottomSheet extends Component {
         const distance = touchPos - this.touchStartPos;
         const speed = distance / (e.timeStamp-this.touchStartTime);
         if(pos > (window.innerHeight*0.15) || speed > 0.5) {
-            this.afterCloseCallback();
+            if(this.afterCloseCallback) this.afterCloseCallback();
             this.close();
         } else {
             this.container.style.transform = null;
