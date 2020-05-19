@@ -191,7 +191,7 @@ export class EditableQuiz extends Component {
                 questionResponses.push(response.questions[i].answer)
             })
             const chartContainer = $(questionResponseCard, '#questionResponses');
-            function foo(arr) {
+            function sortRadioSelectorResponses(arr) {
                 var a = [], b = [], prev;
             
                 arr.sort();
@@ -207,15 +207,28 @@ export class EditableQuiz extends Component {
                 console.log([a, b])
                 return [a, b];
             }
+            function sortCheckBoxResponses(arr) {
+                const result = {};
+                arr.forEach(innerArr => {
+                    innerArr.forEach(item => {
+                        if(result[item]) {
+                            result[item]++;
+                        } else {
+                            result[item] = 1;
+                        }
+                    });
+                })
+                return result;
+            }
             switch (question.type) {
                 case 'single-select':
                     console.log(questionResponses)
-                    const chart = new PieChart(foo(questionResponses)[1], foo(questionResponses)[0]);
+                    const chart = new PieChart(sortRadioSelectorResponses(questionResponses)[1], sortRadioSelectorResponses(questionResponses)[0]);
                     console.log(chart)
                     chartContainer.append(chart);
                     break;
                 case 'multi-select':
-                    chartContainer.append(new BarChart());
+                    chartContainer.append(new BarChart(sortCheckBoxResponses(questionResponses)));
                     break;
                 default:
                     console.log(questionResponses)

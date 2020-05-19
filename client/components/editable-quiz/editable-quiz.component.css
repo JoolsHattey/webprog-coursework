@@ -40,7 +40,7 @@ body {
     display: flex;
     flex-direction: column;
     overflow: scroll;
-    max-height: 4rem;
+    max-height: 6rem;
 }
 .textResponses div {
     background-color: lightgrey;
@@ -161,6 +161,7 @@ dropdown-el {
 }
 .btnGroup button {
     margin: 0.5rem;
+    width: 13rem;
 }
 #editableQuestionsList body {
     padding-bottom: 3rem;
