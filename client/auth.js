@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 const firebaseConfig = {
   apiKey: "AIzaSyB0cnilljayJ3axmCdJyBvGV_nLdDQ9csI",
@@ -44,23 +44,19 @@ export function getServerAuthCode() {
     firebase.auth().onAuthStateChanged(user => {
       if(user) {
         user.getIdTokenResult().then((result) => {
-          console.log(result)
           resolve(result.token);
         });
-      } else resolve(false)
-    })
-  })
+      } else resolve(false);
+    });
+  });
 }
 
 export async function login() {
   const provider = new firebase.auth.GoogleAuthProvider();
   try {
-    const result = await firebase.auth().signInWithPopup(provider);
-    const token = result.credential.accessToken;
-    const user = result.user;
+    await firebase.auth().signInWithPopup(provider);
   } catch (error) {
-    const errorCode = error.code;
-    const errorMessage = error.message;
+    throw error;
   }
 }
 
@@ -80,10 +76,10 @@ export function getAdminStatus() {
           if(token.claims.moderator) {
             resolve(true);
           } else {
-            resolve(false)
+            resolve(false);
           }
         });
-      } else resolve(false)
+      } else resolve(false);
     });
   });
 }
