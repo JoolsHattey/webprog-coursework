@@ -47,20 +47,30 @@ export class Quiz extends Component {
     this.stack = new CardStack();
     $(this, '#cardStackContainer').appendChild(this.stack);
     this.stack.init(qCards);
+    
 
     this.stack.addEventListener('lockrejected', e => {
       this.inputs[e.detail.currentCard].getValue()
-    })
+    });
 
-    this.inputs.forEach(input => {
-      input.addEventListener('validinput', e => {
-        this.stack.lockNext = !e.detail.valid;
-      });
-    })
+    for(const [i, input] of this.inputs.entries()) {
+      if(questions[i].required) {
+        input.addEventListener('validinput', e => {
+          this.stack.lockNext = !e.detail.valid;
+        });
+      }
+    }
 
     this.progress = $(this, 'progress');
 
-    this.nextBtnEvent = () => this.stack.next();
+    let stackVisible = false;
+    this.nextBtnEvent = () => {
+      this.stack.next()
+      if(!stackVisible) {
+        stackVisible = true;
+        if(questions[0].required) this.stack.lockNext = true;
+      }
+      };
     this.submitBtnEvent = () => this.submitResponse();
 
     $(this, '#nextBtn').addEventListener('click', this.nextBtnEvent);
@@ -71,6 +81,9 @@ export class Quiz extends Component {
       mutations.forEach(mutation => {
         if(mutation.type == "attributes") {
           if(mutation.target.currentCard > this.currentQ) {
+            if(questions[this.currentQ+1]?.required) {
+              this.stack.lockNext = true;
+            }
             this.nextQuestion();
           } else if(mutation.target.currentCard < this.currentQ) {
             this.previousQuestion();
@@ -79,8 +92,8 @@ export class Quiz extends Component {
             this.progress.setAttribute('value', ((1 / this.questions.length) * 100));
           }
         }
-      })
-    })
+      });
+    });
 
     observer.observe(this.stack, {
       attributes: true

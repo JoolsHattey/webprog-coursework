@@ -50,7 +50,6 @@ export class CardStack extends Component {
           }
           this.currentCard++;
         }
-        this.lockNext = true;
         this.animateNext();
       }
        else {

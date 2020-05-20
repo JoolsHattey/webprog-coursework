@@ -9,7 +9,6 @@ export class RouterOutlet extends Component {
       stylesheet: '/components/router-outlet/router-outlet.component.css'
     });
     this.container.append(new ProgressSpinner());
-    console.log(location)
   }
   /**
    * Remove current component and append new one passing in the route params as arguments
@@ -18,7 +17,7 @@ export class RouterOutlet extends Component {
    */
   async routeComponent(component, req) {
     const newComponent = new component(req);
-    // await newComponent.templatePromise;
+    await newComponent.templatePromise;
     this.container.children[0].remove();
     this.container.appendChild(newComponent);
   }
