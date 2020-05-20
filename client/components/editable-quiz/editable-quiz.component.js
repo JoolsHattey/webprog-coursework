@@ -35,6 +35,8 @@ export class EditableQuiz extends Component {
     $(this.appBar, '#questionsBtn').addEventListener('click', () => this.questionsTab());
     $(this.appBar, '#previewBtn').addEventListener('click', () => this.preview());
     $(this.appBar, '#saveBtn').addEventListener('click', () => this.save());
+    const questionsContainer = $(this, '#editableQuestionsContainer');
+    $(questionsContainer, '#newQ').addEventListener('click', () => this.createQuestion());
     this.initSaveStatus(quizData.saveTime);
     this.questionTouchList = $(this, 'touch-drag-list');
     this.questionTouchList.container.classList.add('questionList');
@@ -44,7 +46,7 @@ export class EditableQuiz extends Component {
     for(const [i, question] of quizData.questions.entries()) {
       await this.createQuestion(i, question);
     }
-    $(this, '#editableQuestionsContainer').classList.remove('hide');
+    questionsContainer.classList.remove('hide');
     $(this, 'progress-spinner').remove();
     this.initShareDialog();
     this.initResponsesTab();
@@ -278,9 +280,8 @@ export class EditableQuiz extends Component {
   }
 
   async createQuestion(index, questionData) {
-    if(!questionData) {
-      questionData = {type: 'text'};
-    }
+    if(!questionData) questionData = {type: 'text'};
+    if(!index) index = this.data.questions.length;
     const q = new Card({
       template: '/components/editable-quiz/question.html',
       stylesheet: '/components/editable-quiz/editable-quiz.component.css'
