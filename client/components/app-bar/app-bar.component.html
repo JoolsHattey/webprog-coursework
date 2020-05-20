@@ -1,28 +1,28 @@
 <template>
-    <div id="topRow">
-        <div class="titleRowContainer">
-            <button id="editorHome" class="md-icon-btn"><icon-el>form</icon-el></button>
-            <h3>
-                Editor
-            </h3>
-        </div>
-        <div id="quizEditorButtons" class="hide">
-            <button id="saveBtn" class="md-icon-btn" disabled="true"><icon-el colour="dark">save</icon-el></button>
-            <button id="previewBtn" class="md-icon-btn"><icon-el colour="dark">preview</icon-el></button>      
-            <button id="shareBtn" class="md-icon-btn"><icon-el colour="dark">send</icon-el></button>
-        </div>
-        <button id="profile" class="md-icon-btn"><icon-el colour="dark">account</icon-el></button>
+  <div id="topRow">
+    <div class="titleRowContainer">
+      <button id="editorHome" class="md-icon-btn"><icon-el>form</icon-el></button>
+      <h3>
+        Editor
+      </h3>
     </div>
+    <div id="quizEditorButtons" class="hide">
+      <button id="saveBtn" class="md-icon-btn" disabled="true"><icon-el colour="dark">save</icon-el></button>
+      <button id="previewBtn" class="md-icon-btn"><icon-el colour="dark">preview</icon-el></button>      
+      <button id="shareBtn" class="md-icon-btn"><icon-el colour="dark">send</icon-el></button>
+    </div>
+    <button id="profile" class="md-icon-btn"><icon-el colour="dark">account</icon-el></button>
+  </div>
 
-    <div id="expandedContent">
-        <div class="innerExpandedContent">
-            <text-input size="singleline" underline="false" fontsize="large"></text-input>
-            <div id="saveStatus"></div>
-            <div class="tabs">
-                <div id="questionsBtn" class="selected">Questions</div>
-                <div id="responsesBtn">Responses</div>
-                <span class="bar"></span>
-            </div>        
-        </div>
+  <div id="expandedContent">
+    <div class="innerExpandedContent">
+      <text-input size="singleline" underline="false" fontsize="large"></text-input>
+      <div id="saveStatus"></div>
+      <div class="tabs">
+        <div id="questionsBtn" class="selected">Questions</div>
+        <div id="responsesBtn">Responses</div>
+        <span class="bar"></span>
+      </div>        
     </div>
+  </div>
 </template>

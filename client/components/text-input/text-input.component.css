@@ -1,116 +1,116 @@
 body {
-    margin: 0;
+  margin: 0;
 }
 
 .textinput {
-    position: relative;
+  position: relative;
 }
 #input {
-    position: relative;
-    display: block;
-    width: 100%;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    border: none;
-    border-bottom: 1px solid #757575;
-    height: 18px;
-    max-height: 300px;
-    font-family: 'Roboto';
+  position: relative;
+  display: block;
+  width: 100%;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border: none;
+  border-bottom: 1px solid #757575;
+  height: 18px;
+  max-height: 300px;
+  font-family: 'Roboto';
 }
 .smallText {
-    font-size: 16px;
+  font-size: 16px;
 }
 .largeText {
-    font-size: 22px;
+  font-size: 22px;
 }
 .singleLine {
-    padding: 0 10px 0 5px;
+  padding: 0 10px 0 5px;
 }
 .multiLine {
-    margin: 0;
-    padding: 0 5px 0 5px;
+  margin: 0;
+  padding: 0 5px 0 5px;
 }
 /* input {
-    padding: 5px 0 5px 0;
+  padding: 5px 0 5px 0;
 } */
 textarea {
-    margin: 0;
-    padding: 5px 0 0 0;
-    resize: none;
+  margin: 0;
+  padding: 5px 0 0 0;
+  resize: none;
 }
 .noUnderline {
-    border-bottom: none!important;
+  border-bottom: none!important;
 }
 .noUnderline:hover {
-    border-bottom: 1px solid #757575!important;
+  border-bottom: 1px solid #757575!important;
 }
 #input:focus {
-    outline: none;
+  outline: none;
 }
 
 #input:focus ~ .highlight, #input:valid ~ .highlight {
-    top:-20px;
-    font-size:14px;
-    color:#5264AE;
+  top:-20px;
+  font-size:14px;
+  color:#5264AE;
 }
 
 .bar {
-    position: relative;
-    display: block;
-    width: 100%;
+  position: relative;
+  display: block;
+  width: 100%;
 }
 
 .bar:before, .bar:after 	{
-    content:'';
-    height:2px; 
-    width:0;
-    bottom:1px; 
-    position:absolute;
-    background:#5264AE; 
-    transition:0.2s ease all; 
-    -moz-transition:0.2s ease all; 
-    -webkit-transition:0.2s ease all;
+  content:'';
+  height:2px; 
+  width:0;
+  bottom:1px; 
+  position:absolute;
+  background:#5264AE; 
+  transition:0.2s ease all; 
+  -moz-transition:0.2s ease all; 
+  -webkit-transition:0.2s ease all;
 }
 .bar:before {
-    left:50%;
+  left:50%;
 }
 .bar:after {
-    right:50%;
+  right:50%;
 }
 
 #input:focus ~ .bar:before, #input:focus ~ .bar:after {
-    width:50%;
+  width:50%;
 }
 
 .highlight {
-    position:relative;
-    height:60%;
-    width:100%;
-    top:25%; 
-    left:0;
-    pointer-events:none;
-    opacity:0.5;
+  position:relative;
+  height:60%;
+  width:100%;
+  top:25%; 
+  left:0;
+  pointer-events:none;
+  opacity:0.5;
 }
 
 .warn:before, .warn:after {
-    background: #D93025!important;
+  background: #D93025!important;
 }
 .warnInput {
-    border-bottom: 1px solid #D93025!important;
+  border-bottom: 1px solid #D93025!important;
 }
 #requiredAlert {
-    margin-top: 8px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    color: #D93025;
+  margin-top: 8px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: #D93025;
 }
 #requiredAlert div {
-    margin-left: 4px;
+  margin-left: 4px;
 }
 
 #input:focus ~ .highlight {
-    -webkit-animation:inputHighlighter 0.3s ease;
-    -moz-animation:inputHighlighter 0.3s ease;
-    animation:inputHighlighter 0.3s ease;
+  -webkit-animation:inputHighlighter 0.3s ease;
+  -moz-animation:inputHighlighter 0.3s ease;
+  animation:inputHighlighter 0.3s ease;
 }

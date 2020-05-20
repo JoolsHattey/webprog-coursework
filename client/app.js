@@ -28,10 +28,10 @@ routerInstance.init(routerOutlet);
  * @return {Element}
  */
 export function $(ctx, queryName) {
-    if(ctx.shadowRoot) {
-      return ctx.shadowRoot.querySelector(queryName);
-    }
-    return ctx.querySelector(queryName);
+  if(ctx.shadowRoot) {
+    return ctx.shadowRoot.querySelector(queryName);
+  }
+  return ctx.querySelector(queryName);
 }
 /**
  * 
@@ -40,15 +40,15 @@ export function $(ctx, queryName) {
  * @return {Element}
  */
 export async function $r(elName, template) {
-    const el = document.createElement(elName);
-    if(template) {
-      const parser = new DOMParser();
-      const res = await fetch(template);
-      const textTemplate = await res.text();
-      const htmlTemplate = parser.parseFromString(textTemplate, 'text/html').querySelector('template');
-      el.append(htmlTemplate.content.cloneNode(true))
-    }
-    return el;
+  const el = document.createElement(elName);
+  if(template) {
+    const parser = new DOMParser();
+    const res = await fetch(template);
+    const textTemplate = await res.text();
+    const htmlTemplate = parser.parseFromString(textTemplate, 'text/html').querySelector('template');
+    el.append(htmlTemplate.content.cloneNode(true))
+  }
+  return el;
 }
 /**
  * Clear inner content of element

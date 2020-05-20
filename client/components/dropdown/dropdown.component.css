@@ -1,16 +1,16 @@
 select {
-    height: 3rem;
-    padding: 0 0.5rem 0 0.5rem;
-    border-radius: 0.375rem;
-    outline: none;
-    border-color: grey;
+  height: 3rem;
+  padding: 0 0.5rem 0 0.5rem;
+  border-radius: 0.375rem;
+  outline: none;
+  border-color: grey;
 }
 
 option {
-    background-color: white;
+  background-color: white;
 }
 
 option:focus {
-    background-color: white;
-    display: none;
+  background-color: white;
+  display: none;
 }

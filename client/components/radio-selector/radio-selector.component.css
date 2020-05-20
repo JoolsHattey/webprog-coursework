@@ -1,98 +1,98 @@
 @keyframes ripple {
-    0% {
-      box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.0);
-    }
-    50% { 
-      box-shadow: 0px 0px 0px 15px rgba(0, 0, 0, 0.1);
-    }
-    100% {
-      box-shadow: 0px 0px 0px 15px rgba(0, 0, 0, 0);
-    }
+  0% {
+    box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.0);
+  }
+  50% { 
+    box-shadow: 0px 0px 0px 15px rgba(0, 0, 0, 0.1);
+  }
+  100% {
+    box-shadow: 0px 0px 0px 15px rgba(0, 0, 0, 0);
+  }
 }
 
 body {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 label {
-    position: relative;
-    display: flex;
-    flex-direction: row;
-    /* width: 20px; */
-    height: 20px;
-    margin: 10px 0;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  /* width: 20px; */
+  height: 20px;
+  margin: 10px 0;
 }
 
 div {
-    margin-left: 4px;
+  margin-left: 4px;
 }
 
 *, *:before, *:after { 
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 input {
-    display: none;
+  display: none;
 }
 
 span {
-    display: inline-block;
-    min-height: 20px;
-    position: relative;
-    width: 20px;
-    margin-bottom: 0;
-    cursor: pointer;
-    vertical-align: bottom;
+  display: inline-block;
+  min-height: 20px;
+  position: relative;
+  width: 20px;
+  margin-bottom: 0;
+  cursor: pointer;
+  vertical-align: bottom;
 }
 
 span:before, span:after {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    margin: auto;
-    content: '';
-    border-radius: 50%;
-    transition: all .3s ease;
-    transition-property: transform, border-color;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  content: '';
+  border-radius: 50%;
+  transition: all .3s ease;
+  transition-property: transform, border-color;
 }
 
 span:before {
-    width: 20px;
-    height: 20px;
-    border: 2px solid var(--primary-theme-colour);
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--primary-theme-colour);
 }
 
 span:after {
-    width: 10px;
-    height: 10px;
-    transform: scale(0);
-    background-color: var(--primary-theme-colour);
+  width: 10px;
+  height: 10px;
+  transform: scale(0);
+  background-color: var(--primary-theme-colour);
 }
 
 input:checked + span:before {
-    border-color: var(--primary-theme-colour);
-    animation: ripple 0.2s linear forwards;
+  border-color: var(--primary-theme-colour);
+  animation: ripple 0.2s linear forwards;
 }
 
 input:checked + span:after {
-    transform: scale(1);
+  transform: scale(1);
 }
 
 .hide {
-    display: none;
+  display: none;
 }
 
 #requiredAlert {
-    margin-top: 8px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    color: #D93025;
-    height: 1rem;
+  margin-top: 8px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: #D93025;
+  height: 1rem;
 }
 #requiredAlert div {
-    margin-left: 4px;
+  margin-left: 4px;
 }

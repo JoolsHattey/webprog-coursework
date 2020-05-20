@@ -1,169 +1,172 @@
 @import '../../styles.css';
 
 body {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 :host {
-    display: flex;
-    flex-grow: 1;
+  display: flex;
+  flex-grow: 1;
 }
 :host, body {
-    position: relative;
-    height: 100%;
-    width: 100%;
+  position: relative;
+  height: 100%;
+  width: 100%;
 }
 
 #newQ {
-    align-self: center;
-    position: absolute;
-    width: 10.1rem;
-    bottom: 0;
-    left: 0;
-    right: 0;
+  align-self: center;
+  position: absolute;
+  width: 10.1rem;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 
 .header {
-    background-color: white;
-    padding: 0.5rem;
+  background-color: white;
+  padding: 0.5rem;
 }
 
 #editableQuestionsContainer {
-    height: 100%;
+  height: 100%;
 }
 #editableQuestionsContainer touch-drag-list {
-    height: 100%;
+  height: 100%;
 }
 
 .textResponses {
-    display: flex;
-    flex-direction: column;
-    overflow: scroll;
-    max-height: 6rem;
+  display: flex;
+  flex-direction: column;
+  overflow: scroll;
+  max-height: 6rem;
 }
 .textResponses div {
-    background-color: lightgrey;
-    margin: 0.1rem;
-    padding: 0.1rem;
+  background-color: lightgrey;
+  margin: 0.1rem;
+  padding: 0.1rem;
 }
 
 #responsesContainer card-el {
-    width: 100%;
+  width: 100%;
 }
 
 #deleteBtn {
-    
+  
 }
 #dialogContent {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 .dialogOptionGroup {
-    display: flex;
-    flex-direction: row;
-    margin: 10px;
+  display: flex;
+  flex-direction: row;
+  margin: 10px;
 }
 .dialogBtnContainer {
-    margin-top: 30px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+  margin-top: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 .qAnswerItem {
-    display: flex;
-    flex-direction: row;
-    padding: 5px 0 5px 0;
-    margin-left: -1rem;
-    align-items: center;
-    justify-content: space-between;
-    background-color: white;
+  display: flex;
+  flex-direction: row;
+  padding: 5px 0 5px 0;
+  margin-left: -1rem;
+  align-items: center;
+  justify-content: space-between;
+  background-color: white;
 }
 .qAnswerItemDragging {
-    box-shadow: 0px 2px 2px #888, 0px -2px 2px #888;
-    z-index: 10;
+  box-shadow: 0px 2px 2px #888, 0px -2px 2px #888;
+  z-index: 10;
 }
 .answerOptionName {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 #newOptionBtn {
-    display: flex;
-    flex-direction: row;
-    margin: 5px 0 5px 0;
-    align-items: center;
-    justify-content: left;
-    opacity: 0.6;
+  display: flex;
+  flex-direction: row;
+  margin: 5px 0 5px 0;
+  align-items: center;
+  justify-content: left;
+  opacity: 0.6;
 }
 #newOptionBtn p {
-    padding-left: 5px;
-    font-size: 14px;
-    margin: 0;
+  padding-left: 5px;
+  font-size: 14px;
+  margin: 0;
 }
 progress-spinner {
-    margin: auto;
-    padding: 50px
+  margin: auto;
+  padding: 50px
 }
 #lastSaved {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 #lastSaved p {
-    font-size: 0.8em;
-    margin: 2px;
+  font-size: 0.8em;
+  margin: 2px;
 }
 .divider {
-    margin: 0.5rem 0 20px 0;
-    width: 270px;
+  margin: 0.5rem 0 20px 0;
+  width: 270px;
 }
 #questionActions {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 #questionActions div {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 #questionActions div div {
-    margin-right: 0.5rem;
+  margin-right: 0.5rem;
 }
 dropdown-el {
-    margin: 0.5rem 0 4px 0;
+  margin: 0.5rem 0 4px 0;
 }
 #dragHandle {
-    opacity: 0.5;
-    margin: -20px auto auto auto;
-    transform: rotate(90deg);
+  opacity: 0.5;
+  margin: -20px auto auto auto;
+  transform: rotate(90deg);
 }
 .answerOptionDragHandle {
-    opacity: 0.5;
-    transition: 0.3s;
+  opacity: 0.5;
+  transition: 0.3s;
 }
 #shareModal {
-    
+  
 }
 .titleContainer {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 .titleContainer icon-el {
-    margin-right: 0.5rem
+  margin-right: 0.5rem
 }
 .btnGroup {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    /* padding: 1rem; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* padding: 1rem; */
 }
 .btnGroup button {
-    margin: 0.5rem;
-    width: 13rem;
+  margin: 0.5rem;
+  width: 13rem;
 }
 #editableQuestionsList body {
-    padding-bottom: 3rem;
-    box-sizing: border-box;
+  padding-bottom: 3rem;
+  box-sizing: border-box;
+}
+.responsesTitle {
+  justify-content: center;
 }

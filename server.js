@@ -13,86 +13,76 @@ storage.init(localDBMode);
 
 const firestore = require('./storage/firestore')
 
-
-async function submitResponse(req, res) {
-    try {
-        await storage.addResponse(req.params.uid, req.body);
-        res.sendStatus(200);
-    } catch (error) {
-        res.sendStatus(400);
-    }
+async function getQuestionnaires(req, res) {
+  try {
+  res.send(await storage.getQuestionnaires());
+  } catch (error) {
+  res.sendStatus(400);
+  }
 }
-
 async function getQuestionnaire(req, res) {
-    try {
-        res.send(await storage.getQuestionnaire(req.params.uid));
-    } catch (error) {
-        res.sendStatus(400);
-    }
-    
+  try {
+  res.send(await storage.getQuestionnaire(req.params.uid));
+  } catch (error) {
+  res.sendStatus(400);
+  }
 }
-
+async function submitResponse(req, res) {
+  try {
+  await storage.addResponse(req.params.uid, req.body);
+  res.sendStatus(200);
+  } catch (error) {
+  res.sendStatus(400);
+  }
+}
 async function getResponses(req, res) {
-    try {
-        res.send(await storage.getResponses(req.params.uid));
-    } catch (error) {
-        res.sendStatus(400);
-    }
-    
+  try {
+  res.send(await storage.getResponses(req.params.uid));
+  } catch (error) {
+  res.sendStatus(400);
+  }
 }
-
 async function createQuestionnaire(req, res) {
-    try {
-        res.send(await storage.createQuestionnaire(req.body));
-    } catch (error) {
-        res.sendStatus(400);
-    }
-    
+  try {
+  res.send(await storage.createQuestionnaire(req.body));
+  } catch (error) {
+  res.sendStatus(400);
+  }
+  
 }
 
 async function editQuestionnaire(req, res) {
-    console.log(req.body)
-    try {
-        await storage.editQuestionnaire(req.params.uid, req.body);
-        res.sendStatus(200);
-    } catch (error) {
-        res.sendStatus(400);
-    }
-    
+  console.log(req.body)
+  try {
+  await storage.editQuestionnaire(req.params.uid, req.body);
+  res.sendStatus(200);
+  } catch (error) {
+  res.sendStatus(400);
+  }
 }
-
-async function getQuestionnaires(req, res) {
-    try {
-        res.send(await storage.getQuestionnaires());
-    } catch (error) {
-        res.sendStatus(400);
-    }
-    
-}
-
 async function getResponsesCSV(req, res) {
-    try {
-        res.send(await storage.getResponsesCSV(req.params.uid));
-      } catch (err) {
-        console.log(err)
-        res.sendStatus(400);
-      }
+  try {
+  res.send(await storage.getResponsesCSV(req.params.uid));
+  } catch (err) {
+  console.log(err)
+  res.sendStatus(400);
+  }
 }
 
 async function yiss(req, res) {
-    firestore.grantModeratorRole(req.params.email);
+  firestore.grantModeratorRole(req.params.email);
 }
 
 async function exportToGoogleDrive(req, res) {
-    const responses = await storage.getResponses(req.params.uid);
-    const quiz = await storage.getQuestionnaire(req.params.uid);
-    try {
-        const data = await gdrive.saveData(req.body, quiz, responses, req.get('origin'));
-        console.log({fileID: data});
-        res.send(data);
-    } catch (error) {
-        res.sendStatus(400);
-    }
+  const responses = await storage.getResponses(req.params.uid);
+  const quiz = await storage.getQuestionnaire(req.params.uid);
+  try {
+  const data = await gdrive.saveData(req.body, quiz, responses, req.get('origin'));
+  console.log({fileID: data});
+  res.send(data);
+  } catch (error) {
+  res.sendStatus(400);
+  }
 }
 
 const router = express.Router();
@@ -103,7 +93,7 @@ app.use(compression());
 
 app.use(express.static(__dirname + '/client'));
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '/client/index.html'));
+  res.sendFile(path.join(__dirname, '/client/index.html'));
 });
 
 // User routes
@@ -128,6 +118,6 @@ router.get('/yiss/:email', yiss)
 
 
 app.listen(port, () => {
-    console.log(`Questionnaire Engine listening on port ${port}`);
-    console.log(`Storage Mode: ${localDBMode ? 'Local SQLite' : 'Firestore'}`);
+  console.log(`Questionnaire Engine listening on port ${port}`);
+  console.log(`Storage Mode: ${localDBMode ? 'Local SQLite' : 'Firestore'}`);
 });

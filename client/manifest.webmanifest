@@ -1,22 +1,22 @@
 {
-    "short_name": "Quiz App",
-    "name": "Quiz App",
-    "description": "Webprog Coursework",
-    "icons": [
-      {
-        "src": "/assets/app-icons/icon_192px.png",
-        "type": "image/png",
-        "sizes": "192x192"
-      },
-      {
-        "src": "/assets/app-icons/icon_512px.png",
-        "type": "image/png",
-        "sizes": "512x512"
-      }
-    ],
-    "start_url": "/home",
-    "background_color": "#00695c",
-    "display": "standalone",
-    "scope": "/",
-    "theme_color": "#00695c"
+  "short_name": "Quiz App",
+  "name": "Quiz App",
+  "description": "Webprog Coursework",
+  "icons": [
+    {
+    "src": "/assets/app-icons/icon_192px.png",
+    "type": "image/png",
+    "sizes": "192x192"
+    },
+    {
+    "src": "/assets/app-icons/icon_512px.png",
+    "type": "image/png",
+    "sizes": "512x512"
+    }
+  ],
+  "start_url": "/home",
+  "background_color": "#00695c",
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#00695c"
   }

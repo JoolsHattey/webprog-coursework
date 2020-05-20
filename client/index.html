@@ -1,34 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <base href="/client">
-        <meta name="theme-color" content="#00695c">
-        <link rel="apple-touch-icon" href="/assets/app-icons/icon_192px.png">
-        <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicons/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicons/favicon-16x16.png">
-        <link rel="manifest" href="/manifest.webmanifest">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet preload">
-        <link rel="stylesheet" href="/styles.css">
-        <meta name="google-signin-client_id" content="669091989709-1ft3bvjahneklp47kefipe1h6gglnr4o.apps.googleusercontent.com">
-    </head>
-    <body class="mainBody">
-        
-        <router-outlet></router-outlet>
+  <head>
+    <base href="/client">
+    <meta name="theme-color" content="#00695c">
+    <link rel="apple-touch-icon" href="/assets/app-icons/icon_192px.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.webmanifest">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet preload">
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body class="mainBody">
+    
+    <router-outlet></router-outlet>
 
-    </body>
-    <script>
-        if('serviceWorker' in navigator) {
-            navigator.serviceWorker
-                .register('/sw.js')
-                .then(() => console.log('Service Worker Registered'));
-        }
-    </script>
-    <script src="https://www.gstatic.com/firebasejs/7.9.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.9.1/firebase-auth.js"></script>
-    <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css?display=swap" />
-    <script type="module" src="./app.js"></script>
-    <noscript>Please enable Javascript to view this page</noscript>
+  </body>
+  <script>
+    if('serviceWorker' in navigator) {
+      navigator.serviceWorker
+        .register('/sw.js')
+        .then(() => console.log('Service Worker Registered'));
+    }
+  </script>
+  <script src="https://www.gstatic.com/firebasejs/7.9.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.9.1/firebase-auth.js"></script>
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <script type="module" src="./app.js"></script>
+  <noscript>Please enable Javascript to view this page</noscript>
 </html>

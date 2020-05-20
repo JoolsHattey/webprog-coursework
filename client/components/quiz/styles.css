@@ -1,87 +1,87 @@
 @import '../../styles.css';
 
 #quizNavBtns {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin: auto;
-    padding: 0.625rem 0.625rem 0 0.625rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: auto;
+  padding: 0.625rem 0.625rem 0 0.625rem;
 }
 #quizNavBtnContainer {
-    position: absolute;
-    bottom: 0;
-    display: block;
-    background-color: #f5f5f5;
-    width: 100%;
-    height: 3.5rem;
-    z-index: 100;
+  position: absolute;
+  bottom: 0;
+  display: block;
+  background-color: #f5f5f5;
+  width: 100%;
+  height: 3.5rem;
+  z-index: 100;
 }
 
 #titleCard {
-    position: relative;
-    width: 100%;
-    height: 28%;
+  position: relative;
+  width: 100%;
+  height: 28%;
 }
 #titleCard card-el {
-    /* position: absolute; */
-    z-index: 50;
-    height: 100%;
-    
+  /* position: absolute; */
+  z-index: 50;
+  height: 100%;
+  
 }
 
 .titleContainer {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 .titleContainer icon-el {
-    margin-right: 0.5rem
+  margin-right: 0.5rem
 }
 
 progress {
-    display: flex;
-    flex-direction: row;
-    margin: auto;
-    -webkit-appearance: none;
-    appearance: none;
-    width: 100%;
-    height: 0.25rem;
-    border-radius: 0.625rem;
+  display: flex;
+  flex-direction: row;
+  margin: auto;
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 0.25rem;
+  border-radius: 0.625rem;
 }
 progress::-webkit-progress-value {
-    background: #435398;
-    transition:  0.2s;
+  background: #435398;
+  transition:  0.2s;
 }
 
 #timer {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 #timer icon-el {
-    margin-right: 0.3125rem;
+  margin-right: 0.3125rem;
 }
 :host {
-    display: flex;
+  display: flex;
 }
 :host {
-    position: relative;
+  position: relative;
 }
 :host, body {
-    position: relative;
-    height: 100%;
-    width: 100%;
+  position: relative;
+  height: 100%;
+  width: 100%;
 }
 #editFab {
-    bottom: 5rem;
-    right: 0.625rem;
+  bottom: 5rem;
+  right: 0.625rem;
 }
 #cardStackContainer {
-    height: 100%;
+  height: 100%;
 }
 img {
-    width: 100%;
+  width: 100%;
 }
 card-el {
-    width: 100%;
+  width: 100%;
 }

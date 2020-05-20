@@ -1,154 +1,154 @@
 /* Global Styles */
 
 :root {
-    --primary-theme-colour: #00695c;
-    --light-theme-colour: #439889;
-    --dark-theme-colour: #003d33;
-    --background-theme-colour: #CCE0DE;
+  --primary-theme-colour: #00695c;
+  --light-theme-colour: #439889;
+  --dark-theme-colour: #003d33;
+  --background-theme-colour: #CCE0DE;
 }
 
 card-el {
-    height: auto;
+  height: auto;
 }
 
 :host {
-    display: block;
+  display: block;
 }
 
 .page {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 .mainBody {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    width: 100%;
-    position: fixed;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  position: fixed;
 }
 
 * {
-    font-family: 'Roboto', sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 html, body, main {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 main {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .profileCard {
-    position: absolute;
-    right: 0;
-    top: 35px;
-    width: 100px;
-    height: 300px;
-    z-index: 10;
+  position: absolute;
+  right: 0;
+  top: 35px;
+  width: 100px;
+  height: 300px;
+  z-index: 10;
 }
 
 .md-button {
-    border: none;
-    background-color: var(--primary-theme-colour);
-    color: white;
-    /* padding: 0 16px; */
-    font-weight: 500;
-    font-size: 0.875rem;
-    min-width: 4rem;
-    height: 2.25rem;
-    border-radius: 0.25rem;
-    box-shadow: 0 0 0.25rem #999;
-    outline: none;
-    background-position: center;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.8s;
+  border: none;
+  background-color: var(--primary-theme-colour);
+  color: white;
+  /* padding: 0 16px; */
+  font-weight: 500;
+  font-size: 0.875rem;
+  min-width: 4rem;
+  height: 2.25rem;
+  border-radius: 0.25rem;
+  box-shadow: 0 0 0.25rem #999;
+  outline: none;
+  background-position: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.8s;
 }
 .md-button:active:not([disabled]) {
-    background-color: var(--light-theme-colour);
-    background-size: 100%;
-    transition: background 0s;
+  background-color: var(--light-theme-colour);
+  background-size: 100%;
+  transition: background 0s;
 }
 .md-button:hover:not([disabled]) {
-    cursor: pointer;
-    background: var(--primary-theme-colour) radial-gradient(circle, transparent 1%, var(--primary-theme-colour) 1%) center/15000%;
+  cursor: pointer;
+  background: var(--primary-theme-colour) radial-gradient(circle, transparent 1%, var(--primary-theme-colour) 1%) center/15000%;
 }
 .md-button:disabled {
-    background-color: grey;
-    box-shadow: none!important;
+  background-color: grey;
+  box-shadow: none!important;
 }
 
 .md-icon-btn {
-    width: 24px;
-    height: 24px;
-    margin-left: 16px;
-    margin-right: 16px;
-    padding: 0;
-    outline: none;
-    border: none;
-    background-color: transparent;
+  width: 24px;
+  height: 24px;
+  margin-left: 16px;
+  margin-right: 16px;
+  padding: 0;
+  outline: none;
+  border: none;
+  background-color: transparent;
 }
 .md-icon-btn:disabled {
-    opacity: 0.5;
+  opacity: 0.5;
 }
 .md-icon-text-btn {
-    padding: 8px 10px!important;
+  padding: 8px 10px!important;
 }
 .md-icon-text-btn icon-el {
-    padding-right: 6px;
-    width: 18px!important;
-    height: 18px!important;
+  padding-right: 6px;
+  width: 18px!important;
+  height: 18px!important;
 }
 .md-fab {
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    background-color: var(--primary-theme-colour);
-    box-shadow: 0 6px 10px 0 #666;
-    border: none;
-    outline: none;
-    transition: all 0.1s ease-in-out;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: var(--primary-theme-colour);
+  box-shadow: 0 6px 10px 0 #666;
+  border: none;
+  outline: none;
+  transition: all 0.1s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
 }
 .md-extended-fab {
-    width: auto;
-    height: 48px;
-    border-radius: 24px;
-    background-color: var(--primary-theme-colour);
-    box-shadow: 0 6px 10px 0 #666;
-    border: none;
-    outline: none;
-    transition: all 0.1s ease-in-out;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    margin: 8px;
-    margin-left: auto;
-    margin-right: auto;
+  width: auto;
+  height: 48px;
+  border-radius: 24px;
+  background-color: var(--primary-theme-colour);
+  box-shadow: 0 6px 10px 0 #666;
+  border: none;
+  outline: none;
+  transition: all 0.1s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  margin: 8px;
+  margin-left: auto;
+  margin-right: auto;
 }
 .md-extended-fab icon-el {
-    padding: 12px;
+  padding: 12px;
 }
 .md-extended-fab div {
-    padding-right: 20px;
-    color: white;
+  padding-right: 20px;
+  color: white;
 }
 
 .hide {
-    display: none!important;
+  display: none!important;
 }
 .divider {
-    height: 1px;
-    background-color: grey;
-    margin: 4px 0 4px 0;
+  height: 1px;
+  background-color: grey;
+  margin: 4px 0 4px 0;
 }
 

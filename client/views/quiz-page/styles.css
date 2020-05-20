@@ -1,23 +1,23 @@
 html, body, main {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  
 }
 :host, body {
-    display: flex;
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    width: 100%;
+  display: flex;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
 }
 
 main {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .page {
-    /* margin: 10px; */
-    width: 100%;
+  /* margin: 10px; */
+  width: 100%;
 }
