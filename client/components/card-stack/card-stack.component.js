@@ -144,7 +144,9 @@ export class CardStack extends Component {
     });
     event.target.style.transition = '0.5s'
     const speed = (Math.abs(this.touchStartPos-event.changedTouches[0].clientY))/(event.timeStamp-this.touchStartTime);
-    if(this.touchStartPos>event.changedTouches[0].clientY) {
+    if(this.touchStartPos===event.changedTouches[0].clientY){
+      // Detect fake swipe
+    } else if(this.touchStartPos>event.changedTouches[0].clientY) {
       this.prev();
     } else {
       if(this.lockNext) {
