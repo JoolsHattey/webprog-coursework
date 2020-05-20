@@ -28,6 +28,7 @@ export class CardStack extends Component {
       el.addEventListener('touchmove', this.touchMoveEvent);
       el.addEventListener('touchend', this.touchEndEvent);
       el.style.opacity = 0;
+      el.index = i;
 
       if(i < 4) this.cardContainer.appendChild(el);
     }
@@ -119,7 +120,7 @@ export class CardStack extends Component {
       if(!(event.target.index === this.cards.length-1)) {
         event.target.style.transform = `translate3d(0, ${event.changedTouches[0].clientY-this.touchStartPos}px, 0)`;
       }
-    } else {
+    } else if(!(event.target.index === 0)) {
       const moveValue = (event.changedTouches[0].clientY-this.touchStartPos)
       for(const [i, el] of this.cards.entries()) {
         el.style.transition = '0s'
@@ -145,7 +146,7 @@ export class CardStack extends Component {
     const speed = (Math.abs(this.touchStartPos-event.changedTouches[0].clientY))/(event.timeStamp-this.touchStartTime);
     if(this.touchStartPos===event.changedTouches[0].clientY){
       // Detect fake swipe
-    } else if(this.touchStartPos>event.changedTouches[0].clientY) {
+    } else if(this.touchStartPos>event.changedTouches[0].clientY && !(event.target.index === 0)) {
       this.prev();
     } else {
       if(this.lockNext) {
@@ -156,14 +157,13 @@ export class CardStack extends Component {
         });
         this.dispatchEvent(newEvent);
         event.target.style.transform = 'translate3d(0, 0, 0)';
-      } else if(speed > 0.5) {
+      } else if(speed > 0.5 && !(event.target.index === this.cards.length-1)) {
         this.next();
       } else {
         event.target.style.transform = 'translate3d(0, 0, 0)';
       }
       console.log('down')
     }
-
   }
 
   get currentCard() {
