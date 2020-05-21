@@ -1,12 +1,13 @@
 'use strict';
 
-import { Chart } from "./chart.component.js";
+import { Chart } from './chart.component.js';
 
 export class PieChart extends Chart {
   constructor(data, labels) {
     super();
     this.drawChart(data, labels);
   }
+
   drawChart(data, labels) {
     let lastend = 0;
     let myTotal = 0; // Automatically calculated so don't touch
@@ -16,7 +17,7 @@ export class PieChart extends Chart {
       myTotal += data[e];
     }
 
-    this.addLegend(data, labels, myTotal, myColor)
+    this.addLegend(data, labels, myTotal, myColor);
 
     for (let i = 0; i < data.length; i++) {
       this.ctx.fillStyle = myColor[i];

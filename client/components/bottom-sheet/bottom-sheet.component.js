@@ -1,7 +1,7 @@
 'use strict';
 
-import { Component } from "../component.js";
-import { $ } from "../../app.js";
+import { Component } from '../component.js';
+import { $ } from '../../app.js';
 
 /**
  * @typedef {Object} ComponentStructure
@@ -11,29 +11,30 @@ import { $ } from "../../app.js";
 
 export class BottomSheet extends Component {
   /**
-   * @param {ComponentStructure} options 
+   * @param {ComponentStructure} options
    */
   constructor(options) {
     super(options);
     this.addStyleSheet('/components/bottom-sheet/bottom-sheet.component.css');
     this.initElement();
   }
+
   async initElement() {
     await this.templatePromise;
     const chip = document.createElement('div');
     chip.classList.add('chip');
     this.container.children[0].before(chip);
     const saveBtn = $(this, "[data-modal-action='save']");
-    if(saveBtn) {
+    if (saveBtn) {
       saveBtn.addEventListener('click', () => {
         this.afterCloseCallback(true);
         this.close();
       });
     }
     const cancelBtn = $(this, "[data-modal-action='cancel']");
-    if(cancelBtn) {
+    if (cancelBtn) {
       cancelBtn.addEventListener('click', () => {
-        if(this.afterCloseCallback) this.afterCloseCallback();
+        if (this.afterCloseCallback) this.afterCloseCallback();
         this.close();
       });
     }
@@ -45,47 +46,51 @@ export class BottomSheet extends Component {
     this.addEventListener('touchmove', (e) => this.touchMove(e));
     this.addEventListener('touchend', (e) => this.touchEnd(e));
   }
+
   touchStart(e) {
     this.touchStartTime = e.timeStamp;
     this.container.style.transition = '0s';
-    this.startPos = e.changedTouches[0].clientY + (window.innerHeight*0.3);
+    this.startPos = e.changedTouches[0].clientY + (window.innerHeight * 0.3);
     this.touchStartPos = e.changedTouches[0].clientY;
-    console.log(e)
+    console.log(e);
   }
+
   touchMove(e) {
     e.stopPropagation();
     e.preventDefault();
     const touchPos = e.changedTouches[0].clientY;
     const pos = touchPos - this.startPos;
-    if(touchPos > this.touchStartPos) {
+    if (touchPos > this.touchStartPos) {
       this.container.style.transform = `translate3d(0,${pos}px,0)`;
     }
-    
   }
+
   touchEnd(e) {
     this.container.style.transition = '0.3s';
     const touchPos = e.changedTouches[0].clientY;
     const pos = touchPos - this.touchStartPos;
     const distance = touchPos - this.touchStartPos;
-    const speed = distance / (e.timeStamp-this.touchStartTime);
-    if(pos > (window.innerHeight*0.15) || speed > 0.5) {
-      if(this.afterCloseCallback) this.afterCloseCallback();
+    const speed = distance / (e.timeStamp - this.touchStartTime);
+    if (pos > (window.innerHeight * 0.15) || speed > 0.5) {
+      if (this.afterCloseCallback) this.afterCloseCallback();
       this.close();
     } else {
       this.container.style.transform = null;
     }
   }
+
   open() {
-    if(!this.opened) {
+    if (!this.opened) {
       document.body.append(this);
       this.overlay.style.opacity = 0.5;
       this.opened = true;
     }
   }
+
   close() {
-    if(this.opened) {
+    if (this.opened) {
       this.opened = false;
-      this.container.style.transform = `translate3d(0,0,0)`;
+      this.container.style.transform = 'translate3d(0,0,0)';
       this.overlay.style.opacity = 0;
       window.setTimeout(() => {
         this.container.style.transform = null;
@@ -93,6 +98,7 @@ export class BottomSheet extends Component {
       }, 300);
     }
   }
+
   afterClose(callback) {
     this.afterCloseCallback = callback;
   }

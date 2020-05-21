@@ -7,7 +7,7 @@ let localDBMode;
 
 async function init(dbMode) {
   localDBMode = dbMode;
-  if(localDBMode) {
+  if (localDBMode) {
     try {
       await localDB.init();
     } catch (error) {
@@ -16,81 +16,53 @@ async function init(dbMode) {
   }
 }
 
-async function addResponse(quizID, responseData) {
-  try {
-    if(localDBMode) return await localDB.insertResponse(quizID, responseData);
-    return await firestore.addResponse(quizID, responseData);
-  } catch (error) {
-    throw error;
-  }
+function addResponse(quizID, responseData) {
+  if (localDBMode) return localDB.insertResponse(quizID, responseData);
+  return firestore.addResponse(quizID, responseData);
 }
-async function getResponses(quizID) {
-  try {
-    if(localDBMode) return await localDB.getResponses(quizID);
-    return await firestore.getResponses(quizID);
-  } catch (error) {
-    throw error;
-  }
+function getResponses(quizID) {
+  if (localDBMode) return localDB.getResponses(quizID);
+  return firestore.getResponses(quizID);
 }
-async function createQuestionnaire(quizData) {
-  try {
-    if(localDBMode) return await localDB.insertQuiz(quizData);
-    return await firestore.createQuestionnaire(quizData);
-  } catch (error) {
-    throw error;
-  }
+function createQuestionnaire(quizData) {
+  if (localDBMode) return localDB.insertQuiz(quizData);
+  return firestore.createQuestionnaire(quizData);
 }
-async function getQuestionnaire(uid) {
-  try {
-    if(localDBMode) return await localDB.getQuiz(uid);
-    return await firestore.getQuestionnaire(uid);
-  } catch (error) {
-    throw error;
-  }
+function getQuestionnaire(uid) {
+  if (localDBMode) return localDB.getQuiz(uid);
+  return firestore.getQuestionnaire(uid);
 }
-async function editQuestionnaire(uid, quizData) {
-  try {
-    if(localDBMode) return await localDB.insertQuiz(quizData, uid);
-    return await firestore.editQuestionnaire(uid, quizData);
-  } catch (error) {
-    throw error;
-  }
+function editQuestionnaire(uid, quizData) {
+  if (localDBMode) return localDB.insertQuiz(quizData, uid);
+  return firestore.editQuestionnaire(uid, quizData);
 }
-async function getQuestionnaires() {
-  try {
-    if(localDBMode) return await localDB.getAllQuizs();
-    return await firestore.getQuestionnaires();
-  } catch (error) {
-    throw error;
-  }
+function getQuestionnaires() {
+  if (localDBMode) return localDB.getAllQuizs();
+  return firestore.getQuestionnaires();
 }
 async function getResponsesCSV(quizID) {
-  try {
-    const responses = await getResponses(quizID);
-    const quiz = await getQuestionnaire(quizID);
-    const headers = [{id: 'time', title: 'Submission Time'}];
-    const records = [];
-    quiz.questions.forEach(element => {
-      headers.push({
-        id: element.id, title: element.text
-      });
+  const responses = await getResponses(quizID);
+  const quiz = await getQuestionnaire(quizID);
+  const headers = [{ id: 'time', title: 'Submission Time' }];
+  const records = [];
+  quiz.questions.forEach(element => {
+    headers.push({
+      id: element.id, title: element.text,
     });
-    const csvWriter = createCsvStringifier({
-      header: headers
+  });
+  const csvWriter = createCsvStringifier({
+    header: headers,
+  });
+  responses.sort((a, b) => a.time - b.time);
+  for (const [i, response] of responses.entries()) {
+    records.push({});
+    records[i].time = dayjs(response.time).format('DD-MM-YYYY HH:mm:ss');
+    response.questions.forEach(element => {
+      records[i][element.id] = element.answer;
     });
-    responses.sort((a, b) => a.time - b.time);
-    for(const [i, response] of responses.entries()) {
-      records.push({})
-      records[i].time = new dayjs(response.time).format('DD-MM-YYYY HH:mm:ss');
-      response.questions.forEach(element => {
-        records[i][element.id] = element.answer;
-      });
-    };
-    const csv = csvWriter.getHeaderString() + csvWriter.stringifyRecords(records);
-    return csv;
-  } catch (err) {
-    throw err;
   }
+  const csv = csvWriter.getHeaderString() + csvWriter.stringifyRecords(records);
+  return csv;
 }
 
 module.exports = {
@@ -101,5 +73,5 @@ module.exports = {
   getQuestionnaire,
   editQuestionnaire,
   getQuestionnaires,
-  getResponsesCSV
-}
+  getResponsesCSV,
+};

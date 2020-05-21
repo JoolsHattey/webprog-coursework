@@ -1,43 +1,43 @@
 'use strict';
 
-import { Component } from "../component.js";
-import { $ } from "../../app.js";
+import { Component } from '../component.js';
+import { $ } from '../../app.js';
 
 export class TextInput extends Component {
   constructor() {
     super({
       template: '/components/text-input/text-input.component.html',
-      stylesheet: '/components/text-input/text-input.component.css'
+      stylesheet: '/components/text-input/text-input.component.css',
     });
     this.initElement();
   }
 
-  async initElement() {
-    if(this.hasAttribute('size')) {
+  initElement() {
+    if (this.hasAttribute('size')) {
       this.sizeNotInit = this.setSize(this.getAttribute('size'));
     }
-    if(this.hasAttribute('fontsize')) {
+    if (this.hasAttribute('fontsize')) {
       this.setFontSize(this.getAttribute('fontsize'));
     }
   }
 
-  static get observedAttributes() { return ['size','underline', 'fontsize'] }
+  static get observedAttributes() { return ['size', 'underline', 'fontsize']; }
 
   attributeChangedCallback(name, oldValue, newValue) {
-    if(name === 'size') {
+    if (name === 'size') {
       this.setSize(newValue);
     }
-    if(name === 'underline') {
+    if (name === 'underline') {
       this.setUnderline(newValue);
     }
-    if(name === 'fontsize') {
+    if (name === 'fontsize') {
       this.setFontSize(newValue);
     }
   }
 
   async setUnderline(newValue) {
     await this.templatePromise;
-    if(newValue === 'true') {
+    if (newValue === 'true') {
       this.inputEl.classList.remove('noUnderline');
     } else {
       this.inputEl.classList.add('noUnderline');
@@ -46,7 +46,7 @@ export class TextInput extends Component {
 
   async setFontSize(value) {
     await this.templatePromise;
-    if(value === 'large') {
+    if (value === 'large') {
       this.inputEl.classList.add('largeText');
       this.inputEl.classList.remove('smallText');
     } else {
@@ -58,24 +58,24 @@ export class TextInput extends Component {
   async setSize(value) {
     await this.templatePromise;
     const el = $(this, '#input');
-    if(value === 'singleline') {
+    if (value === 'singleline') {
       this.inputEl = document.createElement('input');
       this.container.classList.remove('multiLine');
       this.container.classList.add('singleLine');
-    } else if(value === 'multiline') {
+    } else if (value === 'multiline') {
       this.inputEl = document.createElement('textarea');
       this.inputEl.rows = 1;
       this.container.classList.remove('singleLine');
       this.container.classList.add('multiLine');
-      this.inputEl.addEventListener('input', () => this.resize(), false); 
+      this.inputEl.addEventListener('input', () => this.resize(), false);
     }
-    if(this.required) {
+    if (this.required) {
       this.inputEl.addEventListener('keyup', (e) => {
-        console.log(e.target.value)
+        console.log(e.target.value);
         const event = new CustomEvent('validinput', {
           detail: {
-            valid: !(e.target.value === '')
-          }
+            valid: !(e.target.value === ''),
+          },
         });
         this.validInput = !(e.target.value === '');
         this.dispatchEvent(event);
@@ -87,9 +87,9 @@ export class TextInput extends Component {
   }
 
   warn(value) {
-    if(!this.warnVisible && !value) {
+    if (!this.warnVisible && !value) {
 
-    } else if(this.warnVisible && !value) {
+    } else if (this.warnVisible && !value) {
       $(this, '.bar').classList.remove('warn');
       $(this, '#requiredAlert').style = 'display: none;';
       this.inputEl.classList.remove('warnInput');
@@ -101,27 +101,27 @@ export class TextInput extends Component {
       this.inputEl.focus();
       this.warnVisible = true;
     }
-    
   }
 
   getValue() {
     const inputValue = this.inputEl.value;
-    if(inputValue === "" && this.required === 'true') {
+    if (inputValue === '' && this.required === 'true') {
       this.warn(true);
-    };
-    if(inputValue === "") return;
+    }
+    if (inputValue === '') return;
     return inputValue;
   }
+
   async setValue(newValue) {
     await this.sizeNotInit;
     this.inputEl.value = newValue;
     this.resize();
-    this.inputEl.dispatchEvent(new Event('input'))
+    this.inputEl.dispatchEvent(new Event('input'));
   }
 
   resize() {
-    this.inputEl.setAttribute('style', 'height: auto;')
-    this.inputEl.setAttribute('style', `height: ${this.inputEl.scrollHeight > 20 ? this.inputEl.scrollHeight : 20}px;`)
+    this.inputEl.setAttribute('style', 'height: auto;');
+    this.inputEl.setAttribute('style', `height: ${this.inputEl.scrollHeight > 20 ? this.inputEl.scrollHeight : 20}px;`);
   }
 
   async setOnChange(callback) {
@@ -137,18 +137,23 @@ export class TextInput extends Component {
   get required() {
     return this.getAttribute('required');
   }
+
   set required(newValue) {
     this.setAttribute('required', newValue);
   }
+
   get size() {
     return this.getAttribute('size');
   }
+
   set size(newValue) {
     this.setAttribute('size', newValue);
   }
+
   get underline() {
     return this.getAttribute('underline');
   }
+
   set underline(newValue) {
     this.setAttribute('underline', newValue);
   }

@@ -1,19 +1,19 @@
 'use strict';
 
-import { Component } from "../component.js";
-import { Card } from "../card/card.component.js";
-import { TextInput } from "../text-input/text-input.component.js";
-import { CheckboxGroup } from "../checkbox/checkbox-group.component.js";
-import { RadioGroup } from "../radio-selector/radio-selector.component.js";
-import { $ } from "../../app.js";
-import { SnackBar } from "../snack-bar/snack-bar.component.js";
-import { CardStack } from '../../components/card-stack/card-stack.component.js'
+import { Component } from '../component.js';
+import { Card } from '../card/card.component.js';
+import { TextInput } from '../text-input/text-input.component.js';
+import { CheckboxGroup } from '../checkbox/checkbox-group.component.js';
+import { RadioGroup } from '../radio-selector/radio-selector.component.js';
+import { $ } from '../../app.js';
+import { SnackBar } from '../snack-bar/snack-bar.component.js';
+import { CardStack } from '../../components/card-stack/card-stack.component.js';
 
 export class Quiz extends Component {
   constructor(quizID, quizData) {
     super({
       template: '/components/quiz/quiz.component.html',
-      stylesheet: '/components/quiz/styles.css'
+      stylesheet: '/components/quiz/styles.css',
     });
     this.initElement(quizID, quizData);
   }
@@ -23,14 +23,14 @@ export class Quiz extends Component {
     this.quizID = quizID;
     this.questions = quizData.questions;
     this.currentQ = 0;
-    this.inputs = new Array;
+    this.inputs = [];
     this.response = { questions: [], time: null };
     this.createTitleCard(quizData);
     this.createQuestionCards(quizData.questions);
   }
 
-  async createQuestionCards(questions) {
-    const qCards = new Array;
+  createQuestionCards(questions) {
+    const qCards = [];
     questions.forEach(element => {
       const question = new Card();
       question.id = element.id;
@@ -40,21 +40,20 @@ export class Quiz extends Component {
     });
 
     this.finishCard = new Card({
-      template: '/components/quiz/quiz-finish.html'
+      template: '/components/quiz/quiz-finish.html',
     });
     qCards.push(this.finishCard);
 
     this.stack = new CardStack();
     $(this, '#cardStackContainer').appendChild(this.stack);
     this.stack.init(qCards);
-    
 
     this.stack.addEventListener('lockrejected', e => {
-      this.inputs[e.detail.currentCard].getValue()
+      this.inputs[e.detail.currentCard].getValue();
     });
 
-    for(const [i, input] of this.inputs.entries()) {
-      if(questions[i].required) {
+    for (const [i, input] of this.inputs.entries()) {
+      if (questions[i].required) {
         input.addEventListener('validinput', e => {
           this.stack.lockNext = !e.detail.valid;
         });
@@ -65,12 +64,12 @@ export class Quiz extends Component {
 
     let stackVisible = false;
     this.nextBtnEvent = () => {
-      this.stack.next()
-      if(!stackVisible) {
+      this.stack.next();
+      if (!stackVisible) {
         stackVisible = true;
-        if(questions[0].required) this.stack.lockNext = true;
+        if (questions[0].required) this.stack.lockNext = true;
       }
-      };
+    };
     this.submitBtnEvent = () => this.submitResponse();
 
     $(this, '#nextBtn').addEventListener('click', this.nextBtnEvent);
@@ -79,13 +78,15 @@ export class Quiz extends Component {
 
     const observer = new MutationObserver(mutations => {
       mutations.forEach(mutation => {
-        if(mutation.type == "attributes") {
-          if(mutation.target.currentCard > this.currentQ) {
-            if(questions[this.currentQ+1]?.required) {
-              this.stack.lockNext = true;
+        if (mutation.type === 'attributes') {
+          if (mutation.target.currentCard > this.currentQ) {
+            if (questions[this.currentQ + 1]) {
+              if (questions[this.currentQ + 1].required) {
+                this.stack.lockNext = true;
+              }
             }
             this.nextQuestion();
-          } else if(mutation.target.currentCard < this.currentQ) {
+          } else if (mutation.target.currentCard < this.currentQ) {
             this.previousQuestion();
           } else {
             $(this, '#nextBtn').textContent = 'Next';
@@ -96,18 +97,18 @@ export class Quiz extends Component {
     });
 
     observer.observe(this.stack, {
-      attributes: true
+      attributes: true,
     });
   }
 
   async createTitleCard(quizData) {
     const titleCard = new Card({
       template: '/components/quiz/quiz-title.html',
-      stylesheet: '/components/quiz/styles.css'
+      stylesheet: '/components/quiz/styles.css',
     });
     await titleCard.templatePromise;
     $(titleCard, '#title').append(quizData.name);
-    $(titleCard, '#numQ').append(`${quizData.questions.length} Questions`)
+    $(titleCard, '#numQ').append(`${quizData.questions.length} Questions`);
     $(this, '#titleCard').appendChild(titleCard);
     // const infoDialog = new ModalCard({
     //     template: '/components/quiz/quiz-tutorial-dialog.html',
@@ -118,21 +119,21 @@ export class Quiz extends Component {
 
   createInput(questionData) {
     let input;
-    switch(questionData.type) {
-      case "text":
+    switch (questionData.type) {
+      case 'text':
         input = new TextInput();
-        input.size = 'singleline'
+        input.size = 'singleline';
         input.id = questionData.id;
-        input.setLabel(questionData.text)
+        input.setLabel(questionData.text);
         break;
-      case "number":
+      case 'number':
         input = new TextInput();
-        input.size = 'singleline'
+        input.size = 'singleline';
         break;
-      case "single-select":
-        input = new RadioGroup(questionData.options)
+      case 'single-select':
+        input = new RadioGroup(questionData.options);
         break;
-      case "multi-select":
+      case 'multi-select':
         input = new CheckboxGroup(questionData.options);
         break;
     }
@@ -145,50 +146,49 @@ export class Quiz extends Component {
   nextQuestion() {
     // Check if next input is already filled to prevent stack from locking
     // E.g. if user is reviewing quetions
-    if(this.currentQ < this.questions.length-1) {
-      if(this.inputs[this.currentQ+1].validInput) {
+    if (this.currentQ < this.questions.length - 1) {
+      if (this.inputs[this.currentQ + 1].validInput) {
         this.stack.lockNext = false;
       }
     }
-    if(this.currentQ >= 0) {
+    if (this.currentQ >= 0) {
       const inputValue = this.inputs[this.currentQ].getValue();
       this.response.questions[this.currentQ] = {
         id: this.questions[this.currentQ].id,
-        answer: inputValue
-      }
+        answer: inputValue,
+      };
     }
     this.currentQ++;
-    this.progress.setAttribute('value', (((this.currentQ+1) / this.questions.length) * 100));
+    this.progress.setAttribute('value', (((this.currentQ + 1) / this.questions.length) * 100));
     // Change buttons based on question number
-    if(this.currentQ === this.questions.length-1) {
+    if (this.currentQ === this.questions.length - 1) {
       $(this, '#nextBtn').textContent = 'Review';
-    } else if(this.currentQ === this.questions.length) {
+    } else if (this.currentQ === this.questions.length) {
       $(this, '#nextBtn').textContent = 'Submit';
       $(this, '#nextBtn').removeEventListener('click', this.nextBtnEvent);
       $(this, '#nextBtn').addEventListener('click', this.submitBtnEvent);
-    } else if(this.currentQ === 1) {
+    } else if (this.currentQ === 1) {
       $(this, '#backBtn').disabled = false;
     }
   }
 
   previousQuestion() {
     this.currentQ--;
-    this.progress.setAttribute('value', (((this.currentQ+1) / this.questions.length) * 100))
-    if(this.currentQ === this.questions.length-1) {
+    this.progress.setAttribute('value', (((this.currentQ + 1) / this.questions.length) * 100));
+    if (this.currentQ === this.questions.length - 1) {
       $(this, '#nextBtn').textContent = 'Review';
       $(this, '#nextBtn').removeEventListener('click', this.submitBtnEvent);
       $(this, '#nextBtn').addEventListener('click', this.nextBtnEvent);
-    } else if(this.currentQ === this.questions.length-2) {
+    } else if (this.currentQ === this.questions.length - 2) {
       $(this, '#nextBtn').textContent = 'Next';
-    } else if(this.currentQ === -1) {
+    } else if (this.currentQ === -1) {
       $(this, '#backBtn').disabled = true;
     }
   }
 
   async submitResponse() {
-
-    $(this.finishCard, '#afterSubmit').classList.remove('hide')
-    $(this.finishCard, '#beforeSubmit').classList.add('hide')
+    $(this.finishCard, '#afterSubmit').classList.remove('hide');
+    $(this.finishCard, '#beforeSubmit').classList.add('hide');
 
     this.response.time = Date.now();
 
@@ -202,21 +202,20 @@ export class Quiz extends Component {
       method: 'POST',
       body: JSON.stringify(this.response),
       headers: {
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     });
-    if(res.ok) {
+    if (res.ok) {
       const completeSnack = new SnackBar();
       completeSnack.addTitle('Quiz submitted');
       completeSnack.show(5000);
     } else {
       const errorSnack = new SnackBar();
-      errorSnack.addTitle('Error Submitting Quiz')
-      completeSnack.show(5000);
+      errorSnack.addTitle('Error Submitting Quiz');
+      errorSnack.show(5000);
       $(this, '#nextBtn').disabled = false;
     }
   }
-
 }
 
 window.customElements.define('quiz-item', Quiz);

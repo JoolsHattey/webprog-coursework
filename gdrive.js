@@ -1,11 +1,11 @@
-const {google} = require('googleapis');
+const { google } = require('googleapis');
 const credentials = require('./credentials.json');
 const dayjs = require('dayjs');
 
 async function authorise(credentials, userAuthCode, url) {
-  const {client_secret, client_id, redirect_uris} = credentials.web;
+  const { client_secret: clientSecret, client_id: clientID } = credentials.web;
   const oAuth2Client = new google.auth.OAuth2(
-    client_id, client_secret, url);
+    clientID, clientSecret, url);
   try {
     const token = await oAuth2Client.getToken((userAuthCode.authToken));
     oAuth2Client.setCredentials(token.tokens);
@@ -15,71 +15,48 @@ async function authorise(credentials, userAuthCode, url) {
   }
 }
 
-async function createSheetLocal(quizData, responseData) {
-  const sheets = google.sheets({version: 'v4'});
-  const resource = createSheet(quizData, responseData);
-
-  const spreadsheet = await sheets.spreadsheets.create({
-    resource,
-    fields: 'spreadsheetId',
-    fields: 'spreadsheetUrl',
-  });
-  console.log(spreadsheet)
-}
-
 async function saveData(authToken, quizData, responseData, url) {
   const auth = await authorise(credentials, authToken, url);
-  const sheets = google.sheets({version: 'v4', auth});
-
+  const sheets = google.sheets({ version: 'v4', auth });
   const resource = createSheet(quizData, responseData);
-
-  try {
-    const spreadsheet = await sheets.spreadsheets.create({
-      resource,
-      fields: 'spreadsheetId',
-      fields: 'spreadsheetUrl',
-    });
-    return {url: spreadsheet.data.spreadsheetUrl}
-  } catch (error) {
-    console.log(error);
-    throw new Error();
-  }
-  
-
+  const spreadsheet = await sheets.spreadsheets.create({
+    resource,
+    fields: 'spreadsheetUrl',
+  });
+  return { url: spreadsheet.data.spreadsheetUrl };
 }
 
 function createSheet(quizData, responseData) {
   responseData.sort((a, b) => a.time - b.time);
 
-  const columnHeaders = {values: []};
+  const columnHeaders = { values: [] };
   columnHeaders.values.push({
     userEnteredValue: {
-      stringValue: 'Date'
-    }
-  })
+      stringValue: 'Date',
+    },
+  });
   quizData.questions.forEach(question => {
-    console.log(question)
+    console.log(question);
     columnHeaders.values.push({
       userEnteredValue: {
-        stringValue: question.text
-      }
+        stringValue: question.text,
+      },
     });
   });
 
   const rows = [columnHeaders];
   responseData.forEach(response => {
-    const row = {values: []};
+    const row = { values: [] };
     row.values.push({
       userEnteredValue: {
-        stringValue: new dayjs(response.time).format('DD-MM-YYYY HH:mm:ss')
-      }
+        stringValue: dayjs(response.time).format('DD-MM-YYYY HH:mm:ss'),
+      },
     });
     response.questions.forEach(question => {
-      
       row.values.push({
         userEnteredValue: {
-          stringValue: question.answer ? question.answer.toString() : null
-        }
+          stringValue: question.answer ? question.answer.toString() : null,
+        },
       });
     });
     rows.push(row);
@@ -91,16 +68,16 @@ function createSheet(quizData, responseData) {
     },
     sheets: [
       {
-        properties: {}, 
+        properties: {},
         data: [
           {
             startRow: 0,
             startColumn: 0,
-            rowData: rows
-          }
-        ]
-      }
-    ]
+            rowData: rows,
+          },
+        ],
+      },
+    ],
   };
 
   return resource;
@@ -108,5 +85,4 @@ function createSheet(quizData, responseData) {
 
 module.exports = {
   saveData,
-  createSheetLocal
-}
+};

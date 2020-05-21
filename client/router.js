@@ -1,5 +1,4 @@
-"use strict";
-import { Component } from "./components/component.js";
+'use strict';
 
 /**
  * @typedef {Object} Route
@@ -12,10 +11,9 @@ import { Component } from "./components/component.js";
  */
 
 export class Router {
-
   constructor() {
-     this.routes = [];
-     this.routerOutlet = null;
+    this.routes = [];
+    this.routerOutlet = null;
   }
 
   /**
@@ -25,11 +23,11 @@ export class Router {
   get(routeOptions) {
     // if(!routeOptions.uri || !routeOptions.component) throw new Error('uri or component must be given');
 
-    if(typeof routeOptions.uri !== "string") throw new TypeError('typeof uri must be a string');
+    if (typeof routeOptions.uri !== 'string') throw new TypeError('typeof uri must be a string');
     // if(!routeOptions.component instanceof Component) throw new TypeError('typeof component must be a Component');
 
-    this.routes.forEach(route=>{
-      if(route.uri === routeOptions.uri) throw new Error(`the uri ${route.uri} already exists`);
+    this.routes.forEach(route => {
+      if (route.uri === routeOptions.uri) throw new Error(`the uri ${route.uri} already exists`);
     });
 
     this.routes.push(routeOptions);
@@ -47,9 +45,9 @@ export class Router {
   }
 
   matchRoute(route, path) {
-    const regEx = new RegExp("^" + route.uri.replace(/:[^\s/]+/g, '([\\w-]+)') + "$");
-    if(path.match(regEx)) {
-      if(route.defaultRoute) {
+    const regEx = new RegExp('^' + route.uri.replace(/:[^\s/]+/g, '([\\w-]+)') + '$');
+    if (path.match(regEx)) {
+      if (route.defaultRoute) {
         this.navigate(route.redirectTo);
       } else {
         const params = this.getParams(route, path);
@@ -63,35 +61,35 @@ export class Router {
 
   async goToPage(route, path, params) {
     const req = { path, params };
-    if(route.authGuard) {
-      const auth = await route.authGuard()
-      if(auth) {
-        if(route.lazy) {
-          const loadedComponent = await route.destination()
-          this.routerOutlet.routeComponent(loadedComponent, req);      
+    if (route.authGuard) {
+      const auth = await route.authGuard();
+      if (auth) {
+        if (route.lazy) {
+          const loadedComponent = await route.destination();
+          this.routerOutlet.routeComponent(loadedComponent, req);
         } else {
           this.routerOutlet.routeComponent(route.domponent, req);
         }
         // Set address bar to router path
-        history.pushState(history.state, "", path);
+        history.pushState(history.state, '', path);
       } else {
-        this.navigate('/login')
+        this.navigate('/login');
       }
     } else {
-      if(route.lazy) {
-        const loadedComponent = await route.destination()
-        this.routerOutlet.routeComponent(loadedComponent, req);      
+      if (route.lazy) {
+        const loadedComponent = await route.destination();
+        this.routerOutlet.routeComponent(loadedComponent, req);
       } else {
         this.routerOutlet.routeComponent(route.domponent, req);
       }
       // Set address bar to router path
-      history.pushState(history.state, "", path);
+      history.pushState(history.state, '', path);
     }
   }
 
   getParams(route, path) {
     // Get list of parameter names
-    const paramNames = route.uri.split('/:')
+    const paramNames = route.uri.split('/:');
     const routeName = paramNames.shift();
 
     // Remove route name to get paramater string
@@ -100,15 +98,13 @@ export class Router {
 
     const paramValues = paramString.split('/')
       // Remove empty params
-      .filter(el => {return el.length != 0});
-    
+      .filter(el => { return el.length !== 0; });
+
     // Create return object of params values with names
-    let params = {};
-    for(let i=0; i<paramValues.length; i++) {
+    const params = {};
+    for (let i = 0; i < paramValues.length; i++) {
       params[paramNames[i]] = paramValues[i];
     }
     return params;
   }
 }
-
-window.onpopstate = (e) => console.log(e)

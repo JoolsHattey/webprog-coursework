@@ -1,20 +1,20 @@
 'use strict';
 
-import { Component } from "../component.js";
-import { $ } from "../../app.js";
+import { Component } from '../component.js';
+import { $ } from '../../app.js';
 
 export class Toggle extends Component {
   constructor() {
     super({
       template: '/components/toggle/toggle.component.html',
-      stylesheet: '/components/toggle/toggle.component.css'
+      stylesheet: '/components/toggle/toggle.component.css',
     });
     this.initElement();
   }
 
   async initElement() {
     await this.templatePromise;
-    $(this, 'input').addEventListener('change', e => this.checked = e.target.checked);
+    $(this, 'input').addEventListener('change', e => { this.checked = e.target.checked; });
   }
 
   async setOnChange(callback) {
@@ -22,7 +22,7 @@ export class Toggle extends Component {
     $(this, 'input').addEventListener('change', callback);
   }
 
-  static get observedAttributes() { return ['checked'] }
+  static get observedAttributes() { return ['checked']; }
 
   async attributeChangedCallback(name, oldValue, newValue) {
     await this.templatePromise;
@@ -32,9 +32,10 @@ export class Toggle extends Component {
   getValue() {
     return $(this, 'input').checked;
   }
+
   async setValue(value) {
     await this.templatePromise;
-    if(typeof value === 'string') {
+    if (typeof value === 'string') {
       $(this, 'input').checked = value === 'true';
     } else {
       $(this, 'input').checked = value;
@@ -44,6 +45,7 @@ export class Toggle extends Component {
   get checked() {
     this.getAttribute('checked');
   }
+
   set checked(newValue) {
     this.setAttribute('checked', newValue);
   }

@@ -20,6 +20,7 @@ async function getAllQuizs(req, res) {
     res.sendStatus(400);
   }
 }
+
 async function getQuiz(req, res) {
   try {
     res.send(await storage.getQuestionnaire(req.params.uid));
@@ -27,6 +28,7 @@ async function getQuiz(req, res) {
     res.sendStatus(400);
   }
 }
+
 async function submitResponse(req, res) {
   try {
     await storage.addResponse(req.params.uid, req.body);
@@ -35,6 +37,7 @@ async function submitResponse(req, res) {
     res.sendStatus(400);
   }
 }
+
 async function getResponses(req, res) {
   try {
     res.send(await storage.getResponses(req.params.uid));
@@ -42,6 +45,7 @@ async function getResponses(req, res) {
     res.sendStatus(400);
   }
 }
+
 async function createQuiz(req, res) {
   try {
     res.send(await storage.createQuestionnaire(req.body));
@@ -78,9 +82,9 @@ async function exportResponsesGoogleDrive(req, res) {
   }
 }
 
-async function yiss(req, res) {
-  firestore.grantModeratorRole(req.params.email);
-}
+// async function yiss(req, res) {
+//   firestore.grantModeratorRole(req.params.email);
+// }
 
 // API router
 const router = express.Router();
@@ -88,7 +92,7 @@ app.use('/api', router);
 
 // Catch all other routes and send to client
 app.use(compression());
-app.use(express.static(__dirname + '/client'));
+app.use(express.static(path.join(__dirname, '/client')));
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '/client/index.html'));
 });
@@ -106,7 +110,7 @@ router.get('/export/:uid', firestore.firebaseAuth, exportResponsesCSV);
 router.post('/exportdrive/:uid', firestore.firebaseAuth, express.json(), exportResponsesGoogleDrive);
 
 
-router.get('/yiss/:email', yiss)
+// router.get('/yiss/:email', yiss);
 
 
 app.listen(port, () => {
