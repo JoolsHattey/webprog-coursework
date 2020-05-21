@@ -35,7 +35,7 @@ export class QuizEditor extends Component {
     $(this.appBar, '#editorHome').addEventListener('click', () => {
       $clear($(this, '#editor'));
       $clear($(this, '#quizsContainer'));
-      history.pushState({}, '', '/quizeditor');
+      history.pushState(history.state, '', '/quizeditor');
       this.getQuestionnaireList();
     });
 
@@ -92,7 +92,7 @@ export class QuizEditor extends Component {
       container.appendChild(quizItem);
       quizItem.addEventListener('click', () => {
         $clear($(this, '#quizsContainer'));
-        history.pushState({}, '', `/quizeditor/${element.uid}`);
+        history.pushState(history.state, '', `/quizeditor/${element.uid}`);
         this.getQuestionnaire(element.uid);
       });
     }

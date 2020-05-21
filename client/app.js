@@ -57,5 +57,5 @@ export async function $r(elName, template) {
  * @param {HTMLElement} el
  */
 export function $clear(el) {
-  el.innerHTML = '';
+  Array.from(el.children).forEach(childNode => childNode.remove());
 }

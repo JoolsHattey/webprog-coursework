@@ -71,6 +71,7 @@ export class Router {
           this.routerOutlet.routeComponent(route.domponent, req);
         }
         // Set address bar to router path
+        console.log(history);
         history.pushState(history.state, '', path);
       } else {
         this.navigate('/login');

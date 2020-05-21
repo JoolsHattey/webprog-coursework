@@ -272,10 +272,10 @@ export class EditableQuiz extends Component {
       this.moveOption(index, e.detail.oldIndex, e.detail.newIndex);
     });
     this.touchLists[index] = touchList;
-    newAnswerOptionBtn.addEventListener('click', () => {
+    newAnswerOptionBtn.onclick = () => {
       console.log(this.data.questions[index].options);
       this.createAnswerOption(answerOptionsContainer, null, this.data.questions[index].type, true, this.data.questions[index].options.length, index);
-    });
+    };
   }
 
   async createQuestion(index, questionData) {
@@ -334,16 +334,21 @@ export class EditableQuiz extends Component {
     ]);
     dropDown.setValue(questionData.type);
     dropDown.setOnChange((e) => {
-      this.data.questions[index].type = e.target.value;
       if (e.target.value === 'single-select') {
-        if (!this.data.questions[index].options) {
+        if (this.data.questions[index].type === 'multi-select') {
+          this.touchLists[index].removeAllItems();
+        }
+        if (!this.data.questions[index].options || this.data.questions[index].type === 'multi-select') {
           this.initAnswerOptionList(q, index);
           this.createAnswerOption(answerOptionsContainer, null, e.target.value, true, 0, index);
         }
         answerOptionsContainer.classList.remove('hide');
         newAnswerOptionBtn.children[0].textContent = 'radio';
       } else if (e.target.value === 'multi-select') {
-        if (!this.data.questions[index].options) {
+        if (this.data.questions[index].type === 'single-select') {
+          this.touchLists[index].removeAllItems();
+        }
+        if (!this.data.questions[index].options || this.data.questions[index].type === 'single-select') {
           this.initAnswerOptionList(q, index);
           this.createAnswerOption(answerOptionsContainer, null, e.target.value, true, 0, index);
         }
@@ -354,6 +359,7 @@ export class EditableQuiz extends Component {
         this.touchLists[index].removeAllItems();
         this.data.questions[index].options = null;
       }
+      this.data.questions[index].type = e.target.value;
       newAnswerOptionBtn.children[0].initElement();
     });
 
@@ -414,7 +420,8 @@ export class EditableQuiz extends Component {
       }
     }
     $(el, 'button').onclick = () => {
-      answerContainer.children[0].removeChild(el);
+      // answerContainer.children[0].removeChild(el);
+      this.touchLists[qIndex].removeItem(el, index);
       this.data.questions[qIndex].options.splice(index, 1);
     };
   }

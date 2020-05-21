@@ -80,6 +80,9 @@ This method asyncronously fetched the text from an html file and parses it using
 into the container element of the component. The add template method returns a promise which can
 be used to await the loading of the template to allow changing the data.
 
+### Inputs
+
+
 ## Router
 This is made up of two parts, the router and the router outlet. The routers listenes for paths
 in the address bar and navigates to a components. The router outlet is the main component on the
