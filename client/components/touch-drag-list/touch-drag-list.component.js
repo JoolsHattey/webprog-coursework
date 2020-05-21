@@ -27,6 +27,7 @@ export class TouchDragList extends Component {
    * @param {Element} dragHandle The drag handle of the item to control movement
    */
   addItem(el, dragHandle) {
+    el.index = this.items.length;
     this.container.append(el);
     const dragHandleEl = $(el, dragHandle);
     dragHandleEl.addEventListener('touchstart', e => this.touchStart(e, el, dragHandleEl));
@@ -38,18 +39,17 @@ export class TouchDragList extends Component {
     }
   }
 
-  removeItem(index) {
-    this.container.children[index].remove();
+  removeItem(el, index) {
+    this.container.removeChild(el);
     this.items.splice(index, 1);
   }
 
   removeAllItems() {
-    for (const i of this.items.entries()) {
-      this.removeItem(i);
-    }
+    Array.from(this.container.children).forEach(el => el.remove());
   }
 
   touchStart(e, el, dragHandle) {
+    this.tempNewIndex = el.index;
     dragHandle.style.opacity = 1;
     el.style.zIndex = '199!important';
     el.classList.add('qAnswerItemDragging');
@@ -77,11 +77,15 @@ export class TouchDragList extends Component {
         this.swipeDirection = 'down';
       }
     }
-    if ((touchPos + 100) > window.innerHeight) {
-      this.container.scrollBy(0, 5);
-      this.scrollAmount += 5;
+    if (this.scrollMode) {
+      if ((touchPos + 100) > window.innerHeight) {
+        this.container.scrollBy(0, 5);
+        this.scrollAmount += 5;
+      }
     }
-    el.style.transform = `translate3d(0,${pos + this.scrollAmount}px,0)`;
+    if (touchPos > this.getBoundingClientRect().top && touchPos < this.getBoundingClientRect().bottom) {
+      el.style.transform = `translate3d(0,${pos + this.scrollAmount}px,0)`;
+    }
     // Detect collisions with other list items by getting elements from point of active item
     const elements = this.shadowRoot.elementsFromPoint(window.innerWidth / 2, touchPos);
     const item = elements.find(x => (x.classList.contains(this.queryName) || x.tagName.toLowerCase() === this.queryName) && !(x.index === el.index));
@@ -89,6 +93,7 @@ export class TouchDragList extends Component {
     if (item) {
       // TODO
       const thing = (Math.abs(item.index - el.index)) * (this.items[item.index].clientHeight / 2);
+      console.log(thing);
       if (Math.abs(pos) > thing) {
         this.tempNewIndex = item.index;
         if (this.swipeDirection === 'up') {
@@ -111,6 +116,7 @@ export class TouchDragList extends Component {
       }
     }
     this.oldPos = pos;
+    console.log(this.tempNewIndex);
   }
 
   touchEnd(e, el, dragHandle) {
@@ -120,10 +126,11 @@ export class TouchDragList extends Component {
     el.classList.remove('qAnswerItemDragging');
     this.swipeDirection = null;
     el.style.transition = '0.3s';
-    this.moveItem(el.index, this.tempNewIndex, el);
-
+    console.log(el.index, this.tempNewIndex);
+    if (el.index !== this.tempNewIndex) {
+      this.moveItem(el.index, this.tempNewIndex, el);
+    }
     el.style.transform = 'translate3d(0,0,0)';
-
     console.log(`did ${this.things} things, ${this.things / ((e.timeStamp - this.startTime) / 1000)} per second`);
   }
 
