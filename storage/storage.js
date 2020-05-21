@@ -8,7 +8,11 @@ let localDBMode;
 async function init(dbMode) {
   localDBMode = dbMode;
   if(localDBMode) {
-    await localDB.init();
+    try {
+      await localDB.init();
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
 

@@ -22,10 +22,7 @@ const firebaseAuth = async (req, res, next) => {
     req.user = userPayload;
     next();
   } catch (error) {
-    console.log(error)
-    return res.status(500).json({
-      error
-    });
+    return res.status(500).json({error});
   }
 }
 
@@ -37,7 +34,6 @@ async function addResponse(quizID, response) {
   } catch (error) {
     throw error;
   }
-  
 }
 
 async function getQuestionnaire(uid) {

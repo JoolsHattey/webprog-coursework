@@ -5,13 +5,17 @@ const uid = require('uid');
 let db;
 
 async function init() {
-  db = await open({
-    filename: './database.db',
-    driver: sqlite3.Database
-  });
-  await db.migrate({
-    migrationsPath: './db_migrations'
-  });
+  try {
+    db = await open({
+      filename: '/storage/database.db',
+      driver: sqlite3.Database
+    });
+    await db.migrate({
+      migrationsPath: '/storage/db_migrations'
+    });
+  } catch (error) {
+    throw error;
+  }
 }
 
 async function getAllQuizs() {
