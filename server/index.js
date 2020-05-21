@@ -13,17 +13,17 @@ storage.init(localDBMode);
 
 const firestore = require('./storage/firestore');
 
-async function getAllQuizs(req, res) {
+async function getQuiz(req, res) {
   try {
-    res.send(await storage.getQuestionnaires());
+    res.send(await storage.getQuiz(req.params.uid));
   } catch (error) {
     res.sendStatus(400);
   }
 }
 
-async function getQuiz(req, res) {
+async function getAllQuizs(req, res) {
   try {
-    res.send(await storage.getQuestionnaire(req.params.uid));
+    res.send(await storage.getAllQuizs());
   } catch (error) {
     res.sendStatus(400);
   }
@@ -48,7 +48,7 @@ async function getResponses(req, res) {
 
 async function createQuiz(req, res) {
   try {
-    res.send(await storage.createQuestionnaire(req.body));
+    res.send(await storage.createQuiz(req.body));
   } catch (error) {
     res.sendStatus(400);
   }
@@ -56,7 +56,7 @@ async function createQuiz(req, res) {
 
 async function editQuiz(req, res) {
   try {
-    await storage.editQuestionnaire(req.params.uid, req.body);
+    await storage.editQuiz(req.params.uid, req.body);
     res.sendStatus(200);
   } catch (error) {
     res.sendStatus(400);
@@ -74,7 +74,7 @@ async function exportResponsesCSV(req, res) {
 async function exportResponsesGoogleDrive(req, res) {
   try {
     const responses = await storage.getResponses(req.params.uid);
-    const quiz = await storage.getQuestionnaire(req.params.uid);
+    const quiz = await storage.getQuiz(req.params.uid);
     const data = await gdrive.saveData(req.body, quiz, responses, req.get('origin'));
     res.send(data);
   } catch (error) {

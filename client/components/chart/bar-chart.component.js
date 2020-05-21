@@ -9,7 +9,6 @@ export class BarChart extends Chart {
   }
 
   drawChart(data) {
-    console.log(data);
     let i = 0;
     this.total = 0;
     for (const name in data) {

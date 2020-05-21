@@ -26,7 +26,6 @@ export class Checkbox extends Component {
 
   async attributeChangedCallback(name, oldValue, newValue) {
     await this.templatePromise;
-    console.log(newValue);
     this.setTextLabel(newValue);
   }
 

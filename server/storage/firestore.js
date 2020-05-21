@@ -32,7 +32,7 @@ async function addResponse(quizID, response) {
   return docRef.id;
 }
 
-async function getQuestionnaire(uid) {
+async function getQuiz(uid) {
   const docRef = await firebase.firestore().collection('questionnaires').doc(uid).get();
   return docRef.data();
 }
@@ -61,17 +61,17 @@ async function getResponses(uid) {
   return result;
 }
 
-async function createQuestionnaire(questionnaire) {
+async function createQuiz(questionnaire) {
   if (!questionnaire) questionnaire = {};
   const docRef = await firebase.firestore().collection('questionnaires').add(questionnaire);
   return ({ id: docRef.id });
 }
 
-async function editQuestionnaire(uid, questionnaire) {
+async function editQuiz(uid, questionnaire) {
   await firebase.firestore().collection('questionnaires').doc(uid).update(questionnaire);
 }
 
-async function getQuestionnaires() {
+async function getAllQuizs() {
   const result = [];
   const snapshot = await firebase.firestore().collection('questionnaires').get();
   snapshot.forEach(doc => {
@@ -99,10 +99,10 @@ async function syncLocalDB() {
 module.exports = {
   addResponse,
   getResponses,
-  createQuestionnaire,
-  getQuestionnaire,
-  editQuestionnaire,
-  getQuestionnaires,
+  createQuiz,
+  getQuiz,
+  editQuiz,
+  getAllQuizs,
   grantModeratorRole,
   getUserRole,
   syncLocalDB,

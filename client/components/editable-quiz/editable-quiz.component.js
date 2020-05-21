@@ -201,16 +201,13 @@ export class EditableQuiz extends Component {
 
         switch (question.type) {
           case 'single-select':
-            console.log(questionResponses);
             const chart = new PieChart(this.sortRadioSelectorResponses(questionResponses)[1], this.sortRadioSelectorResponses(questionResponses)[0]);
-            console.log(chart);
             chartContainer.append(chart);
             break;
           case 'multi-select':
             chartContainer.append(new BarChart(this.sortCheckBoxResponses(questionResponses, question.options)));
             break;
           default:
-            console.log(questionResponses);
             questionResponses.forEach(item => {
               if (item) {
                 const thing = document.createElement('div');
@@ -242,7 +239,6 @@ export class EditableQuiz extends Component {
       }
       prev = arr[i];
     }
-    console.log([a, b]);
     return [a, b];
   }
 

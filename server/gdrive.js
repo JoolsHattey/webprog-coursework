@@ -4,8 +4,7 @@ const dayjs = require('dayjs');
 
 async function authorise(credentials, userAuthCode, url) {
   const { client_secret: clientSecret, client_id: clientID } = credentials.web;
-  const oAuth2Client = new google.auth.OAuth2(
-    clientID, clientSecret, url);
+  const oAuth2Client = new google.auth.OAuth2(clientID, clientSecret, url);
   try {
     const token = await oAuth2Client.getToken((userAuthCode.authToken));
     oAuth2Client.setCredentials(token.tokens);
@@ -36,7 +35,6 @@ function createSheet(quizData, responseData) {
     },
   });
   quizData.questions.forEach(question => {
-    console.log(question);
     columnHeaders.values.push({
       userEnteredValue: {
         stringValue: question.text,
@@ -79,7 +77,6 @@ function createSheet(quizData, responseData) {
       },
     ],
   };
-
   return resource;
 }
 

@@ -16,8 +16,6 @@ export class QuizPage extends Component {
     const request = await fetch(`/api/questionnaire/${req.params.quizID}`);
     const quizData = await request.json();
     const q = new Quiz(req.params.quizID, quizData);
-    console.log(q.templatePromise);
-    // await q.templatePromise;
     this.container.appendChild(q);
     document.title = quizData.name;
   }

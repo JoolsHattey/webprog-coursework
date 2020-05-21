@@ -19,8 +19,8 @@ async function getAllQuizs() {
   const quizs = [];
   res.forEach(element => {
     quizs.push({
-      name: element.name,
       uid: element.uid,
+      name: element.name,
     });
   });
   return quizs;

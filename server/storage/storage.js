@@ -16,34 +16,40 @@ async function init(dbMode) {
   }
 }
 
+function getQuiz(uid) {
+  if (localDBMode) return localDB.getQuiz(uid);
+  return firestore.getQuiz(uid);
+}
+
+function getAllQuizs() {
+  if (localDBMode) return localDB.getAllQuizs();
+  return firestore.getAllQuizs();
+}
+
 function addResponse(quizID, responseData) {
   if (localDBMode) return localDB.insertResponse(quizID, responseData);
   return firestore.addResponse(quizID, responseData);
 }
+
 function getResponses(quizID) {
   if (localDBMode) return localDB.getResponses(quizID);
   return firestore.getResponses(quizID);
 }
-function createQuestionnaire(quizData) {
+
+function createQuiz(quizData) {
   if (localDBMode) return localDB.insertQuiz(quizData);
-  return firestore.createQuestionnaire(quizData);
+  return firestore.createQuiz(quizData);
 }
-function getQuestionnaire(uid) {
-  if (localDBMode) return localDB.getQuiz(uid);
-  return firestore.getQuestionnaire(uid);
-}
-function editQuestionnaire(uid, quizData) {
+
+function editQuiz(uid, quizData) {
   if (localDBMode) return localDB.insertQuiz(quizData, uid);
-  return firestore.editQuestionnaire(uid, quizData);
+  return firestore.editQuiz(uid, quizData);
 }
-function getQuestionnaires() {
-  if (localDBMode) return localDB.getAllQuizs();
-  return firestore.getQuestionnaires();
-}
+
 async function getResponsesCSV(quizID) {
   const responses = await getResponses(quizID);
-  const quiz = await getQuestionnaire(quizID);
-  const headers = [{ id: 'time', title: 'Submission Time' }];
+  const quiz = await getQuiz(quizID);
+  const headers = [{ id: 'time', title: 'Date' }];
   const records = [];
   quiz.questions.forEach(element => {
     headers.push({
@@ -69,9 +75,9 @@ module.exports = {
   init,
   addResponse,
   getResponses,
-  createQuestionnaire,
-  getQuestionnaire,
-  editQuestionnaire,
-  getQuestionnaires,
+  createQuiz,
+  getQuiz,
+  editQuiz,
+  getAllQuizs,
   getResponsesCSV,
 };

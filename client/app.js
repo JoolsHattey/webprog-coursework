@@ -24,9 +24,10 @@ routerInstance.get({ uri: '/quizeditor', destination: () => import('./views/quiz
 routerInstance.init(routerOutlet);
 
 /**
- * @param {Element} ctx
+ * Queries the context for the node matching the specified selector.
+ * @param {Document|ShadowRoot} ctx
  * @param {string} queryName
- * @return {Element}
+ * @return {HTMLElement}
  */
 export function $(ctx, queryName) {
   if (ctx.shadowRoot) {
@@ -35,9 +36,10 @@ export function $(ctx, queryName) {
   return ctx.querySelector(queryName);
 }
 /**
+ * Creates an instance of the element for the specified tag.
  * @param {string} elName
- * @param {string} template
- * @return {Element}
+ * @param {string} [template] Path to template file for contents of element.
+ * @return {HTMLElement}
  */
 export async function $r(elName, template) {
   const el = document.createElement(elName);
@@ -52,7 +54,7 @@ export async function $r(elName, template) {
 }
 /**
  * Clear inner content of element
- * @param {Element} el
+ * @param {HTMLElement} el
  */
 export function $clear(el) {
   el.innerHTML = '';

@@ -10,7 +10,6 @@ export class CheckboxGroup extends Component {
   }
 
   initElement(options) {
-    console.log(options);
     this.checkboxes = [];
     options.forEach(opt => {
       const option = new Checkbox();

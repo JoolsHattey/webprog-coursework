@@ -14,20 +14,18 @@ export class Component extends HTMLElement {
     super();
     this.attachShadow({ mode: 'open' });
     this.head = document.createElement('head');
-    // this.styleTag = document.createElement('style');
-    // this.styleTag.append(':host {display:block;}')
-    // this.addStyleSheet('/styles.css');
     this.container = document.createElement('body');
     this.shadowRoot.append(this.head, this.container);
     if (options) {
-      const req = [];
       if (options.stylesheet) {
         this.addStyleSheet(options.stylesheet);
       }
       if (options.template) {
-        req.push(this.addTemplate(options.template));
+        /**
+         * Promise which resolves when HTML template has loaded
+         */
+        this.templatePromise = this.addTemplate(options.template);
       }
-      this.templatePromise = Promise.all(req);
     }
   }
 
@@ -39,11 +37,7 @@ export class Component extends HTMLElement {
     const linkElem = document.createElement('link');
     linkElem.setAttribute('rel', 'stylesheet');
     linkElem.setAttribute('href', path);
-    this.head.appendChild(linkElem);
-    // const res = await fetch(path);
-    // const cssText = await res.text();
-    // this.styleTag.append(cssText);
-    // this.styleTag.append(`@import '${path}';`)
+    this.head.append(linkElem);
   }
 
   /**
