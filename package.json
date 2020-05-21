@@ -31,6 +31,8 @@
     "uid": "^1.0.0"
   },
   "devDependencies": {
+    "eslint": "^7.0.0",
+    "eslint-config-portsoc": "^0.6.0",
     "nodemon": "^2.0.2"
   }
 }
