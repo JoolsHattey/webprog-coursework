@@ -41,6 +41,7 @@ export class EditableQuiz extends Component {
     this.initSaveStatus(quizData.saveTime);
     this.questionTouchList = $(this, 'touch-drag-list');
     this.questionTouchList.container.classList.add('questionList');
+    this.questionTouchList.addEventListener('reorder', e => this.moveQuestion(e.detail.oldIndex, e.detail.newIndex));
     this.qCards = [];
     this.touchLists = [];
     this.questionTouchList.init('card-el', true);
@@ -51,6 +52,18 @@ export class EditableQuiz extends Component {
     $(this, 'progress-spinner').remove();
     this.initShareDialog();
     this.initResponsesTab();
+  }
+
+  moveQuestion(oldIndex, newIndex) {
+    if (newIndex >= this.data.questions.length) {
+      let k = newIndex - this.data.questions.length + 1;
+      while (k--) {
+        this.data.questions.push(undefined);
+      }
+    }
+    this.data.questions.splice(newIndex, 0, this.data.questions.splice(oldIndex, 1)[0]);
+    console.log(this.data.questions);
+    this.unsavedChanges();
   }
 
   preview() {
