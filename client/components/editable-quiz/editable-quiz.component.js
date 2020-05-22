@@ -24,7 +24,9 @@ export class EditableQuiz extends Component {
     await this.templatePromise;
     this.appBar = appBar;
     this.id = uid;
+    /** @type {Questionnaire} */
     this.data = quizData;
+    /** @type {Response[]} */
     this.responses = responseData;
     this.appBar.expand();
     $(this.appBar, 'text-input').setValue(quizData.name);
@@ -293,7 +295,7 @@ export class EditableQuiz extends Component {
 
   async createQuestion(index, questionData) {
     if (!questionData) questionData = { type: 'text' };
-    if (!index) index = this.data.questions.length;
+    if (index === null) index = this.data.questions.length;
     const q = new Card({
       template: '/components/editable-quiz/question.html',
       stylesheet: '/components/editable-quiz/editable-quiz.component.css',
@@ -452,3 +454,24 @@ export class EditableQuiz extends Component {
   }
 }
 window.customElements.define('editable-quiz', EditableQuiz);
+
+/**
+ * @typedef {Object} Questionnaire
+ * @property {string} name
+ * @property {Question[]} questions
+ * @property {number} saveTime
+ */
+
+/**
+ * @typedef {Object} Question
+ * @property {string} id
+ * @property {string} text
+ * @property {string} type
+ * @property {string[]} [options]
+ * @property {boolean} required
+ */
+
+/**
+ * @typedef {Object} Response
+ * @property {Object[]} questions
+ */
