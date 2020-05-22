@@ -14,6 +14,8 @@ export class Router {
   constructor() {
     this.routes = [];
     this.routerOutlet = null;
+    // Listen to browser nav events
+    window.addEventListener('popstate', e => this.navigate(e.target.location.pathname));
   }
 
   /**
@@ -70,9 +72,6 @@ export class Router {
         } else {
           this.routerOutlet.routeComponent(route.domponent, req);
         }
-        // Set address bar to router path
-        console.log(history);
-        history.pushState(history.state, '', path);
       } else {
         this.navigate('/login');
       }
@@ -83,8 +82,6 @@ export class Router {
       } else {
         this.routerOutlet.routeComponent(route.domponent, req);
       }
-      // Set address bar to router path
-      history.pushState(history.state, '', path);
     }
   }
 
