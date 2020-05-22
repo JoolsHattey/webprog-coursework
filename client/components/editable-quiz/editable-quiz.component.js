@@ -293,9 +293,22 @@ export class EditableQuiz extends Component {
     };
   }
 
+  /**
+   * Creates quiz card and appends to container
+   * @param {number} index
+   * @param {Questionnaire} questionData
+   */
   async createQuestion(index, questionData) {
-    if (!questionData) questionData = { type: 'text' };
-    if (index === null) index = this.data.questions.length;
+    if (index === undefined) index = this.data.questions.length;
+    if (!questionData) {
+      questionData = {
+        id: `id${this.data.questions.length}`,
+        text: 'Question',
+        type: 'text',
+      };
+      this.data.questions.push(questionData);
+      this.unsavedChanges();
+    }
     const q = new Card({
       template: '/components/editable-quiz/question.html',
       stylesheet: '/components/editable-quiz/editable-quiz.component.css',
@@ -313,7 +326,7 @@ export class EditableQuiz extends Component {
     const questionTitleInput = $(q, '#questionTitle');
     questionTitleInput.setValue(questionData.text);
     questionTitleInput.setOnChange(e => {
-      this.data.question[index].text = e.target.value;
+      this.data.questions[index].text = e.target.value;
       this.unsavedChanges();
     });
     const answerOptionsContainer = $(q, '#questionAnswers');
@@ -331,11 +344,6 @@ export class EditableQuiz extends Component {
     } else {
       this.touchLists.push(null);
     }
-
-    // newAnswerOptionBtn.addEventListener('click', () => {
-    //     this.createAnswerOption(answerOptionsContainer, null, this.data.questions[index].type, true, this.data.questions[index].options.length-1, index);
-    // });
-
     const dropDown = $(q, 'dropdown-el');
     dropDown.setOptions([
       { value: 'text',
@@ -376,6 +384,7 @@ export class EditableQuiz extends Component {
       }
       this.data.questions[index].type = e.target.value;
       newAnswerOptionBtn.children[0].initElement();
+      this.unsavedChanges();
     });
 
     const requiredToggle = $(q, 'toggle-el');
@@ -391,7 +400,7 @@ export class EditableQuiz extends Component {
   }
 
   deleteQuestion(index) {
-    this.questionTouchList.removeItem(index);
+    this.questionTouchList.removeItem(this.qCards[index]);
     this.data.questions.splice(index, 1);
     console.log(this.data.questions);
     this.unsavedChanges();
@@ -439,6 +448,7 @@ export class EditableQuiz extends Component {
       this.touchLists[qIndex].removeItem(el, index);
       this.data.questions[qIndex].options.splice(index, 1);
     };
+    this.unsavedChanges();
   }
 
   moveOption(qIndex, oldIndex, newIndex) {

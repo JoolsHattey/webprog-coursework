@@ -49,14 +49,18 @@ export class QuizEditor extends Component {
       newQuizSheet.afterClose(e => {
         if (e) {
           const file = $(newQuizSheet, 'input').files[0];
-          if (file.type === 'application/json') {
-            file.text().then(textFile => {
-              this.createNewQuiz(JSON.parse(textFile));
-            });
+          if (file) {
+            if (file.type === 'application/json') {
+              file.text().then(textFile => {
+                this.createNewQuiz(JSON.parse(textFile));
+              });
+            } else {
+              const errorSnack = new SnackBar();
+              errorSnack.addTitle('File must be JSON format');
+              errorSnack.show(5000);
+            }
           } else {
-            const errorSnack = new SnackBar();
-            errorSnack.addTitle('File must be JSON format');
-            errorSnack.show(5000);
+            this.createNewQuiz();
           }
         }
       });
@@ -64,6 +68,15 @@ export class QuizEditor extends Component {
   }
 
   async createNewQuiz(quizData) {
+    if (!quizData) {
+      quizData = {
+        name: 'Untitled Questionnaire',
+        questions: [],
+        saveTime: Date.now(),
+      };
+    } else {
+      quizData.saveTime = Date.now();
+    }
     const authCode = await getServerAuthCode();
     const res = await fetch('/api/createquestionnaire', {
       method: 'POST',

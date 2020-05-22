@@ -138,7 +138,7 @@ export class Quiz extends Component {
         break;
     }
     input.required = questionData.required;
-    // Input elements are stored in array which can be easily accessed with question counter
+    // Input elements are stored in array which can be accessed with question counter
     this.inputs.push(input);
     return input;
   }

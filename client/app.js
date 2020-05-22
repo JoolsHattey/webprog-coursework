@@ -25,7 +25,7 @@ routerInstance.init(routerOutlet);
 
 /**
  * Queries the context for the node matching the specified selector.
- * @param {Document|ShadowRoot} ctx
+ * @param {HTMLElement} ctx
  * @param {string} queryName
  * @return {HTMLElement}
  */

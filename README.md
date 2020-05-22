@@ -69,19 +69,20 @@ structured like this:
 ```
 The base component has 2 methods which are called based on the options recieved.
 ```
-async addStyleSheet(path)
+addStyleSheet(path)
 ```
 This method creates a link element with the specified stylesheet and attaches to the head of
 the component.
 ```
 async addTemplate(path)
 ```
-This method asyncronously fetched the text from an html file and parses it using the DOM parser
+This method asynchronously fetched the text from an HTML file and parses it using the DOM parser
 into the container element of the component. The add template method returns a promise which can
 be used to await the loading of the template to allow changing the data.
 
 ### Inputs
-
+I have created custom input elements which wrap the native HTML elements. The benefits of doing this
+are that they all have a getValue() method, making it easier to get inputs on the quiz page.
 
 ## Router
 This is made up of two parts, the router and the router outlet. The routers listenes for paths
