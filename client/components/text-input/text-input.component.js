@@ -19,9 +19,12 @@ export class TextInput extends Component {
     if (this.hasAttribute('fontsize')) {
       this.setFontSize(this.getAttribute('fontsize'));
     }
+    // if (this.hasAttribute('inputtype')) {
+    //   this.setInputType(this.getAttribute('inputtype'));
+    // }
   }
 
-  static get observedAttributes() { return ['size', 'underline', 'fontsize']; }
+  static get observedAttributes() { return ['size', 'underline', 'fontsize', 'inputtype']; }
 
   attributeChangedCallback(name, oldValue, newValue) {
     if (name === 'size') {
@@ -32,6 +35,9 @@ export class TextInput extends Component {
     }
     if (name === 'fontsize') {
       this.setFontSize(newValue);
+    }
+    if (name === 'inputtype') {
+      this.setInputType(newValue);
     }
   }
 
@@ -84,6 +90,13 @@ export class TextInput extends Component {
     }
     this.inputEl.id = 'input';
     this.container.children[0].replaceChild(this.inputEl, el);
+  }
+
+  async setInputType(newValue) {
+    await this.templatePromise;
+    await this.sizeNotInit;
+    console.log(this.inputEl);
+    this.inputEl.type = newValue;
   }
 
   warn(value) {
@@ -156,6 +169,14 @@ export class TextInput extends Component {
 
   set underline(newValue) {
     this.setAttribute('underline', newValue);
+  }
+
+  get inputType() {
+    return this.getAttribute('inputtype');
+  }
+
+  set inputType(newValue) {
+    this.setAttribute('inputtype', newValue);
   }
 }
 

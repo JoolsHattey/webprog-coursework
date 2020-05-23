@@ -129,6 +129,7 @@ export class Quiz extends Component {
       case 'number':
         input = new TextInput();
         input.size = 'singleline';
+        input.inputType = 'number';
         input.setLabel(questionData.text);
         break;
       case 'single-select':
