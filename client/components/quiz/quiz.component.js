@@ -5,9 +5,10 @@ import { Card } from '../card/card.component.js';
 import { TextInput } from '../text-input/text-input.component.js';
 import { CheckboxGroup } from '../checkbox/checkbox-group.component.js';
 import { RadioGroup } from '../radio-selector/radio-selector.component.js';
-import { $ } from '../../app.js';
+import { $, routerInstance } from '../../app.js';
 import { SnackBar } from '../snack-bar/snack-bar.component.js';
 import { CardStack } from '../../components/card-stack/card-stack.component.js';
+import { getAdminStatus } from '../../auth.js';
 
 export class Quiz extends Component {
   constructor(quizID, quizData) {
@@ -27,6 +28,11 @@ export class Quiz extends Component {
     this.response = { questions: [], time: null };
     this.createTitleCard(quizData);
     this.createQuestionCards(quizData.questions);
+    const admin = await getAdminStatus();
+    if (admin) {
+      $(this, '#editFab').classList.remove('hide');
+      $(this, '#editFab').addEventListener('click', () => routerInstance.navigate(`/quizeditor/${this.quizID}`));
+    };
   }
 
   createQuestionCards(questions) {
