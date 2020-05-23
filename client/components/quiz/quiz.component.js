@@ -32,7 +32,7 @@ export class Quiz extends Component {
     if (admin) {
       $(this, '#editFab').classList.remove('hide');
       $(this, '#editFab').addEventListener('click', () => routerInstance.navigate(`/quizeditor/${this.quizID}`));
-    };
+    }
   }
 
   createQuestionCards(questions) {

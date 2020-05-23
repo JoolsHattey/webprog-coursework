@@ -15,7 +15,7 @@ export class Router {
     this.routes = [];
     this.routerOutlet = null;
     // Listen to browser nav events
-    window.addEventListener('popstate', e => this.navigate(e.target.location.pathname));
+    window.addEventListener('popstate', e => this.navigate(e.target.location.pathname, true));
   }
 
   /**
@@ -40,20 +40,20 @@ export class Router {
     this.navigate(window.location.pathname);
   }
 
-  navigate(path) {
+  navigate(path, prevRoute) {
     this.routes.some(route => {
-      this.matchRoute(route, path);
+      this.matchRoute(route, path, prevRoute);
     });
   }
 
-  matchRoute(route, path) {
+  matchRoute(route, path, prevRoute) {
     const regEx = new RegExp('^' + route.uri.replace(/:[^\s/]+/g, '([\\w-]+)') + '$');
     if (path.match(regEx)) {
       if (route.defaultRoute) {
         this.navigate(route.redirectTo);
       } else {
         const params = this.getParams(route, path);
-        this.goToPage(route, path, params);
+        this.goToPage(route, path, params, prevRoute);
       }
       return true;
     } else {
@@ -61,7 +61,7 @@ export class Router {
     }
   }
 
-  async goToPage(route, path, params) {
+  async goToPage(route, path, params, prevRoute) {
     const req = { path, params };
     if (route.authGuard) {
       const auth = await route.authGuard();
@@ -72,6 +72,7 @@ export class Router {
         } else {
           this.routerOutlet.routeComponent(route.domponent, req);
         }
+        if (!prevRoute) history.pushState({}, '', path);
       } else {
         this.navigate('/login');
       }
@@ -82,6 +83,7 @@ export class Router {
       } else {
         this.routerOutlet.routeComponent(route.domponent, req);
       }
+      if (!prevRoute) history.pushState({}, '', path);
     }
   }
 
