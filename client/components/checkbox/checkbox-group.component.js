@@ -40,6 +40,10 @@ export class CheckboxGroup extends Component {
       return answerArray;
     }
   }
+
+  setLabel(newValue) {
+    this.container.children[0].before(newValue);
+  }
 }
 
 customElements.define('checkbox-group', CheckboxGroup);

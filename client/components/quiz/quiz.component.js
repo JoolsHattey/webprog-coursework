@@ -129,12 +129,15 @@ export class Quiz extends Component {
       case 'number':
         input = new TextInput();
         input.size = 'singleline';
+        input.setLabel(questionData.text);
         break;
       case 'single-select':
         input = new RadioGroup(questionData.options);
+        input.setLabel(questionData.text);
         break;
       case 'multi-select':
         input = new CheckboxGroup(questionData.options);
+        input.setLabel(questionData.text);
         break;
     }
     input.required = questionData.required;

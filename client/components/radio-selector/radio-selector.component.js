@@ -8,7 +8,7 @@ export class RadioGroup extends Component {
     super({
       stylesheet: '/components/radio-selector/radio-selector.component.css',
     });
-    this.initElement(options);
+    this.elLoaded = this.initElement(options);
   }
 
   async initElement(options) {
@@ -33,11 +33,11 @@ export class RadioGroup extends Component {
         this.dispatchEvent(event);
         this.warn(false);
       });
-      this.container.appendChild(el);
+      this.container.append(el);
     }
     this.warnEl = await $r('div', '/components/radio-selector/input-warn.html');
     this.warnEl.classList.add('hide');
-    this.container.appendChild(this.warnEl);
+    this.container.append(this.warnEl);
     // $(this, 'input[name="test"]:checked').addEventListener('click', () => console.log('chagne'))
   }
 
@@ -66,6 +66,11 @@ export class RadioGroup extends Component {
 
   setValue() {
 
+  }
+
+  async setLabel(newValue) {
+    await this.elLoaded;
+    this.container.children[0].before(newValue);
   }
 
   get required() {

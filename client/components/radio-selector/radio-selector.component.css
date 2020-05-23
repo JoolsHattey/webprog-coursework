@@ -25,7 +25,7 @@ label {
 }
 
 div {
-  margin-left: 4px;
+  margin: 8px
 }
 
 *, *:before, *:after { 
