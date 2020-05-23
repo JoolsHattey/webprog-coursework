@@ -6,7 +6,7 @@ async function authorise(credentials, userAuthCode, url) {
   const { client_secret: clientSecret, client_id: clientID } = credentials.web;
   const oAuth2Client = new google.auth.OAuth2(clientID, clientSecret, url);
   try {
-    const token = await oAuth2Client.getToken((userAuthCode.authToken));
+    const token = await oAuth2Client.getToken((userAuthCode));
     oAuth2Client.setCredentials(token.tokens);
     return oAuth2Client;
   } catch (err) {

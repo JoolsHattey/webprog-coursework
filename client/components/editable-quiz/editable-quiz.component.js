@@ -96,7 +96,7 @@ export class EditableQuiz extends Component {
     const saveTime = Date.now();
     this.data.saveTime = saveTime;
     const authCode = await getServerAuthCode();
-    await fetch(`/api/editquestionnaire/${this.id}`, {
+    await fetch(`/api/questionnaires/${this.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -148,13 +148,13 @@ export class EditableQuiz extends Component {
     snack.show();
     const authCode = await getGoogleDriveAuth();
     const serverAuthCode = await getServerAuthCode();
-    const res = await fetch(`/api/exportdrive/${this.id}`, {
+    const res = await fetch(`/api/responses/${this.id}/export/drive`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'id_token': serverAuthCode,
       },
-      body: JSON.stringify({ authToken: authCode }),
+      body: JSON.stringify({ apiToken: authCode }),
     });
     if (res.ok) {
       snack.hide();
@@ -172,11 +172,12 @@ export class EditableQuiz extends Component {
 
   async exportResponses() {
     const serverAuthCode = await getServerAuthCode();
-    const res = await fetch(`/api/export/${this.id}`, {
+    const res = await fetch(`/api/responses/${this.id}/export/drive`, {
       headers: {
         id_token: serverAuthCode,
       },
     });
+    // TODO res.ok
     const data = await res.text();
     const link = document.createElement('a');
     link.setAttribute('href', `data:text/csv;charset=utf-8,${encodeURIComponent(data)}`);

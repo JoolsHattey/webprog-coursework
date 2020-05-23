@@ -84,7 +84,7 @@ async function exportResponsesGoogleDrive(req, res) {
   try {
     const responses = await storage.getResponses(req.params.uid);
     const quiz = await storage.getQuiz(req.params.uid);
-    const data = await gdrive.saveData(req.body, quiz, responses, req.get('origin'));
+    const data = await gdrive.saveData(req.body.apiToken, quiz, responses, req.get('origin'));
     res.send(data);
   } catch (error) {
     res.sendStatus(400);
@@ -107,17 +107,17 @@ app.get('*', (req, res) => {
 });
 
 // User routes
-router.get('/questionnaire/:uid', getQuiz);
 router.get('/questionnaires', getAllQuizs);
-router.post('/submitresponse/:uid', express.json(), submitResponse);
+router.get('/questionnaires/:uid', getQuiz);
+router.post('/responses/:uid', express.json(), submitResponse);
 
 // Admin routes
 router.get('/responses/:uid', firestore.decodeAuthToken, firestore.isAuthenticated, firestore.isAdmin, getResponses);
-router.post('/createquestionnaire', firestore.decodeAuthToken, firestore.isAuthenticated, firestore.isAdmin, express.json(), createQuiz);
-router.put('/editquestionnaire/:uid', firestore.decodeAuthToken, firestore.isAuthenticated, firestore.isAdmin, express.json(), editQuiz);
-router.delete('/questionnaire/:uid', firestore.decodeAuthToken, firestore.isAuthenticated, firestore.isAdmin, deleteQuiz);
-router.get('/export/:uid', firestore.decodeAuthToken, firestore.isAuthenticated, firestore.isAdmin, exportResponsesCSV);
-router.post('/exportdrive/:uid', firestore.decodeAuthToken, firestore.isAuthenticated, firestore.isAdmin, express.json(), exportResponsesGoogleDrive);
+router.post('/questionnaires', firestore.decodeAuthToken, firestore.isAuthenticated, firestore.isAdmin, express.json(), createQuiz);
+router.put('/questionnaires/:uid', firestore.decodeAuthToken, firestore.isAuthenticated, firestore.isAdmin, express.json(), editQuiz);
+router.delete('/questionnaires/:uid', firestore.decodeAuthToken, firestore.isAuthenticated, firestore.isAdmin, deleteQuiz);
+router.get('/responses/:uid/export/csv', firestore.decodeAuthToken, firestore.isAuthenticated, firestore.isAdmin, exportResponsesCSV);
+router.post('/responses/:uid/export/drive', firestore.decodeAuthToken, firestore.isAuthenticated, firestore.isAdmin, express.json(), exportResponsesGoogleDrive);
 
 
 // router.get('/yiss/:email', yiss);

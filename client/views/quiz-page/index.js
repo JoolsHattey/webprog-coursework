@@ -13,7 +13,7 @@ export class QuizPage extends Component {
 
   async initElement(req) {
     this.container.classList.add('page');
-    const request = await fetch(`/api/questionnaire/${req.params.quizID}`);
+    const request = await fetch(`/api/questionnaires/${req.params.quizID}`);
     const quizData = await request.json();
     const q = new Quiz(req.params.quizID, quizData);
     this.container.appendChild(q);

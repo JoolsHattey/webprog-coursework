@@ -78,7 +78,7 @@ export class QuizEditor extends Component {
       quizData.saveTime = Date.now();
     }
     const authCode = await getServerAuthCode();
-    const res = await fetch('/api/createquestionnaire', {
+    const res = await fetch('/api/questionnaires', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -131,7 +131,7 @@ export class QuizEditor extends Component {
   }
 
   async getQuestionnaire(uid) {
-    const request = await fetch(`/api/questionnaire/${uid}`);
+    const request = await fetch(`/api/questionnaires/${uid}`);
     const quesitonnaire = await request.json();
     const authCode = await getServerAuthCode();
     const req = await fetch(`/api/responses/${uid}`, {
@@ -148,7 +148,7 @@ export class QuizEditor extends Component {
 
   async deleteQuiz(uid) {
     const authCode = await getServerAuthCode();
-    const res = await fetch(`/api/questionnaire/${uid}`, {
+    const res = await fetch(`/api/questionnaires/${uid}`, {
       method: 'DELETE',
       headers: {
         id_token: authCode,
