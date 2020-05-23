@@ -6,11 +6,11 @@ let db;
 
 async function init() {
   db = await open({
-    filename: '/storage/database.db',
+    filename: 'database.db',
     driver: sqlite3.Database,
   });
   await db.migrate({
-    migrationsPath: '/storage/db_migrations',
+    migrationsPath: './server/storage/db_migrations',
   });
 }
 
@@ -43,10 +43,17 @@ async function insertResponse(quizID, responseData) {
 }
 
 async function insertQuiz(quizData, quizID) {
+  if (!quizData) quizData = {};
+  if (!quizID) quizID = uid(20);
   const questions = JSON.stringify(quizData.questions);
   const options = JSON.stringify(quizData.options);
   await db.run('INSERT OR REPLACE INTO quiz VALUES (?, ?, ?, ?, ?);',
-    [quizID || uid(20), quizData.name, options, questions, quizData.saveTime]);
+    [quizID, quizData.name, options, questions, quizData.saveTime]);
+  return ({ id: quizID });
+}
+
+async function deleteQuiz(quizID) {
+  await db.run('DELETE FROM quiz WHERE uid = ?', quizID);
 }
 
 async function getResponses(quizID) {
@@ -66,5 +73,6 @@ module.exports = {
   getAllQuizs,
   insertQuiz,
   insertResponse,
+  deleteQuiz,
   getResponses,
 };

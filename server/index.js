@@ -68,6 +68,7 @@ async function deleteQuiz(req, res) {
     await storage.deleteQuiz(req.params.uid);
     res.sendStatus(200);
   } catch (error) {
+    console.log(error)
     res.sendStatus(400);
   }
 }

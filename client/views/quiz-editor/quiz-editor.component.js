@@ -36,6 +36,7 @@ export class QuizEditor extends Component {
       $clear($(this, '#editor'));
       $clear($(this, '#quizsContainer'));
       history.pushState(history.state, '', '/quizeditor');
+      document.title = 'Quiz Editor';
       this.getQuestionnaireList();
     });
 

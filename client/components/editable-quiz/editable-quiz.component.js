@@ -21,6 +21,7 @@ export class EditableQuiz extends Component {
   }
 
   async initElement(uid, quizData, responseData, appBar) {
+    document.title = `${quizData.name} - Quiz Editor`;
     await this.templatePromise;
     this.appBar = appBar;
     this.id = uid;
