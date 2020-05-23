@@ -69,7 +69,7 @@ export class EditableQuiz extends Component {
   }
 
   preview() {
-    const w = window.open(window.location.host, '_blank');
+    const w = window.open(window.location.host, '');
     w.location.assign(`/quiz/${this.id}`);
   }
 
