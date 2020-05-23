@@ -106,19 +106,18 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/index.html'));
 });
 
-// User routes
+
 router.get('/questionnaires', getAllQuizs);
 router.get('/questionnaires/:uid', getQuiz);
-router.post('/responses/:uid', express.json(), submitResponse);
-
-// Admin routes
-router.get('/responses/:uid', firestore.decodeAuthToken, firestore.isAuthenticated, firestore.isAdmin, getResponses);
 router.post('/questionnaires', firestore.decodeAuthToken, firestore.isAuthenticated, firestore.isAdmin, express.json(), createQuiz);
 router.put('/questionnaires/:uid', firestore.decodeAuthToken, firestore.isAuthenticated, firestore.isAdmin, express.json(), editQuiz);
 router.delete('/questionnaires/:uid', firestore.decodeAuthToken, firestore.isAuthenticated, firestore.isAdmin, deleteQuiz);
-router.get('/responses/:uid/export/csv', firestore.decodeAuthToken, firestore.isAuthenticated, firestore.isAdmin, exportResponsesCSV);
-router.post('/responses/:uid/export/drive', firestore.decodeAuthToken, firestore.isAuthenticated, firestore.isAdmin, express.json(), exportResponsesGoogleDrive);
 
+
+router.get('/questionnaires/:uid/responses', firestore.decodeAuthToken, firestore.isAuthenticated, firestore.isAdmin, getResponses);
+router.post('/questionnaires/:uid/responses', express.json(), submitResponse);
+router.get('/questionnaires/:uid/responses/export/csv', firestore.decodeAuthToken, firestore.isAuthenticated, firestore.isAdmin, exportResponsesCSV);
+router.post('/questionnaires/:uid/responses/export/drive', firestore.decodeAuthToken, firestore.isAuthenticated, firestore.isAdmin, express.json(), exportResponsesGoogleDrive);
 
 // router.get('/yiss/:email', yiss);
 

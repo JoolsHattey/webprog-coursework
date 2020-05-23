@@ -148,7 +148,7 @@ export class EditableQuiz extends Component {
     snack.show();
     const authCode = await getGoogleDriveAuth();
     const serverAuthCode = await getServerAuthCode();
-    const res = await fetch(`/api/responses/${this.id}/export/drive`, {
+    const res = await fetch(`/api/questionnaires/${this.id}/responses/export/drive`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -172,7 +172,7 @@ export class EditableQuiz extends Component {
 
   async exportResponses() {
     const serverAuthCode = await getServerAuthCode();
-    const res = await fetch(`/api/responses/${this.id}/export/drive`, {
+    const res = await fetch(`/api/questionnaires/${this.id}/responses/export/drive`, {
       headers: {
         id_token: serverAuthCode,
       },

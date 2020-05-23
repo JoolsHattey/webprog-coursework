@@ -134,7 +134,7 @@ export class QuizEditor extends Component {
     const request = await fetch(`/api/questionnaires/${uid}`);
     const quesitonnaire = await request.json();
     const authCode = await getServerAuthCode();
-    const req = await fetch(`/api/responses/${uid}`, {
+    const req = await fetch(`/api/questionnaires/${uid}/responses`, {
       headers: {
         id_token: authCode,
       },

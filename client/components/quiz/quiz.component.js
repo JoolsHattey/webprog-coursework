@@ -209,7 +209,7 @@ export class Quiz extends Component {
     $(this, '#nextBtn').disabled = true;
     $(this, '#backBtn').disabled = true;
 
-    const res = await fetch(`/api/submitresponse/${this.quizID}`, {
+    const res = await fetch(`/api/questionnaires/${this.quizID}/responses`, {
       method: 'POST',
       body: JSON.stringify(this.response),
       headers: {
