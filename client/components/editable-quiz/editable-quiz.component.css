@@ -170,9 +170,9 @@ dropdown-el {
 .responsesTitle {
   justify-content: center;
 }
-#questionID {
+/* #questionID {
   padding: 0.5rem 0 0.5rem 0;
-}
+} */
 #questionTitle {
   padding: 0.5rem 0 0.5rem 0;
 }
