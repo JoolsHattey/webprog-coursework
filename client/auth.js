@@ -70,7 +70,7 @@ export function getAdminStatus() {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         user.getIdTokenResult().then((token) => {
-          if (token.claims.moderator) {
+          if (token.claims.admin) {
             resolve(true);
           } else {
             resolve(false);

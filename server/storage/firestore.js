@@ -39,11 +39,11 @@ async function getQuiz(uid) {
 
 async function grantModeratorRole(email) {
   const user = await firebase.auth().getUserByEmail(email); // 1
-  if (user.customClaims && user.customClaims.moderator === true) {
+  if (user.customClaims && user.customClaims.admin === true) {
     return;
   } // 2
   return firebase.auth().setCustomUserClaims(user.uid, {
-    moderator: true,
+    admin: true,
   }); // 3
 }
 

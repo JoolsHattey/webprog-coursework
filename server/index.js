@@ -82,7 +82,7 @@ async function exportResponsesGoogleDrive(req, res) {
   }
 }
 
-// async function yiss(req, res) {
+// function yiss(req, res) {
 //   firestore.grantModeratorRole(req.params.email);
 // }
 
