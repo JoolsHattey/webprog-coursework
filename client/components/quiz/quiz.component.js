@@ -41,10 +41,12 @@ export class Quiz extends Component {
 
     this.finishCard = new Card({
       template: '/components/quiz/quiz-finish.html',
+      stylesheet: '/components/quiz/styles.css',
     });
     qCards.push(this.finishCard);
 
     this.stack = new CardStack();
+    this.stack.addStyleSheet('/components/quiz/styles.css');
     $(this, '#cardStackContainer').appendChild(this.stack);
     this.stack.init(qCards);
 
@@ -102,14 +104,14 @@ export class Quiz extends Component {
   }
 
   async createTitleCard(quizData) {
-    const titleCard = new Card({
+    this.titleCard = new Card({
       template: '/components/quiz/quiz-title.html',
       stylesheet: '/components/quiz/styles.css',
     });
-    await titleCard.templatePromise;
-    $(titleCard, '#title').append(quizData.name);
-    $(titleCard, '#numQ').append(`${quizData.questions.length} Questions`);
-    $(this, '#titleCard').appendChild(titleCard);
+    await this.titleCard.templatePromise;
+    $(this.titleCard, '#title').append(quizData.name);
+    $(this.titleCard, '#numQ').append(`${quizData.questions.length} Questions`);
+    $(this, '#titleCard').appendChild(this.titleCard);
     // const infoDialog = new ModalCard({
     //     template: '/components/quiz/quiz-tutorial-dialog.html',
     //     stylesheet: '/components/quiz/styles.css'
@@ -191,7 +193,6 @@ export class Quiz extends Component {
   }
 
   async submitResponse() {
-    $(this.finishCard, '#afterSubmit').classList.remove('hide');
     $(this.finishCard, '#beforeSubmit').classList.add('hide');
 
     this.response.time = Date.now();
@@ -210,6 +211,12 @@ export class Quiz extends Component {
       },
     });
     if (res.ok) {
+      // $clear(this.stack.cards[this.questions.length].container);
+      this.stack.cards[this.questions.length].style = '';
+      this.stack.cards[this.questions.length].container.classList.add('animateSubmit');
+      this.titleCard.classList.add('animateSubmitTitle');
+      $(this, '#quizNavBtnContainer').classList.add('animateSubmitBottomBar');
+      $(this.finishCard, '#afterSubmit').classList.add('drawn');
       const completeSnack = new SnackBar();
       completeSnack.addTitle('Quiz submitted');
       completeSnack.show(5000);
