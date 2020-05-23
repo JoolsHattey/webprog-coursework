@@ -114,7 +114,7 @@ router.post('/submitresponse/:uid', express.json(), submitResponse);
 // Admin routes
 router.get('/responses/:uid', firestore.decodeAuthToken, firestore.isAuthenticated, firestore.isAdmin, getResponses);
 router.post('/createquestionnaire', firestore.decodeAuthToken, firestore.isAuthenticated, firestore.isAdmin, express.json(), createQuiz);
-router.post('/editquestionnaire/:uid', firestore.decodeAuthToken, firestore.isAuthenticated, firestore.isAdmin, express.json(), editQuiz);
+router.put('/editquestionnaire/:uid', firestore.decodeAuthToken, firestore.isAuthenticated, firestore.isAdmin, express.json(), editQuiz);
 router.delete('/questionnaire/:uid', firestore.decodeAuthToken, firestore.isAuthenticated, firestore.isAdmin, deleteQuiz);
 router.get('/export/:uid', firestore.decodeAuthToken, firestore.isAuthenticated, firestore.isAdmin, exportResponsesCSV);
 router.post('/exportdrive/:uid', firestore.decodeAuthToken, firestore.isAuthenticated, firestore.isAdmin, express.json(), exportResponsesGoogleDrive);

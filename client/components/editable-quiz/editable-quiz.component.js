@@ -97,7 +97,7 @@ export class EditableQuiz extends Component {
     this.data.saveTime = saveTime;
     const authCode = await getServerAuthCode();
     await fetch(`/api/editquestionnaire/${this.id}`, {
-      method: 'POST',
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         'id_token': authCode,
