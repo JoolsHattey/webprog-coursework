@@ -33,6 +33,9 @@ body {
 .newQuizModal h3 {
   text-align: center;
 }
+.deleteQuizSheet h3 {
+  text-align: center;
+}
 .quizItemInfo p {
   color: grey;
   font-size: 0.875rem;

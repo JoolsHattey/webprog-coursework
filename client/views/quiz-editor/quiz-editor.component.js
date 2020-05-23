@@ -94,6 +94,10 @@ export class QuizEditor extends Component {
     const response = await fetch('/api/questionnaires');
     const data = await response.json();
     const container = $(this, '#quizsContainer');
+    const deleteSheet = new BottomSheet({
+      template: '/views/quiz-editor/delete-quiz-sheet.html',
+      stylesheet: '/views/quiz-editor/quiz-editor.component.css',
+    });
     for (const element of data) {
       const quizItem = new Card({
         stylesheet: '/views/quiz-editor/quiz-editor.component.css',
@@ -107,6 +111,16 @@ export class QuizEditor extends Component {
         $clear($(this, '#quizsContainer'));
         history.pushState(history.state, '', `/quizeditor/${element.uid}`);
         this.getQuestionnaire(element.uid);
+      });
+      $(quizItem, '#deleteBtn').addEventListener('click', e => {
+        e.stopPropagation();
+        $(deleteSheet, 'p').textContent = `Are you sure you want to delete ${element.name}`;
+        deleteSheet.open();
+        deleteSheet.afterClose(e => {
+          if (e) {
+            this.deleteQuiz(element.uid);
+          }
+        });
       });
     }
     container.classList.remove('hide');
@@ -130,6 +144,23 @@ export class QuizEditor extends Component {
     $(this, '#editor').appendChild(q);
     $(this, '#quizList').classList.add('hide');
     $(this, '#editor').classList.remove('hide');
+  }
+
+  async deleteQuiz(uid) {
+    const authCode = await getServerAuthCode();
+    const res = await fetch(`/api/questionnaire/${uid}`, {
+      method: 'DELETE',
+      headers: {
+        id_token: authCode,
+      },
+    });
+    const deletedSnack = new SnackBar();
+    if (res.ok) {
+      deletedSnack.addTitle('Successfully deleted quiz');
+    } else {
+      deletedSnack.addTitle('Error deleting quiz');
+    }
+    deletedSnack.show(5000);
   }
 }
 

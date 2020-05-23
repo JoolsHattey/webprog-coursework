@@ -46,6 +46,11 @@ function editQuiz(uid, quizData) {
   return firestore.editQuiz(uid, quizData);
 }
 
+function deleteQuiz(uid) {
+  if (localDBMode) return localDB.deleteQuiz(uid);
+  return firestore.deleteQuiz(uid);
+}
+
 async function getResponsesCSV(quizID) {
   const responses = await getResponses(quizID);
   const quiz = await getQuiz(quizID);
@@ -78,6 +83,7 @@ module.exports = {
   createQuiz,
   getQuiz,
   editQuiz,
+  deleteQuiz,
   getAllQuizs,
   getResponsesCSV,
 };

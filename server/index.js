@@ -63,6 +63,15 @@ async function editQuiz(req, res) {
   }
 }
 
+async function deleteQuiz(req, res) {
+  try {
+    await storage.deleteQuiz(req.params.uid);
+    res.sendStatus(200);
+  } catch (error) {
+    res.sendStatus(400);
+  }
+}
+
 async function exportResponsesCSV(req, res) {
   try {
     res.send(await storage.getResponsesCSV(req.params.uid));
@@ -106,6 +115,7 @@ router.post('/submitresponse/:uid', express.json(), submitResponse);
 router.get('/responses/:uid', firestore.decodeAuthToken, firestore.isAuthenticated, firestore.isAdmin, getResponses);
 router.post('/createquestionnaire', firestore.decodeAuthToken, firestore.isAuthenticated, firestore.isAdmin, express.json(), createQuiz);
 router.post('/editquestionnaire/:uid', firestore.decodeAuthToken, firestore.isAuthenticated, firestore.isAdmin, express.json(), editQuiz);
+router.delete('/questionnaire/:uid', firestore.decodeAuthToken, firestore.isAuthenticated, firestore.isAdmin, deleteQuiz);
 router.get('/export/:uid', firestore.decodeAuthToken, firestore.isAuthenticated, firestore.isAdmin, exportResponsesCSV);
 router.post('/exportdrive/:uid', firestore.decodeAuthToken, firestore.isAuthenticated, firestore.isAdmin, express.json(), exportResponsesGoogleDrive);
 

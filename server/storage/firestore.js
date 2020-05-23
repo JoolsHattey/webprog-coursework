@@ -104,6 +104,10 @@ async function editQuiz(uid, questionnaire) {
   await firebase.firestore().collection('questionnaires').doc(uid).update(questionnaire);
 }
 
+async function deleteQuiz(uid) {
+  await firebase.firestore().collection('questionnaires').doc(uid).delete();
+}
+
 async function getAllQuizs() {
   const result = [];
   const snapshot = await firebase.firestore().collection('questionnaires').get();
@@ -135,6 +139,7 @@ module.exports = {
   createQuiz,
   getQuiz,
   editQuiz,
+  deleteQuiz,
   getAllQuizs,
   grantModeratorRole,
   getUserRole,
