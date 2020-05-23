@@ -103,11 +103,11 @@ router.get('/questionnaires', getAllQuizs);
 router.post('/submitresponse/:uid', express.json(), submitResponse);
 
 // Admin routes
-router.get('/responses/:uid', firestore.firebaseAuth, getResponses);
-router.post('/createquestionnaire', firestore.firebaseAuth, express.json(), createQuiz);
-router.post('/editquestionnaire/:uid', firestore.firebaseAuth, express.json(), editQuiz);
-router.get('/export/:uid', firestore.firebaseAuth, exportResponsesCSV);
-router.post('/exportdrive/:uid', firestore.firebaseAuth, express.json(), exportResponsesGoogleDrive);
+router.get('/responses/:uid', firestore.decodeAuthToken, firestore.isAuthenticated, firestore.isAdmin, getResponses);
+router.post('/createquestionnaire', firestore.decodeAuthToken, firestore.isAuthenticated, firestore.isAdmin, express.json(), createQuiz);
+router.post('/editquestionnaire/:uid', firestore.decodeAuthToken, firestore.isAuthenticated, firestore.isAdmin, express.json(), editQuiz);
+router.get('/export/:uid', firestore.decodeAuthToken, firestore.isAuthenticated, firestore.isAdmin, exportResponsesCSV);
+router.post('/exportdrive/:uid', firestore.decodeAuthToken, firestore.isAuthenticated, firestore.isAdmin, express.json(), exportResponsesGoogleDrive);
 
 
 // router.get('/yiss/:email', yiss);

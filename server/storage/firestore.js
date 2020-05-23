@@ -9,7 +9,7 @@ firebase.initializeApp({
   databaseURL: 'https://webprog-coursework-e4b42.firebaseio.com',
 });
 
-const firebaseAuth = async (req, res, next) => {
+const decodeAuthToken = async (req, res, next) => {
   if (!req.headers.id_token) {
     return res.status(400).json({
       error: {
@@ -22,7 +22,40 @@ const firebaseAuth = async (req, res, next) => {
     req.user = userPayload;
     next();
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ error });
+  }
+};
+
+const isAuthenticated = (req, res, next) => {
+  if (req.user) {
+    next();
+  } else {
+    return res.status(401).json({
+      error: {
+        message: 'You are not authorised to perform this aciton. Please login.',
+      },
+    });
+  }
+};
+
+const isAdmin = (req, res, next) => {
+  try {
+    if (req.user.admin) {
+      next();
+    } else {
+      return res.staus(403).json({
+        error: {
+          message: 'You do not have access to the requested resource.',
+        },
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      error: {
+        message: 'Error occured while getting user roles.',
+      },
+    });
   }
 };
 
@@ -106,5 +139,7 @@ module.exports = {
   grantModeratorRole,
   getUserRole,
   syncLocalDB,
-  firebaseAuth,
+  decodeAuthToken,
+  isAuthenticated,
+  isAdmin,
 };
