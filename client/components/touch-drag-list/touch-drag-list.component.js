@@ -12,7 +12,6 @@ export class TouchDragList extends Component {
   }
 
   init(query, scroll) {
-    this.things = 0;
     this.queryName = query;
     this.scrollMode = scroll;
     if (scroll) {
@@ -89,11 +88,9 @@ export class TouchDragList extends Component {
     // Detect collisions with other list items by getting elements from point of active item
     const elements = this.shadowRoot.elementsFromPoint(window.innerWidth / 2, touchPos);
     const item = elements.find(x => (x.classList.contains(this.queryName) || x.tagName.toLowerCase() === this.queryName) && !(x.index === el.index));
-    this.things++;
     if (item) {
       // TODO
       const thing = (Math.abs(item.index - el.index)) * (this.items[item.index].clientHeight / 2);
-      console.log(thing);
       if (Math.abs(pos) > thing) {
         this.tempNewIndex = item.index;
         if (this.swipeDirection === 'up') {
@@ -116,7 +113,6 @@ export class TouchDragList extends Component {
       }
     }
     this.oldPos = pos;
-    console.log(this.tempNewIndex);
   }
 
   touchEnd(e, el, dragHandle) {
@@ -126,12 +122,10 @@ export class TouchDragList extends Component {
     el.classList.remove('qAnswerItemDragging');
     this.swipeDirection = null;
     el.style.transition = '0.3s';
-    console.log(el.index, this.tempNewIndex);
     if (el.index !== this.tempNewIndex) {
       this.moveItem(el.index, this.tempNewIndex, el);
     }
     el.style.transform = 'translate3d(0,0,0)';
-    console.log(`did ${this.things} things, ${this.things / ((e.timeStamp - this.startTime) / 1000)} per second`);
   }
 
 

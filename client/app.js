@@ -27,7 +27,7 @@ routerInstance.init(routerOutlet);
  * Queries the context for the node matching the specified selector.
  * @param {HTMLElement} ctx
  * @param {string} queryName
- * @return {HTMLElement}
+ * @returns {HTMLElement}
  */
 export function $(ctx, queryName) {
   if (ctx.shadowRoot) {
@@ -39,7 +39,7 @@ export function $(ctx, queryName) {
  * Creates an instance of the element for the specified tag.
  * @param {string} elName
  * @param {string} [template] Path to template file for contents of element.
- * @return {HTMLElement}
+ * @returns {HTMLElement}
  */
 export async function $r(elName, template) {
   const el = document.createElement(elName);

@@ -417,16 +417,16 @@ export class EditableQuiz extends Component {
     this.unsavedChanges();
   }
 
-  async createAnswerOption(answerContainer, name, type, newItem, index, qIndex) {
+  async createAnswerOption(answerContainer, name, type, newItem, optionIndex, questionIndex) {
     const el = await $r('div', '/components/editable-quiz/quiz-answer-option.html');
     el.classList.add('qAnswerItem');
-    // answerContainer.children[0].appendChild(el);
+    const textInput = $(el, 'text-input');
     if (name === null) {
-      name = `Option ${index + 1}`;
+      name = `Option ${optionIndex + 1}`;
     }
-    this.touchLists[qIndex].addItem(el, '.answerOptionDragHandle');
-    $(el, 'text-input').setValue(name);
-    el.index = index;
+    this.touchLists[questionIndex].addItem(el, '.answerOptionDragHandle');
+    textInput.setValue(name);
+    el.index = optionIndex;
     const answerTypeIcon = $(el, '.answerTypeIcon');
     if (type === 'single-select') {
       answerTypeIcon.append('radio');
@@ -434,19 +434,22 @@ export class EditableQuiz extends Component {
       answerTypeIcon.append('check_box');
     }
     if (newItem) {
-      await $(el, 'text-input').sizeNotInit;
-      $(el, 'text-input').inputEl.focus();
-      if (this.data.questions[qIndex].options) {
-        this.data.questions[qIndex].options[index] = name;
+      await textInput.sizeNotInit;
+      textInput.inputEl.focus();
+      if (this.data.questions[questionIndex].options) {
+        this.data.questions[questionIndex].options[optionIndex] = name;
       } else {
-        this.data.questions[qIndex].options = [];
-        this.data.questions[qIndex].options[index] = name;
+        this.data.questions[questionIndex].options = [];
+        this.data.questions[questionIndex].options[optionIndex] = name;
       }
     }
+    textInput.setOnChange(e => {
+      this.data.questions[questionIndex].options[optionIndex] = e.target.value;
+    });
     $(el, 'button').onclick = () => {
       // answerContainer.children[0].removeChild(el);
-      this.touchLists[qIndex].removeItem(el, index);
-      this.data.questions[qIndex].options.splice(index, 1);
+      this.touchLists[questionIndex].removeItem(el, optionIndex);
+      this.data.questions[questionIndex].options.splice(optionIndex, 1);
     };
     this.unsavedChanges();
   }
@@ -459,7 +462,6 @@ export class EditableQuiz extends Component {
       }
     }
     this.data.questions[qIndex].options.splice(newIndex, 0, this.data.questions[qIndex].options.splice(oldIndex, 1)[0]);
-    console.log(this.data.questions[qIndex].options);
     this.unsavedChanges();
   }
 }
