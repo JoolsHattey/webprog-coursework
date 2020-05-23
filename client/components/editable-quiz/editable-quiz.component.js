@@ -177,12 +177,17 @@ export class EditableQuiz extends Component {
         id_token: serverAuthCode,
       },
     });
-    // TODO res.ok
-    const data = await res.text();
-    const link = document.createElement('a');
-    link.setAttribute('href', `data:text/csv;charset=utf-8,${encodeURIComponent(data)}`);
-    link.setAttribute('download', `${this.data.name} - Responses.csv`);
-    link.click();
+    if (res.ok) {
+      const data = await res.text();
+      const link = document.createElement('a');
+      link.setAttribute('href', `data:text/csv;charset=utf-8,${encodeURIComponent(data)}`);
+      link.setAttribute('download', `${this.data.name} - Responses.csv`);
+      link.click();
+    } else {
+      const errorSnack = new SnackBar();
+      errorSnack.addTitle('Error exporting responses');
+      errorSnack.show(4000);
+    }
   }
 
   async initResponsesTab() {
