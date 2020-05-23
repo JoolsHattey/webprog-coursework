@@ -7,7 +7,7 @@ const port = 8080;
 const path = require('path');
 const gdrive = require('./gdrive');
 
-const storage = require('./storage/storage.js');
+const storage = require('./storage');
 const localDBMode = process.env.DBMODE;
 storage.init(localDBMode);
 
