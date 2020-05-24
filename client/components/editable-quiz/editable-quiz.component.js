@@ -70,6 +70,7 @@ export class EditableQuiz extends Component {
   }
 
   preview() {
+    // console.log("what the actual frick")
     const w = window.open(window.location.host, '');
     w.location.assign(`/quiz/${this.id}`);
   }

@@ -24,7 +24,7 @@ export class TextInput extends Component {
     // }
   }
 
-  static get observedAttributes() { return ['size', 'underline', 'fontsize', 'inputtype']; }
+  static get observedAttributes() { return ['size', 'underline', 'fontsize', 'inputtype', 'inputstyle']; }
 
   attributeChangedCallback(name, oldValue, newValue) {
     if (name === 'size') {
@@ -38,6 +38,9 @@ export class TextInput extends Component {
     }
     if (name === 'inputtype') {
       this.setInputType(newValue);
+    }
+    if (name === 'inputstyle') {
+      this.setInputStyle(newValue);
     }
   }
 
@@ -99,6 +102,14 @@ export class TextInput extends Component {
     this.inputEl.type = newValue;
   }
 
+  async setInputStyle(newValue) {
+    await this.templatePromise;
+    await this.sizeNotInit;
+    if (newValue === 'filled') {
+      this.inputEl.classList.add('filledTextInput');
+    }
+  }
+
   warn(value) {
     if (!this.warnVisible && !value) {
 
@@ -126,15 +137,20 @@ export class TextInput extends Component {
   }
 
   async setValue(newValue) {
+    await this.templatePromise;
     await this.sizeNotInit;
     this.inputEl.value = newValue;
-    this.resize();
-    this.inputEl.dispatchEvent(new Event('input'));
+    const intervalID = window.setInterval(() => {
+      this.resize();
+      if (this.inputEl.scrollHeight !== 0) {
+        window.clearInterval(intervalID);
+      }
+    }, 10);
   }
 
   resize() {
     this.inputEl.setAttribute('style', 'height: auto;');
-    this.inputEl.setAttribute('style', `height: ${this.inputEl.scrollHeight > 20 ? this.inputEl.scrollHeight : 20}px;`);
+    this.inputEl.setAttribute('style', `height: ${this.inputEl.scrollHeight}px;`);
   }
 
   async setOnChange(callback) {

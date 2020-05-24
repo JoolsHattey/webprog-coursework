@@ -21,15 +21,16 @@ body {
   left: 0;
   width: 100%;
   background-color: white;
-  transition: height 0.35s ease-out;
+  height: 6.625rem!important;
+  transform-origin: top;
+  transform: scale3d(1, 0, 1);
   overflow: hidden; 
-  height: 0;
   z-index: 1;
   box-shadow: 0 0.25rem 0.5rem 0.00625rem grey;
-  opacity: 0;
+  /* transition: 0.3s; */
 }
 #expandedContent.expanded {
-  opacity: 1;
+  animation: expandAppBar 0.3s forwards;
 }
 .innerExpandedContent {
   padding: 0 1rem 0 1rem;
@@ -39,8 +40,33 @@ body {
   
 }
 .expanded {
-  height: 6.625rem!important;
+  /* height: 6.625rem!important; */
 }
+
+@keyframes expandAppBar {
+  0% {
+    transform: scale3d(1, 0, 1);
+  }
+  /* 50% {
+    transform: scale3d(1, 0.5, 1);
+  } */
+  100% {
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+@keyframes unexpandAppBar {
+  0% {
+    transform: scale3d(1, 1, 1);
+  }
+  /* 50% {
+    transform: scale3d(1, 0.5, 1);
+  } */
+  100% {
+    transform: scale3d(1, 0, 1);
+  }
+}
+
 #quizEditorButtons {
   display: flex;
   flex-direction: row;

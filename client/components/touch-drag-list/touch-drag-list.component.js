@@ -87,6 +87,7 @@ export class TouchDragList extends Component {
     }
     // Detect collisions with other list items by getting elements from point of active item
     const elements = this.shadowRoot.elementsFromPoint(window.innerWidth / 2, touchPos);
+    // Filter by element query name
     const item = elements.find(x => (x.classList.contains(this.queryName) || x.tagName.toLowerCase() === this.queryName) && !(x.index === el.index));
     if (item) {
       // TODO
