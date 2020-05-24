@@ -6,7 +6,7 @@ import { Quiz } from './quiz/quiz.component.js';
 export class QuizPage extends Component {
   constructor(req) {
     super({
-      stylesheet: '/modules/quiz-page/styles.css',
+      stylesheet: '/modules/quiz-page/quiz-page.component.css',
     });
     this.elLoaded = this.initElement(req);
   }

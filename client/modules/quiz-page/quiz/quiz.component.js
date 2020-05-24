@@ -14,7 +14,7 @@ export class Quiz extends Component {
   constructor(quizID, quizData) {
     super({
       template: '/modules/quiz-page/quiz/quiz.component.html',
-      stylesheet: '/modules/quiz-page/quiz/styles.css',
+      stylesheet: '/modules/quiz-page/quiz/quiz.component.css',
     });
     this.initElement(quizID, quizData);
   }
@@ -47,12 +47,12 @@ export class Quiz extends Component {
 
     this.finishCard = new Card({
       template: '/modules/quiz-page/quiz/quiz-finish.html',
-      stylesheet: '/modules/quiz-page/quiz/styles.css',
+      stylesheet: '/modules/quiz-page/quiz/quiz.component.css',
     });
     qCards.push(this.finishCard);
 
     this.stack = new CardStack();
-    this.stack.addStyleSheet('/modules/quiz-page/quiz/styles.css');
+    this.stack.addStyleSheet('/modules/quiz-page/quiz/quiz.component.css');
     $(this, '#cardStackContainer').appendChild(this.stack);
     this.stack.init(qCards);
 
@@ -112,7 +112,7 @@ export class Quiz extends Component {
   async createTitleCard(quizData) {
     this.titleCard = new Card({
       template: '/modules/quiz-page/quiz/quiz-title.html',
-      stylesheet: '/modules/quiz-page/quiz/styles.css',
+      stylesheet: '/modules/quiz-page/quiz/quiz.component.css',
     });
     await this.titleCard.templatePromise;
     $(this.titleCard, '#title').append(quizData.name);
