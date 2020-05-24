@@ -9,7 +9,7 @@ import { $, routerInstance } from '../../app.js';
 export class LoginPage extends Component {
   constructor() {
     super({
-      stylesheet: '/views/login-page/login-page.component.css',
+      stylesheet: '/modules/login-page/login-page.component.css',
     });
     document.title = 'Login - Quiz Editor';
     this.initElement();
@@ -17,8 +17,8 @@ export class LoginPage extends Component {
 
   async initElement() {
     const loginCard = new Card({
-      template: '/views/login-page/login-card.html',
-      stylesheet: '/views/login-page/login-page.component.css',
+      template: '/modules/login-page/login-card.html',
+      stylesheet: '/modules/login-page/login-page.component.css',
     });
     loginCard.classList.add('hide');
     firebase.auth().onAuthStateChanged(user => {

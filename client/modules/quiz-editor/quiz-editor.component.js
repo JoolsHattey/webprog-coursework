@@ -9,7 +9,7 @@ import { AppBar } from '../../components/app-bar/app-bar.component.js';
 import { TextInput } from '../../components/text-input/text-input.component.js';
 import { Dropdown } from '../../components/dropdown/dropdown.component.js';
 import { Checkbox } from '../../components/checkbox/checkbox.component.js';
-import { EditableQuiz } from '../../components/editable-quiz/editable-quiz.component.js';
+import { EditableQuiz } from './editable-quiz/editable-quiz.component.js';
 import { BottomSheet } from '../../components/bottom-sheet/bottom-sheet.component.js';
 import { SnackBar } from '../../components/snack-bar/snack-bar.component.js';
 import { getServerAuthCode } from '../../auth.js';
@@ -17,8 +17,8 @@ import { getServerAuthCode } from '../../auth.js';
 export class QuizEditor extends Component {
   constructor(req) {
     super({
-      template: '/views/quiz-editor/quiz-editor.component.html',
-      stylesheet: '/views/quiz-editor/quiz-editor.component.css',
+      template: '/modules/quiz-editor/quiz-editor.component.html',
+      stylesheet: '/modules/quiz-editor/quiz-editor.component.css',
     });
     this.elLoaded = this.initElement(req);
   }
@@ -42,8 +42,8 @@ export class QuizEditor extends Component {
 
     const newQuizBtn = $(this, '#newQuizBtn');
     const newQuizSheet = new BottomSheet({
-      template: '/views/quiz-editor/new-quiz-dialog.html',
-      stylesheet: '/views/quiz-editor/quiz-editor.component.css',
+      template: '/modules/quiz-editor/new-quiz-dialog.html',
+      stylesheet: '/modules/quiz-editor/quiz-editor.component.css',
     });
     newQuizBtn.addEventListener('click', () => {
       newQuizSheet.open();
@@ -96,13 +96,13 @@ export class QuizEditor extends Component {
     const data = await response.json();
     const container = $(this, '#quizsContainer');
     const deleteSheet = new BottomSheet({
-      template: '/views/quiz-editor/delete-quiz-sheet.html',
-      stylesheet: '/views/quiz-editor/quiz-editor.component.css',
+      template: '/modules/quiz-editor/delete-quiz-sheet.html',
+      stylesheet: '/modules/quiz-editor/quiz-editor.component.css',
     });
     for (const element of data) {
       const quizItem = new Card({
-        stylesheet: '/views/quiz-editor/quiz-editor.component.css',
-        template: '/views/quiz-editor/quiz-item.html',
+        stylesheet: '/modules/quiz-editor/quiz-editor.component.css',
+        template: '/modules/quiz-editor/quiz-item.html',
       });
       await quizItem.templatePromise;
       $(quizItem, 'p').append(`ID: ${element.uid}`);

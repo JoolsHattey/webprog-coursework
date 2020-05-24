@@ -1,20 +1,20 @@
 'use strict';
 
-import { Component } from '../component.js';
-import { Card } from '../card/card.component.js';
-import { TextInput } from '../text-input/text-input.component.js';
-import { CheckboxGroup } from '../checkbox/checkbox-group.component.js';
-import { RadioGroup } from '../radio-selector/radio-selector.component.js';
-import { $, routerInstance } from '../../app.js';
-import { SnackBar } from '../snack-bar/snack-bar.component.js';
-import { CardStack } from '../../components/card-stack/card-stack.component.js';
-import { getAdminStatus } from '../../auth.js';
+import { Component } from '../../../components/component.js';
+import { Card } from '../../../components/card/card.component.js';
+import { TextInput } from '../../../components/text-input/text-input.component.js';
+import { CheckboxGroup } from '../../../components/checkbox/checkbox-group.component.js';
+import { RadioGroup } from '../../../components/radio-selector/radio-selector.component.js';
+import { $, routerInstance } from '../../../app.js';
+import { SnackBar } from '../../../components/snack-bar/snack-bar.component.js';
+import { CardStack } from '../../../components/card-stack/card-stack.component.js';
+import { getAdminStatus } from '../../../auth.js';
 
 export class Quiz extends Component {
   constructor(quizID, quizData) {
     super({
-      template: '/components/quiz/quiz.component.html',
-      stylesheet: '/components/quiz/styles.css',
+      template: '/modules/quiz-page/quiz/quiz.component.html',
+      stylesheet: '/modules/quiz-page/quiz/styles.css',
     });
     this.initElement(quizID, quizData);
   }
@@ -46,13 +46,13 @@ export class Quiz extends Component {
     });
 
     this.finishCard = new Card({
-      template: '/components/quiz/quiz-finish.html',
-      stylesheet: '/components/quiz/styles.css',
+      template: '/modules/quiz-page/quiz/quiz-finish.html',
+      stylesheet: '/modules/quiz-page/quiz/styles.css',
     });
     qCards.push(this.finishCard);
 
     this.stack = new CardStack();
-    this.stack.addStyleSheet('/components/quiz/styles.css');
+    this.stack.addStyleSheet('/modules/quiz-page/quiz/styles.css');
     $(this, '#cardStackContainer').appendChild(this.stack);
     this.stack.init(qCards);
 
@@ -111,16 +111,16 @@ export class Quiz extends Component {
 
   async createTitleCard(quizData) {
     this.titleCard = new Card({
-      template: '/components/quiz/quiz-title.html',
-      stylesheet: '/components/quiz/styles.css',
+      template: '/modules/quiz-page/quiz/quiz-title.html',
+      stylesheet: '/modules/quiz-page/quiz/styles.css',
     });
     await this.titleCard.templatePromise;
     $(this.titleCard, '#title').append(quizData.name);
     $(this.titleCard, '#numQ').append(`${quizData.questions.length} Questions`);
     $(this, '#titleCard').appendChild(this.titleCard);
     // const infoDialog = new ModalCard({
-    //     template: '/components/quiz/quiz-tutorial-dialog.html',
-    //     stylesheet: '/components/quiz/styles.css'
+    //     template: '/modules/quiz-page/quiz/quiz-tutorial-dialog.html',
+    //     stylesheet: '/modules/quiz-page/quiz/styles.css'
     // }, null, '70%', '60%');
     // $(titleCard, '#infoBtn').addEventListener('click', () => infoDialog.open())
   }

@@ -1,12 +1,12 @@
 'use strict';
 
 import { Component } from '../../components/component.js';
-import { Quiz } from '../../components/quiz/quiz.component.js';
+import { Quiz } from './quiz/quiz.component.js';
 
 export class QuizPage extends Component {
   constructor(req) {
     super({
-      stylesheet: '/views/quiz-page/styles.css',
+      stylesheet: '/modules/quiz-page/styles.css',
     });
     this.elLoaded = this.initElement(req);
   }

@@ -1,21 +1,21 @@
 /* eslint-disable no-unused-vars */
 'use strict';
 
-import { Component } from '../component.js';
-import { $, $r } from '../../app.js';
-import { Card } from '../card/card.component.js';
-import { SnackBar } from '../snack-bar/snack-bar.component.js';
-import { TouchDragList } from '../touch-drag-list/touch-drag-list.component.js';
-import { PieChart } from '../chart/pie-chart.component.js';
-import { BarChart } from '../chart/bar-chart.component.js';
-import { BottomSheet } from '../bottom-sheet/bottom-sheet.component.js';
-import { getGoogleDriveAuth, getServerAuthCode } from '../../auth.js';
+import { Component } from '../../../components/component.js';
+import { $, $r } from '../../../app.js';
+import { Card } from '../../../components/card/card.component.js';
+import { SnackBar } from '../../../components/snack-bar/snack-bar.component.js';
+import { TouchDragList } from '../../../components/touch-drag-list/touch-drag-list.component.js';
+import { PieChart } from '../../../components/chart/pie-chart.component.js';
+import { BarChart } from '../../../components/chart/bar-chart.component.js';
+import { BottomSheet } from '../../../components/bottom-sheet/bottom-sheet.component.js';
+import { getGoogleDriveAuth, getServerAuthCode } from '../../../auth.js';
 
 export class EditableQuiz extends Component {
   constructor(uid, quizData, responseData, appBar) {
     super({
-      template: '/components/editable-quiz/editable-quiz.component.html',
-      stylesheet: '/components/editable-quiz/editable-quiz.component.css',
+      template: '/modules/quiz-editor/editable-quiz/editable-quiz.component.html',
+      stylesheet: '/modules/quiz-editor/editable-quiz/editable-quiz.component.css',
     });
     this.initElement(uid, quizData, responseData, appBar);
   }
@@ -113,8 +113,8 @@ export class EditableQuiz extends Component {
   initShareDialog() {
     const quizURL = `${window.location.host}/quiz/${this.id}`;
     const shareModal = new BottomSheet({
-      template: '/components/editable-quiz/quiz-share-dialog.html',
-      stylesheet: '/components/editable-quiz/editable-quiz.component.css',
+      template: '/modules/quiz-editor/editable-quiz/quiz-share-dialog.html',
+      stylesheet: '/modules/quiz-editor/editable-quiz/editable-quiz.component.css',
     });
 
     $(this.appBar, '#shareBtn').addEventListener('click', () => {
@@ -194,8 +194,8 @@ export class EditableQuiz extends Component {
 
   async initResponsesTab() {
     const responsesCard = new Card({
-      template: '/components/editable-quiz/quiz-responses-title-card.html',
-      stylesheet: '/components/editable-quiz/editable-quiz.component.css',
+      template: '/modules/quiz-editor/editable-quiz/quiz-responses-title-card.html',
+      stylesheet: '/modules/quiz-editor/editable-quiz/editable-quiz.component.css',
     });
     await responsesCard.templatePromise;
     $(this, '#responsesContainer').appendChild(responsesCard);
@@ -210,8 +210,8 @@ export class EditableQuiz extends Component {
     if (numResponses > 0) {
       for (const [i, question] of this.data.questions.entries()) {
         const questionResponseCard = new Card({
-          template: '/components/editable-quiz/quiz-responses-question-card.html',
-          stylesheet: '/components/editable-quiz/editable-quiz.component.css',
+          template: '/modules/quiz-editor/editable-quiz/quiz-responses-question-card.html',
+          stylesheet: '/modules/quiz-editor/editable-quiz/editable-quiz.component.css',
         });
         await questionResponseCard.templatePromise;
         $(this, '#responsesContainer').append(questionResponseCard);
@@ -289,7 +289,7 @@ export class EditableQuiz extends Component {
     newAnswerOptionBtn.children[0].initElement();
     answerOptionsContainer.classList.remove('hide');
     const touchList = $(q, 'touch-drag-list');
-    touchList.addStyleSheet('/components/editable-quiz/editable-quiz.component.css');
+    touchList.addStyleSheet('/modules/quiz-editor/editable-quiz/editable-quiz.component.css');
     touchList.init('qAnswerItem');
     touchList.addEventListener('reorder', e => {
       this.moveOption(index, e.detail.oldIndex, e.detail.newIndex);
@@ -318,8 +318,8 @@ export class EditableQuiz extends Component {
       this.unsavedChanges();
     }
     const q = new Card({
-      template: '/components/editable-quiz/question.html',
-      stylesheet: '/components/editable-quiz/editable-quiz.component.css',
+      template: '/modules/quiz-editor/editable-quiz/question.html',
+      stylesheet: '/modules/quiz-editor/editable-quiz/editable-quiz.component.css',
     });
 
     q.index = index;
@@ -426,7 +426,7 @@ export class EditableQuiz extends Component {
   }
 
   async createAnswerOption(answerContainer, name, type, newItem, optionIndex, questionIndex) {
-    const el = await $r('div', '/components/editable-quiz/quiz-answer-option.html');
+    const el = await $r('div', '/modules/quiz-editor/editable-quiz/quiz-answer-option.html');
     el.classList.add('qAnswerItem');
     const textInput = $(el, 'text-input');
     if (name === null) {

@@ -16,10 +16,10 @@ const routerOutlet = $(document, 'router-outlet');
 export const routerInstance = new Router();
 
 routerInstance.get({ uri: '/', destination: null, defaultRoute: true, redirectTo: '/login' });
-routerInstance.get({ uri: '/login', destination: () => import('./views/login-page/login-page.component.js').then(m => m.LoginPage), lazy: true });
-routerInstance.get({ uri: '/quiz/:quizID', destination: () => import('./views/quiz-page/index.js').then(m => m.QuizPage), lazy: true });
-routerInstance.get({ uri: '/quizeditor/:quizID', destination: () => import('./views/quiz-editor/quiz-editor.component.js').then(m => m.QuizEditor), lazy: true, authGuard: getAdminStatus });
-routerInstance.get({ uri: '/quizeditor', destination: () => import('./views/quiz-editor/quiz-editor.component.js').then(m => m.QuizEditor), lazy: true, authGuard: getAdminStatus });
+routerInstance.get({ uri: '/login', destination: () => import('./modules/login-page/login-page.component.js').then(m => m.LoginPage), lazy: true });
+routerInstance.get({ uri: '/quiz/:quizID', destination: () => import('./modules/quiz-page/index.js').then(m => m.QuizPage), lazy: true });
+routerInstance.get({ uri: '/quizeditor/:quizID', destination: () => import('./modules/quiz-editor/quiz-editor.component.js').then(m => m.QuizEditor), lazy: true, authGuard: getAdminStatus });
+routerInstance.get({ uri: '/quizeditor', destination: () => import('./modules/quiz-editor/quiz-editor.component.js').then(m => m.QuizEditor), lazy: true, authGuard: getAdminStatus });
 
 routerInstance.init(routerOutlet);
 
