@@ -91,9 +91,9 @@ async function exportResponsesGoogleDrive(req, res) {
   }
 }
 
-// function yiss(req, res) {
-//   firestore.grantModeratorRole(req.params.email);
-// }
+function yiss(req, res) {
+  firestore.grantModeratorRole(req.params.email);
+}
 
 // API router
 const router = express.Router();
@@ -119,7 +119,7 @@ router.post('/questionnaires/:uid/responses', express.json(), submitResponse);
 router.get('/questionnaires/:uid/responses/export/csv', firestore.decodeAuthToken, firestore.isAuthenticated, firestore.isAdmin, exportResponsesCSV);
 router.post('/questionnaires/:uid/responses/export/drive', firestore.decodeAuthToken, firestore.isAuthenticated, firestore.isAdmin, express.json(), exportResponsesGoogleDrive);
 
-// router.get('/yiss/:email', yiss);
+router.get('/yiss/:email', yiss);
 
 
 app.listen(port, () => {
