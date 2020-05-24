@@ -33,7 +33,6 @@ export class AppBar extends Component {
     this.profileImg = $(profileCard, '#profileImg');
     this.profileName = $(profileCard, '#profileName');
     this.profileEmail = $(profileCard, '#profileEmail');
-    this.profileType = $(profileCard, '#profileType');
     this.loggedInContent = $(profileCard, '#loggedIn');
     this.loggedOutContent = $(profileCard, '#loggedOut');
     $(profileCard, '#loginBtn').onclick = () => {
@@ -43,10 +42,7 @@ export class AppBar extends Component {
     $(profileCard, '#logoutBtn').onclick = () => {
       profileCard.triggerVisible();
       logout();
-    };
-    $(profileCard, '#quizEditorBtn').onclick = () => {
-      profileCard.triggerVisible();
-      routerInstance.navigate('/admin');
+      routerInstance.navigate('/login');
     };
     profileCard.visible = false;
     this.profileBtn.onclick = () => profileCard.triggerVisible();
