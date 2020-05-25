@@ -140,17 +140,19 @@ export class TextInput extends Component {
     await this.templatePromise;
     await this.sizeNotInit;
     this.inputEl.value = newValue;
-    const intervalID = window.setInterval(() => {
-      this.resize();
-      if (this.inputEl.scrollHeight !== 0) {
-        window.clearInterval(intervalID);
-      }
-    }, 10);
+    if (this.size === 'multiline') {
+      const intervalID = window.setInterval(() => {
+        if (this.inputEl.scrollHeight > 0) {
+          this.resize();
+          window.clearInterval(intervalID);
+        }
+      }, 10);
+    }
   }
 
   resize() {
     this.inputEl.setAttribute('style', 'height: auto;');
-    this.inputEl.setAttribute('style', `height: ${this.inputEl.scrollHeight}px;`);
+    this.inputEl.setAttribute('style', `height: ${this.inputEl.scrollHeight + 1}px;`);
   }
 
   async setOnChange(callback) {
