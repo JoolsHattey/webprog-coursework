@@ -53,6 +53,15 @@ export async function $r(elName, template) {
   return el;
 }
 /**
+ * Creates an instance of the element for the specified tag.
+ * @param {string} elName
+ * @param {string} [template] Path to template file for contents of element.
+ * @returns {HTMLElement}
+ */
+export function html(elName) {
+  return document.createElement(elName);
+}
+/**
  * Clear inner content of element
  * @param {HTMLElement} el
  */

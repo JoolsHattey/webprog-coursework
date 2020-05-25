@@ -41,7 +41,7 @@ export class Quiz extends Component {
       const question = new Card();
       question.id = element.id;
       const newInput = this.createInput(element);
-      question.container.appendChild(newInput);
+      question.container.append(newInput);
       qCards.push(question);
     });
 
@@ -53,7 +53,7 @@ export class Quiz extends Component {
 
     this.stack = new CardStack();
     this.stack.addStyleSheet('/modules/quiz-page/quiz/quiz.component.css');
-    $(this, '#cardStackContainer').appendChild(this.stack);
+    $(this, '#cardStackContainer').append(this.stack);
     this.stack.init(qCards);
 
     this.stack.addEventListener('lockrejected', e => {
@@ -84,6 +84,7 @@ export class Quiz extends Component {
     $(this, '#backBtn').addEventListener('click', () => this.stack.prev());
     $(this, '#backBtn').disabled = true;
 
+    // Observes stack element for changes to current card attribute
     const observer = new MutationObserver(mutations => {
       mutations.forEach(mutation => {
         if (mutation.type === 'attributes') {
@@ -117,12 +118,7 @@ export class Quiz extends Component {
     await this.titleCard.templatePromise;
     $(this.titleCard, '#title').append(quizData.name);
     $(this.titleCard, '#numQ').append(`${quizData.questions.length} ${quizData.questions.length === 1 ? 'Question' : 'Questions'}`);
-    $(this, '#titleCard').appendChild(this.titleCard);
-    // const infoDialog = new ModalCard({
-    //     template: '/modules/quiz-page/quiz/quiz-tutorial-dialog.html',
-    //     stylesheet: '/modules/quiz-page/quiz/styles.css'
-    // }, null, '70%', '60%');
-    // $(titleCard, '#infoBtn').addEventListener('click', () => infoDialog.open())
+    $(this, '#titleCard').append(this.titleCard);
   }
 
   createInput(questionData) {

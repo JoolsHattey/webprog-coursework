@@ -9,6 +9,7 @@ import { AppBar } from '../../components/app-bar/app-bar.component.js';
 import { TextInput } from '../../components/text-input/text-input.component.js';
 import { Dropdown } from '../../components/dropdown/dropdown.component.js';
 import { Checkbox } from '../../components/checkbox/checkbox.component.js';
+import { TouchDragList } from '../../../components/touch-drag-list/touch-drag-list.component.js';
 import { EditableQuiz } from './editable-quiz/editable-quiz.component.js';
 import { BottomSheet } from '../../components/bottom-sheet/bottom-sheet.component.js';
 import { SnackBar } from '../../components/snack-bar/snack-bar.component.js';

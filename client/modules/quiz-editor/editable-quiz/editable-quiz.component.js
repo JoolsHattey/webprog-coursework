@@ -1,11 +1,9 @@
-/* eslint-disable no-unused-vars */
 'use strict';
 
 import { Component } from '../../../components/component.js';
-import { $, $r } from '../../../app.js';
+import { $, $r, html } from '../../../app.js';
 import { Card } from '../../../components/card/card.component.js';
 import { SnackBar } from '../../../components/snack-bar/snack-bar.component.js';
-import { TouchDragList } from '../../../components/touch-drag-list/touch-drag-list.component.js';
 import { PieChart } from '../../../components/chart/pie-chart.component.js';
 import { BarChart } from '../../../components/chart/bar-chart.component.js';
 import { BottomSheet } from '../../../components/bottom-sheet/bottom-sheet.component.js';
@@ -70,9 +68,10 @@ export class EditableQuiz extends Component {
   }
 
   preview() {
-    // console.log("what the actual frick")
-    const w = window.open(window.location.host, '');
-    w.location.assign(`/quiz/${this.id}`);
+    const link = html('a');
+    link.href = `/quiz/${this.id}`;
+    link.target = '_blank';
+    link.click();
   }
 
   initSaveStatus(saveTime) {

@@ -1,6 +1,3 @@
-/* $offset: 187;
-$duration: 1.4s; */
-
 :host {
   width: 65px;
   height: 65px;
@@ -29,11 +26,11 @@ body {
 }
 
 @keyframes colors {
-  0% { stroke: #4285F4; }
-  25% { stroke: #DE3E35; }
-  50% { stroke: #F7C223; }
-  75% { stroke: #1B9A59; }
-  100% { stroke: #4285F4; }
+  0% { stroke: var(--primary-theme-colour); }
+  25% { stroke: var(--primary-theme-colour); }
+  50% { stroke: var(--primary-theme-colour); }
+  75% { stroke: var(--primary-theme-colour); }
+  100% { stroke: var(--primary-theme-colour); }
 }
 
 @keyframes dash {
