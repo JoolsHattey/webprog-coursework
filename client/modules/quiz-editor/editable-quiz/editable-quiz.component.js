@@ -220,17 +220,23 @@ export class EditableQuiz extends Component {
         });
         const chartContainer = $(questionResponseCard, '#questionResponses');
 
+        let numQuestionResponses = 0;
         switch (question.type) {
           case 'single-select':
             const chart = new BarChart(this.sortResponses(questionResponses, question.options));
             chartContainer.append(chart);
+            questionResponses.forEach(element => {
+              if (element) numQuestionResponses++;
+            });
             break;
           case 'multi-select':
             console.log(questionResponses);
+            questionResponses.forEach(element => {
+              if (element) numQuestionResponses++;
+            });
             chartContainer.append(new BarChart(this.sortResponses(questionResponses, question.options)));
             break;
           default:
-            let numQuestionResponses = 0;
             questionResponses.forEach(item => {
               if (item) {
                 const thing = document.createElement('div');
@@ -240,9 +246,9 @@ export class EditableQuiz extends Component {
                 numQuestionResponses++;
               }
             });
-            $(questionResponseCard, '#numResponses').append(`${numQuestionResponses} ${numQuestionResponses === 1 ? 'response' : 'responses'}`);
             break;
         }
+        $(questionResponseCard, '#numResponses').append(`${numQuestionResponses} ${numQuestionResponses === 1 ? 'response' : 'responses'}`);
       }
     } else {
       const noResponses = new Card();
