@@ -82,6 +82,7 @@ export class TouchDragList extends Component {
         this.scrollAmount += 5;
       }
     }
+    // Prevent item from being dragged out of container
     if (touchPos > this.getBoundingClientRect().top && touchPos < this.getBoundingClientRect().bottom) {
       el.style.transform = `translate3d(0,${pos + this.scrollAmount}px,0)`;
     }
@@ -90,26 +91,19 @@ export class TouchDragList extends Component {
     // Filter by element query name
     const item = elements.find(x => (x.classList.contains(this.queryName) || x.tagName.toLowerCase() === this.queryName) && !(x.index === el.index));
     if (item) {
-      // TODO
-      const thing = (Math.abs(item.index - el.index)) * (this.items[item.index].clientHeight / 2);
-      if (Math.abs(pos) > thing) {
-        this.tempNewIndex = item.index;
-        if (this.swipeDirection === 'up') {
-          item.style.transition = '0.3s';
-          if (this.currentDirection === 'down') {
-            item.style.transform = 'translate3d(0,0,0)';
-            this.tempNewIndex = item.index + 1;
-          } else {
-            item.style.transform = 'translate3d(0,100%,0)';
-          }
-        } else {
-          item.style.transition = '0.3s';
-          if (this.currentDirection === 'up') {
-            item.style.transform = 'translate3d(0,0,0)';
-            this.tempNewIndex = item.index - 1;
-          } else {
-            item.style.transform = 'translate3d(0,-100%,0)';
-          }
+      item.style.transition = '0.3s';
+      this.tempNewIndex = item.index;
+      if (this.currentDirection === 'up') {
+        if (item.index < el.index) {
+          item.style.transform = 'translate3d(0,100%,0)';
+        } else if (item.index > el.index) {
+          item.style.transform = 'translate3d(0,0,0)';
+        }
+      } else if (this.currentDirection === 'down') {
+        if (item.index < el.index) {
+          item.style.transform = 'translate3d(0,0,0)';
+        } else if (item.index > el.index) {
+          item.style.transform = 'translate3d(0,-100%,0)';
         }
       }
     }
