@@ -92,18 +92,29 @@ export class TouchDragList extends Component {
     const item = elements.find(x => (x.classList.contains(this.queryName) || x.tagName.toLowerCase() === this.queryName) && !(x.index === el.index));
     if (item) {
       item.style.transition = '0.3s';
-      this.tempNewIndex = item.index;
       if (this.currentDirection === 'up') {
         if (item.index < el.index) {
           item.style.transform = 'translate3d(0,100%,0)';
+          this.tempNewIndex = item.index;
         } else if (item.index > el.index) {
           item.style.transform = 'translate3d(0,0,0)';
+          if (item.index === el.index + 1) {
+            this.tempNewIndex = el.index;
+          } else {
+            this.tempNewIndex = item.index;
+          }
         }
       } else if (this.currentDirection === 'down') {
         if (item.index < el.index) {
           item.style.transform = 'translate3d(0,0,0)';
+          if (item.index === el.index - 1) {
+            this.tempNewIndex = el.index;
+          } else {
+            this.tempNewIndex = item.index;
+          }
         } else if (item.index > el.index) {
           item.style.transform = 'translate3d(0,-100%,0)';
+          this.tempNewIndex = item.index;
         }
       }
     }
