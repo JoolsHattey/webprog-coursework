@@ -173,7 +173,7 @@ export class EditableQuiz extends Component {
 
   async exportResponses() {
     const serverAuthCode = await getServerAuthCode();
-    const res = await fetch(`/api/questionnaires/${this.id}/responses/export/drive`, {
+    const res = await fetch(`/api/questionnaires/${this.id}/responses/export/csv`, {
       headers: {
         id_token: serverAuthCode,
       },
