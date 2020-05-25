@@ -3,8 +3,9 @@
 
 import { Component } from '../../components/component.js';
 import { Card } from '../../components/card/card.component.js';
-import { getAdminStatus, login } from '../../auth.js';
+import { getAdminStatus, login, logout } from '../../auth.js';
 import { $, routerInstance } from '../../app.js';
+import { BottomSheet } from '../../components/bottom-sheet/bottom-sheet.component.js';
 
 export class LoginPage extends Component {
   constructor() {
@@ -21,6 +22,8 @@ export class LoginPage extends Component {
       stylesheet: '/modules/login-page/login-page.component.css',
     });
     loginCard.classList.add('hide');
+    loginCard.classList.remove('hide');
+    const notAdminSheet = new BottomSheet({ template: '/modules/login-page/not-admin-sheet.html', stylesheet: '/modules/login-page/login-page.component.css' });
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         getAdminStatus().then(auth => {
@@ -28,7 +31,8 @@ export class LoginPage extends Component {
             loginCard.classList.add('hide');
             routerInstance.navigate('/quizeditor');
           } else {
-            loginCard.classList.remove('hide');
+            notAdminSheet.open();
+            logout();
           }
         });
       } else {

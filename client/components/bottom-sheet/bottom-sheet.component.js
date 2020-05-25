@@ -81,9 +81,9 @@ export class BottomSheet extends Component {
 
   open() {
     if (!this.opened) {
+      this.opened = true;
       document.body.append(this);
       this.overlay.style.opacity = 0.5;
-      this.opened = true;
     }
   }
 

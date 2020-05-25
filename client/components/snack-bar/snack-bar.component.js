@@ -25,6 +25,9 @@ export class SnackBar extends Component {
     link.addEventListener('click', () => this.hide());
   }
 
+  /**
+   * @param {number} [timeout] Number of milliseconds to stay on screen for, default is unlimited.
+   */
   async show(timeout) {
     await this.templatePromise;
     document.body.appendChild(this);

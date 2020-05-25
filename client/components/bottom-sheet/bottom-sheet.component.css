@@ -18,6 +18,8 @@ body {
   padding: 1.25rem!important;
   z-index: 1;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 }
 
 .overlay {

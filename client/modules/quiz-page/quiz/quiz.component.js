@@ -116,7 +116,7 @@ export class Quiz extends Component {
     });
     await this.titleCard.templatePromise;
     $(this.titleCard, '#title').append(quizData.name);
-    $(this.titleCard, '#numQ').append(`${quizData.questions.length} Questions`);
+    $(this.titleCard, '#numQ').append(`${quizData.questions.length} ${quizData.questions.length === 1 ? 'Question' : 'Questions'}`);
     $(this, '#titleCard').appendChild(this.titleCard);
     // const infoDialog = new ModalCard({
     //     template: '/modules/quiz-page/quiz/quiz-tutorial-dialog.html',

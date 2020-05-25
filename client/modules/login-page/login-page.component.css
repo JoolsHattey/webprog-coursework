@@ -20,3 +20,9 @@
 #loginBtn {
   
 }
+
+#notAdminSheet {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

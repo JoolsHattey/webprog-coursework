@@ -30,7 +30,7 @@ export class Component extends HTMLElement {
   }
 
   /**
-   * Adds a stylesheet to the elements head
+   * Adds a stylesheet to the components head
    * @param {string} path CSS stylesheet path
    */
   addStyleSheet(path) {

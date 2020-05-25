@@ -42,9 +42,8 @@ a scrollable list, multiple choice(radio button) question as pie charts and chec
 bar charts.
 
 ### Drag and drop questions
-I had to create a custom drag and drop and the HTML drag and drop api does not support mobile.
-I created a component to manage a list of elements which can be dragged to reorder.
-It uses touch events so that it works on mobile and outputs custom events on reorder.
+You can drag the questions to reorder them and also the answe options for multi select and single
+select options.
 
 ### Authentication
 This app uses Firebase authentication, the benefits of using this are that it can support
@@ -84,11 +83,21 @@ be used to await the loading of the template to allow changing the data.
 I have created custom input elements which wrap the native HTML elements. The benefits of doing this
 are that they all have a getValue() method, making it easier to get inputs on the quiz page.
 
+### Touch Drag List
+I had to create a custom drag and drop and the HTML drag and drop api does not support mobile.
+This uses a custom implementation using the touch API as the native drag and drop API does not
+work on mobile. I created a component to manage a list of elements which can be dragged to reorder.
+
 ## Router
 This is made up of two parts, the router and the router outlet. The routers listenes for paths
 in the address bar and navigates to a components. The router outlet is the main component on the
-index.html page, the routed component will be appended to this container on navigation. The router
-lazy loads modules which means not all the components will be loaded for each page.
+index.html page, the routed component will be appended to this container on navigation.
+
+### Lazy Loading
+The modules folder contains the pages that are used for the routes. On navigation the router will
+use a dyanmic import to load the reqested module. The module will load all the components required
+for the page and nothing else. This helps imporve peformance as only the required components are
+being loaded.
 
 # Server Storage
 Data is stored primarily on a Cloud Firestore. There is also a local backup db option which uses
