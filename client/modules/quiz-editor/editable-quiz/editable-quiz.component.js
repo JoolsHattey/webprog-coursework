@@ -4,7 +4,6 @@ import { Component } from '../../../components/component.js';
 import { $, $r, html } from '../../../app.js';
 import { Card } from '../../../components/card/card.component.js';
 import { SnackBar } from '../../../components/snack-bar/snack-bar.component.js';
-import { PieChart } from '../../../components/chart/pie-chart.component.js';
 import { BarChart } from '../../../components/chart/bar-chart.component.js';
 import { BottomSheet } from '../../../components/bottom-sheet/bottom-sheet.component.js';
 import { getGoogleDriveAuth, getServerAuthCode } from '../../../auth.js';
@@ -180,7 +179,7 @@ export class EditableQuiz extends Component {
     });
     if (res.ok) {
       const data = await res.text();
-      const link = document.createElement('a');
+      const link = html('a');
       link.setAttribute('href', `data:text/csv;charset=utf-8,${encodeURIComponent(data)}`);
       link.setAttribute('download', `${this.data.name} - Responses.csv`);
       link.click();
@@ -223,21 +222,25 @@ export class EditableQuiz extends Component {
 
         switch (question.type) {
           case 'single-select':
-            const chart = new PieChart(this.sortRadioSelectorResponses(questionResponses)[1], this.sortRadioSelectorResponses(questionResponses)[0]);
+            const chart = new BarChart(this.sortResponses(questionResponses, question.options));
             chartContainer.append(chart);
             break;
           case 'multi-select':
-            chartContainer.append(new BarChart(this.sortCheckBoxResponses(questionResponses, question.options)));
+            console.log(questionResponses);
+            chartContainer.append(new BarChart(this.sortResponses(questionResponses, question.options)));
             break;
           default:
+            let numQuestionResponses = 0;
             questionResponses.forEach(item => {
               if (item) {
                 const thing = document.createElement('div');
                 thing.append(item);
                 chartContainer.classList.add('textResponses');
                 chartContainer.append(thing);
+                numQuestionResponses++;
               }
             });
+            $(questionResponseCard, '#numResponses').append(`${numQuestionResponses} ${numQuestionResponses === 1 ? 'response' : 'responses'}`);
             break;
         }
       }
@@ -248,37 +251,35 @@ export class EditableQuiz extends Component {
     }
   }
 
-  sortRadioSelectorResponses(arr) {
-    const a = []; const b = []; let prev;
-
-    arr.sort();
-    for (let i = 0; i < arr.length; i++) {
-      if (arr[i] !== prev) {
-        a.push(arr[i]);
-        b.push(1);
-      } else {
-        b[b.length - 1]++;
-      }
-      prev = arr[i];
-    }
-    return [a, b];
-  }
-
-  sortCheckBoxResponses(arr, options) {
-    const result = {};
+  sortResponses(arr, options) {
+    const resultObj = {};
     options.forEach(element => {
-      result[element] = 0;
+      resultObj[element] = 0;
     });
-    arr.forEach(innerArr => {
-      innerArr.forEach(item => {
-        if (result[item]) {
-          result[item]++;
+    arr.forEach(element => {
+      if (element) {
+        if (element.constructor === Array) {
+          element.forEach(item => {
+            if (resultObj[item]) {
+              resultObj[item]++;
+            } else {
+              resultObj[item] = 1;
+            }
+          });
         } else {
-          result[item] = 1;
+          resultObj[element]++;
         }
-      });
+      }
     });
-    return result;
+    const resultArr = [];
+    for (const property in resultObj) {
+      resultArr.push({
+        label: property,
+        value: resultObj[property],
+      });
+    }
+    resultArr.sort((a, b) => b.value - a.value);
+    return resultArr;
   }
 
   initAnswerOptionList(q, index) {
