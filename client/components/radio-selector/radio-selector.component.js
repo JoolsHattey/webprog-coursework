@@ -54,7 +54,9 @@ export class RadioGroup extends Component {
   }
 
   getValue() {
-    const inputValue = $(this, 'input[name="test"]:checked').value;
+    const inputEl = $(this, 'input[name="test"]:checked');
+    let inputValue;
+    if (inputEl) inputValue = inputEl.value;
     console.log(inputValue);
     if (inputValue && !this.required) {
       return inputValue;
