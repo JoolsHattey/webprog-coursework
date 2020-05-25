@@ -43,7 +43,6 @@ export class RadioGroup extends Component {
 
   warn(value) {
     if (!this.warnVisible && !value) {
-
     } else if (this.warnVisible && !value) {
       this.warnEl.classList.add('hide');
       this.warnVisible = false;
