@@ -65,16 +65,9 @@ export class TouchDragList extends Component {
     const touchPos = e.changedTouches[0].clientY;
     const pos = touchPos - this.touchStartPos;
     if (this.oldPos < pos) {
-      this.currentDirection = 'down';
+      this.swipeDirection = 'down';
     } else {
-      this.currentDirection = 'up';
-    }
-    if (!this.swipeDirection) {
-      if (touchPos < this.touchStartPos) {
-        this.swipeDirection = 'up';
-      } else {
-        this.swipeDirection = 'down';
-      }
+      this.swipeDirection = 'up';
     }
     if (this.scrollMode) {
       if ((touchPos + 100) > window.innerHeight) {
@@ -92,7 +85,7 @@ export class TouchDragList extends Component {
     const item = elements.find(x => (x.classList.contains(this.queryName) || x.tagName.toLowerCase() === this.queryName) && !(x.index === el.index));
     if (item) {
       item.style.transition = '0.3s';
-      if (this.currentDirection === 'up') {
+      if (this.swipeDirection === 'up') {
         if (item.index < el.index) {
           item.style.transform = 'translate3d(0,100%,0)';
           this.tempNewIndex = item.index;
@@ -104,7 +97,7 @@ export class TouchDragList extends Component {
             this.tempNewIndex = item.index;
           }
         }
-      } else if (this.currentDirection === 'down') {
+      } else if (this.swipeDirection === 'down') {
         if (item.index < el.index) {
           item.style.transform = 'translate3d(0,0,0)';
           if (item.index === el.index - 1) {
@@ -126,7 +119,6 @@ export class TouchDragList extends Component {
     e.stopPropagation();
     e.preventDefault();
     el.classList.remove('qAnswerItemDragging');
-    this.swipeDirection = null;
     el.style.transition = '0.3s';
     if (el.index !== this.tempNewIndex) {
       this.moveItem(el.index, this.tempNewIndex, el);
