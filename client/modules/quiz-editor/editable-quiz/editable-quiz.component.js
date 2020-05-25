@@ -84,7 +84,7 @@ export class EditableQuiz extends Component {
     } else if (time < 3600000) {
       lastSavedTime.textContent = `Last saved ${Math.ceil(time / 60000)} minutes ago`;
     } else {
-      lastSavedTime.textContent = `Last saved ${lastSaved.getDay()}/${lastSaved.getMonth()}/${lastSaved.getFullYear()} ${lastSaved.getHours()}:${lastSaved.getMinutes() < 10 ? '0' + lastSaved.getMinutes() : lastSaved.getMinutes()}`;
+      lastSavedTime.textContent = `Last saved ${lastSaved.getDate()}/${lastSaved.getMonth() + 1}/${lastSaved.getFullYear()} ${lastSaved.getHours()}:${lastSaved.getMinutes() < 10 ? '0' + lastSaved.getMinutes() : lastSaved.getMinutes()}`;
     }
   }
 
