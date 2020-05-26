@@ -40,11 +40,18 @@ export class Component extends HTMLElement {
   async addStyleSheet(path) {
     const res = await fetch(path);
     const styleText = await res.text();
-    this.styleTag.append(styleText);
-    // Make sure CSS imports are at top
-    const firstLine = styleText.split('\n')[0];
-    if (firstLine.includes('@import')) {
-      this.styleTag.textContent = firstLine + this.styleTag.textContent;
+    // Check if style tag contains @import tag and moves to the top
+    if (this.styleTag.textContent === '') {
+      this.styleTag.append(styleText);
+    } else {
+      const styleStringSplit = (this.styleTag.textContent).split('\n');
+      const firstLine = styleStringSplit[0];
+      if (firstLine.includes('@import')) {
+        styleStringSplit.shift();
+        this.styleTag.textContent = firstLine + styleText + styleStringSplit.join('\n');
+      } else {
+        this.styleTag.textContent = styleText + styleStringSplit.join('\n');
+      }
     }
   }
 

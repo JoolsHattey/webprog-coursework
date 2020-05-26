@@ -78,7 +78,11 @@ the component.
 async addTemplate(path)
 ```
 This method asynchronously fetched the text from an HTML file and parses it using the DOM parser
-into the container element of the component. The add template method returns a promise which can
+into the container element of the component.
+```
+Component.loaded: Promise<void>
+```
+The add template method returns a promise which can
 be used to await the loading of the template to allow changing the data.
 
 ### Inputs

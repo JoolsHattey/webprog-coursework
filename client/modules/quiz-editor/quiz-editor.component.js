@@ -25,6 +25,7 @@ export class QuizEditor extends Component {
   }
 
   async initElement(req) {
+    this.container.classList.add('mainBody')
     if (!req.params.quizID) {
       this.getQuestionnaireList();
     } else {
