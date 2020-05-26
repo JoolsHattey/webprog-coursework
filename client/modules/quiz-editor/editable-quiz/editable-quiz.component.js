@@ -24,6 +24,7 @@ export class EditableQuiz extends Component {
     this.id = uid;
     /** @type {Questionnaire} */
     this.data = quizData;
+    this.oldData = JSON.parse(JSON.stringify(this.data));
     /** @type {Response[]} */
     this.responses = responseData;
     this.appBar.expand();
@@ -88,7 +89,11 @@ export class EditableQuiz extends Component {
   }
 
   unsavedChanges() {
-    $(this.appBar, '#saveBtn').disabled = false;
+    if (JSON.stringify(this.data) !== JSON.stringify(this.oldData)) {
+      $(this.appBar, '#saveBtn').disabled = false;
+    } else {
+      $(this.appBar, '#saveBtn').disabled = true;
+    }
   }
 
   async save() {
