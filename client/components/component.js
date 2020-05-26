@@ -42,9 +42,9 @@ export class Component extends HTMLElement {
     const styleText = await res.text();
     this.styleTag.append(styleText);
     // Make sure CSS imports are at top
-    const firstttline = styleText.split('\n')[0];
-    if (firstttline.includes('@import')) {
-      this.styleTag.textContent = firstttline + this.styleTag.textContent;
+    const firstLine = styleText.split('\n')[0];
+    if (firstLine.includes('@import')) {
+      this.styleTag.textContent = firstLine + this.styleTag.textContent;
     }
   }
 
