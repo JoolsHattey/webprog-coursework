@@ -32,7 +32,7 @@ export class QuizEditor extends Component {
     }
     await this.loaded;
     this.appBar = $(this, 'app-bar');
-    await this.appBar.templatePromise;
+    await this.appBar.loaded;
     $(this.appBar, '#editorHome').addEventListener('click', () => {
       $clear($(this, '#editor'));
       $clear($(this, '#quizsContainer'));
