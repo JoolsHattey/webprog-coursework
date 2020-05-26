@@ -9,7 +9,7 @@ export class Checkbox extends Component {
       template: '/components/checkbox/checkbox.component.html',
       stylesheet: '/components/checkbox/checkbox.component.css',
     });
-    this.templatePromise.then(() => {
+    this.loaded.then(() => {
       this.inputEl = $(this, 'input');
     });
   }
@@ -25,7 +25,7 @@ export class Checkbox extends Component {
   static get observedAttributes() { return ['textlabel']; }
 
   async attributeChangedCallback(name, oldValue, newValue) {
-    await this.templatePromise;
+    await this.loaded;
     this.setTextLabel(newValue);
   }
 
@@ -44,7 +44,7 @@ export class Checkbox extends Component {
   }
 
   async setValue(newValue) {
-    await this.templatePromise;
+    await this.loaded;
     this.inputEl.checked = newValue;
   }
 

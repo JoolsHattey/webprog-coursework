@@ -13,19 +13,19 @@ export class Toggle extends Component {
   }
 
   async initElement() {
-    await this.templatePromise;
+    await this.loaded;
     $(this, 'input').addEventListener('change', e => { this.checked = e.target.checked; });
   }
 
   async setOnChange(callback) {
-    await this.templatePromise;
+    await this.loaded;
     $(this, 'input').addEventListener('change', callback);
   }
 
   static get observedAttributes() { return ['checked']; }
 
   async attributeChangedCallback(name, oldValue, newValue) {
-    await this.templatePromise;
+    await this.loaded;
     this.setValue(newValue);
   }
 
@@ -34,7 +34,7 @@ export class Toggle extends Component {
   }
 
   async setValue(value) {
-    await this.templatePromise;
+    await this.loaded;
     if (typeof value === 'string') {
       $(this, 'input').checked = value === 'true';
     } else {

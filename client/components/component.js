@@ -29,7 +29,7 @@ export class Component extends HTMLElement {
       /**
        * Promise which resolves when template and styles have loaded
        */
-      this.templatePromise = Promise.all(req);
+      this.loaded = Promise.all(req);
     }
   }
 

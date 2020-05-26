@@ -45,7 +45,7 @@ export class TextInput extends Component {
   }
 
   async setUnderline(newValue) {
-    await this.templatePromise;
+    await this.loaded;
     if (newValue === 'true') {
       this.inputEl.classList.remove('noUnderline');
     } else {
@@ -54,7 +54,7 @@ export class TextInput extends Component {
   }
 
   async setFontSize(value) {
-    await this.templatePromise;
+    await this.loaded;
     if (value === 'large') {
       this.inputEl.classList.add('largeText');
       this.inputEl.classList.remove('smallText');
@@ -65,7 +65,7 @@ export class TextInput extends Component {
   }
 
   async setSize(value) {
-    await this.templatePromise;
+    await this.loaded;
     const el = $(this, '#input');
     if (value === 'singleline') {
       this.inputEl = document.createElement('input');
@@ -96,14 +96,14 @@ export class TextInput extends Component {
   }
 
   async setInputType(newValue) {
-    await this.templatePromise;
+    await this.loaded;
     await this.sizeNotInit;
     console.log(this.inputEl);
     this.inputEl.type = newValue;
   }
 
   async setInputStyle(newValue) {
-    await this.templatePromise;
+    await this.loaded;
     await this.sizeNotInit;
     if (newValue === 'filled') {
       this.inputEl.classList.add('filledTextInput');
@@ -137,7 +137,7 @@ export class TextInput extends Component {
   }
 
   async setValue(newValue) {
-    await this.templatePromise;
+    await this.loaded;
     await this.sizeNotInit;
     this.inputEl.value = newValue;
     if (this.size === 'multiline') {
@@ -161,7 +161,7 @@ export class TextInput extends Component {
   }
 
   async setLabel(newValue) {
-    await this.templatePromise;
+    await this.loaded;
     this.container.children[0].children[0].before(newValue);
   }
 

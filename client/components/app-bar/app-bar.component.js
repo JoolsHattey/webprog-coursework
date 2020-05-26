@@ -16,7 +16,7 @@ export class AppBar extends Component {
   }
 
   async initElement() {
-    await this.templatePromise;
+    await this.loaded;
     this.container.classList.add('appBar');
     this.homeBtn = $(this, '#home');
     this.profileBtn = $(this, '#profile');
@@ -29,7 +29,7 @@ export class AppBar extends Component {
       stylesheet: '/components/app-bar/app-bar.component.css',
     });
     profileCard.classList.add('profileCard');
-    await profileCard.templatePromise;
+    await profileCard.loaded;
     this.profileImg = $(profileCard, '#profileImg');
     this.profileName = $(profileCard, '#profileName');
     this.profileEmail = $(profileCard, '#profileEmail');

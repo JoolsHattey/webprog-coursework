@@ -13,7 +13,7 @@ export class Dropdown extends Component {
   }
 
   async initElement() {
-    await this.templatePromise;
+    await this.loaded;
     this.inputSelector = $(this, 'select');
   }
 

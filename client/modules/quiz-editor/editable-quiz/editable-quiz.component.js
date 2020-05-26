@@ -19,7 +19,7 @@ export class EditableQuiz extends Component {
 
   async initElement(uid, quizData, responseData, appBar) {
     document.title = `${quizData.name} - Quiz Editor`;
-    await this.templatePromise;
+    await this.loaded;
     this.appBar = appBar;
     this.id = uid;
     /** @type {Questionnaire} */
@@ -195,7 +195,7 @@ export class EditableQuiz extends Component {
       template: '/modules/quiz-editor/editable-quiz/quiz-responses-title-card.html',
       stylesheet: '/modules/quiz-editor/editable-quiz/editable-quiz.component.css',
     });
-    await responsesCard.templatePromise;
+    await responsesCard.loaded;
     $(this, '#responsesContainer').appendChild(responsesCard);
     const numResponses = this.responses.length;
     $(responsesCard, '#title').append(`${numResponses} ${numResponses === 1 ? 'Response' : 'Responses'}`);
@@ -211,7 +211,7 @@ export class EditableQuiz extends Component {
           template: '/modules/quiz-editor/editable-quiz/quiz-responses-question-card.html',
           stylesheet: '/modules/quiz-editor/editable-quiz/editable-quiz.component.css',
         });
-        await questionResponseCard.templatePromise;
+        await questionResponseCard.loaded;
         $(this, '#responsesContainer').append(questionResponseCard);
         $(questionResponseCard, '#title').append(question.text);
         const questionResponses = [];
@@ -329,7 +329,7 @@ export class EditableQuiz extends Component {
     });
 
     q.index = index;
-    await q.templatePromise;
+    await q.loaded;
     this.questionTouchList.addItem(q, '#dragHandle');
     const questionIDInput = $(q, '#questionID');
     questionIDInput.setValue(questionData.id);

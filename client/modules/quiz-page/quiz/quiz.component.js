@@ -20,7 +20,7 @@ export class Quiz extends Component {
   }
 
   async initElement(quizID, quizData) {
-    await this.templatePromise;
+    await this.loaded;
     this.quizID = quizID;
     this.questions = quizData.questions;
     this.currentQ = 0;
@@ -115,7 +115,7 @@ export class Quiz extends Component {
       template: '/modules/quiz-page/quiz/quiz-title.html',
       stylesheet: '/modules/quiz-page/quiz/quiz.component.css',
     });
-    await this.titleCard.templatePromise;
+    await this.titleCard.loaded;
     $(this.titleCard, '#title').append(quizData.name);
     $(this.titleCard, '#numQ').append(`${quizData.questions.length} ${quizData.questions.length === 1 ? 'Question' : 'Questions'}`);
     $(this, '#titleCard').append(this.titleCard);

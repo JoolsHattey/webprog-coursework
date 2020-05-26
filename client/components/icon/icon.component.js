@@ -15,7 +15,7 @@ export class Icon extends Component {
   }
 
   async initElement() {
-    await this.templatePromise;
+    await this.loaded;
     this.iconImg = $(this, 'img');
     this.iconImg.src = `/assets/icons/${this.innerHTML}_icon_${this.getAttribute('colour')}.svg`;
     this.iconImg.alt = `${this.innerHTML} icon`;

@@ -30,7 +30,7 @@ export class QuizEditor extends Component {
     } else {
       this.getQuestionnaire(req.params.quizID, req.params.mode);
     }
-    await this.templatePromise;
+    await this.loaded;
     this.appBar = $(this, 'app-bar');
     await this.appBar.templatePromise;
     $(this.appBar, '#editorHome').addEventListener('click', () => {
@@ -105,7 +105,7 @@ export class QuizEditor extends Component {
         stylesheet: '/modules/quiz-editor/quiz-editor.component.css',
         template: '/modules/quiz-editor/quiz-item.html',
       });
-      await quizItem.templatePromise;
+      await quizItem.loaded;
       $(quizItem, 'p').append(`ID: ${element.uid}`);
       $(quizItem, 'h3').append(element.name);
       container.appendChild(quizItem);

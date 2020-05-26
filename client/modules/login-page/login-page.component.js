@@ -39,8 +39,8 @@ export class LoginPage extends Component {
         loginCard.classList.remove('hide');
       }
     });
-    await this.templatePromise;
-    await loginCard.templatePromise;
+    await this.loaded;
+    await loginCard.loaded;
     loginCard.container.classList.add('loginCard');
     this.container.appendChild(loginCard);
     loginCard.id = 'loginCard';

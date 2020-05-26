@@ -12,12 +12,12 @@ export class SnackBar extends Component {
   }
 
   async addTitle(name) {
-    await this.templatePromise;
+    await this.loaded;
     $(this, '#content').append(name);
   }
 
   async addLink(name, url) {
-    await this.templatePromise;
+    await this.loaded;
     const link = $(this, 'a');
     link.append(name);
     link.href = url;
@@ -29,7 +29,7 @@ export class SnackBar extends Component {
    * @param {number} [timeout] Number of milliseconds to stay on screen for, default is unlimited.
    */
   async show(timeout) {
-    await this.templatePromise;
+    await this.loaded;
     document.body.appendChild(this);
     if (this.getAttribute('loading') === 'true') {
       $(this, 'progress-spinner').classList.remove('hide');

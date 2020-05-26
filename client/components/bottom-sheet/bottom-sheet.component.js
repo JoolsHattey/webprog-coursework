@@ -20,7 +20,7 @@ export class BottomSheet extends Component {
   }
 
   async initElement() {
-    await this.templatePromise;
+    await this.loaded;
     const chip = document.createElement('div');
     chip.classList.add('chip');
     this.container.children[0].before(chip);
