@@ -17,7 +17,7 @@ export class CardStack extends Component {
     this.touchEndEvent = (ev) => this.touchEnd(ev);
     this.cards = cards;
     this.cardContainer.classList.add('linearMode');
-    for (const [i, el] of cards.entries()) {
+    this.cards.forEach((el, i) => {
       const scaleValue = 1 - ((i + 4) * 0.1);
       const transformValue = -((i + 4) * 15);
       el.classList.add('stackedCard');
@@ -31,7 +31,7 @@ export class CardStack extends Component {
       el.index = i;
 
       if (i < 4) this.cardContainer.appendChild(el);
-    }
+    });
     this.currentCard = 0;
     this.notInit = true;
     this.style.opacity = 0;
@@ -51,13 +51,13 @@ export class CardStack extends Component {
         if (this.notInit) {
           this.notInit = false;
           this.style.opacity = 1;
-          for (const [i, el] of this.cards.entries()) {
+          this.cards.forEach((el, i) => {
             el.style.transitionDelay = `${i * 0.15}s`;
-          }
+          });
         } else {
-          for (const el of this.cards) {
+          this.cards.forEach(el => {
             el.style.transitionDelay = '0s';
-          }
+          });
           this.currentCard++;
         }
         this.animateNext();
@@ -82,7 +82,7 @@ export class CardStack extends Component {
   }
 
   animateNext() {
-    for (const [i, el] of this.cards.entries()) {
+    this.cards.forEach((el, i) => {
       const scaleValue = 1 - ((i - this.currentCard) * 0.1);
       const tranlateValue = -((i - this.currentCard) * 15);
       if (i >= this.currentCard) {
@@ -99,11 +99,11 @@ export class CardStack extends Component {
       } else if (i === this.currentCard - 2) {
         this.cardContainer.removeChild(el);
       }
-    }
+    });
   }
 
   animateBack() {
-    for (const [i, el] of this.cards.entries()) {
+    this.cards.forEach((el, i) => {
       const scaleValue = 1 - ((i - this.currentCard) * 0.1);
       const tranlateValue = -((i - this.currentCard) * 15);
       if (i >= this.currentCard) {
@@ -117,7 +117,7 @@ export class CardStack extends Component {
       } else if (i === this.currentCard - 1) {
         this.cardContainer.appendChild(el);
       }
-    }
+    });
   }
 
   touchStart(event) {
@@ -135,7 +135,7 @@ export class CardStack extends Component {
       }
     } else if (!(event.target.index === 0)) {
       const moveValue = (event.changedTouches[0].clientY - this.touchStartPos);
-      for (const [i, el] of this.cards.entries()) {
+      this.cards.forEach((el, i) => {
         el.style.transition = '0s';
         const tranlateValue = -(((i - this.currentCard) * 15) - (moveValue / 50));
         const scaleValue = 1 - (tranlateValue / -150);
@@ -147,7 +147,7 @@ export class CardStack extends Component {
         } else if (i === this.currentCard + 2) {
           // el.style.opacity =
         }
-      }
+      });
     }
   }
 
@@ -158,11 +158,17 @@ export class CardStack extends Component {
     });
     event.target.style.transition = '0.5s';
     const speed = (Math.abs(this.touchStartPos - event.changedTouches[0].clientY)) / (event.timeStamp - this.touchStartTime);
+    // Detect fake swipe
     if (this.touchStartPos === event.changedTouches[0].clientY) {
-      // Detect fake swipe
-    } else if (this.touchStartPos > event.changedTouches[0].clientY && !(event.target.index === 0)) {
+      return;
+    }
+    // Swipe up
+    if (this.touchStartPos > event.changedTouches[0].clientY && !(event.target.index === 0)) {
       this.prev();
-    } else {
+      return;
+    }
+    // Swipe down
+    if (this.touchStartPos < event.changedTouches[0].clientY) {
       if (this.lockNext) {
         const newEvent = new CustomEvent('lockrejected', {
           detail: {
