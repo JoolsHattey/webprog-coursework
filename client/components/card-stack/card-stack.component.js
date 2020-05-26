@@ -37,6 +37,14 @@ export class CardStack extends Component {
     this.style.opacity = 0;
   }
 
+  disable() {
+    this.cards.forEach(el => {
+      el.removeEventListener('touchstart', this.touchStartEvent);
+      el.removeEventListener('touchmove', this.touchMoveEvent);
+      el.removeEventListener('touchend', this.touchEndEvent);
+    });
+  }
+
   next() {
     if (this.currentCard < this.cards.length) {
       if (!this.lockNext) {

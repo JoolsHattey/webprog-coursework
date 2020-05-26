@@ -99,11 +99,14 @@ card-el {
 .animateSubmit {
   animation: quizSubmitCard 2s forwards;
 }
+.submitCard {
+  width: 25rem!important;
+  height: 25rem!important;
+}
 
 @keyframes quizSubmitCard {
   0% {
     background-color: var(--primary-theme-colour);
-    height: auto;
   }
   10% {
     border-radius: 25%;
@@ -121,7 +124,6 @@ card-el {
   }
   100% {
     background-color: var(--primary-theme-colour);
-    height: auto;
     border-radius: 50%;
     transform: scale3d(0.5, 0.5, 0.5);
   }

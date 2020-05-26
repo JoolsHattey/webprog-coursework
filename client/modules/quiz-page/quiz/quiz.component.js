@@ -213,9 +213,13 @@ export class Quiz extends Component {
       },
     });
     if (res.ok) {
+      this.stack.disable();
       // $clear(this.stack.cards[this.questions.length].container);
       this.stack.cards[this.questions.length].style = '';
       this.stack.cards[this.questions.length].container.classList.add('animateSubmit');
+      this.stack.cards[this.questions.length].classList.add('submitCard');
+      this.stack.cards[this.questions.length].container.style.backgroundColor = 'transparent';
+      // this.stack.disableStack();
       this.titleCard.classList.add('animateSubmitTitle');
       $(this, '#quizNavBtnContainer').classList.add('animateSubmitBottomBar');
       $(this.finishCard, '#afterSubmit').classList.add('drawn');
