@@ -101,7 +101,7 @@ body {
   align-items: center;
 }
 #saveStatus {
-  padding: 0 0 0 0.3125rem;
+  padding: 0.5rem 0 0 0.3125rem;
   color: grey;
 }
 
@@ -186,10 +186,6 @@ body {
 #profileCardContent {
   height: 100%;
   width: 100%;
-}
-#loggedIn {
-  height: 100%;
-  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -197,18 +193,26 @@ body {
 #loggedIn * {
   margin: 0.625rem;
 }
-#loggedOut {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
 #profileImg {
   height: 3.125rem;
   width: 3.125rem;
   object-fit: cover;
   border-radius: 50%;
 }
-
+#profileName {
+  margin: 0.25rem;
+}
+#profileEmail {
+  font-size: small;
+  color: #666;
+  margin: 0.25rem;
+}
+.profileInfo {
+  margin: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .card {
   margin: 1.25rem;
   padding: 1.25rem;

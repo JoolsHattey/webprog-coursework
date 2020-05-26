@@ -51,7 +51,7 @@ export class TouchDragList extends Component {
     this.tempNewIndex = el.index;
     dragHandle.style.opacity = 1;
     el.style.zIndex = '199!important';
-    el.classList.add('qAnswerItemDragging');
+    el.classList.add('dragging');
     this.things = 0;
     this.scrollAmount = 0;
     this.startTime = e.timeStamp;
@@ -118,7 +118,7 @@ export class TouchDragList extends Component {
     dragHandle.style.opacity = 0.5;
     e.stopPropagation();
     e.preventDefault();
-    el.classList.remove('qAnswerItemDragging');
+    el.classList.remove('dragging');
     el.style.transition = '0.3s';
     if (el.index !== this.tempNewIndex) {
       this.moveItem(el.index, this.tempNewIndex, el);

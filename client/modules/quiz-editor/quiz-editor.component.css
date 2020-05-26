@@ -20,10 +20,11 @@ body {
 }
 #quizsContainer {
   overflow: scroll;
-  height: 100%;
+  
 }
 #quizList {
-  height: 100%;
+  /* height: 100%; */
+  float: left;
 }
 .btnGroup {
   display: flex;
@@ -32,6 +33,17 @@ body {
 }
 .newQuizModal h3 {
   text-align: center;
+}
+.newQuizModal input {
+  width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+.newQuizModal label {
+  width: 2rem;
 }
 .deleteQuizSheet h3 {
   text-align: center;

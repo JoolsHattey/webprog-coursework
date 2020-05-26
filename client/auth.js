@@ -80,5 +80,3 @@ export function getAdminStatus() {
     });
   });
 }
-
-export function initLogin() {}

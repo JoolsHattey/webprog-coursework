@@ -32,7 +32,7 @@ On the quiz editor screen you can click the send button to get a shareable link 
 clipboard.
 
 ### Export Responses as Google Sheet
-You can export the responses for a quiz either as a JSON file directly donwloaded or you
+You can export the responses for a quiz either as a CSV file directly donwloaded or you
 can choose to create a Google Sheet which is exported to your Google Drive. Clicking export 
 to Google Sheets will request login scopes to access the API (requested scopes are not able
 to access any files not created by this app), this will then send the auth code to the server

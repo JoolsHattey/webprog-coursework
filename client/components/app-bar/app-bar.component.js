@@ -4,7 +4,7 @@
 import { Component } from '../component.js';
 import { Card } from '../card/card.component.js';
 import { routerInstance, $ } from '../../app.js';
-import { initLogin, logout } from '../../auth.js';
+import { logout } from '../../auth.js';
 
 export class AppBar extends Component {
   constructor() {
@@ -33,12 +33,6 @@ export class AppBar extends Component {
     this.profileImg = $(profileCard, '#profileImg');
     this.profileName = $(profileCard, '#profileName');
     this.profileEmail = $(profileCard, '#profileEmail');
-    this.loggedInContent = $(profileCard, '#loggedIn');
-    this.loggedOutContent = $(profileCard, '#loggedOut');
-    $(profileCard, '#loginBtn').onclick = () => {
-      profileCard.triggerVisible();
-      initLogin();
-    };
     $(profileCard, '#logoutBtn').onclick = () => {
       profileCard.triggerVisible();
       logout();
@@ -74,16 +68,12 @@ export class AppBar extends Component {
    * @param {firebase.User} newValue
    */
   setUser(newValue) {
-    this.loggedInContent.classList.remove('hide');
-    this.loggedOutContent.classList.add('hide');
     this.profileName.append(newValue.displayName);
     this.profileEmail.append(newValue.email);
     this.profileImg.src = newValue.photoURL;
   }
 
   clearUser() {
-    this.loggedInContent.classList.add('hide');
-    this.loggedOutContent.classList.remove('hide');
     this.profileName.innerHTML = '';
     this.profileEmail.innerHTML = '';
   }

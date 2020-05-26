@@ -2,7 +2,7 @@
 
 const firebase = require('firebase-admin');
 const serviceAccount = require('../webprog-coursework-e4b42-firebase-adminsdk-p67gn-eff495bc54.json');
-const localDB = require('./localDB');
+// const localDB = require('./localDB');
 
 firebase.initializeApp({
   credential: firebase.credential.cert(serviceAccount),
@@ -70,7 +70,7 @@ async function getQuiz(uid) {
   return docRef.data();
 }
 
-async function grantModeratorRole(email) {
+async function grantAdminRole(email) {
   const user = await firebase.auth().getUserByEmail(email); // 1
   if (user.customClaims && user.customClaims.admin === true) {
     return;
@@ -121,17 +121,17 @@ async function getAllQuizs() {
   return result;
 }
 
-async function syncLocalDB() {
-  await localDB.init();
-  const snapshot = await firebase.firestore().collection('questionnaires').get();
-  for (const quiz of snapshot.docs) {
-    localDB.insertQuiz(quiz.data(), quiz.id);
-    const responses = await firebase.firestore().collection('questionnaires').doc(quiz.id).collection('responses').get();
-    responses.forEach(response => {
-      localDB.insertResponse(response.data(), response.id, quiz.id);
-    });
-  }
-}
+// async function syncLocalDB() {
+//   await localDB.init();
+//   const snapshot = await firebase.firestore().collection('questionnaires').get();
+//   for (const quiz of snapshot.docs) {
+//     localDB.insertQuiz(quiz.data(), quiz.id);
+//     const responses = await firebase.firestore().collection('questionnaires').doc(quiz.id).collection('responses').get();
+//     responses.forEach(response => {
+//       localDB.insertResponse(response.data(), response.id, quiz.id);
+//     });
+//   }
+// }
 
 module.exports = {
   addResponse,
@@ -141,9 +141,9 @@ module.exports = {
   editQuiz,
   deleteQuiz,
   getAllQuizs,
-  grantModeratorRole,
+  grantAdminRole,
   getUserRole,
-  syncLocalDB,
+  // syncLocalDB,
   decodeAuthToken,
   isAuthenticated,
   isAdmin,
