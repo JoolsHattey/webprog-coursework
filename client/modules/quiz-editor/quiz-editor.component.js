@@ -25,7 +25,7 @@ export class QuizEditor extends Component {
   }
 
   async initElement(req) {
-    this.container.classList.add('mainBody')
+    this.container.classList.add('mainBody');
     if (!req.params.quizID) {
       this.getQuestionnaireList();
     } else {
@@ -95,13 +95,13 @@ export class QuizEditor extends Component {
 
   async getQuestionnaireList() {
     const response = await fetch('/api/questionnaires');
-    const data = await response.json();
+    this.questionnaires = await response.json();
     const container = $(this, '#quizsContainer');
     const deleteSheet = new BottomSheet({
       template: '/modules/quiz-editor/delete-quiz-sheet.html',
       stylesheet: '/modules/quiz-editor/quiz-editor.component.css',
     });
-    for (const element of data) {
+    for (const [i, element] of this.questionnaires.entries()) {
       const quizItem = new Card({
         stylesheet: '/modules/quiz-editor/quiz-editor.component.css',
         template: '/modules/quiz-editor/quiz-item.html',
@@ -160,10 +160,18 @@ export class QuizEditor extends Component {
     const deletedSnack = new SnackBar();
     if (res.ok) {
       deletedSnack.addTitle('Successfully deleted quiz');
+      let index;
+      this.questionnaires.some((element, i) => {
+        if (element.uid === uid) {
+          return (index = i);
+        }
+      });
+      this.questionnaires.splice(index, 1);
+      $(this, '#quizsContainer').children[index].remove();
     } else {
       deletedSnack.addTitle('Error deleting quiz');
     }
-    deletedSnack.show(5000);
+    deletedSnack.show(4000);
   }
 }
 
