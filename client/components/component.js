@@ -15,17 +15,21 @@ export class Component extends HTMLElement {
     this.attachShadow({ mode: 'open' });
     this.head = document.createElement('head');
     this.container = document.createElement('body');
+    this.styleTag = document.createElement('style');
+    this.head.append(this.styleTag);
     this.shadowRoot.append(this.head, this.container);
     if (options) {
+      const req = [];
       if (options.stylesheet) {
-        this.addStyleSheet(options.stylesheet);
+        req.push(this.addStyleSheet(options.stylesheet));
       }
       if (options.template) {
-        /**
-         * Promise which resolves when HTML template has loaded
-         */
-        this.templatePromise = this.addTemplate(options.template);
+        req.push(this.addTemplate(options.template));
       }
+      /**
+       * Promise which resolves when template and styles have loaded
+       */
+      this.templatePromise = Promise.all(req);
     }
   }
 
@@ -33,11 +37,15 @@ export class Component extends HTMLElement {
    * Adds a stylesheet to the components head
    * @param {string} path CSS stylesheet path
    */
-  addStyleSheet(path) {
-    const linkElem = document.createElement('link');
-    linkElem.setAttribute('rel', 'stylesheet');
-    linkElem.setAttribute('href', path);
-    this.head.append(linkElem);
+  async addStyleSheet(path) {
+    const res = await fetch(path);
+    const styleText = await res.text();
+    this.styleTag.append(styleText);
+    // Make sure CSS imports are at top
+    const firstttline = styleText.split('\n')[0];
+    if (firstttline.includes('@import')) {
+      this.styleTag.textContent = firstttline + this.styleTag.textContent;
+    }
   }
 
   /**
