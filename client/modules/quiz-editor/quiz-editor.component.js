@@ -90,6 +90,9 @@ export class QuizEditor extends Component {
       body: JSON.stringify(quizData),
     });
     const quiz = await res.json();
+    if (this.questionnaires.length > 0) {
+      $(this, '#noQuizes').classList.add('hide');
+    }
     routerInstance.navigate(`/quizeditor/${quiz.id}`);
   }
 
@@ -101,6 +104,9 @@ export class QuizEditor extends Component {
       template: '/modules/quiz-editor/delete-quiz-sheet.html',
       stylesheet: '/modules/quiz-editor/quiz-editor.component.css',
     });
+    if (this.questionnaires.length === 0) {
+      $(this, '#noQuizes').classList.remove('hide');
+    }
     for (const [i, element] of this.questionnaires.entries()) {
       const quizItem = new Card({
         stylesheet: '/modules/quiz-editor/quiz-editor.component.css',
@@ -168,6 +174,9 @@ export class QuizEditor extends Component {
       });
       this.questionnaires.splice(index, 1);
       $(this, '#quizsContainer').children[index].remove();
+      if (this.questionnaires.length === 0) {
+        $(this, '#noQuizes').classList.remove('hide');
+      }
     } else {
       deletedSnack.addTitle('Error deleting quiz');
     }
