@@ -52,7 +52,6 @@ export class TouchDragList extends Component {
     dragHandle.style.opacity = 1;
     el.style.zIndex = '199!important';
     el.classList.add('dragging');
-    this.things = 0;
     this.scrollAmount = 0;
     this.startTime = e.timeStamp;
     el.style.transition = '0s';
