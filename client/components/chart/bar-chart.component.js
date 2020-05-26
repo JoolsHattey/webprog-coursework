@@ -40,7 +40,7 @@ export class BarChart extends Component {
     this.ctx.textAlign = 'left';
     this.ctx.fillText(label, 20, i * 140 + 62);
     this.ctx.textAlign = 'right';
-    this.ctx.fillText(`${(value / this.total * 100).toFixed(1)}%`, 600, i * 140 + 62);
+    this.ctx.fillText(`${value} / ${parseFloat((value / this.total * 100).toFixed(1))}%`, 600, i * 140 + 62);
   }
 }
 window.customElements.define('bar-chart', BarChart);
