@@ -52,7 +52,6 @@ export class BottomSheet extends Component {
     this.container.style.transition = '0s';
     this.startPos = e.changedTouches[0].clientY + (window.innerHeight * 0.3);
     this.touchStartPos = e.changedTouches[0].clientY;
-    console.log(e);
   }
 
   touchMove(e) {
@@ -71,7 +70,7 @@ export class BottomSheet extends Component {
     const pos = touchPos - this.touchStartPos;
     const distance = touchPos - this.touchStartPos;
     const speed = distance / (e.timeStamp - this.touchStartTime);
-    if (pos > (window.innerHeight * 0.15) || speed > 0.5) {
+    if (pos > (window.innerHeight * 0.10) || speed > 0.5) {
       if (this.afterCloseCallback) this.afterCloseCallback();
       this.close();
     } else {
