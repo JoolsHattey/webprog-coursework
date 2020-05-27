@@ -7,11 +7,18 @@ const port = 8080;
 const path = require('path');
 const gdrive = require('./gdrive');
 
+const firebase = require('firebase-admin');
+const serviceAccount = require('./webprog-coursework-e4b42-firebase-adminsdk-p67gn-eff495bc54.json');
+firebase.initializeApp({
+  credential: firebase.credential.cert(serviceAccount),
+  databaseURL: 'https://webprog-coursework-e4b42.firebaseio.com',
+});
+
+const auth = require('./auth');
+
 const storage = require('./storage');
 const localDBMode = process.env.DBMODE;
 storage.init(localDBMode);
-
-const firestore = require('./storage/firestore');
 
 async function getQuiz(req, res) {
   try {
@@ -93,7 +100,7 @@ async function exportResponsesGoogleDrive(req, res) {
 
 function makeAdmin(req, res) {
   try {
-    firestore.grantAdminRole(req.params.email);
+    auth.grantAdminRole(req.params.email);
     res.sendStatus(200);
   } catch (error) {
     res.sendStatus(400);
@@ -114,15 +121,15 @@ app.get('*', (req, res) => {
 
 router.get('/questionnaires', getAllQuizs);
 router.get('/questionnaires/:uid', getQuiz);
-router.post('/questionnaires', firestore.decodeAuthToken, firestore.isAuthenticated, firestore.isAdmin, express.json(), createQuiz);
-router.put('/questionnaires/:uid', firestore.decodeAuthToken, firestore.isAuthenticated, firestore.isAdmin, express.json(), editQuiz);
-router.delete('/questionnaires/:uid', firestore.decodeAuthToken, firestore.isAuthenticated, firestore.isAdmin, deleteQuiz);
+router.post('/questionnaires', auth.decodeAuthToken, auth.isAuthenticated, auth.isAdmin, express.json(), createQuiz);
+router.put('/questionnaires/:uid', auth.decodeAuthToken, auth.isAuthenticated, auth.isAdmin, express.json(), editQuiz);
+router.delete('/questionnaires/:uid', auth.decodeAuthToken, auth.isAuthenticated, auth.isAdmin, deleteQuiz);
 
 
-router.get('/questionnaires/:uid/responses', firestore.decodeAuthToken, firestore.isAuthenticated, firestore.isAdmin, getResponses);
+router.get('/questionnaires/:uid/responses', auth.decodeAuthToken, auth.isAuthenticated, auth.isAdmin, getResponses);
 router.post('/questionnaires/:uid/responses', express.json(), submitResponse);
-router.get('/questionnaires/:uid/responses/export/csv', firestore.decodeAuthToken, firestore.isAuthenticated, firestore.isAdmin, exportResponsesCSV);
-router.post('/questionnaires/:uid/responses/export/drive', firestore.decodeAuthToken, firestore.isAuthenticated, firestore.isAdmin, express.json(), exportResponsesGoogleDrive);
+router.get('/questionnaires/:uid/responses/export/csv', auth.decodeAuthToken, auth.isAuthenticated, auth.isAdmin, exportResponsesCSV);
+router.post('/questionnaires/:uid/responses/export/drive', auth.decodeAuthToken, auth.isAuthenticated, auth.isAdmin, express.json(), exportResponsesGoogleDrive);
 
 router.get('/makeadmin/:email', makeAdmin);
 
