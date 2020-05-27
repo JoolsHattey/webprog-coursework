@@ -21,3 +21,14 @@ main {
   /* margin: 10px; */
   width: 100%;
 }
+
+.quizNotFoundCard {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 20em;
+  height: 20em;
+}
