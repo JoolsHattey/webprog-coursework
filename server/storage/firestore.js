@@ -10,7 +10,9 @@ async function addResponse(quizID, response) {
 
 async function getQuiz(uid) {
   const docRef = await firebase.firestore().collection('questionnaires').doc(uid).get();
-  return docRef.data();
+  const quizData = docRef.data();
+  if (quizData) return quizData;
+  throw new Error('Quiz not found');
 }
 
 async function getResponses(uid) {
