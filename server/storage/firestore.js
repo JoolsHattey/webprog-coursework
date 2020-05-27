@@ -105,7 +105,8 @@ async function editQuiz(uid, questionnaire) {
 }
 
 async function deleteQuiz(uid) {
-  await firebase.firestore().collection('questionnaires').doc(uid).delete();
+  const snapshot = await firebase.firestore().collection('questionnaires').doc(uid).get();
+  await snapshot.ref.delete();
 }
 
 async function getAllQuizs() {
