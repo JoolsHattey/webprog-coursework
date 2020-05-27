@@ -1,3 +1,7 @@
+body {
+  margin: 0;
+}
+
 label {
   z-index: 0;
   position: relative;
@@ -137,3 +141,19 @@ label > input:indeterminate:disabled + span::before {
   border-color: transparent;
   background-color: currentColor;
 }
+#requiredAlert {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: #D93025;
+  height: 1rem;
+}
+#requiredAlert div {
+  margin-left: 4px;
+}
+
+.hide {
+  display: none;
+}
+

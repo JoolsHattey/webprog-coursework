@@ -26,7 +26,7 @@ export class RadioGroup extends Component {
       el.addEventListener('click', (e) => {
         const event = new CustomEvent('validinput', {
           detail: {
-            valid: !(e.target.value === ''),
+            valid: !(e.target.value === null),
           },
         });
         this.validInput = !(e.target.value === '');
@@ -57,10 +57,12 @@ export class RadioGroup extends Component {
     let inputValue;
     if (inputEl) inputValue = inputEl.value;
     console.log(inputValue);
-    if (inputValue && !this.required) {
+    if (inputValue) {
+      return inputValue;
+    } else if (this.required) {
+      this.warn(true);
       return inputValue;
     } else {
-      this.warn(true);
       return inputValue;
     }
   }
@@ -72,14 +74,6 @@ export class RadioGroup extends Component {
   async setLabel(newValue) {
     await this.elLoaded;
     this.container.children[0].before(newValue);
-  }
-
-  get required() {
-    return this.getAttribute('required');
-  }
-
-  set required(newValue) {
-    this.setAttribute('required', newValue);
   }
 }
 

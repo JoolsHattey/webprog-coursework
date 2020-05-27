@@ -51,7 +51,8 @@ export class Checkbox extends Component {
   /**
    * @param {Function} callback
    */
-  setOnChange(callback) {
+  async setOnChange(callback) {
+    await this.loaded;
     this.inputEl.addEventListener('change', callback);
   }
 }
