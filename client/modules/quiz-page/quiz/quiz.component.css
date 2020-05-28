@@ -26,7 +26,6 @@
   /* position: absolute; */
   z-index: 50;
   height: 100%;
-  
 }
 
 .titleContainer {
@@ -100,8 +99,7 @@ card-el {
   animation: quizSubmitCard 2s forwards;
 }
 .submitCard {
-  width: 25em!important;
-  height: 25em!important;
+  height: auto!important;
 }
 
 @keyframes quizSubmitCard {

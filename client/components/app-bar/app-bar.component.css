@@ -183,6 +183,9 @@ body {
   z-index: 10;
   background: none;
 }
+.profileCardContainer {
+  background-color: white;
+}
 #profileCardContent {
   height: 100%;
   width: 100%;

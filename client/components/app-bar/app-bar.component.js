@@ -29,6 +29,7 @@ export class AppBar extends Component {
       stylesheet: '/components/app-bar/app-bar.component.css',
     });
     profileCard.classList.add('profileCard');
+    profileCard.container.classList.add('profileCardContainer');
     await profileCard.loaded;
     this.profileImg = $(profileCard, '#profileImg');
     this.profileName = $(profileCard, '#profileName');
