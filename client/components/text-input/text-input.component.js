@@ -180,7 +180,11 @@ export class TextInput extends Component {
 
   async setOnChange(callback) {
     await this.sizeNotInit;
+    if (this.changeCallback) {
+      this.inputEl.removeEventListener('change', this.changeCallback);
+    }
     this.inputEl.addEventListener('change', callback);
+    this.changeCallback = callback;
   }
 
   async setLabel(newValue) {
