@@ -62,7 +62,7 @@ function createSheet(quizData, responseData) {
 
   const resource = {
     properties: {
-      title: quizData.name,
+      title: `${quizData.name} - Responses`,
     },
     sheets: [
       {
