@@ -60,13 +60,13 @@ export class Quiz extends Component {
       this.inputs[e.detail.currentCard].getValue();
     });
 
-    for (const [i, input] of this.inputs.entries()) {
+    this.inputs.forEach((input, i) => {
       if (questions[i].required) {
         input.addEventListener('validinput', e => {
           this.stack.lockNext = !e.detail.valid;
         });
       }
-    }
+    });
 
     this.progress = $(this, 'progress');
 

@@ -21,6 +21,7 @@ export class QuizPage extends Component {
       this.container.appendChild(q);
       document.title = quizData.name;
     } else {
+      document.title = 'Error - Quiz not found';
       const quizNotFoundCard = new Card();
       quizNotFoundCard.classList.add('quizNotFoundCard');
       quizNotFoundCard.createTitle('Quiz not found');

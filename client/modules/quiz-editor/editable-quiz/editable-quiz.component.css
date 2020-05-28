@@ -17,7 +17,7 @@ body {
 #newQ {
   align-self: center;
   position: absolute;
-  width: 10.1rem;
+  width: 10.1em;
   bottom: 0;
   left: 0;
   right: 0;
@@ -25,7 +25,7 @@ body {
 
 .header {
   background-color: white;
-  padding: 0.5rem;
+  padding: 0.5em;
 }
 
 #editableQuestionsContainer {
@@ -39,12 +39,12 @@ body {
   display: flex;
   flex-direction: column;
   overflow: scroll;
-  max-height: 6rem;
+  max-height: 6em;
 }
 .textResponses div {
   background-color: lightgrey;
-  margin: 0.1rem;
-  padding: 0.1rem;
+  margin: 0.1em;
+  padding: 0.1em;
 }
 
 #responsesContainer card-el {
@@ -61,10 +61,10 @@ body {
 .dialogOptionGroup {
   display: flex;
   flex-direction: row;
-  margin: 10px;
+  margin: 0.625em;
 }
 .dialogBtnContainer {
-  margin-top: 30px;
+  margin-top: 1.875em;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -72,14 +72,14 @@ body {
 .qAnswerItem {
   display: flex;
   flex-direction: row;
-  padding: 5px 0 5px 0;
-  margin-left: -1rem;
+  padding: 0.3125em 0 0.3125em 0;
+  margin-left: -0.5em;
   align-items: center;
   justify-content: space-between;
   background-color: white;
 }
 .qAnswerItem.dragging {
-  box-shadow: 0 0 5px rgba(182, 182, 182, 0.75);
+  box-shadow: 0 0 0.3125em rgba(182, 182, 182, 0.75);
   z-index: 10;
 }
 .answerOptionName {
@@ -90,19 +90,19 @@ body {
 #newOptionBtn {
   display: flex;
   flex-direction: row;
-  margin: 8px 0 8px 8px;
+  margin: 0.5em 0 0.5em 1em;
   align-items: center;
   justify-content: left;
   opacity: 0.6;
 }
 #newOptionBtn p {
-  padding-left: 5px;
-  font-size: 14px;
+  padding-left: 0.3125em;
+  font-size: 0.875rem;
   margin: 0;
 }
 progress-spinner {
   margin: auto;
-  padding: 50px
+  padding: 3.125em
 }
 #lastSaved {
   display: flex;
@@ -110,11 +110,10 @@ progress-spinner {
 }
 #lastSaved p {
   font-size: 0.8em;
-  margin: 2px;
+  margin: 0.125em;
 }
 .divider {
-  margin: 0.5rem 0 20px 0;
-  width: 270px;
+  margin: 0.5em 0 1.25em 0;
 }
 #questionActions {
   display: flex;
@@ -127,15 +126,15 @@ progress-spinner {
   align-items: center;
 }
 #questionActions div div {
-  margin-right: 0.5rem;
+  margin-right: 0.5em;
 }
 dropdown-el {
-  margin: 0.5rem 0 4px 0;
+  margin: 0.5em 0 0.25em 0;
 }
 #dragHandle {
   opacity: 0.5;
-  margin: -20px auto auto auto;
-  padding: 1rem 0 1rem 0;
+  margin: -1.25em auto auto auto;
+  padding: 1em 0 1rem 0;
   box-sizing: border-box;
   transform: rotate(90deg);
 }
@@ -152,7 +151,7 @@ dropdown-el {
   align-items: center;
 }
 .titleContainer icon-el {
-  margin-right: 0.5rem
+  margin-right: 0.5em
 }
 .btnGroup {
   display: flex;

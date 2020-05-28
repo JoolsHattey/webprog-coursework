@@ -107,7 +107,7 @@ export class QuizEditor extends Component {
     if (this.questionnaires.length === 0) {
       $(this, '#noQuizes').classList.remove('hide');
     }
-    for (const [i, element] of this.questionnaires.entries()) {
+    for (const element of this.questionnaires) {
       const quizItem = new Card({
         stylesheet: '/modules/quiz-editor/quiz-editor.component.css',
         template: '/modules/quiz-editor/quiz-item.html',

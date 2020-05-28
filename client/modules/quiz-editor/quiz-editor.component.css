@@ -6,8 +6,8 @@
 }
 #newQuizBtn {
   position: absolute;
-  bottom: 16px;
-  right: 16px;
+  bottom: 1em;
+  right: 1em;
 }
 #editor {
   height: 100%;
@@ -35,14 +35,14 @@ body {
 .newQuizModal h3 {
   text-align: center;
 }
-.newQuizModal input {
+/* .newQuizModal input {
   width: 0.1px;
 	height: 0.1px;
 	opacity: 0;
 	overflow: hidden;
 	position: absolute;
 	z-index: -1;
-}
+} */
 .newQuizModal label {
   width: 2rem;
 }
@@ -67,7 +67,7 @@ editable-quiz {
 }
 #noQuizes {
   position: absolute;
-  height: 8.5rem;
+  height: 8.5em;
   width: 70%;
   margin: auto;
   text-align: center;
