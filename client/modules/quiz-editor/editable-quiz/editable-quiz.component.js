@@ -41,7 +41,7 @@ export class EditableQuiz extends Component {
     const questionsContainer = $(this, '#editableQuestionsContainer');
     $(questionsContainer, '#newQ').addEventListener('click', () => this.createQuestion());
     this.initSaveStatus(quizData.saveTime);
-    this.questionTouchList = $(this, 'touch-drag-list');
+    this.questionTouchList = $(this, 'drag-drop-list');
     this.questionTouchList.container.classList.add('questionList');
     this.questionTouchList.addEventListener('reorder', e => this.moveQuestion(e.detail.oldIndex, e.detail.newIndex));
     this.qCards = [];
@@ -300,7 +300,7 @@ export class EditableQuiz extends Component {
 
     newAnswerOptionBtn.children[0].initElement();
     answerOptionsContainer.classList.remove('hide');
-    const touchList = $(q, 'touch-drag-list');
+    const touchList = $(q, 'drag-drop-list');
     touchList.addStyleSheet('/modules/quiz-editor/editable-quiz/editable-quiz.component.css');
     touchList.init('qAnswerItem');
     touchList.addEventListener('reorder', e => {

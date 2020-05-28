@@ -98,15 +98,6 @@ async function exportResponsesGoogleDrive(req, res, next) {
   }
 }
 
-function makeAdmin(req, res, next) {
-  try {
-    auth.grantAdminRole(req.params.email);
-    res.sendStatus(200);
-  } catch (error) {
-    next(error);
-  }
-}
-
 // API router
 const api = express.Router();
 app.use('/api', api);
@@ -129,13 +120,6 @@ api.get('/questionnaires/:uid/responses', auth.middleware, getResponses);
 api.post('/questionnaires/:uid/responses', express.json(), submitResponse);
 api.get('/questionnaires/:uid/responses/export/csv', auth.middleware, exportResponsesCSV);
 api.post('/questionnaires/:uid/responses/export/drive', auth.middleware, express.json(), exportResponsesGoogleDrive);
-
-api.get('/makeadmin/:email', makeAdmin);
-
-// app.use((error, req, res) => {
-//   res.status(error.status);
-//   res.json({ message: error.message });
-// });
 
 
 app.listen(port, () => {
