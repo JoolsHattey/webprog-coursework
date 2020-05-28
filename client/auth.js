@@ -1,11 +1,8 @@
 /* eslint-disable no-undef */
 'use strict';
 
-const firebaseConfig = {
-  apiKey: 'AIzaSyB0cnilljayJ3axmCdJyBvGV_nLdDQ9csI',
-  authDomain: 'webprog-coursework-e4b42.firebaseapp.com',
-  projectId: 'webprog-coursework-3f2d9',
-};
+import { firebaseConfig, clientID } from './config.js';
+
 firebase.initializeApp(firebaseConfig);
 
 export function initAuth(appBar) {
@@ -26,7 +23,7 @@ function loadGoogleAPI() {
 function getAPIToken() {
   return new Promise(resolve => {
     gapi.auth2.authorize({
-      client_id: '669091989709-1ft3bvjahneklp47kefipe1h6gglnr4o.apps.googleusercontent.com',
+      client_id: clientID,
       scope: 'https://www.googleapis.com/auth/drive.file',
       response_type: 'code token id_token',
     }, (result) => {
@@ -40,6 +37,10 @@ export async function getGoogleDriveAuth() {
   return getAPIToken();
 }
 
+/**
+ * Get auth code used for backend authentication
+ * @returns {String}
+ */
 export function getServerAuthCode() {
   return new Promise(resolve => {
     firebase.auth().onAuthStateChanged(user => {
@@ -47,7 +48,7 @@ export function getServerAuthCode() {
         user.getIdTokenResult().then((result) => {
           resolve(result.token);
         });
-      } else resolve(false);
+      } else resolve(null);
     });
   });
 }
