@@ -3,9 +3,9 @@
 import { Component } from '../component.js';
 import { $ } from '../../utils.js';
 
-export class TouchDragList extends Component {
+export class DragDropList extends Component {
   constructor() {
-    super({ stylesheet: '/components/touch-drag-list/touch-drag-list.component.css' });
+    super({ stylesheet: '/components/drag-drop-list/drag-drop-list.component.css' });
     this.items = [];
     this.style.display = 'block';
     this.container.style.margin = '0';
@@ -155,4 +155,4 @@ export class TouchDragList extends Component {
     }
   }
 }
-window.customElements.define('touch-drag-list', TouchDragList);
+window.customElements.define('drag-drop-list', DragDropList);
