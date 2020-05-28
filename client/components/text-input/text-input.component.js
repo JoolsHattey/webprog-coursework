@@ -24,7 +24,7 @@ export class TextInput extends Component {
     // }
   }
 
-  static get observedAttributes() { return ['size', 'underline', 'fontsize', 'inputtype', 'inputstyle']; }
+  static get observedAttributes() { return ['size', 'underline', 'fontsize', 'inputtype', 'inputstyle', 'selectonclick']; }
 
   attributeChangedCallback(name, oldValue, newValue) {
     if (name === 'size') {
@@ -41,6 +41,16 @@ export class TextInput extends Component {
     }
     if (name === 'inputstyle') {
       this.setInputStyle(newValue);
+    }
+    if (name === 'selectonclick') {
+      this.setSelectOnClick(newValue);
+    }
+  }
+
+  async setSelectOnClick(newValue) {
+    await this.loaded;
+    if (newValue === 'true') {
+      this.onclick = () => this.inputEl.select();
     }
   }
 
@@ -195,6 +205,14 @@ export class TextInput extends Component {
 
   set inputType(newValue) {
     this.setAttribute('inputtype', newValue);
+  }
+
+  get selectOnClick() {
+    return this.getAttribute('selectonclick');
+  }
+
+  set selectOnClick(newValue) {
+    this.setAttribute('selectonclick', newValue);
   }
 }
 
