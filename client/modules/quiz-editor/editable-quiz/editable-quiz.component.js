@@ -19,6 +19,8 @@ export class EditableQuiz extends Component {
 
   async initElement(uid, quizData, responseData, appBar) {
     document.title = `${quizData.name} - Quiz Editor`;
+    $(appBar, '#responsesBtn').addEventListener('click', () => this.responsesTab());
+    $(appBar, '#questionsBtn').addEventListener('click', () => this.questionsTab());
     await this.loaded;
     this.appBar = appBar;
     this.id = uid;
@@ -33,8 +35,7 @@ export class EditableQuiz extends Component {
       this.data.name = e.target.value;
       this.unsavedChanges();
     });
-    $(this.appBar, '#responsesBtn').addEventListener('click', () => this.responsesTab());
-    $(this.appBar, '#questionsBtn').addEventListener('click', () => this.questionsTab());
+
     $(this.appBar, '#previewBtn').addEventListener('click', () => this.preview());
     $(this.appBar, '#saveBtn').addEventListener('click', () => this.save());
     const questionsContainer = $(this, '#editableQuestionsContainer');
@@ -120,7 +121,7 @@ export class EditableQuiz extends Component {
       stylesheet: '/modules/quiz-editor/editable-quiz/editable-quiz.component.css',
     });
 
-    $(this.appBar, '#shareBtn').addEventListener('click', () => {
+    $(this.appBar, '#shareBtn').onclick = () => {
       shareModal.open();
       $(shareModal, 'text-input').setValue(quizURL);
       $(shareModal, '#clipboardBtn').addEventListener('click', () => {
@@ -129,7 +130,7 @@ export class EditableQuiz extends Component {
         snackBar.addTitle('Link copied to clipboard');
         snackBar.show(5000);
       });
-    });
+    };
   }
 
   questionsTab() {
@@ -324,6 +325,7 @@ export class EditableQuiz extends Component {
         id: `id${this.data.questions.length}`,
         text: 'Question',
         type: 'text',
+        required: false,
       };
       this.data.questions.push(questionData);
       this.unsavedChanges();
