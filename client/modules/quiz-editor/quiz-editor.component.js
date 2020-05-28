@@ -9,12 +9,13 @@ import { AppBar } from '../../components/app-bar/app-bar.component.js';
 import { TextInput } from '../../components/text-input/text-input.component.js';
 import { Dropdown } from '../../components/dropdown/dropdown.component.js';
 import { Checkbox } from '../../components/checkbox/checkbox.component.js';
-import { TouchDragList } from '../../../components/touch-drag-list/touch-drag-list.component.js';
+import { DragDropList } from '../../components/drag-drop-list/drag-drop-list.component.js';
 import { EditableQuiz } from './editable-quiz/editable-quiz.component.js';
 import { BottomSheet } from '../../components/bottom-sheet/bottom-sheet.component.js';
 import { SnackBar } from '../../components/snack-bar/snack-bar.component.js';
 import { getServerAuthCode } from '../../auth.js';
 import { $, $clear } from '../../utils.js';
+
 
 export class QuizEditor extends Component {
   constructor(req) {
@@ -26,6 +27,7 @@ export class QuizEditor extends Component {
   }
 
   async initElement(req) {
+    document.title = 'Quiz Editor';
     this.container.classList.add('mainBody');
     if (!req.params.quizID) {
       this.getQuestionnaireList();
@@ -75,7 +77,12 @@ export class QuizEditor extends Component {
     if (!quizData) {
       quizData = {
         name: 'Untitled Questionnaire',
-        questions: [],
+        questions: [{
+          id: 'id0',
+          text: 'Question',
+          type: 'text',
+          required: false,
+        }],
         saveTime: Date.now(),
       };
     } else {
@@ -98,7 +105,13 @@ export class QuizEditor extends Component {
   }
 
   async getQuestionnaireList() {
-    const response = await fetch('/api/questionnaires');
+    const authCode = await getServerAuthCode();
+    const response = await fetch('/api/questionnaires', {
+      headers: {
+        'Content-Type': 'application/json',
+        'id_token': authCode,
+      },
+    });
     this.questionnaires = await response.json();
     const container = $(this, '#quizsContainer');
     const deleteSheet = new BottomSheet({
