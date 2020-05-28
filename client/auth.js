@@ -58,6 +58,14 @@ export async function login() {
   await firebase.auth().signInWithPopup(provider);
 }
 
+export async function loginWithUsername(email, password) {
+  try {
+    await firebase.auth().signInWithEmailAndPassword(email, password);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export function logout() {
   firebase.auth().signOut();
 }

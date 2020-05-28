@@ -9,10 +9,11 @@ To upload a quiz first go to the main quiz editor screen /quizeditor. You will n
 with your port.ac.uk email address. The emails (rich.boakes@port.ac.uk, 
 jacek.kopecky@port.ac.uk, matthew.dennis@port.ac.uk) have been added and granted admin to 
 allow quiz editor access. Any other accounts will not be able to access the quiz editor. 
-Upload a JSON file by clicking the add button at the bottom and selecting a JSON file to 
-upload. Once the file is uploaded you can get a shareable link by clicking the send button at 
-the top of the quiz editor page. Once you have completed the quiz, the responses tab will 
-show responses and allow exporting.
+There is also a username and password login option with admin account already created
+(user: testaccont@example.com, pass: testpassword). Upload a JSON file by clicking the add 
+button at the bottom and selecting a JSON file to upload. Once the file is uploaded you can 
+get a shareable link by clicking the send button at the top of the quiz editor page. Once 
+you have completed the quiz, the responses tab will show responses and allow exporting.
 
 # Features
 

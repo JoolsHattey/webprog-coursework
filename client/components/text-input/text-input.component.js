@@ -24,7 +24,7 @@ export class TextInput extends Component {
     // }
   }
 
-  static get observedAttributes() { return ['size', 'underline', 'fontsize', 'inputtype', 'inputstyle', 'selectonclick', 'readonly']; }
+  static get observedAttributes() { return ['label', 'size', 'underline', 'fontsize', 'inputtype', 'inputstyle', 'selectonclick', 'readonly']; }
 
   attributeChangedCallback(name, oldValue, newValue) {
     if (name === 'size') {
@@ -47,6 +47,9 @@ export class TextInput extends Component {
     }
     if (name === 'readonly') {
       this.setReadOnly(newValue);
+    }
+    if (name === 'label') {
+      this.setLabel(newValue);
     }
   }
 
@@ -231,6 +234,15 @@ export class TextInput extends Component {
 
   set readOnly(newValue) {
     this.setAttribute('readonly', newValue);
+  }
+
+  get label() {
+    return this.getAttribute('label');
+  }
+
+  set label(newValue) {
+    this.setAttribute('label', newValue);
+    this.setLabel(newValue);
   }
 }
 

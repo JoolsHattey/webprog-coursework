@@ -1,12 +1,14 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 'use strict';
 
 import { Component } from '../../components/component.js';
 import { Card } from '../../components/card/card.component.js';
-import { getAdminStatus, login, logout } from '../../auth.js';
+import { getAdminStatus, login, logout, loginWithUsername } from '../../auth.js';
 import { routerInstance } from '../../app.js';
 import { BottomSheet } from '../../components/bottom-sheet/bottom-sheet.component.js';
 import { $ } from '../../utils.js';
+import { TextInput } from '../../components/text-input/text-input.component.js';
 
 export class LoginPage extends Component {
   constructor() {
@@ -46,6 +48,25 @@ export class LoginPage extends Component {
     this.container.appendChild(loginCard);
     loginCard.id = 'loginCard';
     $(loginCard, '#loginBtn').addEventListener('click', () => login());
+    $(loginCard, '#loginUsernameBtn').addEventListener('click', () => this.loginForm());
+  }
+
+  async loginForm() {
+    const loginFormCard = new Card({
+      template: '/modules/login-page/login-form-card.html',
+      stylesheet: '/modules/login-page/login-page.component.css',
+    });
+    await loginFormCard.loaded;
+    $(loginFormCard, '#loginUserBtn').addEventListener('click', () => {
+      const username = $(loginFormCard, '#usernameField').getValue();
+      const password = $(loginFormCard, '#passwordField').getValue();
+      loginWithUsername(username, password);
+    });
+    $(loginFormCard, '#cancelBtn').addEventListener('click', () => {
+      routerInstance.navigate('/login');
+    });
+    this.container.children[0].remove();
+    this.container.append(loginFormCard);
   }
 }
 
