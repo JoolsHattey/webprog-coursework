@@ -1,12 +1,13 @@
 const sqlite3 = require('sqlite3');
 const { open } = require('sqlite');
 const uid = require('uid');
+const createError = require('http-errors');
 
 let db;
 
 async function init() {
   db = await open({
-    filename: 'database.db',
+    filename: './server/storage/database.db',
     driver: sqlite3.Database,
   });
   await db.migrate({
@@ -28,6 +29,7 @@ async function getAllQuizs() {
 
 async function getQuiz(quizID) {
   const res = await db.all('SELECT * FROM quiz WHERE uid = ?;', quizID);
+  if (res.length === 0) throw createError(404, 'Quiz not found');
   const quiz = {
     name: res[0].name,
     options: JSON.parse(res[0].options),

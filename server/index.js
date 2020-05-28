@@ -20,96 +20,96 @@ const storage = require('./storage');
 const localDBMode = process.env.DBMODE;
 storage.init(localDBMode);
 
-async function getQuiz(req, res) {
+async function getQuiz(req, res, next) {
   try {
     res.send(await storage.getQuiz(req.params.uid));
   } catch (error) {
-    res.sendStatus(400);
+    next(error);
   }
 }
 
-async function getAllQuizs(req, res) {
+async function getAllQuizs(req, res, next) {
   try {
     res.send(await storage.getAllQuizs());
   } catch (error) {
-    res.sendStatus(400);
+    next(error);
   }
 }
 
-async function submitResponse(req, res) {
+async function submitResponse(req, res, next) {
   try {
     await storage.addResponse(req.params.uid, req.body);
     res.sendStatus(200);
   } catch (error) {
-    res.sendStatus(400);
+    next(error);
   }
 }
 
-async function getResponses(req, res) {
+async function getResponses(req, res, next) {
   try {
     res.send(await storage.getResponses(req.params.uid));
   } catch (error) {
-    res.sendStatus(400);
+    next(error);
   }
 }
 
-async function createQuiz(req, res) {
+async function createQuiz(req, res, next) {
   try {
     res.send(await storage.createQuiz(req.body));
   } catch (error) {
-    res.sendStatus(400);
+    next(error);
   }
 }
 
-async function editQuiz(req, res) {
+async function editQuiz(req, res, next) {
   try {
     await storage.editQuiz(req.params.uid, req.body);
     res.sendStatus(200);
   } catch (error) {
-    res.sendStatus(400);
+    next(error);
   }
 }
 
-async function deleteQuiz(req, res) {
+async function deleteQuiz(req, res, next) {
   try {
     await storage.deleteQuiz(req.params.uid);
     res.sendStatus(200);
   } catch (error) {
-    res.sendStatus(400);
+    next(error);
   }
 }
 
-async function exportResponsesCSV(req, res) {
+async function exportResponsesCSV(req, res, next) {
   try {
     res.send(await storage.getResponsesCSV(req.params.uid));
-  } catch (err) {
-    res.sendStatus(400);
+  } catch (error) {
+    next(error);
   }
 }
 
-async function exportResponsesGoogleDrive(req, res) {
+async function exportResponsesGoogleDrive(req, res, next) {
   try {
     const responses = await storage.getResponses(req.params.uid);
     const quiz = await storage.getQuiz(req.params.uid);
     const data = await gdrive.saveData(req.body.apiToken, quiz, responses, req.get('origin'));
     res.send(data);
   } catch (error) {
-    res.sendStatus(400);
+    next(error);
   }
 }
 
-function makeAdmin(req, res) {
+function makeAdmin(req, res, next) {
   try {
     auth.grantAdminRole(req.params.email);
     res.sendStatus(200);
   } catch (error) {
-    res.sendStatus(400);
+    next(error);
   }
 }
 
 // API router
-const router = express.Router();
-app.use('/api', router);
+const api = express.Router();
+app.use('/api', api);
 
 // Catch all other routes and send to client
 app.use(compression());
@@ -119,19 +119,23 @@ app.get('*', (req, res) => {
 });
 
 
-router.get('/questionnaires', getAllQuizs);
-router.get('/questionnaires/:uid', getQuiz);
-router.post('/questionnaires', auth.decodeAuthToken, auth.isAuthenticated, auth.isAdmin, express.json(), createQuiz);
-router.put('/questionnaires/:uid', auth.decodeAuthToken, auth.isAuthenticated, auth.isAdmin, express.json(), editQuiz);
-router.delete('/questionnaires/:uid', auth.decodeAuthToken, auth.isAuthenticated, auth.isAdmin, deleteQuiz);
+api.get('/questionnaires', getAllQuizs);
+api.get('/questionnaires/:uid', getQuiz);
+api.post('/questionnaires', auth.decodeAuthToken, auth.isAuthenticated, auth.isAdmin, express.json(), createQuiz);
+api.put('/questionnaires/:uid', auth.decodeAuthToken, auth.isAuthenticated, auth.isAdmin, express.json(), editQuiz);
+api.delete('/questionnaires/:uid', auth.decodeAuthToken, auth.isAuthenticated, auth.isAdmin, deleteQuiz);
 
+api.get('/questionnaires/:uid/responses', auth.decodeAuthToken, auth.isAuthenticated, auth.isAdmin, getResponses);
+api.post('/questionnaires/:uid/responses', express.json(), submitResponse);
+api.get('/questionnaires/:uid/responses/export/csv', auth.decodeAuthToken, auth.isAuthenticated, auth.isAdmin, exportResponsesCSV);
+api.post('/questionnaires/:uid/responses/export/drive', auth.decodeAuthToken, auth.isAuthenticated, auth.isAdmin, express.json(), exportResponsesGoogleDrive);
 
-router.get('/questionnaires/:uid/responses', auth.decodeAuthToken, auth.isAuthenticated, auth.isAdmin, getResponses);
-router.post('/questionnaires/:uid/responses', express.json(), submitResponse);
-router.get('/questionnaires/:uid/responses/export/csv', auth.decodeAuthToken, auth.isAuthenticated, auth.isAdmin, exportResponsesCSV);
-router.post('/questionnaires/:uid/responses/export/drive', auth.decodeAuthToken, auth.isAuthenticated, auth.isAdmin, express.json(), exportResponsesGoogleDrive);
+api.get('/makeadmin/:email', makeAdmin);
 
-router.get('/makeadmin/:email', makeAdmin);
+app.use((error, req, res) => {
+  res.status(error.status);
+  res.json({ message: error.message });
+});
 
 
 app.listen(port, () => {
