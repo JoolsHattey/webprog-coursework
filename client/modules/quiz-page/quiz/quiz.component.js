@@ -172,11 +172,13 @@ export class Quiz extends Component {
     // Change buttons based on question number
     if (this.currentQ === this.questions.length - 1) {
       $(this, '#nextBtn').textContent = 'Review';
-    } else if (this.currentQ === this.questions.length) {
+    }
+    if (this.currentQ === this.questions.length) {
       $(this, '#nextBtn').textContent = 'Submit';
       $(this, '#nextBtn').removeEventListener('click', this.nextBtnEvent);
       $(this, '#nextBtn').addEventListener('click', this.submitBtnEvent);
-    } else if (this.currentQ === 1) {
+    }
+    if (this.currentQ === 1) {
       $(this, '#backBtn').disabled = false;
     }
   }
@@ -188,9 +190,11 @@ export class Quiz extends Component {
       $(this, '#nextBtn').textContent = 'Review';
       $(this, '#nextBtn').removeEventListener('click', this.submitBtnEvent);
       $(this, '#nextBtn').addEventListener('click', this.nextBtnEvent);
-    } else if (this.currentQ === this.questions.length - 2) {
+    }
+    if (this.currentQ === this.questions.length - 2) {
       $(this, '#nextBtn').textContent = 'Next';
-    } else if (this.currentQ === -1) {
+    }
+    if (this.currentQ === 0) {
       $(this, '#backBtn').disabled = true;
     }
   }
