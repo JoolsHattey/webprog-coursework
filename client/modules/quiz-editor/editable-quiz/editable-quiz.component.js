@@ -1,7 +1,7 @@
 'use strict';
 
 import { Component } from '../../../components/component.js';
-import { $, $r, html } from '../../../app.js';
+import { $, $r, html } from '../../../utils.js';
 import { Card } from '../../../components/card/card.component.js';
 import { SnackBar } from '../../../components/snack-bar/snack-bar.component.js';
 import { BarChart } from '../../../components/chart/bar-chart.component.js';

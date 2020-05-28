@@ -2,7 +2,7 @@
 'use strict';
 
 import { Component } from '../../components/component.js';
-import { $, routerInstance, $clear } from '../../app.js';
+import { routerInstance } from '../../app.js';
 import { Card } from '../../components/card/card.component.js';
 import { Toggle } from '../../components/toggle/toggle.component.js';
 import { AppBar } from '../../components/app-bar/app-bar.component.js';
@@ -14,6 +14,7 @@ import { EditableQuiz } from './editable-quiz/editable-quiz.component.js';
 import { BottomSheet } from '../../components/bottom-sheet/bottom-sheet.component.js';
 import { SnackBar } from '../../components/snack-bar/snack-bar.component.js';
 import { getServerAuthCode } from '../../auth.js';
+import { $, $clear } from '../../utils.js';
 
 export class QuizEditor extends Component {
   constructor(req) {

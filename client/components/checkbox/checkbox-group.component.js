@@ -2,7 +2,7 @@
 
 import { Component } from '../component.js';
 import { Checkbox } from './checkbox.component.js';
-import { $r } from '../../app.js';
+import { $r } from '../../utils.js';
 
 export class CheckboxGroup extends Component {
   constructor(options) {

@@ -4,8 +4,9 @@
 import { Component } from '../../components/component.js';
 import { Card } from '../../components/card/card.component.js';
 import { getAdminStatus, login, logout } from '../../auth.js';
-import { $, routerInstance } from '../../app.js';
+import { routerInstance } from '../../app.js';
 import { BottomSheet } from '../../components/bottom-sheet/bottom-sheet.component.js';
+import { $ } from '../../utils.js';
 
 export class LoginPage extends Component {
   constructor() {

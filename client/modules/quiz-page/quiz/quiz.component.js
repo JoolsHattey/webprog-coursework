@@ -5,10 +5,11 @@ import { Card } from '../../../components/card/card.component.js';
 import { TextInput } from '../../../components/text-input/text-input.component.js';
 import { CheckboxGroup } from '../../../components/checkbox/checkbox-group.component.js';
 import { RadioGroup } from '../../../components/radio-selector/radio-selector.component.js';
-import { $, routerInstance } from '../../../app.js';
+import { routerInstance } from '../../../app.js';
 import { SnackBar } from '../../../components/snack-bar/snack-bar.component.js';
 import { CardStack } from '../../../components/card-stack/card-stack.component.js';
 import { getAdminStatus } from '../../../auth.js';
+import { $ } from '../../../utils.js';
 
 export class Quiz extends Component {
   constructor(quizID, quizData) {

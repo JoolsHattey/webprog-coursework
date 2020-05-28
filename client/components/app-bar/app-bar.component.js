@@ -3,8 +3,9 @@
 
 import { Component } from '../component.js';
 import { Card } from '../card/card.component.js';
-import { routerInstance, $ } from '../../app.js';
+import { routerInstance } from '../../app.js';
 import { logout } from '../../auth.js';
+import { $ } from '../../utils.js';
 
 export class AppBar extends Component {
   constructor() {

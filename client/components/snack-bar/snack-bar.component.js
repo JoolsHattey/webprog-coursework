@@ -1,7 +1,7 @@
 'use strict';
 
 import { Component } from '../component.js';
-import { $ } from '../../app.js';
+import { $ } from '../../utils.js';
 
 export class SnackBar extends Component {
   constructor() {

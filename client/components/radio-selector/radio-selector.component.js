@@ -1,7 +1,7 @@
 'use strict';
 
 import { Component } from '../component.js';
-import { $, $r } from '../../app.js';
+import { $, $r } from '../../utils.js';
 
 export class RadioGroup extends Component {
   constructor(options) {
