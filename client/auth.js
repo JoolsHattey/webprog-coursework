@@ -39,7 +39,7 @@ export async function getGoogleDriveAuth() {
 
 /**
  * Get auth code used for backend authentication
- * @returns {String}
+ * @returns {Promise<string>}
  */
 export function getServerAuthCode() {
   return new Promise(resolve => {
@@ -48,7 +48,7 @@ export function getServerAuthCode() {
         user.getIdTokenResult().then((result) => {
           resolve(result.token);
         });
-      } else resolve(null);
+      } else resolve();
     });
   });
 }

@@ -41,7 +41,7 @@ async function getQuiz(quizID) {
 
 async function insertResponse(quizID, responseData) {
   const response = JSON.stringify(responseData.questions);
-  await db.run('INSERT OR REPLACE INTO response VALUES (?, ?, ?)', [uid(20), quizID, response]);
+  await db.run('INSERT INTO response VALUES (?, ?, ?)', [uid(20), quizID, response]);
 }
 
 async function insertQuiz(quizData, quizID) {
@@ -55,7 +55,8 @@ async function insertQuiz(quizData, quizID) {
 }
 
 async function deleteQuiz(quizID) {
-  await db.run('DELETE FROM quiz WHERE uid = ?', quizID);
+  const res = await db.run('DELETE FROM quiz WHERE uid = ?', quizID);
+  if (res.changes === 0) throw createError(404, 'Quiz not found');
 }
 
 async function getResponses(quizID) {

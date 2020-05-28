@@ -119,23 +119,23 @@ app.get('*', (req, res) => {
 });
 
 
-api.get('/questionnaires', getAllQuizs);
+api.get('/questionnaires', auth.middleware, getAllQuizs);
 api.get('/questionnaires/:uid', getQuiz);
-api.post('/questionnaires', auth.decodeAuthToken, auth.isAuthenticated, auth.isAdmin, express.json(), createQuiz);
-api.put('/questionnaires/:uid', auth.decodeAuthToken, auth.isAuthenticated, auth.isAdmin, express.json(), editQuiz);
-api.delete('/questionnaires/:uid', auth.decodeAuthToken, auth.isAuthenticated, auth.isAdmin, deleteQuiz);
+api.post('/questionnaires', auth.middleware, express.json(), createQuiz);
+api.put('/questionnaires/:uid', auth.middleware, express.json(), editQuiz);
+api.delete('/questionnaires/:uid', auth.middleware, deleteQuiz);
 
-api.get('/questionnaires/:uid/responses', auth.decodeAuthToken, auth.isAuthenticated, auth.isAdmin, getResponses);
+api.get('/questionnaires/:uid/responses', auth.middleware, getResponses);
 api.post('/questionnaires/:uid/responses', express.json(), submitResponse);
-api.get('/questionnaires/:uid/responses/export/csv', auth.decodeAuthToken, auth.isAuthenticated, auth.isAdmin, exportResponsesCSV);
-api.post('/questionnaires/:uid/responses/export/drive', auth.decodeAuthToken, auth.isAuthenticated, auth.isAdmin, express.json(), exportResponsesGoogleDrive);
+api.get('/questionnaires/:uid/responses/export/csv', auth.middleware, exportResponsesCSV);
+api.post('/questionnaires/:uid/responses/export/drive', auth.middleware, express.json(), exportResponsesGoogleDrive);
 
 api.get('/makeadmin/:email', makeAdmin);
 
-app.use((error, req, res) => {
-  res.status(error.status);
-  res.json({ message: error.message });
-});
+// app.use((error, req, res) => {
+//   res.status(error.status);
+//   res.json({ message: error.message });
+// });
 
 
 app.listen(port, () => {
