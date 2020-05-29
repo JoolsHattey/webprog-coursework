@@ -64,7 +64,6 @@ export class EditableQuiz extends Component {
       }
     }
     this.data.questions.splice(newIndex, 0, this.data.questions.splice(oldIndex, 1)[0]);
-    console.log(this.data.questions);
     this.unsavedChanges();
   }
 
@@ -236,7 +235,6 @@ export class EditableQuiz extends Component {
             });
             break;
           case 'multi-select':
-            console.log(questionResponses);
             questionResponses.forEach(element => {
               if (element) numQuestionResponses++;
             });
@@ -308,7 +306,6 @@ export class EditableQuiz extends Component {
     });
     this.touchLists[index] = touchList;
     newAnswerOptionBtn.onclick = () => {
-      console.log(this.data.questions[index].options);
       this.createAnswerOption(answerOptionsContainer, null, this.data.questions[index].type, true, this.data.questions[index].options.length, index);
     };
   }
@@ -423,7 +420,6 @@ export class EditableQuiz extends Component {
   deleteQuestion(index) {
     this.questionTouchList.removeItem(this.qCards[index]);
     this.data.questions.splice(index, 1);
-    console.log(this.data.questions);
     this.unsavedChanges();
   }
 

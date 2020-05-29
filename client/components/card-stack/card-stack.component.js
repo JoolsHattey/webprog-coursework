@@ -182,7 +182,6 @@ export class CardStack extends Component {
       } else {
         event.target.style.transform = 'translate3d(0, 0, 0)';
       }
-      console.log('down');
     }
   }
 

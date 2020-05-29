@@ -29,10 +29,6 @@ card-el {
 
 }
 
-.flowMode {
-  /* display: flex;
-  flex-direction: column; */
-}
 .flowModeScroll {
   overflow: scroll!important;
 }

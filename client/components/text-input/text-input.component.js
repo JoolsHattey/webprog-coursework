@@ -97,7 +97,6 @@ export class TextInput extends Component {
     }
     if (this.required) {
       this.inputEl.addEventListener('keyup', (e) => {
-        console.log(e.target.value);
         const event = new CustomEvent('validinput', {
           detail: {
             valid: !(e.target.value === ''),
@@ -115,7 +114,6 @@ export class TextInput extends Component {
   async setInputType(newValue) {
     await this.loaded;
     await this.sizeNotInit;
-    console.log(this.inputEl);
     this.inputEl.type = newValue;
   }
 

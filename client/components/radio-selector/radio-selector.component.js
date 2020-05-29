@@ -38,7 +38,6 @@ export class RadioGroup extends Component {
     this.warnEl = await $r('div', '/components/radio-selector/input-warn.html');
     this.warnEl.classList.add('hide');
     this.container.append(this.warnEl);
-    // $(this, 'input[name="test"]:checked').addEventListener('click', () => console.log('chagne'))
   }
 
   warn(value) {
@@ -56,7 +55,6 @@ export class RadioGroup extends Component {
     const inputEl = $(this, 'input[name="test"]:checked');
     let inputValue;
     if (inputEl) inputValue = inputEl.value;
-    console.log(inputValue);
     if (inputValue) {
       return inputValue;
     } else if (this.required) {

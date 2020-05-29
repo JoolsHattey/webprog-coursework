@@ -1,24 +1,22 @@
 'use strict';
 
 import { Component } from '../component.js';
-import { $ } from '../../utils.js';
+import { html } from '../../utils.js';
 
 export class Dropdown extends Component {
   constructor(options) {
     super({
-      template: '/components/dropdown/dropdown.component.html',
       stylesheet: '/components/dropdown/dropdown.component.css',
     });
     this.initElement(options);
   }
 
-  async initElement() {
-    await this.loaded;
-    this.inputSelector = $(this, 'select');
+  initElement() {
+    this.inputSelector = html('select');
+    this.container.append(this.inputSelector);
   }
 
-  async setOptions(options) {
-    await this.initElement();
+  setOptions(options) {
     options.forEach(item => {
       const option = document.createElement('option');
       option.value = item.value;
@@ -27,13 +25,11 @@ export class Dropdown extends Component {
     });
   }
 
-  async setValue(option) {
-    await this.initElement();
+  setValue(option) {
     this.inputSelector.value = option;
   }
 
-  async setOnChange(callbackFn) {
-    await this.initElement();
+  setOnChange(callbackFn) {
     this.inputSelector.onchange = callbackFn;
   }
 }

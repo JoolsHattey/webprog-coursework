@@ -206,9 +206,6 @@ export class Quiz extends Component {
 
     this.response.time = new Date().toISOString();
 
-    console.log(this.quizID, this.response);
-
-
     $(this, '#nextBtn').disabled = true;
     $(this, '#backBtn').disabled = true;
 

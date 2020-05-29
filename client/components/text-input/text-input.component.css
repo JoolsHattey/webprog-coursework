@@ -32,7 +32,6 @@ body {
   margin: 0;
   box-sizing: border-box;
   padding: 0 5px 0 5px;
-  /* padding: 0 5px 0 5px; */
 }
 input {
   box-sizing: border-box;
@@ -127,5 +126,4 @@ textarea {
 }
 .filledTextInput:focus {
   background-color: rgba(0, 0, 0, 0.12);
-  /* opacity: 0.12; */
 }

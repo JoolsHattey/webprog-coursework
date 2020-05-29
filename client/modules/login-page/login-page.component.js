@@ -68,7 +68,7 @@ export class LoginPage extends Component {
     this.container.children[0].remove();
     this.container.append(loginFormCard);
     await $(loginFormCard, '#passwordField').loaded;
-    $(loginFormCard, '#passwordField').inputEl.type = 'password'
+    $(loginFormCard, '#passwordField').inputEl.type = 'password';
   }
 }
 
