@@ -64,7 +64,15 @@ async function getResponsesCSV(quizID) {
   const csvWriter = createCsvStringifier({
     header: headers,
   });
-  responses.sort((a, b) => a.time - b.time);
+  responses.sort((a, b) => {
+    if (dayjs(a.time).isBefore(dayjs(b.time))) {
+      return -1;
+    }
+    if (dayjs(a.time).isBefore(dayjs(b.time))) {
+      return 1;
+    }
+    return 0;
+  });
   for (const [i, response] of responses.entries()) {
     records.push({});
     records[i].time = dayjs(response.time).format('DD-MM-YYYY HH:mm:ss');

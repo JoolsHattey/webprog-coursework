@@ -41,7 +41,7 @@ async function getQuiz(quizID) {
 
 async function insertResponse(quizID, responseData) {
   const response = JSON.stringify(responseData.questions);
-  await db.run('INSERT INTO response VALUES (?, ?, ?)', [uid(20), quizID, response]);
+  await db.run('INSERT INTO response VALUES (?, ?, ?, ?)', [uid(20), quizID, response, responseData.time]);
 }
 
 async function insertQuiz(quizData, quizID) {
@@ -65,6 +65,7 @@ async function getResponses(quizID) {
   res.forEach(element => {
     responses.push({
       questions: JSON.parse(element.questions),
+      time: element.time,
     });
   });
   return responses;

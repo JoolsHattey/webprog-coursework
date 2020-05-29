@@ -78,8 +78,8 @@ export class EditableQuiz extends Component {
   initSaveStatus(saveTime) {
     const lastSavedTime = $(this.appBar, '#saveStatus');
     const lastSaved = new Date(saveTime);
-    const currentTime = Date.now();
-    const time = currentTime - saveTime;
+    const currentTime = new Date();
+    const time = currentTime.getTime() - lastSaved.getTime();
     if (time < 60000) {
       lastSavedTime.textContent = 'Last saved less than a minute ago';
     } else if (time < 3600000) {
@@ -99,7 +99,7 @@ export class EditableQuiz extends Component {
 
   async save() {
     $(this.appBar, '#saveStatus').textContent = 'Saving...';
-    const saveTime = Date.now();
+    const saveTime = new Date().toISOString();
     this.data.saveTime = saveTime;
     const authCode = await getServerAuthCode();
     await fetch(`/api/questionnaires/${this.id}`, {

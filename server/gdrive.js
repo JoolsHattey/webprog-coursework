@@ -26,7 +26,15 @@ async function saveData(authToken, quizData, responseData, url) {
 }
 
 function createSheet(quizData, responseData) {
-  responseData.sort((a, b) => a.time - b.time);
+  responseData.sort((a, b) => {
+    if (dayjs(a.time).isBefore(dayjs(b.time))) {
+      return -1;
+    }
+    if (dayjs(a.time).isBefore(dayjs(b.time))) {
+      return 1;
+    }
+    return 0;
+  });
 
   const columnHeaders = { values: [] };
   columnHeaders.values.push({

@@ -129,12 +129,14 @@ export class Quiz extends Component {
         input = new TextInput();
         input.size = 'singleline';
         input.id = questionData.id;
+        input.setInputStyle('filled');
         input.setLabel(questionData.text);
         break;
       case 'number':
         input = new TextInput();
         input.size = 'singleline';
         input.inputType = 'number';
+        input.setInputStyle('filled');
         input.setLabel(questionData.text);
         break;
       case 'single-select':
@@ -202,7 +204,7 @@ export class Quiz extends Component {
   async submitResponse() {
     $(this.finishCard, '#beforeSubmit').classList.add('hide');
 
-    this.response.time = Date.now();
+    this.response.time = new Date().toISOString();
 
     console.log(this.quizID, this.response);
 

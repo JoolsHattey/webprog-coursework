@@ -83,10 +83,10 @@ export class QuizEditor extends Component {
           type: 'text',
           required: false,
         }],
-        saveTime: Date.now(),
+        saveTime: new Date().toISOString(),
       };
     } else {
-      quizData.saveTime = Date.now();
+      quizData.saveTime = new Date().toISOString();
     }
     const authCode = await getServerAuthCode();
     const res = await fetch('/api/questionnaires', {
