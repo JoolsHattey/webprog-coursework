@@ -16,12 +16,6 @@ export class TextInput extends Component {
     if (this.hasAttribute('size')) {
       this.sizeNotInit = this.setSize(this.getAttribute('size'));
     }
-    if (this.hasAttribute('fontsize')) {
-      this.setFontSize(this.getAttribute('fontsize'));
-    }
-    // if (this.hasAttribute('inputtype')) {
-    //   this.setInputType(this.getAttribute('inputtype'));
-    // }
   }
 
   static get observedAttributes() { return ['label', 'size', 'underline', 'fontsize', 'inputtype', 'inputstyle', 'selectonclick', 'readonly']; }
