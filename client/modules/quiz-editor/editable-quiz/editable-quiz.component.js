@@ -397,7 +397,7 @@ export class EditableQuiz extends Component {
         newAnswerOptionBtn.children[0].textContent = 'check_box';
       } else {
         answerOptionsContainer.classList.add('hide');
-        this.touchLists[index].removeAllItems();
+        if (this.touchLists[index]) this.touchLists[index].removeAllItems();
         this.data.questions[index].options = null;
       }
       this.data.questions[index].type = e.target.value;
