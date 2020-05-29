@@ -10,7 +10,7 @@ with your port.ac.uk email address. The emails (rich.boakes@port.ac.uk,
 jacek.kopecky@port.ac.uk, matthew.dennis@port.ac.uk) have been added and granted admin to 
 allow quiz editor access. Any other accounts will not be able to access the quiz editor. 
 There is also a username and password login option with admin account already created
-(user: testaccont@example.com, pass: testpassword). Upload a JSON file by clicking the add 
+(user: testaccount@example.com, pass: testpassword). Upload a JSON file by clicking the add 
 button at the bottom and selecting a JSON file to upload. Once the file is uploaded you can 
 get a shareable link by clicking the send button at the top of the quiz editor page. Once 
 you have completed the quiz, the responses tab will show responses and allow exporting.
@@ -21,8 +21,12 @@ you have completed the quiz, the responses tab will show responses and allow exp
 
 ### Stacked Question Layout
 Each question is on a card and they all form a stack of cards. The cards can be dragged down to
-go to the next on or drag up to go back to the last one. The cards can also be controlled with
-the quiz nav buttons.
+go to the next on or draggged up to go back to the previous one. The cards can also be controlled 
+with the quiz nav buttons. [Card Stack](#card-stack)
+
+### Edit button
+If you are logged in while taking the quiz there will be a button to directly link to the editor
+for the quiz.
 
 ## Quiz Editor
 
@@ -47,13 +51,15 @@ a scrollable list, multiple choice(radio button) question as pie charts and chec
 bar charts.
 
 ### Drag and drop questions
-You can drag the questions to reorder them and also the answe options for multi select and single
-select options.
+You can drag the questions to reorder them and also the answer options for multi select and single
+select options. More info at [drag drop list](#drag-drop-list).
 
 ### Authentication
 This app uses Firebase authentication, the benefits of using this are that it can support
 multiple authnetication providers while still giving the same Firebase token ID which can be
-used to set admin claims which only allow specific users to edit quizs.
+used to set admin claims which only allow specific users to edit quizs. I have not added any
+other auth providers as it would be difficult to demonstrate, so I just did Google and email
+and password login
 
 # Architecture
 
@@ -73,29 +79,36 @@ structured like this:
 ```
 The base component has 2 methods which are called based on the options recieved.
 ```
-addStyleSheet(path)
+async addStyleSheet(path)
 ```
-This method creates a link element with the specified stylesheet and attaches to the head of
-the component.
+This method parses the styles from stylesheet file into the head of the element. This is done to
+avoid flash on unstyled content with components.
 ```
 async addTemplate(path)
 ```
 This method asynchronously fetched the text from an HTML file and parses it using the DOM parser
 into the container element of the component.
 ```
-Component.loaded: Promise<void>
+await Component.loaded
 ```
-The add template method returns a promise which can
-be used to await the loading of the template to allow changing the data.
+The add template and add styles methods are both asyncronous, the promises returned with combined with
+Promise.all.
 
 ### Inputs
 I have created custom input elements which wrap the native HTML elements. The benefits of doing this
 are that they all have a getValue() method, making it easier to get inputs on the quiz page.
 
-### Touch Drag List
-I had to create a custom drag and drop and the HTML drag and drop api does not support mobile.
-This uses a custom implementation using the touch API as the native drag and drop API does not
-work on mobile. I created a component to manage a list of elements which can be dragged to reorder.
+### Drag Drop List
+I created a custom drag and drop component as the HTML drag and drop api does not support mobile.
+This component manages a list of items and uses touch event handlers to move items.
+
+### Card Stack
+This component is used for the quiz. It attaches touch event listeners to the cards to allow swiping
+them down to go next and up to go back. It sets the current card attribute when navigating cards which
+can be listened to with a mutation observer from the quiz to allow know the current question.
+If the question is required, it will lock the card from going to the next question if the input is
+not filled. This is done by listening to the the input component for a valid input and setting a lock
+value which prevents the card stack going to the next card.
 
 ## Router
 This is made up of two parts, the router and the router outlet. The routers listenes for paths
@@ -112,5 +125,5 @@ being loaded.
 Data is stored primarily on a Cloud Firestore. There is also a local backup db option which uses
 SQLite.
 
-You can choose to use the local db option by running the 'start:local-db' script. This will work
+You can choose to use the local db option by running the 'npm run start:local-db' script. This will work
 completely fine without outside network.

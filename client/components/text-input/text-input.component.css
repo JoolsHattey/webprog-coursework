@@ -5,16 +5,16 @@ body {
 .textinput {
   position: relative;
 }
+.label:not(:empty) {
+  padding-bottom: 1em;
+}
 #input {
   position: relative;
   display: block;
   width: 100%;
-  /* padding-top: 5px;
-  padding-bottom: 5px; */
   border: none;
   border-bottom: 1px solid #757575;
   box-sizing: border-box;
-  /* height: 18px; */
   max-height: 300px;
   font-family: 'Roboto';
 }

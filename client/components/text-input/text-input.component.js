@@ -183,7 +183,7 @@ export class TextInput extends Component {
 
   async setLabel(newValue) {
     await this.loaded;
-    this.container.children[0].children[0].before(newValue);
+    this.container.children[0].children[0].append(newValue);
   }
 
   get required() {
