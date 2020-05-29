@@ -26,8 +26,10 @@
   text-align: center;
 }
 
-#loginBtn {
-  margin-top: 2em;
+#loginBtn, #loginUsernameBtn {
+  margin: 0.5em 0 0.5em 0;
+  width: 14em;
+  align-self: center;
 }
 
 #notAdminSheet {
