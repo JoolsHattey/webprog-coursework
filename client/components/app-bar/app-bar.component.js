@@ -61,8 +61,10 @@ export class AppBar extends Component {
 
   closeExpanded() {
     this.style.height = '56px';
-    $(this, '#expandedContent').classList.remove('expanded');
-    $(this, '#quizEditorButtons').classList.add('hide');
+    if ($(this, '#expandedContent')) {
+      $(this, '#expandedContent').classList.remove('expanded');
+      $(this, '#quizEditorButtons').classList.add('hide');
+    }
   }
 
   /**

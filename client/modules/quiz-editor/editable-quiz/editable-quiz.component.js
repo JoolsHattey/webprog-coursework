@@ -19,9 +19,9 @@ export class EditableQuiz extends Component {
 
   async initElement(uid, quizData, responseData, appBar) {
     document.title = `${quizData.name} - Quiz Editor`;
+    await this.loaded;
     $(appBar, '#responsesBtn').addEventListener('click', () => this.responsesTab());
     $(appBar, '#questionsBtn').addEventListener('click', () => this.questionsTab());
-    await this.loaded;
     this.appBar = appBar;
     this.id = uid;
     /** @type {Questionnaire} */
