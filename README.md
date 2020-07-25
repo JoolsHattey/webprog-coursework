@@ -1,20 +1,6 @@
 # webprog-coursework
 2nd year Web Programming coursework
 
-# Instructions
-Start the server using the 'npm start' script. Info on how to swich database modes is on
-the [server storage](#server-storage) section. The app is primarily designed for mobile and 
-includes touch gestures so open the app in a phone screen emulator using browser dev tools. 
-To upload a quiz first go to the main quiz editor screen /quizeditor. You will need to login 
-with your port.ac.uk email address. The emails (rich.boakes@port.ac.uk, 
-jacek.kopecky@port.ac.uk, matthew.dennis@port.ac.uk) have been added and granted admin to 
-allow quiz editor access. Any other accounts will not be able to access the quiz editor. 
-There is also a username and password login option with admin account already created
-(user: testaccount@example.com, pass: testpassword). Upload a JSON file by clicking the add 
-button at the bottom and selecting a JSON file to upload. Once the file is uploaded you can 
-get a shareable link by clicking the send button at the top of the quiz editor page. Once 
-you have completed the quiz, the responses tab will show responses and allow exporting.
-
 # Features
 
 ## Quiz Page
