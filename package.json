@@ -23,7 +23,7 @@
     "compression": "^1.7.4",
     "csv-writer": "^1.6.0",
     "dayjs": "^1.8.26",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "firebase-admin": "^8.9.2",
     "googleapis": "^39.2.0",
     "http-errors": "^1.7.3",
