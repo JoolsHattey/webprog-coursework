@@ -24,7 +24,7 @@
     "csv-writer": "^1.6.0",
     "dayjs": "^1.8.26",
     "express": "^4.17.1",
-    "firebase-admin": "^8.9.2",
+    "firebase-admin": "^11.4.1",
     "googleapis": "^39.2.0",
     "http-errors": "^1.7.3",
     "sqlite": "^4.0.7",
